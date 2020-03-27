@@ -8,4 +8,5 @@ public class Test {
         new Controller();
     }
     // This is a comment.
+    // Hallå där.
 }
