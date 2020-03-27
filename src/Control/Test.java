@@ -9,4 +9,5 @@ public class Test {
     }
     // This is a comment.
     // Hallå där.
+    //hejsan kompis
 }
