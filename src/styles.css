@@ -1,0 +1,65 @@
+.root {
+  -fx-background-color: #6B6C6A;
+}
+
+.gridpane {
+  -fx-background-color: rgba(33, 37, 43);
+}
+
+.button {
+  -fx-background-color: #21252B;
+  -fx-text-fill: #FFF;
+  -fx-font-size: 16;
+}
+
+.button-menu {
+  -fx-background-color: #21252B;
+  -fx-text-fill: #FFF;
+  -fx-font-size: 16;
+}
+
+.button-menu:hover {
+  -fx-text-fill: #FFF;
+
+  -fx-border-color: #619F81;
+  -fx-border-width: 3 3 3 0;
+  -fx-border-radius: 0 25 25 0;
+  -fx-border-style: dashed;
+
+  -fx-background-radius: 0 25 25 0;
+}
+
+.button-active {
+  -fx-border-style: dashed;
+  -fx-border-color: #619F81;
+  -fx-border-width: 3 3 3 0;
+  -fx-border-radius: 0 25 25 0;
+  -fx-background-radius: 0 25 25 0;
+
+  -fx-text-fill: #FFF;
+  -fx-font-size: 16;
+  -fx-font-weight: bold;
+
+  -fx-padding: 0 60 0 0;
+}
+
+.button-crop {
+  -fx-background-color: #21252B;
+  -fx-border-radius: 50;
+  -fx-border-color: #619F81;
+  -fx-border-width: 3;
+}
+
+.button-crop:pressed {
+  -fx-background-color: #619F81;
+  -fx-border-radius: 50;
+  -fx-border-color: #619F81;
+  -fx-border-width: 3;
+}
+
+.title {
+  -fx-font-size: 24;
+  -fx-text-fill: #fff;
+  -fx-padding: 20 60 20 20;
+  -fx-font-weight: bold;
+}
