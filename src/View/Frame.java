@@ -1,11 +1,6 @@
 package View;
 
 import Control.Callback;
-import Entities.Food;
-import Entities.Ingredient;
-import Entities.Supplier;
-
-import java.util.Scanner;
 
 /**
  * The abstract class each Frame is built around. Contains the methods used by its children.

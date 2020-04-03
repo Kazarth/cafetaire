@@ -5,48 +5,32 @@ package Entities;
  */
 public class Food {
     private String type;
-    private Ingredient[] ingredients; // TODO: change to ArrayList?
-    private int quantity;
+    private Recipe recipe;
 
     public Food(Food food) {
         this.type = food.getType();
-        this.ingredients = food.getIngredients();
-        this.quantity = food.getQuantity();
+        this.recipe = food.getRecipe();
     }
 
     public Food(String type) {
         this.type = type;
-        this.ingredients = new Ingredient[0];
-        this.quantity = 1;
+        this.recipe = null;
     }
 
-    public Food(String type, Ingredient[] ingredients) {
+    public Food(String type, Recipe recipe) {
         this.type = type;
-        this.ingredients = ingredients;
-        this.quantity = 1;
+        this.recipe = recipe;
     }
 
     public String getType() {
         return type;
     }
 
-    public Ingredient[] getIngredients() {
-        return ingredients;
+    public Recipe getRecipe() {
+        return this.recipe;
     }
 
-    public int getQuantity() {
-        return this.quantity;
-    }
-
-    public void increase() {
-        this.quantity++;
-    }
-
-    public void decrease() {
-        this.quantity--;
-    }
-
-    public void addIngredient(Ingredient ingredient) {
-        // TODO:
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 }
