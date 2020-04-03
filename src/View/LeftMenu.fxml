@@ -5,12 +5,41 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.LeftMenu">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #6B6C6A;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.LeftMenu">
    <children>
-      <Button mnemonicParsing="false" prefHeight="76.0" prefWidth="280.0" text="Dashboard"  fx:id="button" onAction="#handleButtonHover" >
-         <font>
-            <Font name="Segoe UI Bold" size="24.0"/>
-         </font>
-      </Button>
+      <AnchorPane prefHeight="768.0" prefWidth="280.0" style="-fx-background-color: #21252B;">
+         <children>
+            <Button id="btnDashboard" fx:id="btnDashboard" defaultButton="true" mnemonicParsing="false" onAction="#dashboard" prefHeight="76.0" prefWidth="280.0" text="Dashboard">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+            </Button>
+             <Button fx:id="btnIngredients" layoutY="76.0" mnemonicParsing="false" onAction="#ingredients" prefHeight="76.0" prefWidth="280.0" text="Ingredients">
+                 <font>
+                     <Font name="Segoe UI" size="24.0" />
+                 </font>
+             </Button>
+            <Button fx:id="btnPerishables" layoutY="152.0" mnemonicParsing="false" onAction="#perishables" prefHeight="76.0" prefWidth="280.0" text="Perishables">
+               <font>
+                  <Font name="Segoe UI" size="24.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnSuppliers" layoutY="228.0" mnemonicParsing="false" onAction="#suppliers" prefHeight="76.0" prefWidth="280.0" text="Suppliers">
+               <font>
+                  <Font name="Segoe UI" size="24.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnSchedule" layoutY="304.0" mnemonicParsing="false" onAction="#schedule" prefHeight="76.0" prefWidth="280.0" text="Schedule">
+               <font>
+                  <Font name="Segoe UI" size="24.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnCropExpand" layoutX="61.0" layoutY="652.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="158.0" text="Crop menu" styleClass="button-crop">
+               <font>
+                  <Font name="Segoe UI Bold" size="24.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
