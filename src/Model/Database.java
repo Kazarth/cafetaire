@@ -10,6 +10,7 @@ import java.util.HashMap;
 /**
  * Contains the different ingredients, food and suppliers belonging to the database.
  */
+@SuppressWarnings("unused")
 public class Database {
     private HashMap<String, Ingredient> ingredients;
     private HashMap<String, Integer> nIngredients;
@@ -29,46 +30,6 @@ public class Database {
         suppliers = new ArrayList<>();
     }
 
-    public Food getFood(String food) {
-        if (this.food.containsKey(food)) {
-            return this.food.get(food);
-        }
-
-        return null;
-    }
-
-    public int getNumberFood(String food) {
-        if (nFood.containsKey(food)) {
-            return nFood.get(food);
-        }
-
-        return -1;
-    }
-
-    public Supplier getSupplier(String name) {
-        for (Supplier supplier : this.suppliers) {
-            if (supplier.getName().equals(name)) {
-                return supplier;
-            }
-        }
-
-        return null;
-    }
-
-    /* TODO: backup.
-    public void increaseIngredient(Ingredient ingredient) {
-        String type = ingredient.getType();
-
-        if (ingredients.containsKey(type)) {
-            int currentVal = nIngredients.get(type);
-            nIngredients.put(type, currentVal+1);
-        } else {
-            ingredients.put(type, ingredient);
-            nIngredients.put(type, 1);
-        }
-    }
-     */
-
     public boolean addIngredient(Ingredient ingredient) {
         if (ingredients.containsKey(ingredient.getType())) {
             return false;
@@ -85,9 +46,10 @@ public class Database {
 
     public Ingredient[] getIngredients() {
         Ingredient[] ingredients = new Ingredient[this.ingredients.size()];
+        String[] keys = ((String[])this.ingredients.keySet().toArray());
+
         for (int i=0; i<ingredients.length; i++) {
-            String[] keys = ((String[])this.ingredients.keySet().toArray());
-            // TODO. for each key, get value and add to array
+            ingredients[i] = this.ingredients.get(keys[i]);
         }
 
         return ingredients;
@@ -100,9 +62,6 @@ public class Database {
 
         return -1;
     }
-
-    // TODO: getIngredient
-    // TODO: getIngredients
 
     public boolean increaseIngredient(String ingredient) {
         if (nIngredients.containsKey(ingredient)) {
@@ -163,8 +122,29 @@ public class Database {
         return true;
     }
 
-    // TODO: getFood
-    // TODO: getFoodArray
+
+    public Food getFood(String food) {
+        return this.food.get(food);
+    }
+
+    public Food[] getFood() {
+        Food[] food = new Food[this.food.size()];
+        String[] keys = ((String[])this.food.keySet().toArray());
+
+        for (int i=0; i<food.length; i++) {
+            food[i] = this.food.get(keys[i]);
+        }
+
+        return food;
+    }
+
+    public int getNumberFood(String food) {
+        if (nFood.containsKey(food)) {
+            return nFood.get(food);
+        }
+
+        return -1;
+    }
 
     public boolean increaseFood(String food) {
         if (nFood.containsKey(food)) {
@@ -231,8 +211,19 @@ public class Database {
         this.suppliers.add(new Supplier(name));
     }
 
-    // TODO: getSupplier
-    // TODO: getSuppliers
+    public Supplier getSupplier(String name) {
+        for (Supplier supplier : this.suppliers) {
+            if (supplier.getName().equals(name)) {
+                return supplier;
+            }
+        }
+
+        return null;
+    }
+
+    public Supplier[] getSuppliers() {
+        return ((Supplier[])this.suppliers.toArray());
+    }
 
     public boolean removeSupplier(String name) {
         return this.suppliers.removeIf(s -> s.getName().equals(name));
