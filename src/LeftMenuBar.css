@@ -1,0 +1,32 @@
+.navButtons {
+  -fx-background-color: #21252B;
+  -fx-font-size: 18px;
+  -fx-text-fill: #fff;
+}
+
+.navButtons:hover, :active {
+  -fx-border-color: #619F81;
+  -fx-border-width: 3px 3px 3px 0px;
+  -fx-border-radius: 0px 25px 25px 0px;
+  -fx-background-radius: 0px 25px 25px 0px;
+  -fx-border-style: dashed;
+  -fx-font-weight: bold;
+  -fx-font-size: 18px;
+  -fx-padding: 0px 40px 0px 0px;
+}
+
+.toggleButton {
+  -fx-border-width: 3px;
+  -fx-border-color: #619F81;
+  -fx-border-radius: 50px;
+  -fx-background-radius: 50px;
+  -fx-background-color: #21252B;
+  -fx-font-weight: bold;
+  -fx-text-fill: #fff;
+}
+
+.toggleButton:hover {
+  -fx-background-color: #619F81;
+  -fx-text-fill: #21252B;
+  -fx-font-weight: bold;
+}
