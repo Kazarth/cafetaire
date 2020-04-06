@@ -6,9 +6,13 @@ import javafx.scene.layout.*;
 
 import javax.swing.*;
 
+/**
+ * Dashboard.java
+ * The 'main' pane which the application will launch to.
+ * @author Tor Stenfeldt
+ * @version 1.0
+ */
 public class Dashboard extends StackPane {
-
-
     public Dashboard() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -58,5 +62,6 @@ public class Dashboard extends StackPane {
 
         setStyle("-fx-background-color: #6B6C6A;");
         getChildren().add(boxes);
+        setPrefSize(1086, 768);
     }
 }
