@@ -55,7 +55,7 @@ public class Database {
         return ingredients;
     }
 
-    public int getNumberIngredients(String ingredient) {
+    public int getNumIngredients(String ingredient) {
         if (nIngredients.containsKey(ingredient)) {
             return nIngredients.get(ingredient);
         }
@@ -138,7 +138,7 @@ public class Database {
         return food;
     }
 
-    public int getNumberFood(String food) {
+    public int getNumFood(String food) {
         if (nFood.containsKey(food)) {
             return nFood.get(food);
         }
@@ -195,20 +195,24 @@ public class Database {
         return removal;
     }
 
-    public void addSupplier(Supplier supplier) {
+    public boolean addSupplier(Supplier supplier) {
         if (!this.suppliers.contains(supplier)) {
             this.suppliers.add(supplier);
+            return true;
+        } else {
+            return false;
         }
     }
 
-    public void addSupplier(String name) {
+    public boolean addSupplier(String name) {
         for (Supplier sup: this.suppliers) {
             if (sup.getName().equals(name)) {
-                return;
+                return false;
             }
         }
 
         this.suppliers.add(new Supplier(name));
+        return true;
     }
 
     public Supplier getSupplier(String name) {
@@ -223,6 +227,10 @@ public class Database {
 
     public Supplier[] getSuppliers() {
         return ((Supplier[])this.suppliers.toArray());
+    }
+
+    public int getNumSuppliers() {
+        return suppliers.size();
     }
 
     public boolean removeSupplier(String name) {
