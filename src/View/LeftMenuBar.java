@@ -7,6 +7,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * LeftMenuBar.java
+ * Left navigation menu
+ * @author Lucas Eliasson
+ * @version 3.0
+ */
 public class LeftMenuBar extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -14,7 +20,7 @@ public class LeftMenuBar extends Application {
 
         Scene scene = new Scene(root);
 
-        primaryStage.initStyle(StageStyle.DECORATED);
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
