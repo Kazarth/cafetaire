@@ -59,7 +59,8 @@
 
 .title {
   -fx-font-size: 24;
-  -fx-text-fill: #fff;
+  -fx-text-fill: #619F81;
   -fx-padding: 20 60 20 20;
+  -fx-font-family: Segoe UI;
   -fx-font-weight: bold;
 }

@@ -4,17 +4,28 @@ import Entities.Food;
 import Entities.Ingredient;
 import Entities.Supplier;
 import Model.Database;
+import View.MainPane;
 
 /**
  * Instantiates the database and the mainFrame and holds the class handling callback between them.
  */
 public class Controller {
     private Database database;
-    //private MainFrame mainFrame;
+    private MainPane mainPane;
 
     public Controller() {
         this.database = new Database();
-        //this.mainFrame = new MainFrame(new CallbackHandler());
+
+        // TODO: must comment away for testing purposes?
+        this.mainPane = new MainPane(new CallbackHandler());
+    }
+
+    public MainPane getMainPane() {
+        return mainPane;
+    }
+
+    public CallbackHandler getCallback() {
+        return new CallbackHandler();
     }
 
     /**

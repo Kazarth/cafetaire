@@ -1,4 +1,4 @@
-package View;
+package Control;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -25,11 +25,13 @@ public class Start {
         frame.setResizable(false);
         frame.setVisible(true);
 
-        Platform.runLater(() -> initFX(fxPanel));
+        Controller controller = new Controller();
+
+        Platform.runLater(() -> initFX(controller, fxPanel));
     }
 
-    private static void initFX(JFXPanel fxPanel) {
-        fxPanel.setScene(new Scene(new MainPane()));
+    private static void initFX(Controller controller, JFXPanel fxPanel) {
+        fxPanel.setScene(new Scene(controller.getMainPane()));
     }
 
     public static void main(String[] args) {

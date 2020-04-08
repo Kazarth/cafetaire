@@ -14,26 +14,33 @@ import javax.swing.*;
  */
 public class Dashboard extends StackPane {
     public Dashboard() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        String boxStyle =
+                "-fx-alignment: top_center;" +
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-background-radius: 20 20 20 20;"
+        ;
+
+        String textStyle =
+                "-fx-text-fill: #619F81;" +
+                "-fx-font-family: Segoe UI;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 36;"
+        ;
 
         Label ingredients = new Label("Ingredients");
-        ingredients.setStyle("-fx-text-fill: #619F81; -fx-font-family: Segoe UI; -fx-font-weight: bold; -fx-font-size: 36;");
+        ingredients.setStyle(textStyle);
 
         HBox topLeft = new HBox(10);
         topLeft.setPrefSize(670, 330);
-        topLeft.setStyle("-fx-alignment: top_center; -fx-background-color: #FFFFFF; -fx-background-radius: 20 20 20 20;");
+        topLeft.setStyle(boxStyle);
         topLeft.getChildren().add(ingredients);
 
         Label deliveries = new Label("Deliveries");
-        deliveries.setStyle("-fx-text-fill: #619F81; -fx-font-family: Segoe UI; -fx-font-weight: bold; -fx-font-size: 36;");
+        deliveries.setStyle(textStyle);
 
         HBox topRight = new HBox(10);
         topRight.setPrefSize(330, 330);
-        topRight.setStyle("-fx-alignment: top_center; -fx-background-color: #FFFFFF; -fx-background-radius: 20 20 20 20;");
+        topRight.setStyle(boxStyle);
         topRight.getChildren().add(deliveries);
 
         HBox topBoxes = new HBox(25);
@@ -41,16 +48,16 @@ public class Dashboard extends StackPane {
         topBoxes.getChildren().addAll(topLeft, topRight);
 
         Label food = new Label("Food");
-        food.setStyle("-fx-text-fill: #619F81; -fx-font-family: Segoe UI; -fx-font-weight: bold; -fx-font-size: 36;");
+        food.setStyle(textStyle);
 
         HBox bottomLeft = new HBox(10);
         bottomLeft.setPrefSize(670, 330);
-        bottomLeft.setStyle("-fx-alignment: top_center; -fx-background-color: #FFFFFF; -fx-background-radius: 20 20 20 20;");
+        bottomLeft.setStyle(boxStyle);
         bottomLeft.getChildren().add(food);
 
         HBox bottomRight = new HBox(10);
         bottomRight.setPrefSize(330, 330);
-        bottomRight.setStyle("-fx-alignment: top_center; -fx-background-color: #FFFFFF; -fx-padding: 10; -fx-background-radius: 20 20 20 20;");
+        bottomRight.setStyle(boxStyle);
 
         HBox bottomBoxes = new HBox(25);
         bottomBoxes.setAlignment(Pos.CENTER);

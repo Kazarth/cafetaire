@@ -18,6 +18,7 @@ public class MenuPane extends StackPane {
     private MainPane mainPane;
     private Button[] buttons;
     private ToggleButton toggleButton;
+    private Button selectedButton;
 
     public MenuPane(MainPane mainPane) {
         this.mainPane = mainPane;
@@ -27,10 +28,22 @@ public class MenuPane extends StackPane {
             buttons[i] = initButton(Views.values()[i]);
         }
 
+        selectedButton = buttons[0];
+        selectedButton.setStyle(
+                "-fx-background-color: #21252B;" +
+                "-fx-font-size: 18px;" +
+                "-fx-text-fill: #619F81;" +
+                "-fx-border-color: #619F81;" +
+                "-fx-border-style: dashed;" +
+                "-fx-border-width: 3 3 3 0;" +
+                "-fx-border-radius: 0 25 25 0;"
+        );
+
         VBox mainContainer = new VBox();
 
         Label title = new Label("Cafetairé");
-        title.setStyle("-fx-text-fill: #619F81; -fx-font-family: Segoe UI; -fx-font-weight: bold; -fx-font-size: 32");
+        title.getStylesheets().add("styles.css");
+        title.getStyleClass().add("title");
 
         HBox titleContainer = new HBox();
         titleContainer.setPadding(new Insets(0, 0, 0, 28));
@@ -44,8 +57,8 @@ public class MenuPane extends StackPane {
 
         toggleButton = new ToggleButton("ToggleButton");
         toggleButton.setPrefSize(130, 50);
-        toggleButton.getStyleClass().add("toggleButton");
         toggleButton.getStylesheets().add("LeftMenuBar.css");
+        toggleButton.getStyleClass().add("toggleButton");
 
         HBox toggleContainer = new HBox();
         toggleContainer.setPadding(new Insets(0, 0, 0, 75));
@@ -61,14 +74,48 @@ public class MenuPane extends StackPane {
     private Button initButton(Views view) {
         Button newButton = new Button(view.name());
         newButton.setPrefSize(280, 100);
-        newButton.setLayoutY(97);
-        newButton.setStyle("-fx-text-fill: #619F81;");
-        newButton.getStyleClass().add("navButtons");
-        newButton.getStylesheets().add("LeftMenuBar.css");
-        newButton.setOnAction((handler) -> {
-            // TODO: set active
+
+        String buttonStandard =
+                "-fx-background-color: #21252B;" +
+                "-fx-font-size: 18px;" +
+                "-fx-text-fill: #619F81;" +
+                "-fx-border-color: #619F81;" +
+                "-fx-border-style: none;" +
+                "-fx-border-width: 0 0 0 0;" +
+                "-fx-border-radius: 0 25 25 0;"
+        ;
+
+        String buttonSelected =
+                 "-fx-background-color: #21252B;" +
+                 "-fx-font-size: 18px;" +
+                 "-fx-text-fill: #619F81;" +
+                 "-fx-border-color: #619F81;" +
+                 "-fx-border-style: dashed;" +
+                 "-fx-border-width: 3 3 3 0;" +
+                 "-fx-border-radius: 0 25 25 0;"
+        ;
+
+        newButton.setStyle(buttonStandard);
+
+        newButton.setOnMouseClicked((handler) -> {
+            for (Button b: buttons) {
+                b.setStyle(buttonStandard);
+            }
+
             mainPane.setView(view);
+            newButton.setStyle(buttonSelected);
+            selectedButton = newButton;
         });
+
+        newButton.setOnMouseEntered((handler) -> {
+            newButton.setStyle(buttonSelected);
+        });
+
+        newButton.setOnMouseExited((handler) -> {
+            newButton.setStyle(buttonStandard);
+            selectedButton.setStyle(buttonSelected);
+        });
+
         return newButton;
     }
 }

@@ -1,6 +1,8 @@
 package View;
 
+import Control.Callback;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javax.swing.*;
 
@@ -12,11 +14,13 @@ import javax.swing.*;
  * @version 1.0
  */
 public class MainPane extends StackPane {
-    private StackPane[] views;
+    private Pane[] views;
     private StackPane menu;
-    private StackPane view;
+    private Callback callback;
 
-    public MainPane() {
+    public MainPane(Callback callback) {
+        this.callback = callback;
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
@@ -24,34 +28,29 @@ public class MainPane extends StackPane {
         }
 
         menu = new MenuPane(this);
-        views = new StackPane[5];
+        views = new Pane[5];
         views[0] = new Dashboard();
-        view = views[0];
+        //views[1] = new Ingredients();
+        //views[2] = new Perishables();
+        //views[3] = new Suppliers();
+        views[3] = new SupplierPanelTemp();
+        //views[4] = new Schedule();
 
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(menu, view);
+        hBox.getChildren().addAll(menu, views[0]);
         getChildren().add(hBox);
     }
 
     void setView(Views view) {
-        switch (view.name()) {
-            case "Dashboard":
-                this.view = views[0];
+        int pane = -1;
+
+        for (int i=0; i<Views.values().length; i++) {
+            if (Views.values()[i] == view) {
+                pane = i;
                 break;
-            case "Ingredients":
-                this.view = views[1];
-                break;
-            case "Perishables":
-                this.view = views[2];
-                break;
-            case "Suppliers":
-                this.view = views[3];
-                break;
-            case "Schedule":
-                this.view = views[4];
-                break;
-            default:
-                break;
+            }
         }
+
+        ((HBox)getChildren().get(0)).getChildren().set(1, views[pane]);
     }
 }
