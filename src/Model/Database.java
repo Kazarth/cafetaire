@@ -97,13 +97,12 @@ public class Database {
     }
 
     public boolean removeIngredient(String ingredient) {
-        if (!ingredients.containsKey(ingredient) && !nIngredients.containsKey(ingredient)) {
-            return false;
-        }
+        boolean containsKey = ingredients.containsKey(ingredient) && nIngredients.containsKey(ingredient);
+
         ingredients.remove(ingredient);
         nIngredients.remove(ingredient);
 
-        return true;
+        return containsKey;
     }
 
     public boolean addFood(Food food) {
