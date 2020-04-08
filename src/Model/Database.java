@@ -173,19 +173,12 @@ public class Database {
     }
 
     public boolean removeFood(String food) {
-        boolean removal = false;
+        boolean containsKey = this.food.containsKey(food) && this.nFood.containsKey(food);
 
-        if (this.food.containsKey(food)) {
-            this.food.remove(food);
-            removal = true;
-        }
+        this.food.remove(food);
+        this.nFood.remove(food);
 
-        if (this.nFood.containsKey(food)) {
-            nFood.remove(food);
-            removal = true;
-        }
-
-        return removal;
+        return containsKey;
     }
 
     public boolean addSupplier(Supplier supplier) {
