@@ -27,7 +27,7 @@ public class Database {
         this.food = new HashMap<>();
         this.nFood = new HashMap<>();
 
-        suppliers = new ArrayList<>();
+        this.suppliers = new ArrayList<>();
     }
 
     public boolean addIngredient(Ingredient ingredient) {
@@ -97,19 +97,13 @@ public class Database {
     }
 
     public boolean removeIngredient(String ingredient) {
-        boolean removal = false;
-
-        if (ingredients.containsKey(ingredient)) {
-            ingredients.remove(ingredient);
-            removal = true;
+        if (!ingredients.containsKey(ingredient) || !nIngredients.containsKey(ingredient)) {
+            return false;
         }
+        ingredients.remove(ingredient);
+        nIngredients.remove(ingredient);
 
-        if (nIngredients.containsKey(ingredient)) {
-            nIngredients.remove(ingredient);
-            removal = true;
-        }
-
-        return removal;
+        return true;
     }
 
     public boolean addFood(Food food) {
