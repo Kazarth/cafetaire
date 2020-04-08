@@ -1,8 +1,6 @@
 package View;
 
-import javafx.application.Application;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -14,7 +12,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 /**
  * Supplier Menu.java
@@ -23,23 +20,8 @@ import javafx.stage.Stage;
  * @version 1.0
  */
 
-public class SupplierPanel extends Application {
-
-    //Layout Buttons
-    String buttonStyle =  (
-            "-fx-background-color: #619f81;" +
-            " -fx-text-fill: #FFFFFF;" +
-            " -fx-font-family: Segoe UI;" +
-            "-fx-font-weight: bold;" +
-            "-fx-font-size: 16;"
-    );
-
-    @Override
-    public void start(Stage supplierStage) throws Exception {
-
-        supplierStage.setTitle("Suppliers");
-        BorderPane layout   =   new BorderPane();
-
+public class SupplierPane extends BorderPane {
+    public SupplierPane() {
         //Top Supplier Bar
         Text textSuppMenu   = new Text();
         Font MenuTitle      = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 36);
@@ -57,12 +39,20 @@ public class SupplierPanel extends Application {
         hBoxTopMidBar.setPrefSize(1086, 50);
         hBoxTopMidBar.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF");
 
-
         //Button Bar LEFT
         //Buttons ADD, REMOVE, EDIT
         Button btnAddNewIng = new Button("ADD NEW INGREDIENT");
         Button btnRemoveIng = new Button("REMOVE INGREDIENT");
         Button btnEditSupp = new Button("EDIT SUPPLIER");
+
+        String buttonStyle = (
+                "-fx-background-color: #619f81;" +
+                " -fx-text-fill: #FFFFFF;" +
+                " -fx-font-family: Segoe UI;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 16;"
+        );
+
         btnAddNewIng.setStyle(buttonStyle);
         btnRemoveIng.setStyle(buttonStyle);
         btnEditSupp.setStyle(buttonStyle);
@@ -77,9 +67,10 @@ public class SupplierPanel extends Application {
                 "-fx-text-fill: BLACK;" +
                 "-fx-font-family: Segoe UI;" +
                 "-fx-font-weight: bold;" +
-                "-fx-font-size: 16;");
+                "-fx-font-size: 16;"
+        );
 
-        Label   lblSearch   =   new Label("SEARCH");
+        Label lblSearch = new Label("SEARCH");
         lblSearch.setStyle(search);
         TextField textFieldSearch   =   new TextField("search");
 
@@ -93,22 +84,18 @@ public class SupplierPanel extends Application {
 
         // Vertical Box  BARS(TOP Title, MID sup, Button)
         VBox vBoxMainTopBar  =   new VBox(hBoxTopLblBar, hBoxTopMidBar, hBoxButtonBar);
-        vBoxMainTopBar.setPrefSize(1086, 225);
-        layout.setTop(vBoxMainTopBar);
+        //vBoxMainTopBar.setPrefSize(1086, 225);
+        //setTop(vBoxMainTopBar);
 
+
+        HBox mainBox = new HBox(25);
+        mainBox.getChildren().add(vBoxMainTopBar);
+        mainBox.setStyle("-fx-background-radius: 20 20 20 20;");
+
+        setPrefSize(1086, 768);
+        setTop(mainBox);
 
         // Center Panel for Table
-
         HBox    hBoxCenterTable =   new HBox();
-
-
-        Scene supplierScene =   new Scene(layout, 1086, 768);
-        supplierStage.setScene(supplierScene);
-        supplierStage.show();
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
