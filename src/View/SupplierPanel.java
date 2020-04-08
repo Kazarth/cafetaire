@@ -14,6 +14,13 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Supplier Menu.java
+ * The supplier menu.
+ * @author Paul Moustakas
+ * @version 1.0
+ */
+
 public class SupplierPanel extends Application {
 
     private Button  btnAddNewIng;
