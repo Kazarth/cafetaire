@@ -32,8 +32,8 @@ public class MainPane extends StackPane {
         views[0] = new Dashboard();
         //views[1] = new Ingredients();
         //views[2] = new Perishables();
-        //views[3] = new Suppliers();
-        views[3] = new SupplierPanelTemp();
+        views[3] = new SupplierPane();
+        //views[3] = new SupplierPanelTemp();
         //views[4] = new Schedule();
 
         HBox hBox = new HBox();
