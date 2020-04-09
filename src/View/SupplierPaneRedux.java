@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -16,7 +17,7 @@ import javafx.scene.text.Text;
 
 /**
  * Supplier Menu.java
- * The supplier menu provides the GUI containing supplier information.
+ * The supplier menu provides the GUI containing information of the Suppliers {@link Entities.Supplier}.
  * @author Paul Moustakas, Tor Stenfeldt
  * @version 2.0
  */
