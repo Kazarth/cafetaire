@@ -107,13 +107,13 @@ public class IngredientsPanel extends Application {
         supplierColumn = new TableColumn("SUPPLIER");
         selectedColumn = new TableColumn("SELECTED ITEM");
 
-        //tableView.setStyle("-fx-background-color: #FFFFFF");
+        tableView.setStyle("-fx-background-color: #FFFFFF");
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
-        nameColumn.setPrefWidth(250);
-        categoryColumn.setPrefWidth(250);
-        stockColumn.setPrefWidth(250);
-        supplierColumn.setPrefWidth(250);
+        nameColumn.setPrefWidth(200);
+        categoryColumn.setPrefWidth(200);
+        stockColumn.setPrefWidth(200);
+        supplierColumn.setPrefWidth(200);
         selectedColumn.setPrefWidth(250);
 
 
