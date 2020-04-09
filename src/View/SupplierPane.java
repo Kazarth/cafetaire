@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
 /**
  * Supplier Menu.java
  * The supplier menu provides the GUI containing information of the Suppliers {@link Entities.Supplier}.
- * @author Paul Moustakas
+ * @author Paul Moustakas, Tor Stenfeldt
  * @version 3.0
  */
 
@@ -91,7 +91,6 @@ public class SupplierPane extends StackPane {
         /*
          *  BOTTOM HALF OF SUPPLIER PANE (2/2)
          */
-
         // TODO: add a table to contain
         // CONTAINER FOR SUPPLIER TABLE.
        // TableModel  tableModel = new TableModel();
@@ -105,12 +104,10 @@ public class SupplierPane extends StackPane {
         hBoxBottomCollector.setStyle("-fx-alignment: center; -fx-background-color: #FFFFFF; -fx-background-radius: 0 0 20 20; -fx-padding: 0 0 50 0;");
         hBoxBottomCollector.getChildren().add(hBoxTableContainer);
 
-
         // CONTAINER FOR TOPCOLLECTOR AND BOTTOMCOLLECTOR
         VBox vBoxMainCollector = new VBox();
         vBoxMainCollector.setAlignment(Pos.CENTER);
         vBoxMainCollector.getChildren().addAll(vBoxTopCollector, hBoxBottomCollector);
-
 
         // MAIN CONTAINER TO PEG AT PANE
         HBox mainContainer = new HBox(25);
