@@ -23,15 +23,6 @@ import javafx.stage.Stage;
 public class IngredientsPanel extends Application {
 
 
-    private String buttonStyle = (
-            "-fx-background-color: #619f81;" +
-            " -fx-text-fill: #FFFFFF;" +
-            " -fx-font-family: Segoe UI;" +
-            "-fx-font-weight: bold;" +
-            "-fx-font-size: 16;"
-            );
-
-
     public static void main(String[] args) {
         launch(args);
     }
