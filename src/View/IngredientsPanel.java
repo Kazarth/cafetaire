@@ -29,7 +29,6 @@ public class IngredientsPanel extends Application {
     private HBox eastHBox;
     private Scene ingredientsScene;
     private TableView tableView;
-    private StackPane centerStack;
 
     //***** Buttons and components *****
 
@@ -48,7 +47,6 @@ public class IngredientsPanel extends Application {
     private TableColumn selectedColumn;
 
 
-    
     //***** Styling *****
 
     private Text titleText;
@@ -75,6 +73,7 @@ public class IngredientsPanel extends Application {
         addIngredients.setPrefWidth(200);
         addIngredients.setPrefHeight(30);
         removeIngredients = new Button("REMOVE INGREDIENT");
+
         removeIngredients.setStyle(buttonStyle);
         removeIngredients.setPrefHeight(30);
         removeIngredients.setPrefWidth(200);
@@ -106,11 +105,16 @@ public class IngredientsPanel extends Application {
         categoryColumn = new TableColumn("CATEGORY");
         stockColumn = new TableColumn("STOCK");
         supplierColumn = new TableColumn("SUPPLIER");
-        selectedColumn = new TableColumn();
+        selectedColumn = new TableColumn("SELECTED ITEM");
 
-        tableView.setStyle("-fx-background-color: #FFFFFF");
-        tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn);
+        //tableView.setStyle("-fx-background-color: #FFFFFF");
+        tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
+        nameColumn.setPrefWidth(250);
+        categoryColumn.setPrefWidth(250);
+        stockColumn.setPrefWidth(250);
+        supplierColumn.setPrefWidth(250);
+        selectedColumn.setPrefWidth(250);
 
 
         mainVbox = new VBox();
