@@ -1,21 +1,24 @@
 package View;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
-import java.io.File;
+/**
+ * The class is the Ingredients panel for the Cafetairé application.
+ * @author Georg Grankvist
+ * @version 1.0
+ */
+
+
 
 public class IngredientsPanel extends Application {
 
