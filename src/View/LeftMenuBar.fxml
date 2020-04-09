@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.LeftMenuBarController">
+<BorderPane fx:id="container" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.LeftMenuBarController">
    <left>
       <AnchorPane prefHeight="768.0" prefWidth="280.0" style="-fx-background-color: #21252B;" BorderPane.alignment="CENTER">
          <children>
@@ -26,53 +26,6 @@
       </AnchorPane>
    </left>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #979495;" BorderPane.alignment="CENTER">
-         <children>
-            <AnchorPane fx:id="pnl_schedule" prefHeight="841.0" prefWidth="1134.0" style="-fx-background-color: #789457;">
-               <children>
-                  <Label layoutX="388.0" layoutY="368.0" text="Schedule">
-                     <font>
-                        <Font size="72.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="pnl_suppliers" prefHeight="841.0" prefWidth="1134.0" style="-fx-background-color: #fee123;">
-               <children>
-                  <Label layoutX="388.0" layoutY="368.0" text="Suppliers">
-                     <font>
-                        <Font size="72.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="pnl_perishables" prefHeight="841.0" prefWidth="1134.0" style="-fx-background-color: #ffe;">
-               <children>
-                  <Label layoutX="388.0" layoutY="368.0" text="Perishables">
-                     <font>
-                        <Font size="72.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="pnl_ingredients" prefHeight="841.0" prefWidth="1134.0" style="-fx-background-color: #eee;">
-               <children>
-                  <Label layoutX="388.0" layoutY="368.0" text="Ingredients">
-                     <font>
-                        <Font size="72.0" />
-                     </font>
-                  </Label>
-               </children></AnchorPane>
-            <AnchorPane fx:id="pnl_dashboard" prefHeight="841.0" prefWidth="1134.0" style="-fx-background-color: #eef;">
-               <children>
-                  <Label layoutX="388.0" layoutY="368.0" text="Dashboard">
-                     <font>
-                        <Font size="72.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-         </children>
-      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #979495;" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
