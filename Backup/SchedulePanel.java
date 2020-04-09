@@ -1,4 +1,4 @@
-package View;
+package View.Backup;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +9,7 @@ import javafx.stage.StageStyle;
 
 public class SchedulePanel extends Application {
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("SchedulePanel.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Backup/SchedulePanel.fxml"));
 
         Scene scene = new Scene(root);
 

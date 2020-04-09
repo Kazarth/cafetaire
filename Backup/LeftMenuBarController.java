@@ -1,15 +1,12 @@
-package View;
+package View.Backup;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -57,7 +54,7 @@ public class LeftMenuBarController implements Initializable {
     }
 
     private void loadPanels() throws IOException {
-        schedule = FXMLLoader.load(getClass().getResource("SchedulePanel.fxml"));
+        schedule = FXMLLoader.load(getClass().getResource("Backup/SchedulePanel.fxml"));
     }
 
     @Override

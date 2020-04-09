@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1086.0" style="-fx-background-color: #6B6C6A;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.SchedulePanelController">
+<AnchorPane prefHeight="768.0" prefWidth="1086.0" style="-fx-background-color: #6B6C6A;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.Backup.SchedulePanelController">
    <children>
       <VBox layoutX="22.0" layoutY="25.0" prefHeight="718.0" prefWidth="1042.0" style="-fx-background-color: #fff; -fx-background-radius: 25;">
          <children>
