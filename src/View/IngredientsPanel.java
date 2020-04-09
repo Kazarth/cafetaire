@@ -1,5 +1,6 @@
 package View;
 
+import Entities.Styles;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -41,24 +42,24 @@ public class IngredientsPanel extends Application {
         /** Button instantiation and Configurations */
 
         Button addIngredients = new Button("ADD NEW INGREDIENT");
-        addIngredients.setStyle(buttonStyle);
+        addIngredients.setStyle(Styles.getButton());
         addIngredients.setPrefWidth(200);
         addIngredients.setPrefHeight(30);
 
         Button removeIngredients = new Button("REMOVE INGREDIENT");
-        removeIngredients.setStyle(buttonStyle);
+        removeIngredients.setStyle(Styles.getButton());
         removeIngredients.setPrefHeight(30);
         removeIngredients.setPrefWidth(200);
 
         Button addButton = new Button("ADD");
         addButton.setPrefHeight(30);
         addButton.setPrefWidth(100);
-        addButton.setStyle(buttonStyle);
+        addButton.setStyle(Styles.getButton());
 
          Button removeButton = new Button("REMOVE");
         removeButton.setPrefHeight(30);
         removeButton.setPrefWidth(100);
-        removeButton.setStyle(buttonStyle);
+        removeButton.setStyle(Styles.getButton());
 
         /**  Title and overview text configuration */
         Text titleText = new Text("INGREDIENTS");
