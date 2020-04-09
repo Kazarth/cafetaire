@@ -8,6 +8,8 @@ import View.MainPane;
 
 /**
  * Instantiates the database and the mainFrame and holds the class handling callback between them.
+ * @author Tor Stenfeldt
+ * @version 2.0
  */
 public class Controller {
     private Database database;
@@ -17,7 +19,7 @@ public class Controller {
         this.database = new Database();
 
         // TODO: must comment away for testing purposes?
-        this.mainPane = new MainPane(new CallbackHandler());
+        //this.mainPane = new MainPane(new CallbackHandler());
     }
 
     public MainPane getMainPane() {

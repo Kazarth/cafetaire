@@ -4,6 +4,8 @@ import Entities.*;
 
 /**
  * Used for callback functionality between the Controller and the different Frames.
+ * @author Tor Stenfeldt
+ * @version 2.0
  */
 @SuppressWarnings("unused")
 public interface Callback {

@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * TODO: to run the test you need to comment out the MainPane initialization from the Controller for some reason.
+ * @author Tor Stenfeldt
+ * @version 1.0
  */
 public class TestSuite {
     private Callback callback;
@@ -23,6 +25,7 @@ public class TestSuite {
     void addIngredient() {
         Ingredient ingredient = new Ingredient("Sugar");
         callback.addIngredient(ingredient);
+
         Ingredient storedIngredient = callback.getIngredient(ingredient.getType());
         assertEquals(storedIngredient, ingredient);
     }
@@ -33,8 +36,15 @@ public class TestSuite {
         Ingredient ingredient = new Ingredient("Sugar");
         callback.addIngredient(ingredient);
         callback.removeIngredient(ingredient.getType());
+
         Ingredient storedIngredient = callback.getIngredient(ingredient.getType());
         assertNull(storedIngredient);
+    }
+
+    @Test
+    @DisplayName("Tries removing a non-existent value")
+    void removeIngredientFaulty() {
+        assertFalse(callback.removeIngredient("Sugar"));
     }
 
     @Test
@@ -43,8 +53,15 @@ public class TestSuite {
         Ingredient ingredient = new Ingredient("Sugar");
         callback.addIngredient(ingredient);
         callback.increaseIngredient(ingredient.getType());
+
         int nIngredients = callback.getNumIngredients(ingredient.getType());
         assertEquals(nIngredients, 2);
+    }
+
+    @Test
+    @DisplayName("Tries increasing a non-existent value")
+    void increaseIngredientFaulty() {
+        assertFalse(callback.increaseIngredient("Sugar"));
     }
 
     @Test
@@ -54,6 +71,7 @@ public class TestSuite {
         callback.addIngredient(ingredient);
         callback.increaseIngredient(ingredient.getType());
         callback.decreaseIngredient(ingredient.getType());
+
         int nIngredients = callback.getNumIngredients(ingredient.getType());
         assertEquals(nIngredients, 1);
     }
@@ -63,6 +81,7 @@ public class TestSuite {
     void addSupplier() {
         Supplier supplier = new Supplier("Baerte Kvarn");
         callback.addSupplier(supplier);
+
         Supplier storedSupplier = callback.getSupplier(supplier.getName());
         assertEquals(storedSupplier, supplier);
     }
@@ -72,7 +91,25 @@ public class TestSuite {
     void getNumSuppliers() {
         Supplier supplier = new Supplier("Baerte Kvarn");
         callback.addSupplier(supplier);
+
         int nSuppliers = callback.getNumSuppliers();
         assertEquals(nSuppliers, 1);
+    }
+
+    @Test
+    @DisplayName("Tries adding, removing then getting a supplier")
+    void removeSupplier() {
+        Supplier supplier = new Supplier("Baerte Kvarn");
+        callback.addSupplier(supplier);
+        callback.removeSupplier("Baerte Kvarn");
+
+        Supplier storedSupplier = callback.getSupplier("Baerte Kvarn");
+        assertNull(storedSupplier);
+    }
+
+    @Test
+    @DisplayName("Tries removing a Supplier when none is present")
+    void removeSupplierFaulty() {
+        assertFalse(callback.removeSupplier("Baerte Kvarn"));
     }
 }

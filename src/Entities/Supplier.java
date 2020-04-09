@@ -2,6 +2,8 @@ package Entities;
 
 /**
  * An entity used for containing the different suppliers and their contact information.
+ * @author Tor Stenfeldt
+ * @version 1.0
  */
 public class Supplier {
     private String name;

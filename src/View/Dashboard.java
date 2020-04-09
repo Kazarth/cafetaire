@@ -1,10 +1,9 @@
 package View;
 
+import Entities.Styles;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-
-import javax.swing.*;
 
 /**
  * Dashboard.java
@@ -14,33 +13,20 @@ import javax.swing.*;
  */
 public class Dashboard extends StackPane {
     public Dashboard() {
-        String boxStyle =
-                "-fx-alignment: top_center;" +
-                "-fx-background-color: #FFFFFF;" +
-                "-fx-background-radius: 20 20 20 20;"
-        ;
-
-        String textStyle =
-                "-fx-text-fill: #619F81;" +
-                "-fx-font-family: Segoe UI;" +
-                "-fx-font-weight: bold;" +
-                "-fx-font-size: 36;"
-        ;
-
         Label ingredients = new Label("Ingredients");
-        ingredients.setStyle(textStyle);
+        ingredients.setStyle(Styles.getBoxTitle());
 
         HBox topLeft = new HBox(10);
         topLeft.setPrefSize(670, 330);
-        topLeft.setStyle(boxStyle);
+        topLeft.setStyle(Styles.getDashboardBox());
         topLeft.getChildren().add(ingredients);
 
         Label deliveries = new Label("Deliveries");
-        deliveries.setStyle(textStyle);
+        deliveries.setStyle(Styles.getBoxTitle());
 
         HBox topRight = new HBox(10);
         topRight.setPrefSize(330, 330);
-        topRight.setStyle(boxStyle);
+        topRight.setStyle(Styles.getDashboardBox());
         topRight.getChildren().add(deliveries);
 
         HBox topBoxes = new HBox(25);
@@ -48,16 +34,16 @@ public class Dashboard extends StackPane {
         topBoxes.getChildren().addAll(topLeft, topRight);
 
         Label food = new Label("Food");
-        food.setStyle(textStyle);
+        food.setStyle(Styles.getBoxTitle());
 
         HBox bottomLeft = new HBox(10);
         bottomLeft.setPrefSize(670, 330);
-        bottomLeft.setStyle(boxStyle);
+        bottomLeft.setStyle(Styles.getDashboardBox());
         bottomLeft.getChildren().add(food);
 
         HBox bottomRight = new HBox(10);
         bottomRight.setPrefSize(330, 330);
-        bottomRight.setStyle(boxStyle);
+        bottomRight.setStyle(Styles.getDashboardBox());
 
         HBox bottomBoxes = new HBox(25);
         bottomBoxes.setAlignment(Pos.CENTER);
@@ -67,7 +53,7 @@ public class Dashboard extends StackPane {
         boxes.setAlignment(Pos.CENTER);
         boxes.getChildren().addAll(topBoxes, bottomBoxes);
 
-        setStyle("-fx-background-color: #6B6C6A;");
+        setStyle(Styles.getPane());
         getChildren().add(boxes);
         setPrefSize(1086, 768);
     }

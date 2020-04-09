@@ -2,6 +2,8 @@ package Entities;
 
 /**
  * An entity for containing individual food products and their information.
+ * @author Tor Stenfeldt
+ * @version 1.0
  */
 public class Food {
     private String type;
