@@ -54,9 +54,19 @@ public abstract class Styles {
     public static String getBoxTitle() {
         return (
                 "-fx-text-fill: #619F81;" +
+                        "-fx-font-family: Segoe UI;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 24;"
+        );
+    }
+
+    public static String getTime() {
+        return (
+                "-fx-text-fill: #619F81;" +
                 "-fx-font-family: Segoe UI;" +
                 "-fx-font-weight: bold;" +
-                "-fx-font-size: 36;"
+                "-fx-font-size: 12;" +
+                "-fx-padding: 5"
         );
     }
 
@@ -69,6 +79,13 @@ public abstract class Styles {
                 "-fx-alignment: top_center;" +
                 "-fx-background-color: #FFFFFF;" +
                 "-fx-background-radius: 20 20 20 20;"
+        );
+    }
+
+    public static String getContainerBox() {
+        return (
+                "-fx-alignment: center;" +
+                "-fx-background-color: #FFFFFF;"
         );
     }
 }

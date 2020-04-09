@@ -35,7 +35,7 @@ public class MainPane extends StackPane {
         //views[2] = new Perishables();
         //views[3] = new SupplierPane();
         views[3] = new SupplierPaneRedux();
-        //views[4] = new Schedule();
+        views[4] = new SchedulePane(callback);
 
         HBox hBox = new HBox();
         hBox.getChildren().addAll(menu, views[0]);
