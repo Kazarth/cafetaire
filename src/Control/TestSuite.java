@@ -2,10 +2,10 @@ package Control;
 
 import Entities.Ingredient;
 import Entities.Supplier;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * TODO: to run the test you need to comment out the MainPane initialization from the Controller for some reason.

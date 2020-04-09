@@ -1,9 +1,16 @@
 package View;
 
-import javafx.scene.layout.StackPane;
-import javafx.scene.Scene;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+
+import javax.swing.*;
+
+import static javafx.application.Application.launch;
 
 
 /**
@@ -11,42 +18,30 @@ import javafx.scene.control.TableView;
  * @author Paul Moustakas
  * @version 1.0
  */
-
-public class TableModel extends StackPane {
+public class TableModel  {
 
     private TableView table = new TableView();
 
 
     public TableModel () {
-        Scene sceneTable =   new Scene( null, 800, 600);
+        tableModel();
     }
 
-    public void setupTable () {
+    public void tableModel () {
+
         table.setEditable(true);
 
-        TableColumn supplierNameCol = new TableColumn("Name");
-        TableColumn categoryCol = new TableColumn("Category");
+        TableColumn supplierCol = new TableColumn("Supplier");
+        TableColumn lastNameCol = new TableColumn("Category");
         TableColumn emailCol = new TableColumn("Email");
-        TableColumn phoneCol = new TableColumn("Phone");
+        TableColumn phoneCol = new TableColumn("Email");
 
-
-
-        ////FIXA
-
-        /*
-        table.getColumns().addAll(supplierNameCol, categoryCol, emailCol, phoneCol);
+        table.getColumns().addAll(supplierCol, lastNameCol, emailCol, phoneCol);
 
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(label, table);
-
-        ((Group) scene.getRoot()).getChildren().addAll(vbox);
-
-        stage.setScene(scene);
-        stage.show();
-
-         */
+        vbox.getChildren().addAll(table);
 
     }
 }
