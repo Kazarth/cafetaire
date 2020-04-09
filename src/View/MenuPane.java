@@ -1,5 +1,7 @@
 package View;
 
+import Entities.Styles;
+import Entities.Views;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -29,15 +31,7 @@ public class MenuPane extends StackPane {
         }
 
         selectedButton = buttons[0];
-        selectedButton.setStyle(
-                "-fx-background-color: #21252B;" +
-                "-fx-font-size: 18px;" +
-                "-fx-text-fill: #619F81;" +
-                "-fx-border-color: #619F81;" +
-                "-fx-border-style: dashed;" +
-                "-fx-border-width: 3 3 3 0;" +
-                "-fx-border-radius: 0 25 25 0;"
-        );
+        selectedButton.setStyle(Styles.getMenuButtonHighlighted());
 
         VBox mainContainer = new VBox();
 
@@ -75,45 +69,23 @@ public class MenuPane extends StackPane {
         Button newButton = new Button(view.name());
         newButton.setPrefSize(280, 100);
 
-        String buttonStandard =
-                "-fx-background-color: #21252B;" +
-                "-fx-font-size: 18px;" +
-                "-fx-text-fill: #619F81;" +
-                "-fx-border-color: #619F81;" +
-                "-fx-border-style: none;" +
-                "-fx-border-width: 0 0 0 0;" +
-                "-fx-border-radius: 0 25 25 0;"
-        ;
-
-        String buttonSelected =
-                 "-fx-background-color: #21252B;" +
-                 "-fx-font-size: 18px;" +
-                 "-fx-text-fill: #619F81;" +
-                 "-fx-border-color: #619F81;" +
-                 "-fx-border-style: dashed;" +
-                 "-fx-border-width: 3 3 3 0;" +
-                 "-fx-border-radius: 0 25 25 0;"
-        ;
-
-        newButton.setStyle(buttonStandard);
+        newButton.setStyle(Styles.getMenuButtonStandard());
 
         newButton.setOnMouseClicked((handler) -> {
             for (Button b: buttons) {
-                b.setStyle(buttonStandard);
+                b.setStyle(Styles.getMenuButtonStandard());
             }
 
             mainPane.setView(view);
-            newButton.setStyle(buttonSelected);
+            newButton.setStyle(Styles.getMenuButtonHighlighted());
             selectedButton = newButton;
         });
 
-        newButton.setOnMouseEntered((handler) -> {
-            newButton.setStyle(buttonSelected);
-        });
+        newButton.setOnMouseEntered((handler) -> newButton.setStyle(Styles.getMenuButtonHighlighted()));
 
         newButton.setOnMouseExited((handler) -> {
-            newButton.setStyle(buttonStandard);
-            selectedButton.setStyle(buttonSelected);
+            newButton.setStyle(Styles.getMenuButtonStandard());
+            selectedButton.setStyle(Styles.getMenuButtonHighlighted());
         });
 
         return newButton;

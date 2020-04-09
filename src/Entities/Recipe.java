@@ -2,6 +2,11 @@ package Entities;
 
 import java.util.ArrayList;
 
+/**
+ * TODO: description
+ * @author Tor Stenfeldt
+ * @version 1.0
+ */
 public class Recipe {
     private String name;
     private ArrayList<Ingredient> ingredients;

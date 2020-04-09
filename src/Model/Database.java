@@ -9,6 +9,8 @@ import java.util.HashMap;
 
 /**
  * Contains the different ingredients, food and suppliers belonging to the database.
+ * @author Tor Stenfeldt
+ * @version 3.0
  */
 @SuppressWarnings("unused")
 public class Database {

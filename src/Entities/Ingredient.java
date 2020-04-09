@@ -2,6 +2,8 @@ package Entities;
 
 /**
  * An entity used to store individual ingredients and their information.
+ * @author Tor Stenfeldt
+ * @version 1.0
  */
 public class Ingredient {
     private String type;

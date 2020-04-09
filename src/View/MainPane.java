@@ -1,6 +1,7 @@
 package View;
 
 import Control.Callback;
+import Entities.Views;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -32,8 +33,8 @@ public class MainPane extends StackPane {
         views[0] = new Dashboard();
         //views[1] = new Ingredients();
         //views[2] = new Perishables();
-        views[3] = new SupplierPane();
-        //views[3] = new SupplierPanelTemp();
+        //views[3] = new SupplierPane();
+        views[3] = new SupplierPaneRedux();
         //views[4] = new Schedule();
 
         HBox hBox = new HBox();
