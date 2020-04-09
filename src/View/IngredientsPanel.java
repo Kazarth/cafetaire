@@ -4,10 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -43,6 +40,12 @@ public class IngredientsPanel extends Application {
 
     private Button addButton;
     private Button removeButton;
+
+    private TableColumn nameColumn;
+    private TableColumn categoryColumn;
+    private TableColumn stockColumn;
+    private TableColumn supplierColumn;
+    private TableColumn selectedColumn;
 
 
     
@@ -98,6 +101,17 @@ public class IngredientsPanel extends Application {
         tableView = new TableView();
         borderPane = new BorderPane();
         borderPane.setCenter(tableView);
+
+        nameColumn = new TableColumn("NAME");
+        categoryColumn = new TableColumn("CATEGORY");
+        stockColumn = new TableColumn("STOCK");
+        supplierColumn = new TableColumn("SUPPLIER");
+        selectedColumn = new TableColumn();
+
+        tableView.setStyle("-fx-background-color: #FFFFFF");
+        tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn);
+
+
 
         mainVbox = new VBox();
         borderPane.setTop(mainVbox);
