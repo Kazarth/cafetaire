@@ -70,6 +70,18 @@ public abstract class Styles {
         );
     }
 
+    public static String getColHeader () {
+        return (
+                "-fx-text-fill: #FFF;" +
+                "-fx-font-family: Segoe UI;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 14;" +
+                "-fx-padding: 5"
+                );
+    }
+
+
+
     public static String getPane() {
         return "-fx-background-color: #6B6C6A;";
     }

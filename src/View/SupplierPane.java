@@ -1,10 +1,13 @@
 package View;
 
+import Control.Callback;
 import Entities.Styles;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -14,6 +17,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+
 /**
  * Supplier Menu.java
  * The supplier menu provides the GUI containing information of the Suppliers {@link Entities.Supplier}.
@@ -22,7 +26,7 @@ import javafx.scene.text.Text;
  */
 
 public class SupplierPane extends StackPane {
-    public SupplierPane() {
+    public SupplierPane(Callback callback) {
 
         /*
          * TOP HALF OF SUPPLIER PANE (1/2)
@@ -63,13 +67,29 @@ public class SupplierPane extends StackPane {
         hBoxButtonContainer.setStyle("-fx-background-color: #FFFFFF;");
         hBoxButtonContainer.setAlignment(Pos.CENTER_LEFT);
 
-        // SEARCH FIELD & TEXT FOR SEARCH BAR (RIGHT)
+        // SEARCH FIELD & BUTTON FOR SEARCH BAR (RIGHT)
+
+//        Button buttonSearch = new Button("ICON");
+//        Image image = new Image("my/res/flower.png", 100, 100, false, false);
+//        Image imageSearch = new Image("Images/SearchIcon.jpg", 20, 20, false, false);
+//        Image imageSearch = new Image(getClass().getResourceAsStream("SearchIcon.jpg"));
+//        Image image =   new Image("Images/SearchIcon.jpg");
+//        ImageView imageView    =     new ImageView("SearchIcon.jpg");
+//        imageView.setFitHeight(30);
+//        imageView.setFitWidth(30);
+//        buttonSearch.setGraphic(imageView);
+//        Button buttonSearch = new Button("Accept", new ImageView(imageOk));
+        Button buttonSearch = new Button("O");
+        buttonSearch.setStyle(Styles.getButton());
+
+
+
         Label labelSearch = new Label("SEARCH:");
         labelSearch.setStyle(Styles.getSearchBar());
         TextField textFieldSearch   =   new TextField("Search");
 
         // CONTAINER FOR SEARCH BAR (RIGHT) - SEARCH LABEL, SEARCH FIELD
-        HBox    hBoxSearchContainer   =   new HBox(15, labelSearch, textFieldSearch);
+        HBox    hBoxSearchContainer   =   new HBox(15, labelSearch, textFieldSearch, buttonSearch);
         hBoxSearchContainer.setPrefSize(413, 75);
         hBoxSearchContainer.setStyle("-fx-background-color: #FFFFFF;");
         hBoxSearchContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -91,10 +111,14 @@ public class SupplierPane extends StackPane {
         /*
          *  BOTTOM HALF OF SUPPLIER PANE (2/2)
          */
-        // TODO: add a table to contain
-        // CONTAINER FOR SUPPLIER TABLE.
-       // TableModel  tableModel = new TableModel();
+        // CONTAINER FOR SUPPLIER TABLE
         HBox hBoxTableContainer = new HBox();
+        hBoxTableContainer.setStyle("-fx-alignment: center;" + "-fx-background-color: #EEE;" + "");
+
+
+        //tableBox.setPrefSize(1036, 611);
+        hBoxTableContainer.getChildren().add(new TableModel(callback));
+
         hBoxTableContainer.setPrefSize(936, 438);
         hBoxTableContainer.setStyle("-fx-background-color: #6B6C6A;");
 
