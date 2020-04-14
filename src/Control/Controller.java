@@ -19,7 +19,7 @@ public class Controller {
         this.database = new Database();
 
         // TODO: must comment away for testing purposes?
-        this.mainPane = new MainPane(new CallbackHandler());
+        //this.mainPane = new MainPane(new CallbackHandler());
     }
 
     public MainPane getMainPane() {
