@@ -63,7 +63,8 @@ public class IngredientsPanel extends Application {
 
         /** Searchbar configuration */
 
-        TextField searchTextField = new TextField("SEARCH");
+        TextField searchTextField = new TextField();
+        searchTextField.setPromptText("SEARCH");
         searchTextField.setPrefHeight(32);
         searchTextField.setPrefWidth(250);
 

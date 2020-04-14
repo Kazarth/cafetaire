@@ -8,7 +8,7 @@ package Entities;
 public enum Views {
     Dashboard,
     Ingredients,
-    Perishables,
+    Products,
     Suppliers,
     Schedule
 }

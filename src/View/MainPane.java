@@ -32,7 +32,7 @@ public class MainPane extends StackPane {
         views = new Pane[5];
         views[0] = new Dashboard();
         //views[1] = new Ingredients();
-        //views[2] = new Perishables();
+        views[2] = new ProductsPane(callback);
         //views[3] = new SupplierPane();
         views[3] = new SupplierPane(callback);
         views[4] = new SchedulePane(callback);
