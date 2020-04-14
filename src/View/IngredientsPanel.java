@@ -53,6 +53,7 @@ public class IngredientsPanel extends Application {
         removeButton.setStyle(Styles.getButton());
 
         /**  Title and overview text configuration */
+
         Text titleText = new Text("INGREDIENTS");
         Color seaDarkGreen = Color.web("#619f81");
         titleText.setFill(seaDarkGreen);
