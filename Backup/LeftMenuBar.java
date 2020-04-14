@@ -1,4 +1,4 @@
-package View;
+package View.Backup;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,7 @@ import javafx.stage.StageStyle;
 public class LeftMenuBar extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("LeftMenuBar.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Backup/LeftMenuBar.fxml"));
 
         Scene scene = new Scene(root);
 
