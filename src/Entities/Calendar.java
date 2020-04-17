@@ -69,7 +69,7 @@ public class Calendar extends StackPane {
         for (int i=0; i<values.length; i++) {
             for (int j=0; j<values[i].length; j++) {
                 values[i][j] = new Text();
-                // TODO: set style
+                values[i][j].setStyle(Styles.getTableContent()); // TODO: fix style
             }
         }
 
@@ -114,7 +114,13 @@ public class Calendar extends StackPane {
         return values[x][y].getText();
     }
 
-    public void setValue(int x, int y, String s) {
-        values[x][y].setText(s);
+    /**
+     *
+     * @param day the day of the delivery. Assume the array starts at 1.
+     * @param hour the hour of the delivery. Each increment is two hours.
+     * @param details
+     */
+    public void setValue(int day, int hour, String details) {
+        values[day-1][hour].setText(details);
     }
 }
