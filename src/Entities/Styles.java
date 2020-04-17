@@ -54,9 +54,9 @@ public abstract class Styles {
     public static String getBoxTitle() {
         return (
                 "-fx-text-fill: #619F81;" +
-                        "-fx-font-family: Segoe UI;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-font-size: 24;"
+                "-fx-font-family: Segoe UI;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 24;"
         );
     }
 
@@ -70,6 +70,15 @@ public abstract class Styles {
         );
     }
 
+    public static String getTableContent() {
+        return (
+                "-fx-text-fill: #619F81;" +
+                "-fx-font-family: Segoe UI;" +
+                "-fx-font-size: 12;" +
+                "-fx-padding: 5"
+        );
+    }
+
     public static String getColHeader () {
         return (
                 "-fx-text-fill: #FFF;" +
@@ -77,7 +86,7 @@ public abstract class Styles {
                 "-fx-font-weight: bold;" +
                 "-fx-font-size: 14;" +
                 "-fx-padding: 5"
-                );
+        );
     }
 
 

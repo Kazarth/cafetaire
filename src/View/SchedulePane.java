@@ -36,7 +36,8 @@ public class SchedulePane extends StackPane {
                 ""
         );
         tableBox.setPrefSize(1036, 611);
-        tableBox.getChildren().add(new Calendar(callback));
+        Calendar calendar = new Calendar(callback);
+        tableBox.getChildren().add(calendar);
 
         VBox boxContainer = new VBox();
         boxContainer.setAlignment(Pos.CENTER);
@@ -57,5 +58,7 @@ public class SchedulePane extends StackPane {
         setPrefSize(1086, 768);
         getChildren().add(mainBox);
         setPadding(new Insets(25));
+
+        calendar.setValue(3, 4, "Coke from the Company");
     }
 }
