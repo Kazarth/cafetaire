@@ -20,16 +20,9 @@ import javafx.stage.Stage;
  */
 
 
-public class IngredientsPanel extends Application {
+public class IngredientsPane extends BorderPane{
 
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-
+    public IngredientsPane () {
         /** Button instantiation and Configurations */
 
         Button addIngredients = new Button("ADD NEW INGREDIENT");
@@ -47,7 +40,7 @@ public class IngredientsPanel extends Application {
         addButton.setPrefWidth(100);
         addButton.setStyle(Styles.getButton());
 
-         Button removeButton = new Button("REMOVE");
+        Button removeButton = new Button("REMOVE");
         removeButton.setPrefHeight(30);
         removeButton.setPrefWidth(100);
         removeButton.setStyle(Styles.getButton());
@@ -72,8 +65,8 @@ public class IngredientsPanel extends Application {
         /** Ingredient table configuration and design */
 
         TableView tableView = new TableView();
-        BorderPane borderPane = new BorderPane();
-        borderPane.setCenter(tableView);
+        setPrefSize(1068,768);
+        setCenter(tableView);
 
         TableColumn nameColumn = new TableColumn("NAME");
         TableColumn categoryColumn = new TableColumn("CATEGORY");
@@ -99,7 +92,7 @@ public class IngredientsPanel extends Application {
         HBox bottomHBox = new HBox();
         HBox westHBOx = new HBox();
         HBox eastHBox = new HBox();
-        borderPane.setTop(mainVbox);
+        setTop(mainVbox);
 
         mainVbox.setPrefSize(1366,225);
         topHBox.setPrefSize(1366,85);
@@ -128,10 +121,6 @@ public class IngredientsPanel extends Application {
 
         westHBOx.setSpacing(20);
         eastHBox.setSpacing(20);
-
-        Scene ingredientsScene = new Scene(borderPane,1086,768);
-        primaryStage.setScene(ingredientsScene);
-        primaryStage.show();
 
     }
 }
