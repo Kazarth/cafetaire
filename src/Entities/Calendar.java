@@ -14,62 +14,20 @@ import javafx.scene.text.Text;
  * @version 1.0
  */
 public class Calendar extends StackPane {
-    Text[][] values;
+    private Text[][] values;
+    private HBox dayBox;
+    private VBox timeBox;
 
     public Calendar(Callback callback) {
         values = new Text[7][12];
 
-        Label[] time = new Label[] {
-                new Label("00:00"),
-                new Label("02:00"),
-                new Label("04:00"),
-                new Label("06:00"),
-                new Label("08:00"),
-                new Label("10:00"),
-                new Label("12:00"),
-                new Label("14:00"),
-                new Label("16:00"),
-                new Label("18:00"),
-                new Label("20:00"),
-                new Label("22:00")
-        };
-
-        for (Label l : time) {
-            l.setStyle(Styles.getTime());
-            l.setPrefSize(50, 47);
-            l.setAlignment(Pos.CENTER_LEFT);
-        }
-
-        VBox timeBox = new VBox(time);
-        timeBox.setStyle(
-                "-fx-background-color: #FFF;" +
-                "-fx-padding: 28 0 0 0");
-        timeBox.setPrefSize(50, 564);
-
-        Label[] days = new Label[] {
-                new Label("Monday"),
-                new Label("Tuesday"),
-                new Label("Wednesday"),
-                new Label("Thursday"),
-                new Label("Friday"),
-                new Label("Saturday"),
-                new Label("Sunday")
-        };
-
-        for (Label l: days) {
-            l.setStyle(Styles.getTime());
-            l.setPrefSize(135, 47);
-            l.setAlignment(Pos.CENTER);
-        }
-
-        HBox dayBox = new HBox(days);
-        dayBox.setStyle("-fx-background-color: #FFF;");
-        dayBox.setPrefSize(945, 47);
+        initHours();
+        initDays();
 
         for (int i=0; i<values.length; i++) {
             for (int j=0; j<values[i].length; j++) {
                 values[i][j] = new Text();
-                values[i][j].setStyle(Styles.getTableContent()); // TODO: fix style
+                // TODO: set style
             }
         }
 
@@ -80,6 +38,10 @@ public class Calendar extends StackPane {
         });
         */
 
+        addComponents();
+    }
+
+    private void addComponents() {
         VBox[] vBoxes = new VBox[7];
 
         for (int i=0; i<7; i++) {
@@ -110,17 +72,62 @@ public class Calendar extends StackPane {
         getChildren().add(mainBox);
     }
 
+    private void initDays() {
+        Label[] days = new Label[] {
+                new Label("Monday"),
+                new Label("Tuesday"),
+                new Label("Wednesday"),
+                new Label("Thursday"),
+                new Label("Friday"),
+                new Label("Saturday"),
+                new Label("Sunday")
+        };
+
+        for (Label l: days) {
+            l.setStyle(Styles.getTime());
+            l.setPrefSize(135, 47);
+            l.setAlignment(Pos.CENTER);
+        }
+
+        dayBox = new HBox(days);
+        dayBox.setStyle("-fx-background-color: #FFF;");
+        dayBox.setPrefSize(945, 47);
+    }
+
+    private void initHours() {
+        Label[] time = new Label[] {
+                new Label("00:00"),
+                new Label("02:00"),
+                new Label("04:00"),
+                new Label("06:00"),
+                new Label("08:00"),
+                new Label("10:00"),
+                new Label("12:00"),
+                new Label("14:00"),
+                new Label("16:00"),
+                new Label("18:00"),
+                new Label("20:00"),
+                new Label("22:00")
+        };
+
+        for (Label l : time) {
+            l.setStyle(Styles.getTime());
+            l.setPrefSize(50, 47);
+            l.setAlignment(Pos.CENTER_LEFT);
+        }
+
+        timeBox = new VBox(time);
+        timeBox.setStyle(
+                "-fx-background-color: #FFF;" +
+                        "-fx-padding: 28 0 0 0");
+        timeBox.setPrefSize(50, 564);
+    }
+
     public String getDate(int x, int y) {
         return values[x][y].getText();
     }
 
-    /**
-     *
-     * @param day the day of the delivery. Assume the array starts at 1.
-     * @param hour the hour of the delivery. Each increment is two hours.
-     * @param details
-     */
-    public void setValue(int day, int hour, String details) {
-        values[day-1][hour].setText(details);
+    public void setValue(int x, int y, String s) {
+        values[x][y].setText(s);
     }
 }
