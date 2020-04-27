@@ -1,10 +1,14 @@
 package View;
 
+import Entities.Ingredient;
+import Entities.IngredientTest;
 import Entities.Styles;
+import Entities.Supplier;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -12,6 +16,9 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import Control.Callback;
+
+import javax.swing.*;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
@@ -20,30 +27,48 @@ import javafx.stage.Stage;
  */
 
 
-public class IngredientsPane extends BorderPane{
+public class IngredientsPane extends BorderPane {
+    private TableView tableView;
+    private TableColumn nameColumn;
+    private TableColumn categoryColumn;
+    private TableColumn stockColumn;
+    private TableColumn supplierColumn;
+    private TableColumn selectedColumn;
 
-    public IngredientsPane () {
+    public IngredientsPane (Callback callback) {
         /** Button instantiation and Configurations */
 
         Button addIngredients = new Button("ADD NEW INGREDIENT");
         addIngredients.setStyle(Styles.getButton());
         addIngredients.setPrefWidth(200);
         addIngredients.setPrefHeight(30);
+        addIngredients.setOnAction(e -> {
+            addNewIngredient();
+        });
 
         Button removeIngredients = new Button("REMOVE INGREDIENT");
         removeIngredients.setStyle(Styles.getButton());
         removeIngredients.setPrefHeight(30);
         removeIngredients.setPrefWidth(200);
+        removeIngredients.setOnAction(e -> {
+            removeIngredient();
+        });
 
         Button addButton = new Button("ADD");
         addButton.setPrefHeight(30);
         addButton.setPrefWidth(100);
         addButton.setStyle(Styles.getButton());
+        addButton.setOnAction(e -> {
+            addAmount();
+        });
 
         Button removeButton = new Button("REMOVE");
         removeButton.setPrefHeight(30);
         removeButton.setPrefWidth(100);
         removeButton.setStyle(Styles.getButton());
+        removeButton.setOnAction(e -> {
+            removeAmount();
+        });
 
         /**  Title and overview text configuration */
 
@@ -64,15 +89,15 @@ public class IngredientsPane extends BorderPane{
 
         /** Ingredient table configuration and design */
 
-        TableView tableView = new TableView();
+        tableView = new TableView();
         setPrefSize(1068,768);
         setCenter(tableView);
 
-        TableColumn nameColumn = new TableColumn("NAME");
-        TableColumn categoryColumn = new TableColumn("CATEGORY");
-        TableColumn stockColumn = new TableColumn("STOCK");
-        TableColumn supplierColumn  = new TableColumn("SUPPLIER");
-        TableColumn selectedColumn = new TableColumn("SELECTED ITEM");
+        nameColumn = new TableColumn("NAME");
+        categoryColumn = new TableColumn("CATEGORY");
+        stockColumn = new TableColumn("STOCK");
+        supplierColumn  = new TableColumn("SUPPLIER");
+        selectedColumn = new TableColumn("SELECTED ITEM");
 
         tableView.setStyle("-fx-background-color: #FFFFFF");
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
@@ -121,6 +146,42 @@ public class IngredientsPane extends BorderPane{
 
         westHBOx.setSpacing(20);
         eastHBox.setSpacing(20);
+    }
 
+    public void addNewIngredient() {
+        System.out.println("Add new Ingredient");
+
+        IngredientTest ingredientTest = null;
+        //Supplier supplier = null;
+
+        String name = JOptionPane.showInputDialog("Enter name");
+        String category = JOptionPane.showInputDialog("Enter category");
+        int stock = Integer.parseInt(JOptionPane.showInputDialog("Enter stock"));
+        String supplier = JOptionPane.showInputDialog("Enter supplier");
+
+        /*
+        Check against the database if supplier already exist
+        if (exist) --> use
+        else --> create new
+         */
+
+        ingredientTest = new IngredientTest(name, category, stock, supplier);
+
+        // add new table row
+        tableView.getItems().add(ingredientTest);
+
+        System.out.println(ingredientTest.toString());
+    }
+
+    public void removeIngredient() {
+        System.out.println("Remove ingredient from stock");
+    }
+
+    public void addAmount() {
+        System.out.println("Increment the value by 1");
+    }
+
+    public void removeAmount() {
+        System.out.println("Decrement the value by 1");
     }
 }
