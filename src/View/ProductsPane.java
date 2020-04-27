@@ -1,12 +1,10 @@
 package View;
 import Entities.ProductCategories;
 import Entities.Products;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,7 +17,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import Control.Callback;
 
 /**
@@ -33,8 +30,8 @@ public class ProductsPane extends BorderPane {
     private Button btnRemoveItem;
     private Button btnAdd;
     private Button btnRemove;
-    private TextField txtFieldNewPerishable;
-    private ComboBox<ProductCategories> cmbBoxPerishables;
+    private TextField txtFieldNewProducts;
+    private ComboBox<ProductCategories> cmbBoxProducts;
     private Spinner<Integer> numberSpinner = new Spinner<>();
 
     private TableColumn<Products, String> tblColumnName = new TableColumn<>("Name");
@@ -73,7 +70,7 @@ public class ProductsPane extends BorderPane {
         Label lbl = new MyLabel("Products");
         lbl.setPrefHeight(SIZE);
         lbl.prefWidthProperty().bind(widthProperty());
-        lbl.setStyle(" -fx-border-width: 1 0 1 0;"
+        lbl.setStyle(" -fx-border-width: 1 1 1 1;"
                 + "-fx-border-color: grey; -fx-font-weight: bold; -fx-text-fill: #619F81; -fx-font-size: 36");
         lbl.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
@@ -90,18 +87,17 @@ public class ProductsPane extends BorderPane {
         btnAdd = new Button("Add");
         btnRemove = new Button("Remove");
 
-        txtFieldNewPerishable = new TextField();
-        txtFieldNewPerishable.setPromptText("Enter a new perishable");
-        cmbBoxPerishables = new ComboBox<>();
-        cmbBoxPerishables.setPrefSize(150, 20);
-        cmbBoxPerishables.setItems(categoriesToCmb());
-        cmbBoxPerishables.getSelectionModel().selectFirst();
+        txtFieldNewProducts = new TextField();
+        txtFieldNewProducts.setPromptText("Enter a new product");
+        cmbBoxProducts = new ComboBox<>();
+        cmbBoxProducts.setPrefSize(150, 20);
+        cmbBoxProducts.setItems(categoriesToCmb());
+        cmbBoxProducts.getSelectionModel().selectFirst();
 
         final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
         numberSpinner.setValueFactory(svf);
         numberSpinner.disabledProperty();
         numberSpinner.setEditable(true);
-        numberSpinner.setPromptText("Number of items");
         numberSpinner.setPrefSize(100, 38);
 
 
@@ -113,17 +109,18 @@ public class ProductsPane extends BorderPane {
         btnRemoveItem.setStyle(btnStyle);
         btnAdd.setStyle(btnStyle);
         btnRemove.setStyle(btnStyle);
-        cmbBoxPerishables.setStyle(btnStyle);
+        cmbBoxProducts.setStyle(btnStyle);
 
-        txtFieldNewPerishable.setPrefSize(150, 38);
+        txtFieldNewProducts.setPrefSize(150, 38);
 
-        hBox.getChildren().addAll(btnNewItem, btnRemoveItem, txtFieldNewPerishable, cmbBoxPerishables, numberSpinner, btnAdd, btnRemove);
+        hBox.getChildren().addAll(btnNewItem, btnRemoveItem, txtFieldNewProducts, cmbBoxProducts, numberSpinner, btnAdd, btnRemove);
         hBox.setAlignment(Pos.TOP_CENTER);
 
         hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
         btnNewItem.setOnAction(e -> addNewItem());
         btnRemoveItem.setOnAction(e -> deleteItem());
+        btnAdd.setOnAction(e -> addQuantityToProduct());
 
         return hBox;
     }
@@ -139,16 +136,16 @@ public class ProductsPane extends BorderPane {
         tblCategories.setCellValueFactory(new PropertyValueFactory<>("categories"));
         tblColumnStock.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        tblColumnName.setPrefWidth(333);
-        tblCategories.setPrefWidth(333);
-        tblColumnStock.setPrefWidth(333);
+        tblColumnName.setPrefWidth(330);
+        tblCategories.setPrefWidth(330);
+        tblColumnStock.setPrefWidth(330);
 
 
         tblView.getColumns().add(tblColumnName);
         tblView.getColumns().add(tblCategories);
         tblView.getColumns().add(tblColumnStock);
 
-        tblView.setPrefSize(1000, 550);
+        tblView.setPrefSize(990, 550);
         tblView.setStyle(tableStyle);
 
         pane.setAlignment(Pos.CENTER);
@@ -160,6 +157,14 @@ public class ProductsPane extends BorderPane {
 
 
         return pane;
+    }
+
+    public int getNumberSpinnerValue() {
+        int value = numberSpinner.getValue();
+
+        System.out.println(value);
+
+        return value;
     }
 
     private class MyLabel extends Label {
@@ -186,11 +191,11 @@ public class ProductsPane extends BorderPane {
     }
 
     private void addNewItem(){
-        Products item = new Products(txtFieldNewPerishable.getText(), cmbBoxPerishables.getSelectionModel().getSelectedItem(),
+        Products item = new Products(txtFieldNewProducts.getText(), cmbBoxProducts.getSelectionModel().getSelectedItem(),
                 numberSpinner.getValue());
         tblView.getItems().add(item);
-        System.out.println(txtFieldNewPerishable.getText());
-        txtFieldNewPerishable.clear();
+        System.out.println(txtFieldNewProducts.getText());
+        txtFieldNewProducts.clear();
     }
 
     private void deleteItem(){
@@ -201,4 +206,13 @@ public class ProductsPane extends BorderPane {
         itemSelected.forEach(allItems::remove);
     }
 
+    public void addQuantityToProduct(){
+        ObservableList<Products> productSelected = tblView.getSelectionModel().getSelectedItems();
+        Products products = (Products) productSelected;
+
+        int prodQuantity = products.getQuantity();
+
+        products.setQuantity(prodQuantity += getNumberSpinnerValue());
+
+    }
 }
