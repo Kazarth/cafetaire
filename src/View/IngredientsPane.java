@@ -24,7 +24,7 @@ import javax.swing.*;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
- * @author Georg Grankvist
+ * @author Georg Grankvist, Lucas Eliasson
  * @version 1.0
  */
 
