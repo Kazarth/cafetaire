@@ -31,6 +31,14 @@ public class IngredientTest {
         selected = false;
     }
 
+    public void decrement() {
+        stock--;
+    }
+
+    public void increment() {
+        stock++;
+    }
+
     public String getName() {
         return name;
     }
@@ -72,8 +80,8 @@ public class IngredientTest {
     }
 
     public String toString() {
-        return "Name" + name + "\n" +
-                "Category" + category + "\n" +
-                "Stock" + stock;
+        return "Name: " + name + "\n" +
+                "Category: " + category + "\n" +
+                "Stock: " + stock;
     }
 }

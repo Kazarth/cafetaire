@@ -159,11 +159,13 @@ public class IngredientsPane extends BorderPane {
         eastHBox.setSpacing(20);
     }
 
+    /**
+     * Adds a new ingredient from user input
+     */
     public void addNewIngredient() {
         System.out.println("Add new Ingredient");
 
-        IngredientTest ingredientTest = null;
-        //Supplier supplier = null;
+        IngredientTest ingredientTest = null; // Exchange to Ingredient when merging with database --> updates to Ingredient required.
 
         String name = JOptionPane.showInputDialog("Enter name");
         String category = JOptionPane.showInputDialog("Enter category");
@@ -184,19 +186,48 @@ public class IngredientsPane extends BorderPane {
         System.out.println(ingredientTest.toString());
     }
 
+    /**
+     * Removes selected ingredient from the stock
+     */
     public void removeIngredient() {
         System.out.println("Remove ingredient from stock");
+        ObservableList<IngredientTest> ingredientTestSelected, allIngredients;
+        allIngredients = tableView.getItems();
+        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
+        ingredientTestSelected.forEach(allIngredients::remove);
     }
 
+    /**
+     * Increments the selected ingredients stock by 1
+     */
     public void addAmount() {
         System.out.println("Increment the value by 1");
+        ObservableList<IngredientTest> ingredientTestSelected;
+        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
+        if (ingredientTestSelected.size() <= 0) {
+            JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
+        } else {
+            ingredientTestSelected.get(0).increment();
+            tableView.refresh();
+        }
     }
 
+    /**
+     * Decrements the selected ingredients stock by 1
+     */
     public void removeAmount() {
         System.out.println("Decrement the value by 1");
+        ObservableList<IngredientTest> ingredientTestSelected;
+        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
+        if (ingredientTestSelected.size() <= 0) {
+            JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
+        } else {
+            ingredientTestSelected.get(0).decrement();
+            tableView.refresh();
+        }
     }
 
-    // gets the products
+    // Test values
     private ObservableList<IngredientTest> getIngredientTest() {
         ObservableList<IngredientTest> ingredients = FXCollections.observableArrayList();
         ingredients.add(new IngredientTest("Mjöl", "Torrvaror", 15, "Lucas AB"));
