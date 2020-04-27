@@ -109,4 +109,11 @@ public abstract class Styles {
                 "-fx-background-color: #FFFFFF;"
         );
     }
+
+    public static String getTableRowSelected() {
+        return (
+                "-fx-selection-bar: #619F81;" +
+                "-fx-selection-bar-non-focused: #619F81;"
+                );
+    }
 }

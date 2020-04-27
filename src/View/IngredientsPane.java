@@ -5,6 +5,8 @@ import Entities.IngredientTest;
 import Entities.Styles;
 import Entities.Supplier;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -28,11 +30,11 @@ import javax.swing.*;
 
 
 public class IngredientsPane extends BorderPane {
-    private TableView tableView;
-    private TableColumn nameColumn;
-    private TableColumn categoryColumn;
-    private TableColumn stockColumn;
-    private TableColumn supplierColumn;
+    private TableView<IngredientTest> tableView;
+    private TableColumn<IngredientTest, String> nameColumn;
+    private TableColumn<IngredientTest, String> categoryColumn;
+    private TableColumn<IngredientTest, Integer> stockColumn;
+    private TableColumn<IngredientTest, String> supplierColumn;
     private TableColumn selectedColumn;
 
     public IngredientsPane (Callback callback) {
@@ -94,13 +96,22 @@ public class IngredientsPane extends BorderPane {
         setCenter(tableView);
 
         nameColumn = new TableColumn("NAME");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryColumn = new TableColumn("CATEGORY");
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         stockColumn = new TableColumn("STOCK");
+        stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         supplierColumn  = new TableColumn("SUPPLIER");
+        supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
         selectedColumn = new TableColumn("SELECTED ITEM");
+        selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
 
-        tableView.setStyle("-fx-background-color: #FFFFFF");
+        tableView.setStyle(Styles.getTableRowSelected());
+
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
+
+        // loads in data
+        tableView.setItems(getIngredientTest());
 
         nameColumn.setPrefWidth(200);
         categoryColumn.setPrefWidth(200);
@@ -183,5 +194,15 @@ public class IngredientsPane extends BorderPane {
 
     public void removeAmount() {
         System.out.println("Decrement the value by 1");
+    }
+
+    // gets the products
+    private ObservableList<IngredientTest> getIngredientTest() {
+        ObservableList<IngredientTest> ingredients = FXCollections.observableArrayList();
+        ingredients.add(new IngredientTest("Mjöl", "Torrvaror", 15, "Lucas AB"));
+        ingredients.add(new IngredientTest("Mjölk", "Dryck", 10, "Georg AB"));
+        ingredients.add(new IngredientTest("Salt", "Torrvaror", 5, "Julia AB"));
+        ingredients.add(new IngredientTest("Coca Cola", "Dryck", 30, "Coca Cola AB"));
+        return ingredients;
     }
 }
