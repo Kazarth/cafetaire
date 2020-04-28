@@ -86,7 +86,8 @@ public class SupplierPane extends StackPane {
 
         Label labelSearch = new Label("SEARCH:");
         labelSearch.setStyle(Styles.getSearchBar());
-        TextField textFieldSearch   =   new TextField("Search");
+        TextField textFieldSearch   =   new TextField();
+        textFieldSearch.setPromptText("Search");
 
         // CONTAINER FOR SEARCH BAR (RIGHT) - SEARCH LABEL, SEARCH FIELD
         HBox    hBoxSearchContainer   =   new HBox(15, labelSearch, textFieldSearch, buttonSearch);
