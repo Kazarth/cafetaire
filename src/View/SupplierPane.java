@@ -1,13 +1,14 @@
 package View;
 
 import Control.Callback;
+import Entities.IngredientTest;
 import Entities.Styles;
+import Entities.Supplier;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -26,11 +27,17 @@ import javafx.scene.text.Text;
  */
 
 public class SupplierPane extends StackPane {
+    private TableView<Supplier> tableView;
+    private TableColumn<Supplier, String> supplierColumn;
+    private TableColumn<Supplier, String> categoryColumn;
+    private TableColumn<Supplier, String> emailColumn;
+    private TableColumn<Supplier, Integer> phoneColumn;
+    //private TableColumn<Supplier, String> supplierColumn;
+
+
     public SupplierPane(Callback callback) {
 
-        /*
-         * TOP HALF OF SUPPLIER PANE (1/2)
-         */
+        setTableView();
 
         // TITLE FOR SUPPLIER MENU
         Text textTitle = new Text();
@@ -45,12 +52,10 @@ public class SupplierPane extends StackPane {
         hBoxTitleContainer.setAlignment(Pos.CENTER);
         hBoxTitleContainer.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20 20 0 0");
 
-
         // MIDDLE CONTAINER FOR FILTERS IN SUPPLIER MENU. TODO: implement filters
         HBox    hBoxFilterContainer   =   new HBox();
         hBoxFilterContainer.setPrefSize(1036, 40);
         hBoxFilterContainer.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF");
-
 
         // BUTTONS FOR BUTTON BAR (LEFT) ADD, REMOVE, EDIT
         Button buttonAdd = new Button("ADD SUPPLIER");
@@ -67,22 +72,8 @@ public class SupplierPane extends StackPane {
         hBoxButtonContainer.setStyle("-fx-background-color: #FFFFFF;");
         hBoxButtonContainer.setAlignment(Pos.CENTER_LEFT);
 
-        // SEARCH FIELD & BUTTON FOR SEARCH BAR (RIGHT)
-
-//        Button buttonSearch = new Button("ICON");
-//        Image image = new Image("my/res/flower.png", 100, 100, false, false);
-//        Image imageSearch = new Image("Images/SearchIcon.jpg", 20, 20, false, false);
-//        Image imageSearch = new Image(getClass().getResourceAsStream("SearchIcon.jpg"));
-//        Image image =   new Image("Images/SearchIcon.jpg");
-//        ImageView imageView    =     new ImageView("SearchIcon.jpg");
-//        imageView.setFitHeight(30);
-//        imageView.setFitWidth(30);
-//        buttonSearch.setGraphic(imageView);
-//        Button buttonSearch = new Button("Accept", new ImageView(imageOk));
         Button buttonSearch = new Button("O");
         buttonSearch.setStyle(Styles.getButton());
-
-
 
         Label labelSearch = new Label("SEARCH:");
         labelSearch.setStyle(Styles.getSearchBar());
@@ -108,17 +99,12 @@ public class SupplierPane extends StackPane {
         vBoxTopCollector.setAlignment(Pos.BOTTOM_CENTER);
         vBoxTopCollector.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20 20 0 0;");
 
-
-        /*
-         *  BOTTOM HALF OF SUPPLIER PANE (2/2)
-         */
         // CONTAINER FOR SUPPLIER TABLE
         HBox hBoxTableContainer = new HBox();
         hBoxTableContainer.setStyle("-fx-alignment: center;" + "-fx-background-color: #EEE;" + "");
 
-
         //tableBox.setPrefSize(1036, 611);
-        hBoxTableContainer.getChildren().add(new TableModel(callback));
+        hBoxTableContainer.getChildren().add(tableView);
 
         hBoxTableContainer.setPrefSize(936, 438);
         hBoxTableContainer.setStyle("-fx-background-color: #6B6C6A;");
@@ -142,5 +128,42 @@ public class SupplierPane extends StackPane {
         setPrefSize(1086, 768);
         setStyle(Styles.getPane());
         getChildren().add(mainContainer);
+
+
     }
+
+    public void setTableView () {
+
+        tableView = new TableView();
+        setPrefSize(1068,768);
+        //setCenter(tableView); // Deala med denna så att det passar.
+
+        supplierColumn = new TableColumn("Supplier");
+        supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
+       // supplierColumn.setStyle();
+        categoryColumn = new TableColumn("category");
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        emailColumn = new TableColumn("Email");
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        phoneColumn = new TableColumn("Phone");
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+
+        tableView.getColumns().addAll(supplierColumn, categoryColumn, emailColumn, phoneColumn);
+
+        tableView.setItems(getSuppliers());
+
+        supplierColumn.setPrefWidth(233);
+        categoryColumn.setPrefWidth(234);
+        emailColumn.setPrefWidth(234);
+        phoneColumn.setPrefWidth(234);
+        //selectedColumn.setPrefWidth(250);
+    }
+
+    private ObservableList<Supplier> getSuppliers() {
+
+        ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
+        suppliers.add(new Supplier("Coca Cola AB", "Dryck", "CocaCola@cocacolacompany.com", "0431-1337"));
+        return suppliers;
+    }
+
 }
