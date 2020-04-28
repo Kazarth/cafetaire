@@ -109,18 +109,21 @@ public class IngredientsPane extends StackPane {
         selectedColumn = new TableColumn("SELECTED ITEM");
         selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
 
-        tableView.setStyle(Styles.getTableRowSelected());
+        tableView.setStyle(Styles.getTableRowSelected() + "-fx-background-radius: 0 0 20 20;");
+        tableView.setMaxWidth(980);
+        tableView.setMaxHeight(473);
 
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
         // loads in data
         tableView.setItems(getIngredientTest());
 
-        nameColumn.setPrefWidth(200);
-        categoryColumn.setPrefWidth(200);
-        stockColumn.setPrefWidth(200);
-        supplierColumn.setPrefWidth(200);
-        selectedColumn.setPrefWidth(250);
+
+        nameColumn.setPrefWidth(196);
+        categoryColumn.setPrefWidth(196);
+        stockColumn.setPrefWidth(196);
+        supplierColumn.setPrefWidth(195);
+        selectedColumn.setPrefWidth(195);
 
         /** LayoutPane configurations and instantiation.
          *  VBOX, HBOX. */
@@ -149,6 +152,7 @@ public class IngredientsPane extends StackPane {
         westHBOx.getChildren().addAll(addIngredients,removeIngredients);
         eastHBox.getChildren().addAll(searchTextField ,addButton,removeButton);
 
+        innerContainer.setAlignment(Pos.CENTER);
         mainContainer.setAlignment(Pos.CENTER);
         topHBox.setAlignment(Pos.CENTER);
         midHBox.setAlignment(Pos.CENTER);
@@ -156,10 +160,10 @@ public class IngredientsPane extends StackPane {
         westHBOx.setAlignment(Pos.CENTER);
         eastHBox.setAlignment(Pos.CENTER);
 
-        innerContainer.setStyle("-fx-background-color: #EEEEEE ; -fx-background-radius: 20 20 0 0");
+        innerContainer.setStyle("-fx-background-color: #EEEEEE ; -fx-background-radius: 20 20 20 20");
 
 
-        innerContainer.setPrefSize(998,600);
+        innerContainer.setMaxSize(1036,698);
 
         mainVbox.setPrefSize(1036,225);
         topHBox.setPrefSize(1036,75);
