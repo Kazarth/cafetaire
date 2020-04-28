@@ -35,4 +35,14 @@ public class Ingredient {
     public Supplier getSupplier() {
         return supplier;
     }
+
+    /**
+     * To be changed depending on how we fill the tables
+     * for now returns console output
+     * @return
+     */
+    public String toString() {
+        return "Type: " + type + "\n" +
+                "Supplier: " + supplier.getName();
+    }
 }
