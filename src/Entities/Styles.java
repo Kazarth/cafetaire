@@ -117,7 +117,8 @@ public abstract class Styles {
                 "-fx-font-size: 12;" +
                 "-fx-font-family: Segoe UI;" +
                 "-fx-font-weight: bold;"
-          
+                );
+    }
     public static String getTableRowSelected() {
         return (
                 "-fx-selection-bar: #619F81;" +
