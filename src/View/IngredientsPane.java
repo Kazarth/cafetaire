@@ -21,7 +21,7 @@ import javax.swing.*;
  * @author Georg Grankvist, Lucas Eliasson
  * @version 1.0
  */
-public class IngredientsPane extends BorderPane {
+public class IngredientsPane extends StackPane {
     private TableView<IngredientTest> tableView;
     private TableColumn<IngredientTest, String> nameColumn;
     private TableColumn<IngredientTest, String> categoryColumn;
