@@ -1,14 +1,10 @@
 package View;
 
-import Entities.Ingredient;
 import Entities.IngredientTest;
 import Entities.Styles;
-import Entities.Supplier;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -17,9 +13,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import Control.Callback;
-
 import javax.swing.*;
 import java.util.Stack;
 
@@ -29,17 +23,20 @@ import java.util.Stack;
  * @version 1.0
  */
 
-
 public class IngredientsPane extends StackPane {
-
     private TableView<IngredientTest> tableView;
     private TableColumn<IngredientTest, String> nameColumn;
     private TableColumn<IngredientTest, String> categoryColumn;
     private TableColumn<IngredientTest, Integer> stockColumn;
     private TableColumn<IngredientTest, String> supplierColumn;
     private TableColumn selectedColumn;
+    private Callback callback;
+
+    public IngredientsPane() {}
 
     public IngredientsPane (Callback callback) {
+        this.callback = callback;
+
         /** Button instantiation and Configurations */
 
         Button addIngredients = new Button("ADD NEW INGREDIENT");
@@ -47,7 +44,7 @@ public class IngredientsPane extends StackPane {
         addIngredients.setPrefWidth(200);
         addIngredients.setPrefHeight(30);
         addIngredients.setOnAction(e -> {
-            addNewIngredient();
+            addNewIngredientAction();
         });
 
         Button removeIngredients = new Button("REMOVE INGREDIENT");
@@ -176,31 +173,27 @@ public class IngredientsPane extends StackPane {
         eastHBox.setSpacing(20);
     }
 
+    public TableView<IngredientTest> getTableView() {
+        return tableView;
+    }
+
+    /**
+     *
+     * @param ingredient
+     */
+    public void addNewIngredient(IngredientTest ingredient) {
+        tableView.getItems().add(ingredient);
+    }
+
     /**
      * Adds a new ingredient from user input
      */
-    public void addNewIngredient() {
-        System.out.println("Add new Ingredient");
-
-        IngredientTest ingredientTest = null; // Exchange to Ingredient when merging with database --> updates to Ingredient required.
-
-        String name = JOptionPane.showInputDialog("Enter name");
-        String category = JOptionPane.showInputDialog("Enter category");
-        int stock = Integer.parseInt(JOptionPane.showInputDialog("Enter stock"));
-        String supplier = JOptionPane.showInputDialog("Enter supplier");
-
-        /*
-        Check against the database if supplier already exist
-        if (exist) --> use
-        else --> create new
-         */
-
-        ingredientTest = new IngredientTest(name, category, stock, supplier);
-
-        // add new table row
-        tableView.getItems().add(ingredientTest);
-
-        System.out.println(ingredientTest.toString());
+    public void addNewIngredientAction() {
+        try {
+            new newIngredientFX(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

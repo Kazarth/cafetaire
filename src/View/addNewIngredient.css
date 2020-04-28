@@ -1,0 +1,80 @@
+/*
+  Add new ingredient button
+*/
+.addButton {
+  -fx-background-color: #619F81;
+  -fx-background-radius: 10;
+  -fx-border-radius: 40;
+  -fx-text-fill: #fff;
+  -fx-font-size: 16px;
+  -fx-font-weight: Bold;
+  -fx-pref-width: 200;
+  -fx-pref-height: 40;
+}
+
+/*
+  Add new ingredient button on hover
+*/
+.addButton:hover {
+  -fx-background-color: #4A6D5B;
+  -fx-background-radius: 10;
+  -fx-text-fill: #fff;
+  -fx-font-size: 16px;
+  -fx-pref-width: 200;
+  -fx-pref-height: 40;
+}
+
+/*
+  cancel the process button
+*/
+.cancelButton {
+  -fx-background-color: #ddd;
+  -fx-background-radius: 10;
+  -fx-border-radius: 20px;
+  -fx-text-fill: #fff;
+  -fx-font-weight: Bold;
+  -fx-font-size: 16px;
+  -fx-pref-width: 200;
+  -fx-pref-height: 40;
+}
+
+/*
+  cancel the process button hover
+*/
+.cancelButton:hover {
+  -fx-background-color: #B3B8BD;
+  -fx-background-radius: 10;
+  -fx-text-fill: #fff;
+  -fx-font-size: 16px;
+  -fx-pref-width: 200;
+  -fx-pref-height: 40;
+}
+
+/*
+  Styles the header in the window
+*/
+.header {
+  -fx-text-fill: #619F81;
+  -fx-font-weight: bold;
+}
+
+.text {
+  -fx-text-fill: #000;
+  -fx-pref-width: 400;
+  -fx-pref-height: 40;
+}
+
+/*
+  inputfield for name
+*/
+.textfields {
+  -fx-background-color: #fff;
+  -fx-border-width: 1;
+  -fx-border-color: #000;
+  -fx-pref-width: 400;
+  -fx-pref-height: 40;
+}
+
+.panel {
+  -fx-dropshadow( guassian , #000 , 10 , 10 , 0 , 2 );
+}
