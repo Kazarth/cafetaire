@@ -44,7 +44,11 @@ public class ProductsPane extends BorderPane {
     private TableView<Products> tblView;
 
     private static final String btnStyle = Styles.getButton();
+
     private static final String tableStyle = "-FX-color: #21252B; -FX-header-color: #FFFFFF";
+
+    private static final String boxStyles = "-fx-background-radius: 0 0 20 20;" +
+                                            "-fx-background-color: #FFFFFF";
 
 
 
@@ -56,7 +60,8 @@ public class ProductsPane extends BorderPane {
     private Callback callback;
 
 
-    public ProductsPane(Callback callback){
+    public ProductsPane(Callback callback)
+    {
         Text textTitle = new Text();
         Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         textTitle.setFill(Paint.valueOf("#619f81"));
@@ -67,20 +72,24 @@ public class ProductsPane extends BorderPane {
         setCenter(getHCenter());
         setBottom(getFlowBottom());
 
-        setStyle(Styles.getDashboardBox());
+        setStyle(Styles.getPane());
     }
 
     /**
      * Method which is used to create the top part of the panel
      * @return lbl - a label with the text "Products" which is displayed at the top of this panel
      */
-    private Label getTopLabel() {
-
+    private Label getTopLabel()
+    {
         Label lbl = new MyLabel("Products");
         lbl.setPrefHeight(SIZE);
         lbl.prefWidthProperty().bind(widthProperty());
-        lbl.setStyle(" -fx-border-width: 1 1 1 1;"
-                + "-fx-border-color: grey; -fx-font-weight: bold; -fx-text-fill: #619F81; -fx-font-size: 36");
+        lbl.setStyle("-fx-border-radius: 20 20 0 0;" +
+//                "-fx-padding: 25;" +
+                "-fx-border-color: grey;" +
+                "-fx-font-weight: bold;" +
+                "-fx-text-fill: #619F81;" +
+                "-fx-font-size: 36");
         lbl.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
         return lbl;
@@ -91,7 +100,8 @@ public class ProductsPane extends BorderPane {
      * Method to create a HBox which stacks its content horizontally located below the Label
      * @return hBox - the box which contains every button, comboBox, textField and numberSpinner
      */
-    public HBox getHCenter(){
+    public HBox getHCenter()
+    {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         hBox.setPadding(new Insets(15, 12, 15, 12));
@@ -144,6 +154,8 @@ public class ProductsPane extends BorderPane {
         btnRemove.setOnAction(e -> removeQuantityFromProduct());
         txtFieldNewProducts.setOnAction(e -> txtFieldEmpty());
 
+      //  hBox.setStyle(boxStyles);
+
         return hBox;
     }
 
@@ -151,7 +163,8 @@ public class ProductsPane extends BorderPane {
      * Method that creates a pane containing a tableView with a number of columns
      * @return pane - a FlowPane which is located at the bottom of the panel
      */
-    public FlowPane getFlowBottom(){
+    public FlowPane getFlowBottom()
+    {
         FlowPane pane = new FlowPane();
 
         pane.setPadding(new Insets(15,15,15,15));
@@ -183,6 +196,8 @@ public class ProductsPane extends BorderPane {
         pane.getChildren().add(tblView);
 
         tblView.setItems(itemsToTable());
+
+        pane.setStyle(boxStyles);
 
         return pane;
     }
@@ -219,7 +234,8 @@ public class ProductsPane extends BorderPane {
      */
     private class MyLabel extends Label {
 
-        public MyLabel(String text) {
+        public MyLabel(String text)
+        {
             super(text);
 
             setAlignment(Pos.BASELINE_CENTER);
@@ -230,8 +246,10 @@ public class ProductsPane extends BorderPane {
      * Method that returns an observableList which populates the columns in the tableView
      * @return items - the list which populates the columns
      */
-    public ObservableList<Products> itemsToTable(){
+    public ObservableList<Products> itemsToTable()
+    {
         ObservableList<Products> items = FXCollections.observableArrayList();
+
         items.add(new Products("Dummy Item", ProductCategories.Bread, 1));
 
         return items;
@@ -241,8 +259,10 @@ public class ProductsPane extends BorderPane {
      *
      * @return categories - an observableList which populates the comboBox
      */
-    public ObservableList<ProductCategories> categoriesToCmb(){
+    public ObservableList<ProductCategories> categoriesToCmb()
+    {
         ObservableList<ProductCategories> categories = FXCollections.observableArrayList();
+
         categories.addAll(ProductCategories.Bread, ProductCategories.Fruit, ProductCategories.Vegetable, ProductCategories.Dairy);
 
         return categories;
@@ -252,14 +272,17 @@ public class ProductsPane extends BorderPane {
      * Method used to add a new item to the tableView
      * if the textField is empty item won't be added and a popup-window will show up instead
      */
-    private void addNewItem(){
-        if (!txtFieldEmpty()) {
+    private void addNewItem()
+    {
+        if (!txtFieldEmpty())
+        {
             Products item = new Products(txtFieldNewProducts.getText(), cmbBoxProducts.getSelectionModel().getSelectedItem(),
                     numberSpinner.getValue());
             tblView.getItems().add(item);
             System.out.println(txtFieldNewProducts.getText());
             txtFieldNewProducts.clear();
-        } else if (txtFieldEmpty()){
+        }
+        else if (txtFieldEmpty()){
             JOptionPane.showMessageDialog(null, "Please enter a name for your product!");
         }
     }
@@ -267,7 +290,8 @@ public class ProductsPane extends BorderPane {
     /**
      * Method used to delete the selected item in the tableView
      */
-    private void deleteItem(){
+    private void deleteItem()
+    {
         ObservableList<Products> itemSelected;
         ObservableList<Products> allItems;
 
@@ -277,7 +301,8 @@ public class ProductsPane extends BorderPane {
         itemSelected.forEach(allItems::remove);
     }
 
-    public void addQuantityToProduct(){
+    public void addQuantityToProduct()
+    {
         Products products = tblView.getSelectionModel().getSelectedItem();
 
         int prodQuantity = products.getQuantity();
@@ -287,7 +312,8 @@ public class ProductsPane extends BorderPane {
         tblView.refresh();
     }
 
-    public void removeQuantityFromProduct(){
+    public void removeQuantityFromProduct()
+    {
         Products products = tblView.getSelectionModel().getSelectedItem();
 
         int prodQuantity = products.getQuantity();
