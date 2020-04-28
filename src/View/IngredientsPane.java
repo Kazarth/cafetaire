@@ -36,8 +36,13 @@ public class IngredientsPane extends BorderPane {
     private TableColumn<IngredientTest, Integer> stockColumn;
     private TableColumn<IngredientTest, String> supplierColumn;
     private TableColumn selectedColumn;
+    private Callback callback;
+
+    public IngredientsPane() {}
 
     public IngredientsPane (Callback callback) {
+        this.callback = callback;
+
         /** Button instantiation and Configurations */
 
         Button addIngredients = new Button("ADD NEW INGREDIENT");
@@ -45,7 +50,7 @@ public class IngredientsPane extends BorderPane {
         addIngredients.setPrefWidth(200);
         addIngredients.setPrefHeight(30);
         addIngredients.setOnAction(e -> {
-            addNewIngredient();
+            addNewIngredientAction();
         });
 
         Button removeIngredients = new Button("REMOVE INGREDIENT");
@@ -159,13 +164,21 @@ public class IngredientsPane extends BorderPane {
         eastHBox.setSpacing(20);
     }
 
+    public TableView<IngredientTest> getTableView() {
+        return tableView;
+    }
+
+    public void addNewIngredient(IngredientTest ingredient) {
+        tableView.getItems().add(ingredient);
+    }
+
     /**
      * Adds a new ingredient from user input
      */
-    public void addNewIngredient() {
+    public void addNewIngredientAction() {
         System.out.println("Add new Ingredient");
 
-        IngredientTest ingredientTest = null; // Exchange to Ingredient when merging with database --> updates to Ingredient required.
+        /*IngredientTest ingredientTest = null; // Exchange to Ingredient when merging with database --> updates to Ingredient required.
 
         String name = JOptionPane.showInputDialog("Enter name");
         String category = JOptionPane.showInputDialog("Enter category");
@@ -176,14 +189,20 @@ public class IngredientsPane extends BorderPane {
         Check against the database if supplier already exist
         if (exist) --> use
         else --> create new
-         */
+
 
         ingredientTest = new IngredientTest(name, category, stock, supplier);
 
         // add new table row
         tableView.getItems().add(ingredientTest);
 
-        System.out.println(ingredientTest.toString());
+        System.out.println(ingredientTest.toString());*/
+
+        try {
+            new newIngredientFX().start(new Stage(), this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
