@@ -21,15 +21,14 @@ import javafx.scene.text.Text;
 import Control.Callback;
 
 import javax.swing.*;
-import java.util.Scanner;
 
 /**
  * The products menu provides information regarding products that currently are in stock
  * @author Viktor Polak
- * @version 2.2
+ * @version 3.1
  */
 
-public class ProductsPane extends BorderPane {
+public class ProductsPane extends StackPane {
     private Button btnNewItem;
     private Button btnRemoveItem;
     private Button btnAdd;
@@ -45,10 +44,7 @@ public class ProductsPane extends BorderPane {
 
     private static final String btnStyle = Styles.getButton();
 
-    private static final String tableStyle = "-FX-color: #21252B; -FX-header-color: #FFFFFF";
-
-    private static final String boxStyles = "-fx-background-radius: 0 0 20 20;" +
-                                            "-fx-background-color: #FFFFFF";
+    private static final String tableStyle = "-FX-color: #21252B; -fx-text-fill: #FFFFFF";
 
 
     private int btnWidth = 75;
@@ -61,37 +57,53 @@ public class ProductsPane extends BorderPane {
 
     public ProductsPane(Callback callback)
     {
+        VBox mainContainer = new VBox();
+        mainContainer.setMaxSize(1036, 698);
+
         Text textTitle = new Text();
         Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         textTitle.setFill(Paint.valueOf("#619f81"));
         textTitle.setFont(MenuTitle);
         textTitle.setText("Products");
 
-        setTop(getTopLabel());
-        setCenter(getHCenter());
-        setBottom(getFlowBottom());
+        mainContainer.getChildren().add(getTopLabel());
+        mainContainer.getChildren().add(getHCenter());
+        mainContainer.getChildren().add(getFlowBottom());
 
+        getChildren().add(mainContainer);
+
+        mainContainer.setAlignment(Pos.CENTER);
         setStyle(Styles.getPane());
+        mainContainer.setStyle(Styles.getPane());
+
+
+        setPrefSize(1086, 768);
     }
 
     /**
      * Method which is used to create the top part of the panel
      * @return lbl - a label with the text "Products" which is displayed at the top of this panel
      */
-    private Label getTopLabel()
+    private HBox getTopLabel()
     {
+        HBox hBox = new HBox();
+
+        hBox.setPrefSize(1036, 65);
+
         Label lbl = new MyLabel("Products");
         lbl.setPrefHeight(SIZE);
         lbl.prefWidthProperty().bind(widthProperty());
-        lbl.setStyle("-fx-border-radius: 20 20 0 0;" +
-//                "-fx-padding: 25;" +
-                "-fx-border-color: grey;" +
-                "-fx-font-weight: bold;" +
+        lbl.setStyle("-fx-font-weight: bold;" +
                 "-fx-text-fill: #619F81;" +
-                "-fx-font-size: 36");
-        lbl.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                "-fx-font-size: 36;" +
+                "-fx-background-radius: 20 20 0 0");
 
-        return lbl;
+        hBox.getChildren().add(lbl);
+
+        hBox.setStyle("-fx-background-radius: 20 20 0 0;" +
+                        "-fx-background-color: #FFFFFF;");
+
+        return hBox;
     }
 
 
@@ -104,6 +116,7 @@ public class ProductsPane extends BorderPane {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         hBox.setPadding(new Insets(15, 12, 15, 12));
+        hBox.setPrefSize(1036, 75);
 
         btnNewItem = new Button("Add New Item");
         btnRemoveItem = new Button("Remove Item");
@@ -153,7 +166,7 @@ public class ProductsPane extends BorderPane {
         btnRemove.setOnAction(e -> removeQuantityFromProduct());
         txtFieldNewProducts.setOnAction(e -> txtFieldEmpty());
 
-      //  hBox.setStyle(boxStyles);
+        hBox.setStyle("-fx-padding: 0 50 0 50;");
 
         return hBox;
     }
@@ -167,6 +180,8 @@ public class ProductsPane extends BorderPane {
         FlowPane pane = new FlowPane();
 
         pane.setPadding(new Insets(15,15,15,15));
+
+        pane.setPrefSize(1036, 558);
 
         tblView = new TableView<>();
 
@@ -186,8 +201,8 @@ public class ProductsPane extends BorderPane {
         tblView.getColumns().add(tblCategories);
         tblView.getColumns().add(tblColumnStock);
 
-        tblView.setPrefSize(980, 550);
-        tblView.setStyle(tableStyle);
+        tblView.setPrefSize(980, 530);
+//        tblView.setStyle(tableStyle);
 
         pane.setAlignment(Pos.CENTER);
 
@@ -196,10 +211,10 @@ public class ProductsPane extends BorderPane {
 
         tblView.setItems(itemsToTable());
 
-        pane.setStyle("-fx-border-radius: 0 0 20 20;" +
-                        "-fx-padding: 0 50 50 0;" +
-                        "-fx-background-color: #FFFFFF;" +
-                        "-fx-alignment: top-center;");
+        pane.setStyle("-fx-alignment: center;" +
+                " -fx-background-color: #FFFFFF;" +
+                " -fx-background-radius: 0 0 20 20;" +
+                " -fx-padding: 0 0 50 0;");
 
         return pane;
     }
