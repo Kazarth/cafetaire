@@ -109,4 +109,14 @@ public abstract class Styles {
                 "-fx-background-color: #FFFFFF;"
         );
     }
+
+    public static String getTableColumn(){
+        return (
+                "-fx-text-fill: #21252B;" +
+                "-fx-alignment: center;" +
+                "-fx-font-size: 12;" +
+                "-fx-font-family: Segoe UI;" +
+                "-fx-font-weight: bold;"
+                );
+    }
 }
