@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import Control.Callback;
 
 import javax.swing.*;
+import java.util.Stack;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
@@ -29,7 +30,8 @@ import javax.swing.*;
  */
 
 
-public class IngredientsPane extends BorderPane {
+public class IngredientsPane extends StackPane {
+
     private TableView<IngredientTest> tableView;
     private TableColumn<IngredientTest, String> nameColumn;
     private TableColumn<IngredientTest, String> categoryColumn;
@@ -92,8 +94,9 @@ public class IngredientsPane extends BorderPane {
         /** Ingredient table configuration and design */
 
         tableView = new TableView();
-        setPrefSize(1068,768);
-        setCenter(tableView);
+        setPrefSize(1086,768);
+        setStyle(Styles.getPane());
+
 
         nameColumn = new TableColumn("NAME");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -122,38 +125,48 @@ public class IngredientsPane extends BorderPane {
         /** LayoutPane configurations and instantiation.
          *  VBOX, HBOX. */
 
+
+        HBox mainContainer = new HBox(25);
+        VBox innerContainer = new VBox(25);
         VBox mainVbox = new VBox();
         HBox topHBox = new HBox();
         HBox midHBox = new HBox();
         HBox bottomHBox = new HBox();
-        HBox westHBOx = new HBox();
-        HBox eastHBox = new HBox();
-        setTop(mainVbox);
+        HBox westHBOx = new HBox(5);
+        HBox eastHBox = new HBox(5);
 
-        mainVbox.setPrefSize(1366,225);
-        topHBox.setPrefSize(1366,85);
-        midHBox.setPrefSize(1366,50);
-        bottomHBox.setPrefSize(1366,85);
-        westHBOx.setPrefSize(683,85);
-        eastHBox.setPrefSize(683,85);
+        getChildren().add(innerContainer);
 
+        innerContainer.getChildren().add(mainVbox);
+        innerContainer.getChildren().add(tableView);
         mainVbox.getChildren().add(topHBox);
         topHBox.getChildren().add(titleText);
         mainVbox.getChildren().add(midHBox);
         midHBox.getChildren().add(overView);
         mainVbox.getChildren().add(bottomHBox);
+
         bottomHBox.getChildren().addAll(westHBOx,eastHBox);
         westHBOx.getChildren().addAll(addIngredients,removeIngredients);
         eastHBox.getChildren().addAll(searchTextField ,addButton,removeButton);
 
+        mainContainer.setAlignment(Pos.CENTER);
         topHBox.setAlignment(Pos.CENTER);
         midHBox.setAlignment(Pos.CENTER);
+        bottomHBox.setAlignment(Pos.CENTER);
         westHBOx.setAlignment(Pos.CENTER);
         eastHBox.setAlignment(Pos.CENTER);
 
-        midHBox.setStyle("-fx-background-color: #21252B;");
-        midHBox.setStyle("-fx-border-color: lightgray;");
-        bottomHBox.setStyle("-fx-color: #619f81");
+        innerContainer.setStyle("-fx-background-color: #EEEEEE ; -fx-background-radius: 20 20 0 0");
+
+
+        innerContainer.setPrefSize(998,600);
+
+        mainVbox.setPrefSize(1036,225);
+        topHBox.setPrefSize(1036,75);
+        midHBox.setPrefSize(1036,75);
+        bottomHBox.setPrefSize(1036,75);
+        westHBOx.setPrefSize(518,37.5);
+        eastHBox.setPrefSize(518,37.5);
 
         westHBOx.setSpacing(20);
         eastHBox.setSpacing(20);

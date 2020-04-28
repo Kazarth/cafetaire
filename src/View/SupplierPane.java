@@ -129,7 +129,6 @@ public class SupplierPane extends StackPane {
         setStyle(Styles.getPane());
         getChildren().add(mainContainer);
 
-
     }
 
     public void setTableView () {
