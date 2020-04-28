@@ -43,7 +43,6 @@ public class ProductsPane extends BorderPane {
     private static final String tableStyle = "-FX-color: #21252B; -FX-header-color: #FFFFFF";
 
 
-
     private int btnWidth = 75;
     private int btnHeight = 25;
 
