@@ -15,12 +15,14 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import Control.Callback;
 import javax.swing.*;
+import java.util.Stack;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
  * @author Georg Grankvist, Lucas Eliasson
  * @version 1.0
  */
+
 public class IngredientsPane extends StackPane {
     private TableView<IngredientTest> tableView;
     private TableColumn<IngredientTest, String> nameColumn;
@@ -89,8 +91,9 @@ public class IngredientsPane extends StackPane {
         /** Ingredient table configuration and design */
 
         tableView = new TableView();
-        setPrefSize(1068,768);
-        setCenter(tableView);
+        setPrefSize(1086,768);
+        setStyle(Styles.getPane());
+
 
         nameColumn = new TableColumn("NAME");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -103,54 +106,68 @@ public class IngredientsPane extends StackPane {
         selectedColumn = new TableColumn("SELECTED ITEM");
         selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
 
-        tableView.setStyle(Styles.getTableRowSelected());
+        tableView.setStyle(Styles.getTableRowSelected() + "-fx-background-radius: 0 0 20 20;");
+        tableView.setMaxWidth(980);
+        tableView.setMaxHeight(473);
 
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
         // loads in data
         tableView.setItems(getIngredientTest());
 
-        nameColumn.setPrefWidth(200);
-        categoryColumn.setPrefWidth(200);
-        stockColumn.setPrefWidth(200);
-        supplierColumn.setPrefWidth(200);
-        selectedColumn.setPrefWidth(250);
+
+        nameColumn.setPrefWidth(196);
+        categoryColumn.setPrefWidth(196);
+        stockColumn.setPrefWidth(196);
+        supplierColumn.setPrefWidth(195);
+        selectedColumn.setPrefWidth(195);
 
         /** LayoutPane configurations and instantiation.
          *  VBOX, HBOX. */
 
+
+        HBox mainContainer = new HBox(25);
+        VBox innerContainer = new VBox(25);
         VBox mainVbox = new VBox();
         HBox topHBox = new HBox();
         HBox midHBox = new HBox();
         HBox bottomHBox = new HBox();
-        HBox westHBOx = new HBox();
-        HBox eastHBox = new HBox();
-        setTop(mainVbox);
+        HBox westHBOx = new HBox(5);
+        HBox eastHBox = new HBox(5);
 
-        mainVbox.setPrefSize(1366,225);
-        topHBox.setPrefSize(1366,85);
-        midHBox.setPrefSize(1366,50);
-        bottomHBox.setPrefSize(1366,85);
-        westHBOx.setPrefSize(683,85);
-        eastHBox.setPrefSize(683,85);
+        getChildren().add(innerContainer);
 
+        innerContainer.getChildren().add(mainVbox);
+        innerContainer.getChildren().add(tableView);
         mainVbox.getChildren().add(topHBox);
         topHBox.getChildren().add(titleText);
         mainVbox.getChildren().add(midHBox);
         midHBox.getChildren().add(overView);
         mainVbox.getChildren().add(bottomHBox);
+
         bottomHBox.getChildren().addAll(westHBOx,eastHBox);
         westHBOx.getChildren().addAll(addIngredients,removeIngredients);
         eastHBox.getChildren().addAll(searchTextField ,addButton,removeButton);
 
+        innerContainer.setAlignment(Pos.CENTER);
+        mainContainer.setAlignment(Pos.CENTER);
         topHBox.setAlignment(Pos.CENTER);
         midHBox.setAlignment(Pos.CENTER);
+        bottomHBox.setAlignment(Pos.CENTER);
         westHBOx.setAlignment(Pos.CENTER);
         eastHBox.setAlignment(Pos.CENTER);
 
-        midHBox.setStyle("-fx-background-color: #21252B;");
-        midHBox.setStyle("-fx-border-color: lightgray;");
-        bottomHBox.setStyle("-fx-color: #619f81");
+        innerContainer.setStyle("-fx-background-color: #EEEEEE ; -fx-background-radius: 20 20 20 20");
+
+
+        innerContainer.setMaxSize(1036,698);
+
+        mainVbox.setPrefSize(1036,225);
+        topHBox.setPrefSize(1036,75);
+        midHBox.setPrefSize(1036,75);
+        bottomHBox.setPrefSize(1036,75);
+        westHBOx.setPrefSize(518,37.5);
+        eastHBox.setPrefSize(518,37.5);
 
         westHBOx.setSpacing(20);
         eastHBox.setSpacing(20);

@@ -2,40 +2,64 @@ package Entities;
 
 /**
  * An entity used for containing the different suppliers and their contact information.
- * @author Tor Stenfeldt
- * @version 1.0
+ * @author Tor Stenfeldt, Paul Moustakas
+ * @version 2.0
  */
 public class Supplier {
-    private String name;
-    private String date;
+    private String  supplierName;
+    private String  category;
+    private String  email;
+    private String  phone;
 
-    public Supplier() {
-        this.name = "";
+    public Supplier(String supplierName, String category, String email, String phone) {
+        this.supplierName   = supplierName;
+        this.category       = category;
+        this.email          = email;
+        this.phone          = phone;
     }
+
+    public Supplier () {}
 
     public Supplier(Supplier supplier) {
-        this.name = supplier.getName();
-        this.date = supplier.getDate();
+        this.supplierName = supplier.getName();
     }
 
-    public Supplier(String name) {
-        this.name = name;
+    public String getSupplierName() {
+        return supplierName;
     }
 
-    public Supplier(String name, String date) {
-        this.name = name;
-        this.date = date;
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Supplier(String supplierName) {
+        this.supplierName = supplierName;
     }
 
     public String getName() {
-        return name;
+        return supplierName;
+    }
+    public String getCategory() {
+        return category;
     }
 
-    public String getDate() {
-        return date;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
