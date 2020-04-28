@@ -26,7 +26,7 @@ import java.util.Scanner;
 /**
  * The products menu provides information regarding products that currently are in stock
  * @author Viktor Polak
- * @version 1.0
+ * @version 2.2
  */
 
 public class ProductsPane extends BorderPane {
@@ -196,7 +196,10 @@ public class ProductsPane extends BorderPane {
 
         tblView.setItems(itemsToTable());
 
-        pane.setStyle(boxStyles);
+        pane.setStyle("-fx-border-radius: 0 0 20 20;" +
+                        "-fx-padding: 0 50 50 0;" +
+                        "-fx-background-color: #FFFFFF;" +
+                        "-fx-alignment: top-center;");
 
         return pane;
     }
