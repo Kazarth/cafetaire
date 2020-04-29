@@ -21,6 +21,7 @@ public class AddNewIngredientPane extends StackPane {
 
     public AddNewIngredientPane() {
         VBox container = new VBox();
+        container.setPrefSize(600,500);
 
         HBox nameBox = new HBox();
         HBox categoryBox = new HBox();

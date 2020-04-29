@@ -1,14 +1,10 @@
 package View;
 
-import Entities.Ingredient;
 import Entities.IngredientTest;
 import Entities.Styles;
-import Entities.Supplier;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -17,10 +13,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import Control.Callback;
-
 import javax.swing.*;
+import java.util.Stack;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
@@ -28,16 +23,20 @@ import javax.swing.*;
  * @version 1.0
  */
 
-
-public class IngredientsPane extends BorderPane {
+public class IngredientsPane extends StackPane {
     private TableView<IngredientTest> tableView;
     private TableColumn<IngredientTest, String> nameColumn;
     private TableColumn<IngredientTest, String> categoryColumn;
     private TableColumn<IngredientTest, Integer> stockColumn;
     private TableColumn<IngredientTest, String> supplierColumn;
     private TableColumn selectedColumn;
+    private Callback callback;
+
+    public IngredientsPane() {}
 
     public IngredientsPane (Callback callback) {
+        this.callback = callback;
+
         /** Button instantiation and Configurations */
 
         Button addIngredients = new Button("ADD NEW INGREDIENT");
@@ -45,7 +44,7 @@ public class IngredientsPane extends BorderPane {
         addIngredients.setPrefWidth(200);
         addIngredients.setPrefHeight(30);
         addIngredients.setOnAction(e -> {
-            addNewIngredient();
+            addNewIngredientAction();
         });
 
         Button removeIngredients = new Button("REMOVE INGREDIENT");
@@ -92,8 +91,9 @@ public class IngredientsPane extends BorderPane {
         /** Ingredient table configuration and design */
 
         tableView = new TableView();
-        setPrefSize(1068,768);
-        setCenter(tableView);
+        setPrefSize(1086,768);
+        setStyle(Styles.getPane());
+
 
         nameColumn = new TableColumn("NAME");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -106,91 +106,100 @@ public class IngredientsPane extends BorderPane {
         selectedColumn = new TableColumn("SELECTED ITEM");
         selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
 
-        tableView.setStyle(Styles.getTableRowSelected());
+        tableView.setStyle(Styles.getTableRowSelected() + "-fx-background-radius: 0 0 20 20;");
+        tableView.setMaxWidth(980);
+        tableView.setMaxHeight(473);
 
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
         // loads in data
         tableView.setItems(getIngredientTest());
 
-        nameColumn.setPrefWidth(200);
-        categoryColumn.setPrefWidth(200);
-        stockColumn.setPrefWidth(200);
-        supplierColumn.setPrefWidth(200);
-        selectedColumn.setPrefWidth(250);
+
+        nameColumn.setPrefWidth(196);
+        categoryColumn.setPrefWidth(196);
+        stockColumn.setPrefWidth(196);
+        supplierColumn.setPrefWidth(195);
+        selectedColumn.setPrefWidth(195);
 
         /** LayoutPane configurations and instantiation.
          *  VBOX, HBOX. */
 
+
+        HBox mainContainer = new HBox(25);
+        VBox innerContainer = new VBox(25);
         VBox mainVbox = new VBox();
         HBox topHBox = new HBox();
         HBox midHBox = new HBox();
         HBox bottomHBox = new HBox();
-        HBox westHBOx = new HBox();
-        HBox eastHBox = new HBox();
-        setTop(mainVbox);
+        HBox westHBOx = new HBox(5);
+        HBox eastHBox = new HBox(5);
 
-        mainVbox.setPrefSize(1366,225);
-        topHBox.setPrefSize(1366,85);
-        midHBox.setPrefSize(1366,50);
-        bottomHBox.setPrefSize(1366,85);
-        westHBOx.setPrefSize(683,85);
-        eastHBox.setPrefSize(683,85);
+        getChildren().add(innerContainer);
 
+        innerContainer.getChildren().add(mainVbox);
+        innerContainer.getChildren().add(tableView);
         mainVbox.getChildren().add(topHBox);
         topHBox.getChildren().add(titleText);
         mainVbox.getChildren().add(midHBox);
         midHBox.getChildren().add(overView);
         mainVbox.getChildren().add(bottomHBox);
+
         bottomHBox.getChildren().addAll(westHBOx,eastHBox);
         westHBOx.getChildren().addAll(addIngredients,removeIngredients);
         eastHBox.getChildren().addAll(searchTextField ,addButton,removeButton);
 
+        innerContainer.setAlignment(Pos.CENTER);
+        mainContainer.setAlignment(Pos.CENTER);
         topHBox.setAlignment(Pos.CENTER);
         midHBox.setAlignment(Pos.CENTER);
+        bottomHBox.setAlignment(Pos.CENTER);
         westHBOx.setAlignment(Pos.CENTER);
         eastHBox.setAlignment(Pos.CENTER);
 
-        midHBox.setStyle("-fx-background-color: #21252B;");
-        midHBox.setStyle("-fx-border-color: lightgray;");
-        bottomHBox.setStyle("-fx-color: #619f81");
+        innerContainer.setStyle("-fx-background-color: #EEEEEE ; -fx-background-radius: 20 20 20 20");
+
+
+        innerContainer.setMaxSize(1036,698);
+
+        mainVbox.setPrefSize(1036,225);
+        topHBox.setPrefSize(1036,75);
+        midHBox.setPrefSize(1036,75);
+        bottomHBox.setPrefSize(1036,75);
+        westHBOx.setPrefSize(518,37.5);
+        eastHBox.setPrefSize(518,37.5);
 
         westHBOx.setSpacing(20);
         eastHBox.setSpacing(20);
     }
 
+    public TableView<IngredientTest> getTableView() {
+        return tableView;
+    }
+
+    /**
+     *
+     * @param ingredient
+     */
+    public void addNewIngredient(IngredientTest ingredient) {
+        tableView.getItems().add(ingredient);
+    }
+
     /**
      * Adds a new ingredient from user input
      */
-    public void addNewIngredient() {
-        System.out.println("Add new Ingredient");
-
-        IngredientTest ingredientTest = null; // Exchange to Ingredient when merging with database --> updates to Ingredient required.
-
-        String name = JOptionPane.showInputDialog("Enter name");
-        String category = JOptionPane.showInputDialog("Enter category");
-        int stock = Integer.parseInt(JOptionPane.showInputDialog("Enter stock"));
-        String supplier = JOptionPane.showInputDialog("Enter supplier");
-
-        /*
-        Check against the database if supplier already exist
-        if (exist) --> use
-        else --> create new
-         */
-
-        ingredientTest = new IngredientTest(name, category, stock, supplier);
-
-        // add new table row
-        tableView.getItems().add(ingredientTest);
-
-        System.out.println(ingredientTest.toString());
+    public void addNewIngredientAction() {
+        try {
+            new newIngredientFX(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Removes selected ingredient from the stock
      */
     public void removeIngredient() {
-        System.out.println("Remove ingredient from stock");
         ObservableList<IngredientTest> ingredientTestSelected, allIngredients;
         allIngredients = tableView.getItems();
         ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
@@ -201,7 +210,6 @@ public class IngredientsPane extends BorderPane {
      * Increments the selected ingredients stock by 1
      */
     public void addAmount() {
-        System.out.println("Increment the value by 1");
         ObservableList<IngredientTest> ingredientTestSelected;
         ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
         if (ingredientTestSelected.size() <= 0) {
@@ -216,7 +224,6 @@ public class IngredientsPane extends BorderPane {
      * Decrements the selected ingredients stock by 1
      */
     public void removeAmount() {
-        System.out.println("Decrement the value by 1");
         ObservableList<IngredientTest> ingredientTestSelected;
         ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
         if (ingredientTestSelected.size() <= 0) {
