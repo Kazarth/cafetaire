@@ -126,7 +126,7 @@ public abstract class Styles {
                 "-fx-background-color: #eee; "
                 );
     }
-
+  
     public static String getPopTitle() {
         return (
                 "-fx-text-fill: #619F81;" +
