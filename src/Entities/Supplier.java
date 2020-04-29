@@ -1,27 +1,30 @@
 package Entities;
 
 /**
- * An entity used for containing the different suppliers and their contact information.
- * @author Tor Stenfeldt, Paul Moustakas
+ * Entity class for suppliers to store contact information.
+ * (NOTE :  this is a new class to match the suppliers needs and to fit into the system)
+ * @author Paul Moustakas
  * @version 2.0
  */
 public class Supplier {
-    private String  supplierName;
-    private String  category;
-    private String  email;
-    private String  phone;
+    private String supplierName;
+    private String category;
+    private String email;
+    private String phone;
+
+
+    public Supplier () {
+        supplierName    = "";
+        category        = "";
+        email           = "";
+        phone           = "";
+    }
 
     public Supplier(String supplierName, String category, String email, String phone) {
         this.supplierName   = supplierName;
         this.category       = category;
         this.email          = email;
         this.phone          = phone;
-    }
-
-    public Supplier () {}
-
-    public Supplier(Supplier supplier) {
-        this.supplierName = supplier.getName();
     }
 
     public String getSupplierName() {
@@ -47,6 +50,7 @@ public class Supplier {
     public String getName() {
         return supplierName;
     }
+
     public String getCategory() {
         return category;
     }

@@ -1,7 +1,8 @@
 package View;
 
-
-import Entities.IngredientTest;
+import Control.Callback;
+import Entities.Styles;
+import Entities.Supplier;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,29 +16,36 @@ import javafx.scene.layout.AnchorPane;
 import javax.swing.*;
 import java.util.ArrayList;
 
-/**
- * The class presents a OK or CANCEL pane.
- * @author Lucas Eliasson
- * @version 1.0
- */
-public class newIngredientFX extends AnchorPane {
+
+public class AddNewSupplierPane extends AnchorPane {
     private JFrame frame;
+
     private Label title;
     private Label nameLbl;
+    private Label categoryLbl, supplierLbl; // Ryck denna sista
+    private Label emailLbl;
+    private Label phoneLbl;
+
     private TextField nameField;
-    private Label categoryLbl, supplierLbl;
     private ComboBox<String> categoryBox, supplierBox; // lägg in och läs in listor som vanligt?
+    private TextField emailField;
+    private TextField phoneField;
+
     private Button addButton, cancelButton;
-    private IngredientsPane source; // sourcePane
+
+    private SupplierPane source;
+    private Callback callback;
     private ArrayList<String> suppliers; // test purposes
 
-    public newIngredientFX(IngredientsPane source) {
+
+
+    public AddNewSupplierPane(SupplierPane source, Callback callback) {
         // init Frame
         frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
-        frame.setTitle("Add new Ingredient");
+        frame.setTitle("Add new ingredient");
         frame.add(fxPanel);
-        frame.setSize(600,400);
+        frame.setSize(600,460);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setUndecorated(true);
@@ -47,6 +55,7 @@ public class newIngredientFX extends AnchorPane {
 
         // Init source
         this.source = source;
+        this.callback = callback;
 
         // test values
         suppliers = new ArrayList();
@@ -59,138 +68,129 @@ public class newIngredientFX extends AnchorPane {
         setPrefWidth(600); setPrefHeight(400);
         setStyle(
                 "-fx-background-color: #fff"
-                );
+        );
 
         // title pane
-        title = new Label("ADD NEW INGREDIENT");
-        title.setStyle(
-                "-fx-text-fill: #619F81;" +
-                "-fx-font-weight: bold;" +
-                "-fx-font-size: 25px"
-        );
+        title = new Label("ADD NEW SUPPLIER");
+        title.setStyle(Styles.getPopTitle());
         title.setLayoutX(162.0); title.setLayoutY(20);
         title.setPrefWidth(300); title.setPrefHeight(40);
 
-        // Name pane
-        nameLbl = new Label("Enter name");
-        nameLbl.setStyle(
-                "-fx-text-fill: #000;"
-        );
+        // Supplier Name pane
+        nameLbl = new Label("Supplier");
+        nameLbl.setStyle("-fx-text-fill: #000;");
         nameLbl.setPrefWidth(220); nameLbl.setPrefHeight(40);
         nameLbl.setLayoutX(56.0); nameLbl.setLayoutY(100);
 
         nameField = new TextField();
-        nameField.setPromptText("Enter name");
-        nameField.setStyle(
-                "-fx-background-color: #fff;" +
-                "-fx-border-width: 1;" +
-                "-fx-border-color: #000;");
+        nameField.setPromptText("Enter Supplier name");
+        nameField.setStyle(Styles.getPopField());
         nameField.setPrefWidth(360); nameField.setPrefHeight(40);
         nameField.setLayoutX(144.0); nameField.setLayoutY(100);
 
         // Category pane
         categoryLbl = new Label("Category");
-        categoryLbl.setStyle(
-                "-fx-text-fill: #000;");
+        categoryLbl.setStyle("-fx-text-fill: #000;");
         categoryLbl.setPrefWidth(220.0); categoryLbl.setPrefHeight(40);
         categoryLbl.setLayoutX(56.0); categoryLbl.setLayoutY(160);
 
         categoryBox = new ComboBox();
         categoryBox.setPromptText("Select category");
-        categoryBox.setStyle(
-                "-fx-background-color: #fff;" +
-                        "-fx-border-width: 1;" +
-                        "-fx-border-color: #000;");
+        categoryBox.setStyle(Styles.getPopField());
         categoryBox.setPrefWidth(360.0); categoryBox.setPrefHeight(40);
         categoryBox.setLayoutX(144.0); categoryBox.setLayoutY(160);
         categoryBox.setItems(getCategories()); // testing
 
-        // Supplier pane
-        supplierLbl = new Label("Supplier");
-        supplierLbl.setStyle(
-                "-fx-text-fill: #000;");
-        supplierLbl.setPrefWidth(220); supplierLbl.setPrefHeight(40);
-        supplierLbl.setLayoutX(56.0); supplierLbl.setLayoutY(220);
+        // Email Pane
+        emailLbl = new Label("E-mail");
+        emailLbl.setStyle("-fx-text-fill: #000;");
+        emailLbl.setPrefWidth(220); emailLbl.setPrefHeight(40);
+        emailLbl.setLayoutX(56.0); emailLbl.setLayoutY(220);
 
-        supplierBox = new ComboBox<>();
-        supplierBox.setPromptText("Enter supplier");
-        supplierBox.setEditable(true);
-        supplierBox.setStyle(
-                "-fx-background-color: #fff;" +
-                        "-fx-border-width: 1;" +
-                        "-fx-border-color: #000;");
-        supplierBox.setPrefWidth(360); supplierBox.setPrefHeight(40);
-        supplierBox.setLayoutX(144.0); supplierBox.setLayoutY(220);
-        supplierBox.setItems(getSuppliers()); // testing
+        emailField  =   new TextField();
+        emailField.setPromptText("Enter E-mail address");
+        emailField.setStyle(Styles.getPopField());
+        emailField.setPrefWidth(360); emailField.setPrefHeight(40);
+        emailField.setLayoutX(144.0); emailField.setLayoutY(220);
+        //supplierLbl.setLayoutX(56.0); supplierLbl.setLayoutY(220);  //Positioner
+
+        // Phone Pane
+        phoneLbl = new Label("Phone nr.");
+        phoneLbl.setStyle("-fx-text-fill: #000;");
+        phoneLbl.setPrefWidth(220); phoneLbl.setPrefHeight(40);
+        phoneLbl.setLayoutX(56.0);  phoneLbl.setLayoutY(280);
+
+        phoneField  =   new TextField();
+        phoneField.setPromptText("Enter phone number");
+        phoneField.setStyle(Styles.getPopField());
+        phoneField.setPrefWidth(360);   phoneField.setPrefHeight(40);
+        phoneField.setLayoutX(144.0);   phoneField.setLayoutY(280);
 
         // Button pane
-        addButton = new Button("ADD NEW INGREDIENT");
-        addButton.setStyle(
-                "-fx-background-color: #619F81;" +
-                "-fx-background-radius: 10;" +
-                "-fx-border-radius: 40;" +
-                "-fx-text-fill: #fff;" +
-                "-fx-font-size: 16px;" +
-                "-fx-font-weight: Bold;");
+        addButton = new Button("ADD NEW SUPPLIER");
+        addButton.setStyle(Styles.getPopAddButton());
         addButton.setPrefWidth(200); addButton.setPrefHeight(40);
-        addButton.setLayoutX(75); addButton.setLayoutY(310);
+        addButton.setLayoutX(75); addButton.setLayoutY(340);
         addButton.setOnAction(e -> addAction());
 
         cancelButton = new Button("CANCEL");
-        cancelButton.setStyle(
-                "-fx-background-color: #ddd;" +
-                        "-fx-background-radius: 10;" +
-                        "-fx-border-radius: 40;" +
-                        "-fx-text-fill: #fff;" +
-                        "-fx-font-size: 16px;" +
-                        "-fx-font-weight: Bold;");
+        cancelButton.setStyle(Styles.getPopCancelButton());
         cancelButton.setPrefWidth(200); cancelButton.setPrefHeight(40);
-        cancelButton.setLayoutX(325.0); cancelButton.setLayoutY(310);
+        cancelButton.setLayoutX(325.0); cancelButton.setLayoutY(340);
         cancelButton.setOnAction(e -> cancelAction());
 
         // Add all children
-        getChildren().addAll(title, nameLbl, nameField, categoryLbl, categoryBox, supplierLbl, supplierBox, addButton, cancelButton);
+        getChildren().addAll(title, nameLbl, nameField, categoryLbl, categoryBox, emailLbl, emailField, phoneLbl,phoneField, addButton, cancelButton);
     }
 
     /**
-     * On press Add button
+     * Action performed Add-button
      */
     public void addAction() {
-        IngredientTest test = null;
+        Supplier supp = null;
 
-        String name = nameField.getText();
-        String category = categoryBox.getSelectionModel().getSelectedItem();
-        String supplier = supplierBox.getSelectionModel().getSelectedItem();
+        String supplierName = nameField.getText();
+        String category     = categoryBox.getSelectionModel().getSelectedItem();
+        String email        = emailField.getText();
+        String phone        = phoneField.getText();
 
-        // Skapa algoritm som kollar mot databas
-        // if (!exist) --> Skapa ny
-        // else --> låt bli
-        /*for (String s: suppliers) {
-            if (!s.equals(supplier)) {
+        supp = new Supplier(supplierName, category, email, phone);
 
-            }
-        }*/
-
-        test = new IngredientTest(name, category, 0, supplier);
-
-        source.addNewIngredient(test);
-
+        if (callback.addSupplier(supp)) {
+            source.addNewSupplier(supp);
+        }
         close();
     }
 
     /**
-     * On Cancel button
+     * Action performed Cancel-button
      */
     public void cancelAction() {
         close();
     }
-
     /**
      * Close the frame
      */
     private void close() {
         frame.dispose();
     }
+
+
+
+    /*
+    //From database
+    private ObservableList<String> getSuppliersFromDatabase() {
+        ObservableList<String> listSuppliers = FXCollections.observableArrayList();
+        Supplier[] receivedSuppliers = callback.getSuppliers();
+
+        for (Supplier supplier: receivedSuppliers) {
+            listSuppliers.add(supplier.getName());
+        }
+        return listSuppliers;
+    }
+
+     */
+
 
     /**
      * For testing purposes
@@ -217,3 +217,4 @@ public class newIngredientFX extends AnchorPane {
         return ingredients;
     }
 }
+

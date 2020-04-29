@@ -10,7 +10,6 @@ public class Ingredient {
     private Supplier supplier;
     private String category;
 
-
     public Ingredient(Ingredient ingredient) {
         this.type = ingredient.getType();
         this.supplier = ingredient.getSupplier();

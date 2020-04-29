@@ -2,9 +2,12 @@ package Model;
 
 import Entities.Food;
 import Entities.Ingredient;
+import Entities.IngredientTest;
 import Entities.Supplier;
+import Extra.ColourTxT;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -22,6 +25,11 @@ public class Database {
 
     private ArrayList<Supplier> suppliers;
 
+    /*Testing purpose */
+    private HashMap<String, IngredientTest> ingredientsTest;
+    private HashMap<String, Integer> nIngredientsTest;
+    private ColourTxT colourTxT = new ColourTxT();
+
     public Database() {
         this.ingredients = new HashMap<>();
         this.nIngredients = new HashMap<>();
@@ -30,6 +38,21 @@ public class Database {
         this.nFood = new HashMap<>();
 
         this.suppliers = new ArrayList<>();
+
+        /* Testing purposes */
+        nIngredientsTest = new HashMap<>(); // Måste lägga in antal först för att kunna hitta det sen? --> inläsning av det först sen? Eller lägga stock i varje Ingredients-instans
+        nIngredientsTest.put("salt", 1);
+        nIngredientsTest.put("sugar", 10);
+        nIngredientsTest.put("cocoa", 5);
+
+        ingredientsTest = new HashMap<>();
+        ingredientsTest.put("salt", new IngredientTest("salt", "Dry Food", nIngredientsTest.get("salt"), "Lucas AB"));
+        ingredientsTest.put("sugar", new IngredientTest("sugar", "Dry Food", nIngredientsTest.get("sugar"), "George AB"));
+        ingredientsTest.put("cocoa", new IngredientTest("cocoa", "Dry Food", nIngredientsTest.get("cocoa"),"Paul AB"));
+
+        suppliers.add(new Supplier("Lucas AB"));
+        suppliers.add(new Supplier("Georg AB"));
+        suppliers.add(new Supplier("Julia AB"));
     }
 
     public boolean addIngredient(Ingredient ingredient) {
@@ -213,8 +236,8 @@ public class Database {
         return null;
     }
 
-    public Supplier[] getSuppliers() {
-        return ((Supplier[])this.suppliers.toArray());
+    public ArrayList<Supplier> getSuppliers() {
+        return this.suppliers;
     }
 
     public int getNumSuppliers() {
@@ -223,5 +246,103 @@ public class Database {
 
     public boolean removeSupplier(String name) {
         return this.suppliers.removeIf(s -> s.getName().equals(name));
+    }
+
+
+    /* Testing purposes */
+    public boolean addIngredientTest(IngredientTest ingredient) {
+        if (ingredients.containsKey(ingredient.getName())) {
+            return false;
+        }
+
+        ingredientsTest.put(ingredient.getName(), ingredient);
+        nIngredientsTest.put(ingredient.getName(), 1);
+
+        System.out.println("\nAdded to Database:\n" +
+                "Name: " + ingredient.getName() + "\n" +
+                "Category: " + ingredient.getCategory() + "\n" +
+                "Supplier: " + ingredient.getSupplier() + "\n"
+        );
+
+        System.out.println("Get from ingredients HashMap:\n" +
+                ingredientsTest.get(ingredient.getName()));
+
+        System.out.println("\nGet from nIngredients HashMap:\n" +
+                nIngredientsTest.get(ingredient.getName()) + "\n");
+        return true;
+    }
+
+    public IngredientTest getIngredientTest(String ingredient) {
+        return ingredientsTest.get(ingredient);
+    }
+
+    public IngredientTest[] getIngredientsTest() {
+        IngredientTest[] ingredients = new IngredientTest[this.ingredientsTest.size()];
+
+        Object[] keys = this.ingredientsTest.keySet().toArray();
+
+        for (int i=0; i<ingredients.length; i++) {
+            ingredients[i] = this.ingredientsTest.get(keys[i]);
+        }
+
+        return ingredients;
+    }
+
+    public int getNumIngredientsTest(String ingredient) {
+        if (nIngredientsTest.containsKey(ingredient)) {
+            return nIngredientsTest.get(ingredient);
+        }
+
+        return -1;
+    }
+
+    public boolean increaseIngredientTest(String ingredient) {
+        if (nIngredientsTest.containsKey(ingredient)) {
+            int currentVal = nIngredientsTest.get(ingredient);
+            nIngredientsTest.put(ingredient, currentVal+1);
+
+            System.out.println(colourTxT.GREEN() + "Completed increase to database\n" +
+                    "Current stock: " + ingredientsTest.get(ingredient).getName() + " " + nIngredientsTest.get(ingredient) + colourTxT.RESET());
+
+            return true;
+        }
+        System.out.println(colourTxT.RED() + "Failed to add " + ingredient + " to database" + colourTxT.RESET());
+        return false;
+    }
+
+    public boolean increaseIngredientTest(IngredientTest ingredient) {
+        return increaseIngredientTest(ingredient.getName());
+    }
+
+    public boolean decreaseIngredientTest(String ingredient) {
+        if (!nIngredientsTest.containsKey(ingredient)) {
+            System.out.println(colourTxT.RED() + "Failed to remove " + ingredient + " to database" + colourTxT.RESET());
+            return false;
+        }
+
+        int currentVal = nIngredientsTest.get(ingredient);
+
+        if (currentVal <= 0) {
+            System.out.println(colourTxT.RED() + "Amount to remove from " + ingredient + " went below 0" + colourTxT.RESET());
+            return false;
+        }
+
+        nIngredientsTest.put(ingredient, currentVal-1);
+        System.out.println(colourTxT.GREEN() + "Completed decrease to database\n" +
+                "Current stock: " + ingredientsTest.get(ingredient).getName() + " " + nIngredientsTest.get(ingredient) + colourTxT.RESET());
+        return true;
+    }
+
+    public boolean decreaseIngredientTest(IngredientTest ingredient) {
+        return decreaseIngredientTest(ingredient.getName());
+    }
+
+    public boolean removeIngredientTest(String ingredient) {
+        boolean containsKey = ingredientsTest.containsKey(ingredient) && nIngredientsTest.containsKey(ingredient);
+
+        ingredientsTest.remove(ingredient);
+        nIngredientsTest.remove(ingredient);
+
+        return containsKey;
     }
 }

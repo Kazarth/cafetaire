@@ -1,99 +1,206 @@
 package View;
 
+
+import Control.Callback;
+import Entities.IngredientTest;
+import Entities.Styles;
+import Entities.Supplier;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-
+import javafx.scene.layout.AnchorPane;
 import javax.swing.*;
+import java.util.ArrayList;
 
-public class AddNewIngredientPane extends StackPane {
+/**
+ * The class presents a OK or CANCEL pane.
+ * @author Lucas Eliasson
+ * @version 1.0
+ */
+public class AddNewIngredientPane extends AnchorPane {
+    private JFrame frame;
+    private Label title;
+    private Label nameLbl;
     private TextField nameField;
-    private TextField categoryField; // Change to Viktors drop down
-    private TextField stockField;
-    private TextField supplierField; // Change to dropdown + enter text?
+    private Label categoryLbl, supplierLbl;
+    private ComboBox<String> categoryBox, supplierBox; // lägg in och läs in listor som vanligt?
+    private Button addButton, cancelButton;
+    private IngredientsPane source; // sourcePane
+    private Callback callback; // get logic
+    private ArrayList<String> suppliers; // test purposes
 
-    public AddNewIngredientPane() {
-        VBox container = new VBox();
-        container.setPrefSize(600,500);
+    public AddNewIngredientPane(IngredientsPane source, Callback callback) {
+        // init Frame
+        frame = new JFrame("FX");
+        final JFXPanel fxPanel = new JFXPanel();
+        frame.setTitle("Add new ingredient");
+        frame.add(fxPanel);
+        frame.setSize(600,400);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setUndecorated(true);
+        frame.setResizable(false);
+        frame.setVisible(true);
+        Platform.runLater(() -> fxPanel.setScene(new Scene(this)));
 
-        HBox nameBox = new HBox();
-        HBox categoryBox = new HBox();
-        HBox stockBox = new HBox();
-        HBox supplierBox = new HBox();
-        HBox buttonBox = new HBox();
+        // Init source
+        this.source = source;
+        this.callback = callback;
 
-        Label nameLbl = new Label("Name");
-        nameLbl.setPrefSize(100, 40);
-        Label categoryLbl = new Label("Category");
-        categoryLbl.setPrefSize(100, 40);
-        Label stockLbl = new Label("Stock");
-        stockLbl.setPrefSize(100, 40);
-        Label supplierLbl = new Label("Supplier");
-        supplierLbl.setPrefSize(100, 40);
+        // test values
+        suppliers = new ArrayList();
+        suppliers.add("Lucas");
+        suppliers.add("Julia");
+        suppliers.add("Coca Cola");
+
+        // Background pane
+        setMaxWidth(600); setMaxHeight(400);
+        setPrefWidth(600); setPrefHeight(400);
+        setStyle(
+                "-fx-background-color: #fff"
+                );
+
+        // title pane
+        title = new Label("ADD NEW INGREDIENT");
+        title.setStyle(Styles.getPopTitle());
+        title.setLayoutX(162.0); title.setLayoutY(20);
+        title.setPrefWidth(300); title.setPrefHeight(40);
+
+        // Name pane
+        nameLbl = new Label("Enter name");
+        nameLbl.setStyle(
+                "-fx-text-fill: #000;"
+        );
+        nameLbl.setPrefWidth(220); nameLbl.setPrefHeight(40);
+        nameLbl.setLayoutX(56.0); nameLbl.setLayoutY(100);
 
         nameField = new TextField();
         nameField.setPromptText("Enter name");
-        nameField.setPrefSize(200,40);
-        categoryField = new TextField(); // change?
-        categoryField.setPromptText("Enter category"); // change?
-        categoryField.setPrefSize(200,40);
-        stockField = new TextField();
-        stockField.setPromptText("Enter stock");
-        stockField.setPrefSize(200,40);
-        supplierField = new TextField(); // change?
-        supplierField.setPromptText("Enter supplier"); // change?
-        supplierField.setPrefSize(200,40);
+        nameField.setStyle(Styles.getPopField());
+        nameField.setPrefWidth(360); nameField.setPrefHeight(40);
+        nameField.setLayoutX(144.0); nameField.setLayoutY(100);
 
-        Button btn1 = new Button("OK");
-        btn1.setPrefSize(200, 40);
-        Button btn2 = new Button("CANCEL");
-        btn2.setPrefSize(200, 40);
+        // Category pane
+        categoryLbl = new Label("Category");
+        categoryLbl.setStyle(
+                "-fx-text-fill: #000;");
+        categoryLbl.setPrefWidth(220.0); categoryLbl.setPrefHeight(40);
+        categoryLbl.setLayoutX(56.0); categoryLbl.setLayoutY(160);
 
-        this.setPrefSize(600,500);
+        categoryBox = new ComboBox();
+        categoryBox.setPromptText("Select category");
+        categoryBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
+        categoryBox.setPrefWidth(360.0); categoryBox.setPrefHeight(40);
+        categoryBox.setLayoutX(144.0); categoryBox.setLayoutY(160);
+        categoryBox.setItems(getCategories()); // testing
 
-        nameBox.getChildren().addAll(nameLbl, nameField);
-        categoryBox.getChildren().addAll(categoryLbl, categoryField);
-        stockBox.getChildren().addAll(stockLbl, stockField);
-        supplierBox.getChildren().addAll(supplierLbl, supplierField);
-        buttonBox.getChildren().addAll(btn1, btn2);
+        // Supplier pane
+        supplierLbl = new Label("Supplier");
+        supplierLbl.setStyle(
+                "-fx-text-fill: #000;");
+        supplierLbl.setPrefWidth(220); supplierLbl.setPrefHeight(40);
+        supplierLbl.setLayoutX(56.0); supplierLbl.setLayoutY(220);
 
-        container.getChildren().addAll(nameBox, categoryBox, stockBox, supplierBox, buttonBox);
+        supplierBox = new ComboBox<>();
+        supplierBox.setPromptText("Enter supplier");
+        supplierBox.setEditable(true);
+        supplierBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
+        supplierBox.setPrefWidth(360); supplierBox.setPrefHeight(40);
+        supplierBox.setLayoutX(144.0); supplierBox.setLayoutY(220);
+        supplierBox.setItems(getSuppliersFromDatabase()); // testing
 
-        getChildren().add(container);
+        // Button pane
+        addButton = new Button("ADD NEW INGREDIENT");
+        addButton.setStyle(Styles.getPopAddButton());
+        addButton.setPrefWidth(200); addButton.setPrefHeight(40);
+        addButton.setLayoutX(75); addButton.setLayoutY(310);
+        addButton.setOnAction(e -> addAction());
+
+        cancelButton = new Button("CANCEL");
+        cancelButton.setStyle(Styles.getPopCancelButton());
+        cancelButton.setPrefWidth(200); cancelButton.setPrefHeight(40);
+        cancelButton.setLayoutX(325.0); cancelButton.setLayoutY(310);
+        cancelButton.setOnAction(e -> cancelAction());
+
+        // Add all children
+        getChildren().addAll(title, nameLbl, nameField, categoryLbl, categoryBox, supplierLbl, supplierBox, addButton, cancelButton);
+    }
+    
+    /**
+     * On press Add button
+     */
+    public void addAction() {
+        IngredientTest test = null;
+
+        String name = nameField.getText();
+        String category = categoryBox.getSelectionModel().getSelectedItem();
+        String supplier = supplierBox.getSelectionModel().getSelectedItem();
+
+        test = new IngredientTest(name, category, 1, supplier);
+
+        if (callback.addIngredientTest(test)) {
+            source.addNewIngredient(test);
+        }
+
+        close();
+    }
+
+    /**
+     * On Cancel button
+     */
+    public void cancelAction() {
+        close();
+    }
+
+    /**
+     * Close the frame
+     */
+    private void close() {
+        frame.dispose();
+    }
+
+    /**
+     * Collects a list of suppliers from the database
+     * @return list of suppliers
+     */
+    private ObservableList<String> getSuppliersFromDatabase() {
+        ObservableList<String> listSuppliers = FXCollections.observableArrayList();
+        ArrayList<Supplier> receivedSuppliers = callback.getSuppliers();
+
+        for (Supplier supplier: receivedSuppliers) {
+            listSuppliers.add(supplier.getName());
+        }
+        return listSuppliers;
     }
 
     /**
      * For testing purposes
-     * @param args
+     * @return
      */
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("FX");
-        final JFXPanel fxPanel = new JFXPanel();
-        frame.setTitle("Add new Ingredient");
-        frame.add(fxPanel);
-        frame.setBounds(0, 0, 600, 500);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        frame.setResizable(false);
-        frame.setVisible(true);
-
-        //Controller controller = new Controller();
-
-        Platform.runLater(() -> initFX(fxPanel));
+    private ObservableList<String> getSuppliers() {
+        ObservableList<String> ingredients = FXCollections.observableArrayList();
+        ingredients.add("Lucas AB");
+        ingredients.add("Georg Inc");
+        ingredients.add("Paul M");
+        ingredients.add("Coca Cola");
+        return ingredients;
     }
 
     /**
-     * Part of testing
-     * @param fxPanel
+     * For testing purposes
+     * @return
      */
-    private static void initFX(JFXPanel fxPanel) {
-        fxPanel.setScene(new Scene(new AddNewIngredientPane()));
+    private ObservableList<String> getCategories() {
+        ObservableList<String> ingredients = FXCollections.observableArrayList();
+        ingredients.add("Dry Food");
+        ingredients.add("Fresh Food");
+        ingredients.add("Drink");
+        return ingredients;
     }
 }

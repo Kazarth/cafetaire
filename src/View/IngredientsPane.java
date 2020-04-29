@@ -2,14 +2,11 @@ package View;
 
 import Entities.IngredientTest;
 import Entities.Styles;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,12 +17,8 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import Control.Callback;
-
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.security.Key;
-import java.util.Stack;
-import java.util.logging.Filter;
+import java.util.Arrays;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
@@ -127,6 +120,8 @@ public class IngredientsPane extends StackPane{
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
         tableView.setItems(ingredients);
+        // loads in data
+
 
         nameColumn.setPrefWidth(196);
         categoryColumn.setPrefWidth(196);
@@ -170,9 +165,7 @@ public class IngredientsPane extends StackPane{
         westHBOx.setAlignment(Pos.CENTER);
         eastHBox.setAlignment(Pos.CENTER);
 
-        innerContainer.setStyle("-fx-background-color: #EEEEEE ; -fx-background-radius: 20 20 20 20");
-
-
+        innerContainer.setStyle("-fx-background-color: #FFF ; -fx-background-radius: 20 20 20 20");
         innerContainer.setMaxSize(1036,698);
 
         mainVbox.setPrefSize(1036,225);
@@ -184,10 +177,6 @@ public class IngredientsPane extends StackPane{
 
         westHBOx.setSpacing(20);
         eastHBox.setSpacing(20);
-    }
-
-    public TableView<IngredientTest> getTableView() {
-        return tableView;
     }
 
     /**
@@ -203,7 +192,7 @@ public class IngredientsPane extends StackPane{
      */
     public void addNewIngredientAction() {
         try {
-            new newIngredientFX(this);
+            new AddNewIngredientPane(this, callback);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -228,7 +217,10 @@ public class IngredientsPane extends StackPane{
         if (ingredientTestSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            ingredientTestSelected.get(0).increment();
+            if (callback.increaseIngredientTest(ingredientTestSelected.get(0))) {
+                ingredientTestSelected.get(0).increment(); // increment for view
+                System.out.println("Completed increase in View");
+            }
             tableView.refresh();
         }
     }
@@ -242,7 +234,10 @@ public class IngredientsPane extends StackPane{
         if (ingredientTestSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            ingredientTestSelected.get(0).decrement();
+            if (callback.decreaseIngredientTest(ingredientTestSelected.get(0))) {
+                ingredientTestSelected.get(0).decrement(); // decrement for view
+                System.out.println("Completed decrease in View");
+            }
             tableView.refresh();
         }
     }
@@ -290,15 +285,11 @@ public class IngredientsPane extends StackPane{
 
     // Test values
     private ObservableList<IngredientTest>   getIngredientTest() {
-
-        ingredients = FXCollections.observableArrayList();
-
-        ingredients.add(new IngredientTest("Mjöl", "Torrvaror", 15, "Lucas AB"));
-        ingredients.add(new IngredientTest("Mjölk", "Dryck", 10, "Georg AB"));
-        ingredients.add(new IngredientTest("Salt", "Torrvaror", 5, "Julia AB"));
-        ingredients.add(new IngredientTest("Coca Cola", "Dryck", 30, "Coca Cola AB"));
-
+            ingredients = FXCollections.observableArrayList();
+            IngredientTest[] receivedIngredients = callback.getIngredientsTest();
+            ingredients.addAll(Arrays.asList(receivedIngredients));
             return ingredients;
+        }
     }
 
-}
+
