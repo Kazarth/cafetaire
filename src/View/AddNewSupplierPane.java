@@ -6,6 +6,7 @@ import Entities.Supplier;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.css.Style;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -35,9 +36,8 @@ public class AddNewSupplierPane extends AnchorPane {
 
     private SupplierPane source;
     private Callback callback;
-    private ArrayList<String> suppliers; // test purposes
 
-
+    //private ArrayList<String> suppliers; // test purposes
 
     public AddNewSupplierPane(SupplierPane source, Callback callback) {
         // init Frame
@@ -58,10 +58,10 @@ public class AddNewSupplierPane extends AnchorPane {
         this.callback = callback;
 
         // test values
-        suppliers = new ArrayList();
-        suppliers.add("Lucas");
-        suppliers.add("Julia");
-        suppliers.add("Coca Cola");
+        //suppliers = new ArrayList();
+        //suppliers.add("Lucas");
+        //suppliers.add("Julia");
+        //suppliers.add("Coca Cola");
 
         // Background pane
         setMaxWidth(600); setMaxHeight(400);
@@ -96,7 +96,7 @@ public class AddNewSupplierPane extends AnchorPane {
 
         categoryBox = new ComboBox();
         categoryBox.setPromptText("Select category");
-        categoryBox.setStyle(Styles.getPopField());
+        categoryBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
         categoryBox.setPrefWidth(360.0); categoryBox.setPrefHeight(40);
         categoryBox.setLayoutX(144.0); categoryBox.setLayoutY(160);
         categoryBox.setItems(getCategories()); // testing
@@ -131,7 +131,9 @@ public class AddNewSupplierPane extends AnchorPane {
         addButton.setStyle(Styles.getPopAddButton());
         addButton.setPrefWidth(200); addButton.setPrefHeight(40);
         addButton.setLayoutX(75); addButton.setLayoutY(340);
-        addButton.setOnAction(e -> addAction());
+        addButton.setOnAction(e -> {
+                addAction();
+                });
 
         cancelButton = new Button("CANCEL");
         cancelButton.setStyle(Styles.getPopCancelButton());
@@ -156,9 +158,12 @@ public class AddNewSupplierPane extends AnchorPane {
 
         supp = new Supplier(supplierName, category, email, phone);
 
+        System.out.println(supp.toString());
+
         if (callback.addSupplier(supp)) {
             source.addNewSupplier(supp);
         }
+
         close();
     }
 
@@ -177,19 +182,17 @@ public class AddNewSupplierPane extends AnchorPane {
 
 
 
-    /*
+
     //From database
     private ObservableList<String> getSuppliersFromDatabase() {
         ObservableList<String> listSuppliers = FXCollections.observableArrayList();
-        Supplier[] receivedSuppliers = callback.getSuppliers();
+        ArrayList<Supplier> receivedSuppliers = callback.getSuppliers();
 
         for (Supplier supplier: receivedSuppliers) {
             listSuppliers.add(supplier.getName());
         }
         return listSuppliers;
     }
-
-     */
 
 
     /**
