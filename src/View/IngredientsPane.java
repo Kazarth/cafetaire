@@ -28,7 +28,6 @@ import java.util.Arrays;
 
 public class IngredientsPane extends StackPane{
     private TableView<IngredientTest> tableView;
-    private ObservableList <IngredientTest> ingredients;
     private TableColumn<IngredientTest, String> nameColumn;
     private TableColumn<IngredientTest, String> categoryColumn;
     private TableColumn<IngredientTest, Integer> stockColumn;
@@ -36,7 +35,6 @@ public class IngredientsPane extends StackPane{
     private TableColumn selectedColumn;
     private TextField searchTextField;
     private Callback callback;
-    private Event event;
 
     public IngredientsPane (Callback callback) {
         this.callback = callback;
@@ -119,7 +117,7 @@ public class IngredientsPane extends StackPane{
 
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
-        tableView.setItems(ingredients);
+        tableView.setItems(getIngredientTest());
         // loads in data
 
 
@@ -285,7 +283,7 @@ public class IngredientsPane extends StackPane{
 
     // Test values
     private ObservableList<IngredientTest>   getIngredientTest() {
-            ingredients = FXCollections.observableArrayList();
+            ObservableList <IngredientTest> ingredients = FXCollections.observableArrayList();
             IngredientTest[] receivedIngredients = callback.getIngredientsTest();
             ingredients.addAll(Arrays.asList(receivedIngredients));
             return ingredients;
