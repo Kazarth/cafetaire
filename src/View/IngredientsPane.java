@@ -1,7 +1,9 @@
 package View;
 
+import Entities.Ingredient;
 import Entities.IngredientTest;
 import Entities.Styles;
+import Entities.Supplier;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -15,6 +17,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import Control.Callback;
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
@@ -112,7 +117,7 @@ public class IngredientsPane extends StackPane {
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
         // loads in data
-        tableView.setItems(getIngredientTest());
+        tableView.setItems(getIngredients());
 
 
         nameColumn.setPrefWidth(196);
@@ -209,7 +214,7 @@ public class IngredientsPane extends StackPane {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
             if (callback.increaseIngredientTest(ingredientTestSelected.get(0))) {
-                ingredientTestSelected.get(0).increment();
+                ingredientTestSelected.get(0).increment(); // increment for view
                 System.out.println("Completed increase in View");
             }
             tableView.refresh();
@@ -225,7 +230,10 @@ public class IngredientsPane extends StackPane {
         if (ingredientTestSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            ingredientTestSelected.get(0).decrement();
+            if (callback.decreaseIngredientTest(ingredientTestSelected.get(0))) {
+                ingredientTestSelected.get(0).decrement(); // decrement for view
+                System.out.println("Completed decrease in View");
+            }
             tableView.refresh();
         }
     }
@@ -233,10 +241,17 @@ public class IngredientsPane extends StackPane {
     // Test values
     private ObservableList<IngredientTest> getIngredientTest() {
         ObservableList<IngredientTest> ingredients = FXCollections.observableArrayList();
-        ingredients.add(new IngredientTest("Mjöl", "Torrvaror", 15, "Lucas AB"));
-        ingredients.add(new IngredientTest("Mjölk", "Dryck", 10, "Georg AB"));
-        ingredients.add(new IngredientTest("Salt", "Torrvaror", 5, "Julia AB"));
-        ingredients.add(new IngredientTest("Coca Cola", "Dryck", 30, "Coca Cola AB"));
+        ingredients.add(new IngredientTest("Mjöl", "Torrvaror", 1, "Lucas AB"));
+        ingredients.add(new IngredientTest("Mjölk", "Dryck", 2, "Georg AB"));
+        ingredients.add(new IngredientTest("Salt", "Torrvaror", 10,"Julia AB"));
+        ingredients.add(new IngredientTest("Coca Cola", "Dryck", 20, "Coca Cola AB"));
+        return ingredients;
+    }
+
+    private ObservableList<IngredientTest> getIngredients() {
+        ObservableList<IngredientTest> ingredients = FXCollections.observableArrayList();
+        IngredientTest[] receivedIngredients = callback.getIngredientsTest();
+        ingredients.addAll(Arrays.asList(receivedIngredients));
         return ingredients;
     }
 }

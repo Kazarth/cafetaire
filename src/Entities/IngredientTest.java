@@ -1,5 +1,7 @@
 package Entities;
 
+import Control.Callback;
+
 /**
  * IngredientTest.java
  * Gjorde denna klassen för att inte påverka originalet. Vad jag sett ska "produkten" man lägger in ha samma
@@ -26,7 +28,7 @@ public class IngredientTest {
     public IngredientTest(String name, String category, int stock, String supplier) {
         this.name = name;
         this.category = category;
-        this.stock = 1;
+        this.stock = stock;
         this.supplier = supplier;
         selected = false;
     }

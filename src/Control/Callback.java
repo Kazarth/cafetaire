@@ -2,6 +2,8 @@ package Control;
 
 import Entities.*;
 
+import java.util.ArrayList;
+
 /**
  * Used for callback functionality between the Controller and the different Frames.
  * @author Tor Stenfeldt
@@ -32,7 +34,7 @@ public interface Callback {
     boolean addSupplier (Supplier supplier);
     boolean addSupplier (String name);
     Supplier getSupplier(String supplier);
-    Supplier[] getSuppliers();
+    ArrayList<Supplier> getSuppliers();
     int getNumSuppliers();
     boolean removeSupplier (String name);
 
