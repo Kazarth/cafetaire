@@ -95,7 +95,7 @@ public class AddNewIngredientPane extends AnchorPane {
 
         categoryBox = new ComboBox();
         categoryBox.setPromptText("Select category");
-        categoryBox.setStyle(Styles.getPopField());
+        categoryBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
         categoryBox.setPrefWidth(360.0); categoryBox.setPrefHeight(40);
         categoryBox.setLayoutX(144.0); categoryBox.setLayoutY(160);
         categoryBox.setItems(getCategories()); // testing
@@ -110,7 +110,7 @@ public class AddNewIngredientPane extends AnchorPane {
         supplierBox = new ComboBox<>();
         supplierBox.setPromptText("Enter supplier");
         supplierBox.setEditable(true);
-        supplierBox.setStyle(Styles.getPopField());
+        supplierBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
         supplierBox.setPrefWidth(360); supplierBox.setPrefHeight(40);
         supplierBox.setLayoutX(144.0); supplierBox.setLayoutY(220);
         supplierBox.setItems(getSuppliersFromDatabase()); // testing
