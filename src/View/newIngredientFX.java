@@ -152,6 +152,9 @@ public class newIngredientFX extends AnchorPane {
         getChildren().addAll(title, nameLbl, nameField, categoryLbl, categoryBox, supplierLbl, supplierBox, addButton, cancelButton);
     }
 
+    /**
+     * On press Add button
+     */
     public void addAction() {
         IngredientTest test = null;
 
@@ -175,10 +178,16 @@ public class newIngredientFX extends AnchorPane {
         close();
     }
 
+    /**
+     * On Cancel button
+     */
     public void cancelAction() {
         close();
     }
 
+    /**
+     * Close the frame
+     */
     private void close() {
         frame.dispose();
     }
