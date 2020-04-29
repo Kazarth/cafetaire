@@ -113,7 +113,7 @@ public class AddNewIngredientPane extends AnchorPane {
         supplierBox.setStyle(Styles.getPopField());
         supplierBox.setPrefWidth(360); supplierBox.setPrefHeight(40);
         supplierBox.setLayoutX(144.0); supplierBox.setLayoutY(220);
-        supplierBox.setItems(getSuppliers()); // testing
+        supplierBox.setItems(getSuppliersFromDatabase()); // testing
 
         // Button pane
         addButton = new Button("ADD NEW INGREDIENT");
@@ -142,7 +142,7 @@ public class AddNewIngredientPane extends AnchorPane {
         String category = categoryBox.getSelectionModel().getSelectedItem();
         String supplier = supplierBox.getSelectionModel().getSelectedItem();
 
-        test = new IngredientTest(name, category, 0, supplier);
+        test = new IngredientTest(name, category, 1, supplier);
 
         if (callback.addIngredientTest(test)) {
             source.addNewIngredient(test);
@@ -165,10 +165,13 @@ public class AddNewIngredientPane extends AnchorPane {
         frame.dispose();
     }
 
-    /*From database*/
+    /**
+     * Collects a list of suppliers from the database
+     * @return list of suppliers
+     */
     private ObservableList<String> getSuppliersFromDatabase() {
         ObservableList<String> listSuppliers = FXCollections.observableArrayList();
-        Supplier[] receivedSuppliers = callback.getSuppliers();
+        ArrayList<Supplier> receivedSuppliers = callback.getSuppliers();
 
         for (Supplier supplier: receivedSuppliers) {
             listSuppliers.add(supplier.getName());

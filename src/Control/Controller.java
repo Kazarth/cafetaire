@@ -8,6 +8,8 @@ import Extra.ColourTxT;
 import Model.Database;
 import View.MainPane;
 
+import java.util.ArrayList;
+
 /**
  * Instantiates the database and the mainFrame and holds the class handling callback between them.
  * @author Tor Stenfeldt
@@ -144,7 +146,7 @@ public class Controller {
         }
 
         @Override
-        public Supplier[] getSuppliers() {
+        public ArrayList<Supplier> getSuppliers() {
             return database.getSuppliers();
         }
 
@@ -202,6 +204,7 @@ public class Controller {
 
         @Override
         public boolean decreaseIngredientTest(IngredientTest ingredient) {
+            System.out.println(colourTxT.NEONGREEN() + "Controller received decrease request" + colourTxT.RESET());
             return database.decreaseIngredientTest(ingredient);
         }
 
