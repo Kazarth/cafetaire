@@ -34,6 +34,7 @@ public class SupplierPane extends StackPane {
     private TableColumn<Supplier, String> categoryColumn;
     private TableColumn<Supplier, String> emailColumn;
     private TableColumn<Supplier, Integer> phoneColumn;
+    private Callback callback;
 
 
 
@@ -62,6 +63,7 @@ public class SupplierPane extends StackPane {
 
         // BUTTONS FOR BUTTON BAR (LEFT) ADD, REMOVE, EDIT
         Button buttonAdd = new Button("ADD SUPPLIER");
+        buttonAdd.setOnAction(e -> addNewSupplierAction());
         Button buttonRemove = new Button("REMOVE SUPPLIER");
         Button buttonEdit = new Button("EDIT SUPPLIER");
 
@@ -165,6 +167,18 @@ public class SupplierPane extends StackPane {
         ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
         suppliers.add(new Supplier("Coca Cola AB", "Dryck", "CocaCola@cocacolacompany.com", "0431-1337"));
         return suppliers;
+    }
+
+    public void addNewSupplier(Supplier supplier) {
+        tableView.getItems().add(supplier);
+    }
+
+    public void addNewSupplierAction() {
+        try {
+            new AddNewSupplierPane(this, callback);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
