@@ -167,8 +167,4 @@ public class SupplierPane extends StackPane {
         return suppliers;
     }
 
-
-
-
-
 }
