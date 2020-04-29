@@ -315,8 +315,6 @@ public class Database {
     }
 
     public boolean decreaseIngredientTest(String ingredient) {
-        System.out.println("Model entered");
-
         if (!nIngredientsTest.containsKey(ingredient)) {
             System.out.println(colourTxT.RED() + "Failed to remove " + ingredient + " to database" + colourTxT.RESET());
             return false;
