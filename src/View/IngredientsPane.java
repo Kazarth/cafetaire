@@ -200,7 +200,6 @@ public class IngredientsPane extends StackPane {
      * Removes selected ingredient from the stock
      */
     public void removeIngredient() {
-        System.out.println("Remove ingredient from stock");
         ObservableList<IngredientTest> ingredientTestSelected, allIngredients;
         allIngredients = tableView.getItems();
         ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
@@ -211,7 +210,6 @@ public class IngredientsPane extends StackPane {
      * Increments the selected ingredients stock by 1
      */
     public void addAmount() {
-        System.out.println("Increment the value by 1");
         ObservableList<IngredientTest> ingredientTestSelected;
         ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
         if (ingredientTestSelected.size() <= 0) {
@@ -226,7 +224,6 @@ public class IngredientsPane extends StackPane {
      * Decrements the selected ingredients stock by 1
      */
     public void removeAmount() {
-        System.out.println("Decrement the value by 1");
         ObservableList<IngredientTest> ingredientTestSelected;
         ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
         if (ingredientTestSelected.size() <= 0) {
