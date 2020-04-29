@@ -15,7 +15,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import Control.Callback;
 import javax.swing.*;
-import java.util.Stack;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
@@ -184,7 +183,7 @@ public class IngredientsPane extends StackPane {
      */
     public void addNewIngredientAction() {
         try {
-            new newIngredientFX(this, callback);
+            new AddNewIngredientPane(this, callback);
         } catch (Exception e) {
             e.printStackTrace();
         }

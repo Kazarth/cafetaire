@@ -41,6 +41,9 @@ public class Database {
         /* Testing purposes */
         ingredientsTest = new HashMap<>();
         nIngredientsTest = new HashMap<>();
+        suppliers.add(new Supplier("Lucas AB"));
+        suppliers.add(new Supplier("Georg AB"));
+        suppliers.add(new Supplier("Julia AB"));
     }
 
     public boolean addIngredient(Ingredient ingredient) {
