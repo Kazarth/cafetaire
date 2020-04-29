@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="panel" stylesheets="@addNewIngredient.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.newIngredientFX">
+<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="panel" stylesheets="@addNewIngredient.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AddNewIngredientPane">
    <children>
       <Text fill="#619f81" layoutX="162.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="ADD NEW INGREDIENT">
          <font>

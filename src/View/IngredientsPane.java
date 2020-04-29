@@ -15,7 +15,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import Control.Callback;
 import javax.swing.*;
-import java.util.Stack;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
@@ -157,9 +156,7 @@ public class IngredientsPane extends StackPane {
         westHBOx.setAlignment(Pos.CENTER);
         eastHBox.setAlignment(Pos.CENTER);
 
-        innerContainer.setStyle("-fx-background-color: #EEEEEE ; -fx-background-radius: 20 20 20 20");
-
-
+        innerContainer.setStyle("-fx-background-color: #FFF ; -fx-background-radius: 20 20 20 20");
         innerContainer.setMaxSize(1036,698);
 
         mainVbox.setPrefSize(1036,225);
@@ -171,10 +168,6 @@ public class IngredientsPane extends StackPane {
 
         westHBOx.setSpacing(20);
         eastHBox.setSpacing(20);
-    }
-
-    public TableView<IngredientTest> getTableView() {
-        return tableView;
     }
 
     /**
@@ -190,7 +183,7 @@ public class IngredientsPane extends StackPane {
      */
     public void addNewIngredientAction() {
         try {
-            new newIngredientFX(this);
+            new AddNewIngredientPane(this, callback);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -215,7 +208,10 @@ public class IngredientsPane extends StackPane {
         if (ingredientTestSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            ingredientTestSelected.get(0).increment();
+            if (callback.increaseIngredientTest(ingredientTestSelected.get(0))) {
+                ingredientTestSelected.get(0).increment();
+                System.out.println("Completed increase in View");
+            }
             tableView.refresh();
         }
     }

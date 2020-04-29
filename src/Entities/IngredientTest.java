@@ -18,7 +18,7 @@ public class IngredientTest {
     public IngredientTest() {
         name = "";
         category = "";
-        stock = 0;
+        stock = 1;
         supplier = "";
         selected = false;
     }
@@ -26,7 +26,7 @@ public class IngredientTest {
     public IngredientTest(String name, String category, int stock, String supplier) {
         this.name = name;
         this.category = category;
-        this.stock = stock;
+        this.stock = 1;
         this.supplier = supplier;
         selected = false;
     }
