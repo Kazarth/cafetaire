@@ -163,7 +163,7 @@ public class IngredientsPane extends StackPane{
         westHBOx.setAlignment(Pos.CENTER);
         eastHBox.setAlignment(Pos.CENTER);
 
-        innerContainer.setStyle("-fx-background-color: #FFF ; -fx-background-radius: 20 20 20 20");
+        innerContainer.setStyle("-fx-background-color: #FFFFFF ; -fx-background-radius: 20 20 20 20");
         innerContainer.setMaxSize(1036,698);
 
         mainVbox.setPrefSize(1036,225);
