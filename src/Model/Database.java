@@ -40,7 +40,7 @@ public class Database {
         this.suppliers = new ArrayList<>();
 
         /* Testing purposes */
-        nIngredientsTest = new HashMap<>(); // Måste lägga in antal först för att kunna hitta det sen? --> inläsning av det först sen?
+        nIngredientsTest = new HashMap<>(); // Måste lägga in antal först för att kunna hitta det sen? --> inläsning av det först sen? Eller lägga stock i varje Ingredients-instans
         nIngredientsTest.put("salt", 1);
         nIngredientsTest.put("sugar", 10);
         nIngredientsTest.put("cocoa", 5);
