@@ -1,7 +1,6 @@
 package View;
 
 import Control.Callback;
-import Entities.IngredientTest;
 import Entities.Styles;
 import Entities.Supplier;
 import javafx.collections.FXCollections;
@@ -18,6 +17,8 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import javax.swing.*;
+
 
 /**
  * Supplier Menu.java
@@ -27,12 +28,14 @@ import javafx.scene.text.Text;
  */
 
 public class SupplierPane extends StackPane {
+
     private TableView<Supplier> tableView;
     private TableColumn<Supplier, String> supplierColumn;
     private TableColumn<Supplier, String> categoryColumn;
     private TableColumn<Supplier, String> emailColumn;
     private TableColumn<Supplier, Integer> phoneColumn;
-    //private TableColumn<Supplier, String> supplierColumn;
+
+
 
 
     public SupplierPane(Callback callback) {
@@ -128,25 +131,25 @@ public class SupplierPane extends StackPane {
         setPrefSize(1086, 768);
         setStyle(Styles.getPane());
         getChildren().add(mainContainer);
-
-
     }
 
     public void setTableView () {
 
         tableView = new TableView();
         setPrefSize(1068,768);
-        //setCenter(tableView); // Deala med denna så att det passar.
 
         supplierColumn = new TableColumn("Supplier");
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
-       // supplierColumn.setStyle();
+        supplierColumn.setStyle(Styles.getTableColumn());
         categoryColumn = new TableColumn("category");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        categoryColumn.setStyle(Styles.getTableColumn());
         emailColumn = new TableColumn("Email");
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        emailColumn.setStyle(Styles.getTableColumn());
         phoneColumn = new TableColumn("Phone");
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        phoneColumn.setStyle(Styles.getTableColumn());
 
         tableView.getColumns().addAll(supplierColumn, categoryColumn, emailColumn, phoneColumn);
 
@@ -156,14 +159,16 @@ public class SupplierPane extends StackPane {
         categoryColumn.setPrefWidth(234);
         emailColumn.setPrefWidth(234);
         phoneColumn.setPrefWidth(234);
-        //selectedColumn.setPrefWidth(250);
     }
 
     private ObservableList<Supplier> getSuppliers() {
-
         ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
         suppliers.add(new Supplier("Coca Cola AB", "Dryck", "CocaCola@cocacolacompany.com", "0431-1337"));
         return suppliers;
     }
+
+
+
+
 
 }

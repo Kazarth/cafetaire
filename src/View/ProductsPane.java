@@ -259,7 +259,8 @@ public class ProductsPane extends BorderPane {
             System.out.println(txtFieldNewProducts.getText());
             txtFieldNewProducts.clear();
         } else if (txtFieldEmpty()){
-            JOptionPane.showMessageDialog(null, "Please enter a name for your product!");
+            return;
+            //JOptionPane.showMessageDialog(null, "Please enter a name for your product!");
         }
     }
 
