@@ -8,6 +8,7 @@ package Entities;
 public class Ingredient {
     private String type;
     private Supplier supplier;
+    private String category;
 
 
     public Ingredient(Ingredient ingredient) {

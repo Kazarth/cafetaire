@@ -2,8 +2,14 @@ package View;
 
 import Entities.IngredientTest;
 import Entities.Styles;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -14,8 +20,12 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import Control.Callback;
+
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.security.Key;
 import java.util.Stack;
+import java.util.logging.Filter;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
@@ -23,16 +33,17 @@ import java.util.Stack;
  * @version 1.0
  */
 
-public class IngredientsPane extends StackPane {
+public class IngredientsPane extends StackPane{
     private TableView<IngredientTest> tableView;
+    private ObservableList <IngredientTest> ingredients;
     private TableColumn<IngredientTest, String> nameColumn;
     private TableColumn<IngredientTest, String> categoryColumn;
     private TableColumn<IngredientTest, Integer> stockColumn;
     private TableColumn<IngredientTest, String> supplierColumn;
     private TableColumn selectedColumn;
+    private TextField searchTextField;
     private Callback callback;
-
-    public IngredientsPane() {}
+    private Event event;
 
     public IngredientsPane (Callback callback) {
         this.callback = callback;
@@ -83,16 +94,19 @@ public class IngredientsPane extends StackPane {
 
         /** Searchbar configuration */
 
-        TextField searchTextField = new TextField();
+        searchTextField = new TextField();
         searchTextField.setPromptText("SEARCH");
         searchTextField.setPrefHeight(32);
         searchTextField.setPrefWidth(250);
 
         /** Ingredient table configuration and design */
 
+
         tableView = new TableView();
         setPrefSize(1086,768);
         setStyle(Styles.getPane());
+        searchRecord();
+
 
 
         nameColumn = new TableColumn("NAME");
@@ -112,15 +126,14 @@ public class IngredientsPane extends StackPane {
 
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
-        // loads in data
-        tableView.setItems(getIngredientTest());
-
+        tableView.setItems(ingredients);
 
         nameColumn.setPrefWidth(196);
         categoryColumn.setPrefWidth(196);
         stockColumn.setPrefWidth(196);
         supplierColumn.setPrefWidth(195);
         selectedColumn.setPrefWidth(195);
+
 
         /** LayoutPane configurations and instantiation.
          *  VBOX, HBOX. */
@@ -234,13 +247,58 @@ public class IngredientsPane extends StackPane {
         }
     }
 
+    /**
+     * Searchbar functionality. (NEEDS REVISION).
+     */
+
+    private void searchRecord() {
+
+        FilteredList <IngredientTest> filteredList = new FilteredList<>(getIngredientTest(),p -> true);
+        searchTextField.textProperty().addListener((observable,oldValue,newValue) -> {
+            filteredList.setPredicate(tableView -> {
+
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String typedText = newValue.toLowerCase();
+
+                 if (tableView.getName().toLowerCase().contains(typedText)) {
+                    return true;
+                }
+
+
+                if (tableView.getSupplier().toLowerCase().contains(typedText)) {
+                    return true;
+                }
+
+                if (String.valueOf(tableView.getStock()).toLowerCase().contains(typedText)) {
+                    return true;
+                }
+
+
+                return false;
+            });
+
+            SortedList <IngredientTest> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(tableView.comparatorProperty());
+         //   tableView.setItems(sortedList);
+        });
+    }
+
+
+
     // Test values
-    private ObservableList<IngredientTest> getIngredientTest() {
-        ObservableList<IngredientTest> ingredients = FXCollections.observableArrayList();
+    private ObservableList<IngredientTest>   getIngredientTest() {
+
+        ingredients = FXCollections.observableArrayList();
+
         ingredients.add(new IngredientTest("Mjöl", "Torrvaror", 15, "Lucas AB"));
         ingredients.add(new IngredientTest("Mjölk", "Dryck", 10, "Georg AB"));
         ingredients.add(new IngredientTest("Salt", "Torrvaror", 5, "Julia AB"));
         ingredients.add(new IngredientTest("Coca Cola", "Dryck", 30, "Coca Cola AB"));
-        return ingredients;
+
+            return ingredients;
     }
+
 }
