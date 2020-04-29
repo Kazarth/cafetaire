@@ -66,4 +66,11 @@ public class Supplier {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public String toString() {
+        return "Name: " + supplierName + "\n" +
+                "Category: " + category + "\n" +
+                "Email: " + email + "\n" +
+                "Phone: " + phone;
+    }
 }

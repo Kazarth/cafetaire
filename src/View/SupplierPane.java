@@ -18,6 +18,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 
 /**
@@ -40,6 +41,7 @@ public class SupplierPane extends StackPane {
 
 
     public SupplierPane(Callback callback) {
+        this.callback = callback;
 
         setTableView();
 
@@ -138,6 +140,7 @@ public class SupplierPane extends StackPane {
     public void setTableView () {
 
         tableView = new TableView();
+        tableView.setStyle(Styles.getTableRowSelected());
         setPrefSize(1068,768);
 
         supplierColumn = new TableColumn("Supplier");
@@ -155,7 +158,7 @@ public class SupplierPane extends StackPane {
 
         tableView.getColumns().addAll(supplierColumn, categoryColumn, emailColumn, phoneColumn);
 
-        tableView.setItems(getSuppliers());
+        tableView.setItems(getSuppliersFromDatabase());
 
         supplierColumn.setPrefWidth(233);
         categoryColumn.setPrefWidth(234);
@@ -163,10 +166,15 @@ public class SupplierPane extends StackPane {
         phoneColumn.setPrefWidth(234);
     }
 
-    private ObservableList<Supplier> getSuppliers() {
-        ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
-        suppliers.add(new Supplier("Coca Cola AB", "Dryck", "CocaCola@cocacolacompany.com", "0431-1337"));
-        return suppliers;
+    /**
+     * Gets suppliers from Database.java
+     * @return list of Supplier
+     */
+    private ObservableList<Supplier> getSuppliersFromDatabase() {
+        ObservableList<Supplier> listSuppliers = FXCollections.observableArrayList();
+        ArrayList<Supplier> receivedSuppliers = callback.getSuppliers();
+        listSuppliers.addAll(receivedSuppliers);
+        return listSuppliers;
     }
 
     public void addNewSupplier(Supplier supplier) {
