@@ -2,7 +2,9 @@ package Control;
 
 import Entities.Food;
 import Entities.Ingredient;
+import Entities.IngredientTest;
 import Entities.Supplier;
+import Extra.ColourTxT;
 import Model.Database;
 import View.MainPane;
 
@@ -14,6 +16,8 @@ import View.MainPane;
 public class Controller {
     private Database database;
     private MainPane mainPane;
+
+    private ColourTxT colourTxT = new ColourTxT();
 
     public Controller() {
         this.database = new Database();
@@ -152,6 +156,58 @@ public class Controller {
         @Override
         public boolean removeSupplier(String name) {
             return database.removeSupplier(name);
+        }
+
+
+        /* Testing purposes */
+        @Override
+        public boolean addIngredientTest(IngredientTest ingredient) {
+            System.out.println(colourTxT.NEONGREEN() + "Controller received:\n" +
+                    "Name: " + ingredient.getName() + "\n" +
+                    "Category: " + ingredient.getCategory() + "\n" +
+                    "Supplier: " + ingredient.getSupplier() + colourTxT.RESET());
+            return database.addIngredientTest(ingredient);
+        }
+
+        @Override
+        public IngredientTest getIngredientTest(String ingredient) {
+            return database.getIngredientTest(ingredient);
+        }
+
+        @Override
+        public IngredientTest[] getIngredientsTest() {
+            return database.getIngredientsTest();
+        }
+
+        @Override
+        public int getNumIngredientsTest(String ingredient) {
+            return database.getNumIngredientsTest(ingredient);
+        }
+
+        @Override
+        public boolean increaseIngredientTest(String ingredient) {
+            return database.increaseIngredientTest(ingredient);
+        }
+
+        @Override
+        public boolean increaseIngredientTest(IngredientTest ingredient) {
+            System.out.println(colourTxT.NEONGREEN() + "Controller received increase request" + colourTxT.RESET());
+            return database.increaseIngredientTest(ingredient);
+        }
+
+        @Override
+        public boolean decreaseIngredientTest(String ingredient) {
+            return database.decreaseIngredientTest(ingredient);
+        }
+
+        @Override
+        public boolean decreaseIngredientTest(IngredientTest ingredient) {
+            return database.decreaseIngredientTest(ingredient);
+        }
+
+        @Override
+        public boolean removeIngredientTest(String ingredient) {
+            return database.removeIngredientTest(ingredient);
         }
     }
 }

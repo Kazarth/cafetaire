@@ -1,7 +1,11 @@
 package View;
 
 
+import Control.Callback;
+import Entities.Ingredient;
 import Entities.IngredientTest;
+import Entities.Styles;
+import Entities.Supplier;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,9 +33,10 @@ public class newIngredientFX extends AnchorPane {
     private ComboBox<String> categoryBox, supplierBox; // lägg in och läs in listor som vanligt?
     private Button addButton, cancelButton;
     private IngredientsPane source; // sourcePane
+    private Callback callback; // get logic
     private ArrayList<String> suppliers; // test purposes
 
-    public newIngredientFX(IngredientsPane source) {
+    public newIngredientFX(IngredientsPane source, Callback callback) {
         // init Frame
         frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
@@ -47,6 +52,7 @@ public class newIngredientFX extends AnchorPane {
 
         // Init source
         this.source = source;
+        this.callback = callback;
 
         // test values
         suppliers = new ArrayList();
@@ -63,11 +69,7 @@ public class newIngredientFX extends AnchorPane {
 
         // title pane
         title = new Label("ADD NEW INGREDIENT");
-        title.setStyle(
-                "-fx-text-fill: #619F81;" +
-                "-fx-font-weight: bold;" +
-                "-fx-font-size: 25px"
-        );
+        title.setStyle(Styles.getPopTitle());
         title.setLayoutX(162.0); title.setLayoutY(20);
         title.setPrefWidth(300); title.setPrefHeight(40);
 
@@ -81,10 +83,7 @@ public class newIngredientFX extends AnchorPane {
 
         nameField = new TextField();
         nameField.setPromptText("Enter name");
-        nameField.setStyle(
-                "-fx-background-color: #fff;" +
-                "-fx-border-width: 1;" +
-                "-fx-border-color: #000;");
+        nameField.setStyle(Styles.getPopField());
         nameField.setPrefWidth(360); nameField.setPrefHeight(40);
         nameField.setLayoutX(144.0); nameField.setLayoutY(100);
 
@@ -97,10 +96,7 @@ public class newIngredientFX extends AnchorPane {
 
         categoryBox = new ComboBox();
         categoryBox.setPromptText("Select category");
-        categoryBox.setStyle(
-                "-fx-background-color: #fff;" +
-                        "-fx-border-width: 1;" +
-                        "-fx-border-color: #000;");
+        categoryBox.setStyle(Styles.getPopField());
         categoryBox.setPrefWidth(360.0); categoryBox.setPrefHeight(40);
         categoryBox.setLayoutX(144.0); categoryBox.setLayoutY(160);
         categoryBox.setItems(getCategories()); // testing
@@ -115,35 +111,20 @@ public class newIngredientFX extends AnchorPane {
         supplierBox = new ComboBox<>();
         supplierBox.setPromptText("Enter supplier");
         supplierBox.setEditable(true);
-        supplierBox.setStyle(
-                "-fx-background-color: #fff;" +
-                        "-fx-border-width: 1;" +
-                        "-fx-border-color: #000;");
+        supplierBox.setStyle(Styles.getPopField());
         supplierBox.setPrefWidth(360); supplierBox.setPrefHeight(40);
         supplierBox.setLayoutX(144.0); supplierBox.setLayoutY(220);
         supplierBox.setItems(getSuppliers()); // testing
 
         // Button pane
         addButton = new Button("ADD NEW INGREDIENT");
-        addButton.setStyle(
-                "-fx-background-color: #619F81;" +
-                "-fx-background-radius: 10;" +
-                "-fx-border-radius: 40;" +
-                "-fx-text-fill: #fff;" +
-                "-fx-font-size: 16px;" +
-                "-fx-font-weight: Bold;");
+        addButton.setStyle(Styles.getPopAddButton());
         addButton.setPrefWidth(200); addButton.setPrefHeight(40);
         addButton.setLayoutX(75); addButton.setLayoutY(310);
         addButton.setOnAction(e -> addAction());
 
         cancelButton = new Button("CANCEL");
-        cancelButton.setStyle(
-                "-fx-background-color: #ddd;" +
-                        "-fx-background-radius: 10;" +
-                        "-fx-border-radius: 40;" +
-                        "-fx-text-fill: #fff;" +
-                        "-fx-font-size: 16px;" +
-                        "-fx-font-weight: Bold;");
+        cancelButton.setStyle(Styles.getPopCancelButton());
         cancelButton.setPrefWidth(200); cancelButton.setPrefHeight(40);
         cancelButton.setLayoutX(325.0); cancelButton.setLayoutY(310);
         cancelButton.setOnAction(e -> cancelAction());
@@ -155,6 +136,35 @@ public class newIngredientFX extends AnchorPane {
     /**
      * On press Add button
      */
+    public void addActionCallback() {
+        /*Ingredient ingredient = null;
+        Supplier newSupplier = null;
+
+        String name = nameField.getText();
+        String category = categoryBox.getSelectionModel().getSelectedItem();
+        String supplier = supplierBox.getSelectionModel().getSelectedItem();
+
+        if (!callback.addSupplier(supplier)) {
+            callback.getSupplier(supplier);
+        } else {
+            //-- Visa ny nuta --//
+            // -- Samla in info --//
+            newSupplier = new Supplier("name");
+            newSupplier.setCategory(category);
+            callback.addSupplier(newSupplier);
+        }
+
+        ingredient = new Ingredient(name, newSupplier);
+        if (callback.addIngredient(ingredient)) {
+            source.addNewIngredient(ingredient);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error, please input correctly");
+        }*/
+    }
+    
+    /**
+     * On press Add button
+     */
     public void addAction() {
         IngredientTest test = null;
 
@@ -162,18 +172,11 @@ public class newIngredientFX extends AnchorPane {
         String category = categoryBox.getSelectionModel().getSelectedItem();
         String supplier = supplierBox.getSelectionModel().getSelectedItem();
 
-        // Skapa algoritm som kollar mot databas
-        // if (!exist) --> Skapa ny
-        // else --> låt bli
-        /*for (String s: suppliers) {
-            if (!s.equals(supplier)) {
-
-            }
-        }*/
-
         test = new IngredientTest(name, category, 0, supplier);
 
-        source.addNewIngredient(test);
+        if (callback.addIngredientTest(test)) {
+            source.addNewIngredient(test);
+        }
 
         close();
     }

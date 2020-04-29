@@ -126,4 +126,42 @@ public abstract class Styles {
                 "-fx-background-color: #eee; "
                 );
     }
+
+    public static String getPopTitle() {
+        return (
+                "-fx-text-fill: #619F81;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 25px"
+        );
+    }
+
+    public static String getPopField() {
+        return (
+                "-fx-background-color: #fff;" +
+                "-fx-border-width: 1;" +
+                "-fx-border-color: #000;"
+        );
+    }
+
+    public static String getPopAddButton() {
+        return (
+                "-fx-background-color: #619F81;" +
+                "-fx-background-radius: 10;" +
+                "-fx-border-radius: 40;" +
+                "-fx-text-fill: #fff;" +
+                "-fx-font-size: 16px;" +
+                "-fx-font-weight: Bold;"
+        );
+    }
+
+    public static String getPopCancelButton() {
+        return (
+                "-fx-background-color: #ddd;" +
+                "-fx-background-radius: 10;" +
+                "-fx-border-radius: 40;" +
+                "-fx-text-fill: #fff;" +
+                "-fx-font-size: 16px;" +
+                "-fx-font-weight: Bold;"
+        );
+    }
 }

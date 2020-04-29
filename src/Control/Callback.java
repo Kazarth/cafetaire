@@ -35,4 +35,15 @@ public interface Callback {
     Supplier[] getSuppliers();
     int getNumSuppliers();
     boolean removeSupplier (String name);
+
+    /* Testing purposes */
+    boolean addIngredientTest(IngredientTest ingredient);
+    IngredientTest getIngredientTest(String ingredient);
+    IngredientTest[] getIngredientsTest();
+    int getNumIngredientsTest(String ingredient);
+    boolean increaseIngredientTest(String ingredient);
+    boolean increaseIngredientTest(IngredientTest ingredient);
+    boolean decreaseIngredientTest(String ingredient);
+    boolean decreaseIngredientTest(IngredientTest ingredient);
+    boolean removeIngredientTest(String ingredient);
 }

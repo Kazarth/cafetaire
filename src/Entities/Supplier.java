@@ -6,10 +6,10 @@ package Entities;
  * @version 2.0
  */
 public class Supplier {
-    private String  supplierName;
-    private String  category;
-    private String  email;
-    private String  phone;
+    private String supplierName;
+    private String category;
+    private String email;
+    private String phone;
 
     public Supplier(String supplierName, String category, String email, String phone) {
         this.supplierName   = supplierName;
@@ -47,6 +47,7 @@ public class Supplier {
     public String getName() {
         return supplierName;
     }
+
     public String getCategory() {
         return category;
     }
