@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
 /**
  * The products menu provides information regarding products that currently are in stock
  * @author Viktor Polak
- * @version 3.1
+ * @version 4.0
  */
 
 public class ProductsPane extends StackPane {

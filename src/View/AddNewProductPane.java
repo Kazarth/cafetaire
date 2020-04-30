@@ -16,6 +16,12 @@ import javafx.scene.layout.AnchorPane;
 import javax.swing.*;
 import java.util.ArrayList;
 
+/**
+ * The class handles a Pop-up window for adding a product to products in database.
+ * @author Viktor Polak, Lucas Eliasson
+ * @version 1.0
+ */
+
 public class AddNewProductPane extends AnchorPane {
     private JFrame frame;
 
