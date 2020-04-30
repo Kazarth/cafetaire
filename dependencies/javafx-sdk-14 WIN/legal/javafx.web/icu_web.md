@@ -102,7 +102,7 @@ property of their respective owners.
  # disclaimer in the documentation and/or other materials provided with
  # the distribution.
  #  Neither the name of  Google Inc. nor the names of its
- # contributors may be used to endorse or promote products derived from
+ # contributors may be used to endorse or promote product derived from
  # this software without specific prior written permission.
  #
  #
@@ -151,7 +151,7 @@ property of their respective owners.
  #   *   the documentation and/or other materials provided with the
  #   *   distribution.
  #   * . Neither the name of the TaBE Project nor the names of its
- #   *   contributors may be used to endorse or promote products derived
+ #   *   contributors may be used to endorse or promote product derived
  #   *   from this software without specific prior written permission.
  #   *
  #   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -185,7 +185,7 @@ property of their respective owners.
  #   *   distribution.
  #   * . Neither the name of the Computer Systems and Communication Lab
  #   *   nor the names of its contributors may be used to endorse or
- #   *   promote products derived from this software without specific
+ #   *   promote product derived from this software without specific
  #   *   prior written permission.
  #   *
  #   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -272,7 +272,7 @@ property of their respective owners.
  #  foregoing by his or her commencement of use of the program.  The term
  #  "use" as used herein includes, but is not limited to, the use,
  #  modification, copying and distribution of the program and the
- #  production of secondary products from the program.
+ #  production of secondary product from the program.
  #
  #  In the case where the program, whether in its original form or
  #  modified, was distributed or delivered to or received by a user from
@@ -348,7 +348,7 @@ property of their respective owners.
  #  with the distribution.
  #
  #    Neither the name Myanmar Karen Word Lists, nor the names of its
- #    contributors may be used to endorse or promote products derived
+ #    contributors may be used to endorse or promote product derived
  #    from this software without specific prior written permission.
  #
  #  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
@@ -403,7 +403,7 @@ met:
       disclaimer in the documentation and/or other materials provided
       with the distribution.
     * Neither the name of Google Inc. nor the names of its
-      contributors may be used to endorse or promote products derived
+      contributors may be used to endorse or promote product derived
       from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS

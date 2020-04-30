@@ -1,6 +1,6 @@
 package View;
+import Entities.Product;
 import Entities.ProductCategories;
-import Entities.Products;
 import Entities.Styles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,14 +30,14 @@ import java.util.NoSuchElementException;
  */
 
 public class ProductsPane extends StackPane {
-    private TextField txtFieldNewProducts;
-    private ComboBox<ProductCategories> cmbBoxProducts;
+//    private TextField txtFieldNewProducts;
+//    private ComboBox<ProductCategories> cmbBoxProducts;
     private Spinner<Integer> numberSpinner = new Spinner<>();
 
-    private TableColumn<Products, String> tblColumnName = new TableColumn<>("Name");
-    private TableColumn<Products, Double> tblCategories = new TableColumn<>("Category");
-    private TableColumn<Products, Integer> tblColumnStock = new TableColumn<>("Quantity");
-    private TableView<Products> tblView;
+    private TableColumn<Product, String> tblColumnName = new TableColumn<>("Name");
+    private TableColumn<Product, Double> tblCategories = new TableColumn<>("Category");
+    private TableColumn<Product, Integer> tblColumnStock = new TableColumn<>("Quantity");
+    private TableView<Product> tblView;
 
     private static final String btnStyle = Styles.getButton();
 
@@ -54,14 +54,10 @@ public class ProductsPane extends StackPane {
 
     public ProductsPane(Callback callback)
     {
+        this.callback = callback;
         VBox mainContainer = new VBox();
         mainContainer.setMaxSize(1036, 698);
 
-        Text textTitle = new Text();
-        Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
-        textTitle.setFill(Paint.valueOf("#619f81"));
-        textTitle.setFont(MenuTitle);
-        textTitle.setText("Products");
 
         mainContainer.getChildren().addAll(getTopLabel(), getFillerBox(), getHCenter(), getFlowBottom());
 
@@ -81,20 +77,28 @@ public class ProductsPane extends StackPane {
      */
     private HBox getTopLabel()
     {
+        Text textTitle = new Text();
+        Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
+        textTitle.setFill(Paint.valueOf("#619f81"));
+        textTitle.setFont(MenuTitle);
+        textTitle.setText("PRODUCTS");
+
         HBox hBox = new HBox();
 
-        hBox.setMinSize(1036, 65);
-        hBox.setMaxSize(1036, 65);
+        hBox.setPrefSize(1036, 75);
+//        hBox.setMaxSize(1036, 65);
 
-        Label lbl = new MyLabel("Products");
-        lbl.setPrefHeight(SIZE);
-        lbl.prefWidthProperty().bind(widthProperty());
-        lbl.setStyle("-fx-font-weight: bold;" +
-                "-fx-text-fill: #619F81;" +
-                "-fx-font-size: 24;" +
-                "-fx-background-radius: 20 20 0 0");
+     //   Label lbl = new MyLabel("Products");
+//        lbl.setPrefHeight(SIZE);
+//        lbl.prefWidthProperty().bind(widthProperty());
+//        lbl.setStyle("-fx-font-weight: bold;" +
+//                "-fx-text-fill: #619F81;" +
+//                "-fx-font-size: 24;" +
+//                "-fx-background-radius: 20 20 0 0");
 
-        hBox.getChildren().add(lbl);
+        hBox.setAlignment(Pos.CENTER);
+
+        hBox.getChildren().add(textTitle);
 
         hBox.setStyle("-fx-background-radius: 20 20 0 0;" +
                         "-fx-background-color: #FFFFFF;");
@@ -130,12 +134,12 @@ public class ProductsPane extends StackPane {
         Button btnAdd = new Button("Add");
         Button btnRemove = new Button("Remove");
 
-        txtFieldNewProducts = new TextField();
-        txtFieldNewProducts.setPromptText("Enter a new product");
-        cmbBoxProducts = new ComboBox<>();
-        cmbBoxProducts.setPrefSize(150, 20);
-        cmbBoxProducts.setItems(categoriesToCmb());
-        cmbBoxProducts.getSelectionModel().selectFirst();
+//        txtFieldNewProducts = new TextField();
+//        txtFieldNewProducts.setPromptText("Enter a new product");
+//        cmbBoxProducts = new ComboBox<>();
+//        cmbBoxProducts.setPrefSize(150, 20);
+//        cmbBoxProducts.setItems(categoriesToCmb());
+//        cmbBoxProducts.getSelectionModel().selectFirst();
 
         final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
         numberSpinner.setValueFactory(svf);
@@ -152,26 +156,27 @@ public class ProductsPane extends StackPane {
         btnRemoveItem.setStyle(btnStyle);
         btnAdd.setStyle(btnStyle);
         btnRemove.setStyle(btnStyle);
-        cmbBoxProducts.setStyle("-fx-background-color: #619f81;" +
-                " -fx-text-fill: #FFFFFF;" +
-                " -fx-font-family: Segoe UI;" +
-                "-fx-font-weight: bold;" +
-                "-fx-font-size: 12;" +
-                "-fx-padding: 5 10 5 10;" +
-                "-fx-background-radius: 10;");
+//        cmbBoxProducts.setStyle("-fx-background-color: #619f81;" +
+//                " -fx-text-fill: #FFFFFF;" +
+//                " -fx-font-family: Segoe UI;" +
+//                "-fx-font-weight: bold;" +
+//                "-fx-font-size: 12;" +
+//                "-fx-padding: 5 10 5 10;" +
+//                "-fx-background-radius: 10;");
 
-        txtFieldNewProducts.setPrefSize(150, 38);
+//        txtFieldNewProducts.setPrefSize(150, 38);
+//        txtFieldNewProducts, cmbBoxProducts,
 
-        hBox.getChildren().addAll(btnNewItem, btnRemoveItem, txtFieldNewProducts, cmbBoxProducts, numberSpinner, btnAdd, btnRemove);
+        hBox.getChildren().addAll(btnNewItem, btnRemoveItem, numberSpinner, btnAdd, btnRemove);
         hBox.setAlignment(Pos.BOTTOM_CENTER);
 
         hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        btnNewItem.setOnAction(e -> addNewItem());
+        btnNewItem.setOnAction(e -> addNewProductAction());
         btnRemoveItem.setOnAction(e -> deleteItem());
         btnAdd.setOnAction(e -> addQuantityToProduct());
         btnRemove.setOnAction(e -> removeQuantityFromProduct());
-        txtFieldNewProducts.setOnAction(e -> txtFieldEmpty());
+//        txtFieldNewProducts.setOnAction(e -> txtFieldEmpty());
 
         hBox.setStyle("-fx-padding: 0 50 0 50;");
 
@@ -194,7 +199,7 @@ public class ProductsPane extends StackPane {
         tblView = new TableView<>();
 
         tblColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tblCategories.setCellValueFactory(new PropertyValueFactory<>("categories"));
+        tblCategories.setCellValueFactory(new PropertyValueFactory<>("category"));
         tblColumnStock.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         tblColumnName.setPrefWidth(311);
@@ -209,7 +214,7 @@ public class ProductsPane extends StackPane {
 
 //        tblView.setPrefSize(980, 530);
         tblView.setStyle(Styles.getTableRowSelected());
-        tblView.setStyle(tableStyle);
+//        tblView.setStyle(tableStyle);
 
         pane.setAlignment(Pos.CENTER);
 
@@ -231,12 +236,12 @@ public class ProductsPane extends StackPane {
      * Method used to check if textField is empty
      * @return true if txtFieldNewProducts is empty and false if it's not
      */
-    public boolean txtFieldEmpty(){
-        if (txtFieldNewProducts.getText() == null || txtFieldNewProducts.getText().equals("")) {
-            return true;
-        }
-            return false;
-    }
+//    public boolean txtFieldEmpty(){
+//        if (txtFieldNewProducts.getText() == null || txtFieldNewProducts.getText().equals("")) {
+//            return true;
+//        }
+//            return false;
+//    }
         //Kanske inte behövs eftersom numberSpinner.getValue() alltid returnerar ett int-värde
 //    public boolean numberSpinnerNotInteger(){
 //        try {
@@ -270,11 +275,11 @@ public class ProductsPane extends StackPane {
      * Method that returns an observableList which populates the columns in the tableView
      * @return items - the list which populates the columns
      */
-    public ObservableList<Products> itemsToTable()
+    public ObservableList<Product> itemsToTable()
     {
-        ObservableList<Products> items = FXCollections.observableArrayList();
+        ObservableList<Product> items = FXCollections.observableArrayList();
 
-        items.add(new Products("Dummy Item", ProductCategories.Bread, 1));
+        items.add(new Product("Dummy Item", ProductCategories.Bread, 1));
 
         return items;
     }
@@ -292,32 +297,40 @@ public class ProductsPane extends StackPane {
         return categories;
     }
 
+    public void addNewProductAction(){
+        try {
+            new AddNewProductPane(this, callback);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Method used to add a new item to the tableView
      * if the textField is empty item won't be added and a popup-window will show up instead
      */
-    private void addNewItem()
-    {
-        if (!txtFieldEmpty())
-        {
-            Products item = new Products(txtFieldNewProducts.getText(), cmbBoxProducts.getSelectionModel().getSelectedItem(),
-                    numberSpinner.getValue());
-            tblView.getItems().add(item);
-            System.out.println(txtFieldNewProducts.getText());
-            txtFieldNewProducts.clear();
-        }
-        else if (txtFieldEmpty()){
-            JOptionPane.showMessageDialog(null, "Please enter a name for your product!");
-        }
-    }
+//    private void addNewItem()
+//    {
+//        if (!txtFieldEmpty())
+//        {
+//            Product item = new Product(txtFieldNewProducts.getText(), cmbBoxProducts.getSelectionModel().getSelectedItem(),
+//                    numberSpinner.getValue());
+//            tblView.getItems().add(item);
+//            System.out.println(txtFieldNewProducts.getText());
+//            txtFieldNewProducts.clear();
+//        }
+//        else if (txtFieldEmpty()){
+//            JOptionPane.showMessageDialog(null, "Please enter a name for your product!");
+//        }
+//    }
 
     /**
      * Method used to delete the selected item in the tableView
      */
     private void deleteItem()
     {
-        ObservableList<Products> itemSelected;
-        ObservableList<Products> allItems;
+        ObservableList<Product> itemSelected;
+        ObservableList<Product> allItems;
 
         allItems = tblView.getItems();
         itemSelected = tblView.getSelectionModel().getSelectedItems();
@@ -330,11 +343,11 @@ public class ProductsPane extends StackPane {
 
     public void addQuantityToProduct()
     {
-        Products products = tblView.getSelectionModel().getSelectedItem();
+        Product product = tblView.getSelectionModel().getSelectedItem();
 
     try {
-        int prodQuantity = products.getQuantity();
-        products.setQuantity(prodQuantity + getNumberSpinnerValue());
+        int prodQuantity = product.getQuantity();
+        product.setQuantity(prodQuantity + getNumberSpinnerValue());
     } catch (NumberFormatException e){
         e.printStackTrace();
     }
@@ -344,15 +357,19 @@ public class ProductsPane extends StackPane {
 
     public void removeQuantityFromProduct()
     {
-        Products products = tblView.getSelectionModel().getSelectedItem();
+        Product product = tblView.getSelectionModel().getSelectedItem();
 
     try {
-        int prodQuantity = products.getQuantity();
-        products.setQuantity(prodQuantity - getNumberSpinnerValue());
+        int prodQuantity = product.getQuantity();
+        product.setQuantity(prodQuantity - getNumberSpinnerValue());
     } catch (NumberFormatException e){
         e.printStackTrace();
     }
 
         tblView.refresh();
+    }
+
+    public void addNewProduct(Product product) {
+        tblView.getItems().add(product);
     }
 }
