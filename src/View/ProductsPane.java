@@ -8,8 +8,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -20,7 +18,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import Control.Callback;
 
-import javax.swing.*;
 import java.util.NoSuchElementException;
 
 /**
@@ -30,24 +27,12 @@ import java.util.NoSuchElementException;
  */
 
 public class ProductsPane extends StackPane {
-//    private TextField txtFieldNewProducts;
-//    private ComboBox<ProductCategories> cmbBoxProducts;
     private Spinner<Integer> numberSpinner = new Spinner<>();
 
     private TableColumn<Product, String> tblColumnName = new TableColumn<>("Name");
     private TableColumn<Product, Double> tblCategories = new TableColumn<>("Category");
     private TableColumn<Product, Integer> tblColumnStock = new TableColumn<>("Quantity");
     private TableView<Product> tblView;
-
-    private static final String btnStyle = Styles.getButton();
-
-    private static final String tableStyle = "-FX-color: #21252B; -fx-text-fill: #FFFFFF";
-
-
-    private int btnWidth = 75;
-    private int btnHeight = 25;
-
-    private final int SIZE = 60;
 
     private Callback callback;
 
@@ -59,7 +44,7 @@ public class ProductsPane extends StackPane {
         mainContainer.setMaxSize(1036, 698);
 
 
-        mainContainer.getChildren().addAll(getTopLabel(), getFillerBox(), getHCenter(), getFlowBottom());
+        mainContainer.getChildren().addAll(getTopVBoxContainer(), getFlowBottom());
 
         getChildren().add(mainContainer);
 
@@ -75,7 +60,7 @@ public class ProductsPane extends StackPane {
      * Method which is used to create the top part of the panel
      * @return lbl - a label with the text "Products" which is displayed at the top of this panel
      */
-    private HBox getTopLabel()
+    private HBox getHBoxTop()
     {
         Text textTitle = new Text();
         Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
@@ -86,15 +71,6 @@ public class ProductsPane extends StackPane {
         HBox hBox = new HBox();
 
         hBox.setPrefSize(1036, 75);
-//        hBox.setMaxSize(1036, 65);
-
-     //   Label lbl = new MyLabel("Products");
-//        lbl.setPrefHeight(SIZE);
-//        lbl.prefWidthProperty().bind(widthProperty());
-//        lbl.setStyle("-fx-font-weight: bold;" +
-//                "-fx-text-fill: #619F81;" +
-//                "-fx-font-size: 24;" +
-//                "-fx-background-radius: 20 20 0 0");
 
         hBox.setAlignment(Pos.CENTER);
 
@@ -121,66 +97,81 @@ public class ProductsPane extends StackPane {
      * Method to create a HBox which stacks its content horizontally located below the Label
      * @return hBox - the box which contains every button, comboBox, textField and numberSpinner
      */
-    public HBox getHCenter()
+    public HBox getHCenterLeft()
     {
-        HBox hBox = new HBox(15);
+
+        Button btnNewItem = new Button("ADD PRODUCT");
+        Button btnRemoveItem = new Button("REMOVE PRODUCT");
+
+        btnNewItem.setStyle(Styles.getButton());
+        btnRemoveItem.setStyle(Styles.getButton());
+
+        HBox hBox = new HBox(15, btnNewItem, btnRemoveItem);
         hBox.setSpacing(10);
-//        hBox.setPadding(new Insets(15, 12, 15, 12));
-        hBox.setMinSize(1036, 75);
-        hBox.setMaxSize(1036, 75);
-
-        Button btnNewItem = new Button("Add New Item");
-        Button btnRemoveItem = new Button("Remove Item");
-        Button btnAdd = new Button("Add");
-        Button btnRemove = new Button("Remove");
-
-//        txtFieldNewProducts = new TextField();
-//        txtFieldNewProducts.setPromptText("Enter a new product");
-//        cmbBoxProducts = new ComboBox<>();
-//        cmbBoxProducts.setPrefSize(150, 20);
-//        cmbBoxProducts.setItems(categoriesToCmb());
-//        cmbBoxProducts.getSelectionModel().selectFirst();
-
-        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
-        numberSpinner.setValueFactory(svf);
-        numberSpinner.disabledProperty();
-        numberSpinner.setEditable(true);
-        numberSpinner.setPrefSize(100, 38);
-
-
-        btnNewItem.setPrefSize(130, btnHeight);
-        btnRemoveItem.setPrefSize(130, btnHeight);
-        btnAdd.setPrefSize(btnWidth, btnHeight);
-        btnRemove.setPrefSize(90, btnHeight);
-        btnNewItem.setStyle(btnStyle);
-        btnRemoveItem.setStyle(btnStyle);
-        btnAdd.setStyle(btnStyle);
-        btnRemove.setStyle(btnStyle);
-//        cmbBoxProducts.setStyle("-fx-background-color: #619f81;" +
-//                " -fx-text-fill: #FFFFFF;" +
-//                " -fx-font-family: Segoe UI;" +
-//                "-fx-font-weight: bold;" +
-//                "-fx-font-size: 12;" +
-//                "-fx-padding: 5 10 5 10;" +
-//                "-fx-background-radius: 10;");
-
-//        txtFieldNewProducts.setPrefSize(150, 38);
-//        txtFieldNewProducts, cmbBoxProducts,
-
-        hBox.getChildren().addAll(btnNewItem, btnRemoveItem, numberSpinner, btnAdd, btnRemove);
-        hBox.setAlignment(Pos.BOTTOM_CENTER);
+        hBox.setMinSize(413, 75);
+        hBox.setMaxSize(413, 75);
+        hBox.setAlignment(Pos.CENTER_LEFT);
 
         hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
         btnNewItem.setOnAction(e -> addNewProductAction());
         btnRemoveItem.setOnAction(e -> deleteItem());
-        btnAdd.setOnAction(e -> addQuantityToProduct());
-        btnRemove.setOnAction(e -> removeQuantityFromProduct());
-//        txtFieldNewProducts.setOnAction(e -> txtFieldEmpty());
 
-        hBox.setStyle("-fx-padding: 0 50 0 50;");
+        hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50");
 
         return hBox;
+    }
+
+    public HBox getHCenterRight(){
+        Button btnAdd = new Button("ADD");
+        Button btnRemove = new Button("REMOVE");
+
+
+        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
+        numberSpinner.setValueFactory(svf);
+        numberSpinner.disabledProperty();
+        numberSpinner.setEditable(true);
+        numberSpinner.setPrefHeight(38);
+
+        btnAdd.setStyle(Styles.getButton());
+        btnRemove.setStyle(Styles.getButton());
+
+        btnAdd.setOnAction(e -> addQuantityToProduct());
+        btnRemove.setOnAction(e -> removeQuantityFromProduct());
+
+        HBox hBox = new HBox(15, numberSpinner, btnAdd, btnRemove);
+
+        hBox.setMaxSize(623, 75);
+        hBox.setMinSize(623, 75);
+
+
+
+        hBox.setAlignment(Pos.CENTER_RIGHT);
+
+        hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50;");
+
+
+
+        return hBox;
+    }
+
+    public HBox getHBoxContainerBtn(){
+        HBox hBox = new HBox();
+
+        setPrefSize(1036, 75);
+
+        hBox.getChildren().addAll(getHCenterLeft(), getHCenterRight());
+
+        return hBox;
+    }
+
+    public VBox getTopVBoxContainer(){
+        VBox vBox =   new VBox(getHBoxTop(), getFillerBox(), getHBoxContainerBtn());
+        vBox.setPrefSize(1036, 190);
+        vBox.setAlignment(Pos.BOTTOM_CENTER);
+        vBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20 20 0 0;");
+
+        return vBox;
     }
 
     /**
@@ -212,9 +203,8 @@ public class ProductsPane extends StackPane {
 
         tblView.getColumns().addAll(tblColumnName, tblCategories, tblColumnStock);
 
-//        tblView.setPrefSize(980, 530);
+        tblView.setPrefHeight(458);
         tblView.setStyle(Styles.getTableRowSelected());
-//        tblView.setStyle(tableStyle);
 
         pane.setAlignment(Pos.CENTER);
 
@@ -231,44 +221,10 @@ public class ProductsPane extends StackPane {
         return pane;
     }
 
-
-    /**
-     * Method used to check if textField is empty
-     * @return true if txtFieldNewProducts is empty and false if it's not
-     */
-//    public boolean txtFieldEmpty(){
-//        if (txtFieldNewProducts.getText() == null || txtFieldNewProducts.getText().equals("")) {
-//            return true;
-//        }
-//            return false;
-//    }
-        //Kanske inte behövs eftersom numberSpinner.getValue() alltid returnerar ett int-värde
-//    public boolean numberSpinnerNotInteger(){
-//        try {
-//            Integer.parseInt(String.valueOf(numberSpinner.getValue()));
-//            return false;
-//        } catch (NumberFormatException e){
-//            return true;
-//        }
-//    }
-
     public int getNumberSpinnerValue() {
         int value = numberSpinner.getValue();
 
         return value;
-    }
-
-    /**
-     * Private class used for the label at the top of the panel
-     */
-    private class MyLabel extends Label {
-
-        public MyLabel(String text)
-        {
-            super(text);
-
-            setAlignment(Pos.BASELINE_CENTER);
-        }
     }
 
     /**
@@ -285,18 +241,9 @@ public class ProductsPane extends StackPane {
     }
 
     /**
-     *
-     * @return categories - an observableList which populates the comboBox
+     * Method used to add a new item to the tableView
+     * Opens a new window with information to be filled in
      */
-    public ObservableList<ProductCategories> categoriesToCmb()
-    {
-        ObservableList<ProductCategories> categories = FXCollections.observableArrayList();
-
-        categories.addAll(ProductCategories.Bread, ProductCategories.Fruit, ProductCategories.Vegetable, ProductCategories.Dairy, ProductCategories.Pastries);
-
-        return categories;
-    }
-
     public void addNewProductAction(){
         try {
             new AddNewProductPane(this, callback);
@@ -304,25 +251,6 @@ public class ProductsPane extends StackPane {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Method used to add a new item to the tableView
-     * if the textField is empty item won't be added and a popup-window will show up instead
-     */
-//    private void addNewItem()
-//    {
-//        if (!txtFieldEmpty())
-//        {
-//            Product item = new Product(txtFieldNewProducts.getText(), cmbBoxProducts.getSelectionModel().getSelectedItem(),
-//                    numberSpinner.getValue());
-//            tblView.getItems().add(item);
-//            System.out.println(txtFieldNewProducts.getText());
-//            txtFieldNewProducts.clear();
-//        }
-//        else if (txtFieldEmpty()){
-//            JOptionPane.showMessageDialog(null, "Please enter a name for your product!");
-//        }
-//    }
 
     /**
      * Method used to delete the selected item in the tableView
