@@ -1,9 +1,6 @@
 package Model;
 
-import Entities.Food;
-import Entities.Ingredient;
-import Entities.IngredientTest;
-import Entities.Supplier;
+import Entities.*;
 import Extra.ColourTxT;
 
 import java.util.ArrayList;
@@ -20,15 +17,20 @@ public class Database {
     private HashMap<String, Ingredient> ingredients;
     private HashMap<String, Integer> nIngredients;
 
+
     private HashMap<String, Food> food;
     private HashMap<String, Integer> nFood;
 
     private ArrayList<Supplier> suppliers;
 
-    /*Testing purpose */
+    /*Testing purpose IngredientTest */
     private HashMap<String, IngredientTest> ingredientsTest;
     private HashMap<String, Integer> nIngredientsTest;
     private ColourTxT colourTxT = new ColourTxT();
+
+    /*Testing purpose Product */
+    private HashMap<String, Product> productsTest;
+    private HashMap<String, Integer> nProductsTest;
 
     public Database() {
         this.ingredients = new HashMap<>();
@@ -53,6 +55,12 @@ public class Database {
         suppliers.add(new Supplier("Lucas AB"));
         suppliers.add(new Supplier("Georg AB"));
         suppliers.add(new Supplier("Julia AB"));
+
+        nProductsTest = new HashMap<>();
+//        nProductsTest.put("Apple", 0);
+
+        productsTest = new HashMap<>();
+//        productsTest.put("Apple", new Product("Apple", ProductCategories.Fruit, 3));
     }
 
     public boolean addIngredient(Ingredient ingredient) {
@@ -249,7 +257,7 @@ public class Database {
     }
 
 
-    /* Testing purposes */
+    /* Testing purposes IngredientTest*/
     public boolean addIngredientTest(IngredientTest ingredient) {
         if (ingredients.containsKey(ingredient.getName())) {
             return false;
@@ -342,6 +350,103 @@ public class Database {
 
         ingredientsTest.remove(ingredient);
         nIngredientsTest.remove(ingredient);
+
+        return containsKey;
+    }
+
+    /*Testing purpose PRODUCT*/
+    public boolean addProductTest(Product product) {
+        if (productsTest.containsKey(product.getName())) {
+            return false;
+        }
+
+        productsTest.put(product.getName(), product);
+        nProductsTest.put(product.getName(), 1);
+
+        System.out.println("\nAdded to Database:\n" +
+                "Name: " + product.getName() + "\n" +
+                "Category: " + product.getCategory() + "\n" +
+                "Amount: " + product.getQuantity() + "\n"
+        );
+
+        System.out.println("Get from products HashMap:\n" +
+                productsTest.get(product.getName()));
+
+        System.out.println("\nGet from nProducts HashMap:\n" +
+                nProductsTest.get(product.getName()) + "\n");
+        return true;
+    }
+
+    public Product getProductTest(String product) {
+        return productsTest.get(product);
+    }
+
+    public Product[] getProductTest() {
+        Product[] products = new Product[this.productsTest.size()];
+
+        Object[] keys = this.productsTest.keySet().toArray();
+
+        for (int i=0; i<products.length; i++) {
+            products[i] = this.productsTest.get(keys[i]);
+        }
+
+        return products;
+    }
+
+    public int getNumProductTest(String product) {
+        if (nProductsTest.containsKey(product)) {
+            return nProductsTest.get(product);
+        }
+
+        return -1;
+    }
+
+    public boolean increaseProductTest(String product) {
+        if (nProductsTest.containsKey(product)) {
+            int currentVal = nProductsTest.get(product);
+            nProductsTest.put(product, currentVal+1);
+
+            System.out.println(colourTxT.GREEN() + "Completed increase to database\n" +
+                    "Current stock: " + productsTest.get(product).getName() + " " + nProductsTest.get(product) + colourTxT.RESET());
+
+            return true;
+        }
+        System.out.println(colourTxT.RED() + "Failed to add " + product + " to database" + colourTxT.RESET());
+        return false;
+    }
+
+    public boolean increaseProductTest(Product product) {
+        return increaseProductTest(product.getName());
+    }
+
+    public boolean decreaseProductTest(String product) {
+        if (!nProductsTest.containsKey(product)) {
+            System.out.println(colourTxT.RED() + "Failed to remove " + product + " to database" + colourTxT.RESET());
+            return false;
+        }
+
+        int currentVal = nProductsTest.get(product);
+
+        if (currentVal <= 0) {
+            System.out.println(colourTxT.RED() + "Amount to remove from " + product + " went below 0" + colourTxT.RESET());
+            return false;
+        }
+
+        nProductsTest.put(product, currentVal-1);
+        System.out.println(colourTxT.GREEN() + "Completed decrease to database\n" +
+                "Current stock: " + productsTest.get(product).getName() + " " + nProductsTest.get(product) + colourTxT.RESET());
+        return true;
+    }
+
+    public boolean decreaseProductTest(Product product) {
+        return decreaseProductTest(product.getName());
+    }
+
+    public boolean removeProductTest(String product) {
+        boolean containsKey = productsTest.containsKey(product) && nProductsTest.containsKey(product);
+
+        productsTest.remove(product);
+        nProductsTest.remove(product);
 
         return containsKey;
     }

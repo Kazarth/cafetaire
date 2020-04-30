@@ -6,14 +6,14 @@ package Entities;
  * @version 1.0
  */
 
-public class Products {
+public class Product {
     private String name;
-    private ProductCategories categories;
+    private ProductCategories category;
     private int quantity;
 
-    public Products(String name, ProductCategories categories, int quantity) {
+    public Product(String name, ProductCategories category, int quantity) {
         this.name = name;
-        this.categories = categories;
+        this.category = category;
         this.quantity = quantity;
     }
 
@@ -21,8 +21,8 @@ public class Products {
         return name;
     }
 
-    public ProductCategories getCategories() {
-        return categories;
+    public ProductCategories getCategory() {
+        return category;
     }
 
     public int getQuantity() {
@@ -33,11 +33,18 @@ public class Products {
         this.name = name;
     }
 
-    public void setCategories(ProductCategories categories) {
-        this.categories = categories;
+    public void setCategory(ProductCategories category) {
+        this.category = category;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString(){
+        return "Name: " + name + "\n" +
+                "Category: " + category + "\n" +
+                "Amount: " + quantity;
     }
 }
