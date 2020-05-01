@@ -19,6 +19,8 @@ public class MainPane extends StackPane {
     private StackPane menu;
     private Callback callback;
 
+    private int pane;
+
     public MainPane(Callback callback) {
         this.callback = callback;
 
@@ -42,7 +44,7 @@ public class MainPane extends StackPane {
     }
 
     void setView(Views view) {
-        int pane = -1;
+        pane = -1;
 
         for (int i=0; i<Views.values().length; i++) {
             if (Views.values()[i] == view) {
@@ -52,5 +54,13 @@ public class MainPane extends StackPane {
         }
 
         ((HBox)getChildren().get(0)).getChildren().set(1, views[pane]);
+    }
+
+    Pane[] getViews() {
+        return views;
+    }
+
+    int getActiveView() {
+        return pane;
     }
 }

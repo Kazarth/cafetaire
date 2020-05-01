@@ -3,9 +3,10 @@ package View;
 import Entities.Ingredient;
 import Entities.IngredientTest;
 import Entities.Styles;
-import Entities.Supplier;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,9 +18,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import Control.Callback;
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
@@ -107,7 +106,20 @@ public class IngredientsPane extends StackPane {
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         supplierColumn  = new TableColumn("SUPPLIER");
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
+
+
         selectedColumn = new TableColumn("SELECTED ITEM");
+        //selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
+        CheckBox checkBox = new CheckBox();
+        checkBox.setDisable(true);
+        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                if (isPressed()) {
+                    checkBox.setSelected(true);
+                }
+            }
+        });
         selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
 
         tableView.setStyle(Styles.getTableRowSelected() + "-fx-background-radius: 0 0 20 20;");
