@@ -91,8 +91,8 @@ public class MenuPane extends StackPane {
         Pane activePane = getActiveView(pane);
 
         setPrefSize(20,768);
-        for (Button b : buttons) {
-            b.setText("H");
+        for (int i=0; i<Views.values().length; i++) {
+            buttons[i].setText(""+Views.values()[i].name().charAt(0));
         }
         toggleContainer.getChildren().add(expandBtn);
         toggleContainer.getChildren().remove(contractBtn);
@@ -101,6 +101,9 @@ public class MenuPane extends StackPane {
 
     private void expand(MainPane pane) {
         setPrefSize(280,768);
+        for (int i=0; i<Views.values().length; i++) {
+            buttons[i].setText(Views.values()[i].name());
+        }
         toggleContainer.getChildren().add(contractBtn);
         toggleContainer.getChildren().remove(expandBtn);
         toggleContainer.setPadding(new Insets(0, 0, 0, 75));
