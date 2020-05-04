@@ -112,7 +112,7 @@ public abstract class Styles {
 
     public static String getTableColumn(){
         return (
-                "-fx-text-fill: #000;" +
+                "-fx-text-fill: #fff;" +
                 "-fx-alignment: center;" +
                 "-fx-font-size: 12;" +
                 "-fx-font-family: Segoe UI;" +

@@ -2,7 +2,7 @@ package Entities;
 
 /**
  * @author Viktor Polak
- * @version 1.1
+ * @version 1.0
  */
 
 public enum ProductCategories {

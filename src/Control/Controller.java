@@ -1,6 +1,9 @@
 package Control;
 
-import Entities.*;
+import Entities.Food;
+import Entities.Ingredient;
+import Entities.IngredientTest;
+import Entities.Supplier;
 import Extra.ColourTxT;
 import Model.Database;
 import View.MainPane;
@@ -158,7 +161,7 @@ public class Controller {
         }
 
 
-        /* Testing purposes IngredientTest*/
+        /* Testing purposes */
         @Override
         public boolean addIngredientTest(IngredientTest ingredient) {
             System.out.println(colourTxT.NEONGREEN() + "Controller received:\n" +
@@ -208,57 +211,6 @@ public class Controller {
         @Override
         public boolean removeIngredientTest(String ingredient) {
             return database.removeIngredientTest(ingredient);
-        }
-
-        /*Testing purpose Product */
-        @Override
-        public boolean addProductTest(Product product) {
-            System.out.println(colourTxT.NEONGREEN() + "Controller received:\n" +
-                    "Name: " + product.getName() + "\n" +
-                    "Category: " + product.getCategory() + "\n" +
-                    "Amount: " + product.getQuantity() + colourTxT.RESET());
-            return database.addProductTest(product);
-        }
-
-        @Override
-        public Product getProductTest(String product) {
-            return database.getProductTest(product);
-        }
-
-        @Override
-        public Product[] getProductTest() {
-            return database.getProductTest();
-        }
-
-        @Override
-        public int getNumProductTest(String product) {
-            return database.getNumProductTest(product);
-        }
-
-        @Override
-        public boolean increaseProductTest(String product) {
-            return database.increaseProductTest(product);
-        }
-
-        @Override
-        public boolean increaseProductTest(Product product) {
-            return database.increaseProductTest(product);
-        }
-
-        @Override
-        public boolean decreaseProductTest(String product) {
-            return database.decreaseProductTest(product);
-        }
-
-        @Override
-        public boolean decreaseProductTest(Product product) {
-            return database.decreaseProductTest(product);
-        }
-
-
-        @Override
-        public boolean removeProductTest(String name) {
-            return database.removeProductTest(name);
         }
     }
 }

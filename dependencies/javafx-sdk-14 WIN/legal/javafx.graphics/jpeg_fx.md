@@ -40,12 +40,12 @@ not just to the unmodified library.  If you use our work, you ought to
 acknowledge us.
 
 Permission is NOT granted for the use of any IJG author's name or company name
-in advertising or publicity relating to this software or product derived from
+in advertising or publicity relating to this software or products derived from
 it.  This software may be referred to only as "the Independent JPEG Group's
 software".
 
 We specifically permit and encourage the use of this software as the basis of
-commercial product, provided that all warranty or liability claims are
+commercial products, provided that all warranty or liability claims are
 assumed by the product vendor.
 
 ```

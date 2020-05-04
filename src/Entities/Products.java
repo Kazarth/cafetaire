@@ -3,17 +3,17 @@ package Entities;
 /**
  * Class used to store data about various products in the program
  * @author Viktor Polak
- * @version 1.1
+ * @version 1.0
  */
 
-public class Product {
+public class Products {
     private String name;
-    private ProductCategories category;
+    private ProductCategories categories;
     private int quantity;
 
-    public Product(String name, ProductCategories category, int quantity) {
+    public Products(String name, ProductCategories categories, int quantity) {
         this.name = name;
-        this.category = category;
+        this.categories = categories;
         this.quantity = quantity;
     }
 
@@ -21,8 +21,8 @@ public class Product {
         return name;
     }
 
-    public ProductCategories getCategory() {
-        return category;
+    public ProductCategories getCategories() {
+        return categories;
     }
 
     public int getQuantity() {
@@ -33,18 +33,11 @@ public class Product {
         this.name = name;
     }
 
-    public void setCategory(ProductCategories category) {
-        this.category = category;
+    public void setCategories(ProductCategories categories) {
+        this.categories = categories;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    @Override
-    public String toString(){
-        return "Name: " + name + "\n" +
-                "Category: " + category + "\n" +
-                "Amount: " + quantity;
     }
 }

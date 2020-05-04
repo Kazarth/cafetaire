@@ -6,6 +6,7 @@ import Entities.Supplier;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.css.Style;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,24 +15,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javax.swing.*;
+import java.util.ArrayList;
 
-/**
- * The class handles a Pop-up window for adding supplier to supplier's in database.
- * @author Paul Moustakas, Lucas Eliasson
- * @version 1.0
- */
 
 public class AddNewSupplierPane extends AnchorPane {
     private JFrame frame;
 
     private Label title;
     private Label nameLbl;
-    private Label categoryLbl;
+    private Label categoryLbl, supplierLbl; // Ryck denna sista
     private Label emailLbl;
     private Label phoneLbl;
 
     private TextField nameField;
-    private ComboBox<String> categoryBox;
+    private ComboBox<String> categoryBox, supplierBox; // lägg in och läs in listor som vanligt?
     private TextField emailField;
     private TextField phoneField;
 
@@ -40,6 +37,7 @@ public class AddNewSupplierPane extends AnchorPane {
     private SupplierPane source;
     private Callback callback;
 
+    //private ArrayList<String> suppliers; // test purposes
 
     public AddNewSupplierPane(SupplierPane source, Callback callback) {
         // init Frame
@@ -58,6 +56,12 @@ public class AddNewSupplierPane extends AnchorPane {
         // Init source
         this.source = source;
         this.callback = callback;
+
+        // test values
+        //suppliers = new ArrayList();
+        //suppliers.add("Lucas");
+        //suppliers.add("Julia");
+        //suppliers.add("Coca Cola");
 
         // Background pane
         setMaxWidth(600); setMaxHeight(400);
@@ -108,6 +112,7 @@ public class AddNewSupplierPane extends AnchorPane {
         emailField.setStyle(Styles.getPopField());
         emailField.setPrefWidth(360); emailField.setPrefHeight(40);
         emailField.setLayoutX(144.0); emailField.setLayoutY(220);
+        //supplierLbl.setLayoutX(56.0); supplierLbl.setLayoutY(220);  //Positioner
 
         // Phone Pane
         phoneLbl = new Label("Phone nr.");
@@ -137,20 +142,14 @@ public class AddNewSupplierPane extends AnchorPane {
         cancelButton.setOnAction(e -> cancelAction());
 
         // Add all children
-        getChildren().addAll(
-                title,
-                nameLbl, nameField,
-                categoryLbl, categoryBox,
-                emailLbl, emailField,
-                phoneLbl,phoneField,
-                addButton, cancelButton);
+        getChildren().addAll(title, nameLbl, nameField, categoryLbl, categoryBox, emailLbl, emailField, phoneLbl,phoneField, addButton, cancelButton);
     }
 
     /**
      * Action performed Add-button
      */
     public void addAction() {
-        Supplier supp;
+        Supplier supp = null;
 
         String supplierName = nameField.getText();
         String category     = categoryBox.getSelectionModel().getSelectedItem();
@@ -164,6 +163,7 @@ public class AddNewSupplierPane extends AnchorPane {
         if (callback.addSupplier(supp)) {
             source.addNewSupplier(supp);
         }
+
         close();
     }
 
@@ -181,7 +181,8 @@ public class AddNewSupplierPane extends AnchorPane {
     }
 
 
-    /*
+
+
     //From database
     private ObservableList<String> getSuppliersFromDatabase() {
         ObservableList<String> listSuppliers = FXCollections.observableArrayList();
@@ -192,8 +193,6 @@ public class AddNewSupplierPane extends AnchorPane {
         }
         return listSuppliers;
     }
-
-     */
 
 
     /**
