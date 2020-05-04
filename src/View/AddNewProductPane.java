@@ -1,51 +1,52 @@
 package View;
 
+
 import Control.Callback;
+import Entities.Product;
+import Entities.ProductCategories;
 import Entities.Styles;
-import Entities.Supplier;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javax.swing.*;
+import java.util.ArrayList;
 
 /**
- * The class handles a Pop-up window for adding supplier to supplier's in database.
- * @author Paul Moustakas, Lucas Eliasson
+ * The class handles a Pop-up window for adding a product to products in database.
+ * @author Viktor Polak, Lucas Eliasson
  * @version 1.0
  */
 
-public class AddNewSupplierPane extends AnchorPane {
+public class AddNewProductPane extends AnchorPane {
     private JFrame frame;
 
     private Label title;
     private Label nameLbl;
     private Label categoryLbl;
-    private Label emailLbl;
+    private Label numberLabel;
     private Label phoneLbl;
 
     private TextField nameField;
-    private ComboBox<String> categoryBox;
-    private TextField emailField;
+    private ComboBox<ProductCategories> categoryBox;
+    private Spinner<Integer> numberSpinner;
     private TextField phoneField;
 
     private Button addButton, cancelButton;
 
-    private SupplierPane source;
+    private ProductsPane source;
     private Callback callback;
 
 
-    public AddNewSupplierPane(SupplierPane source, Callback callback) {
+    public AddNewProductPane(ProductsPane source, Callback callback) {
         // init Frame
         frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
-        frame.setTitle("Add new ingredient");
+        frame.setTitle("Add new PRODUCT");
         frame.add(fxPanel);
         frame.setSize(600,460);
         frame.setLocationRelativeTo(null);
@@ -67,19 +68,19 @@ public class AddNewSupplierPane extends AnchorPane {
         );
 
         // title pane
-        title = new Label("ADD NEW SUPPLIER");
+        title = new Label("ADD NEW PRODUCT");
         title.setStyle(Styles.getPopTitle());
         title.setLayoutX(162.0); title.setLayoutY(20);
         title.setPrefWidth(300); title.setPrefHeight(40);
 
-        // Supplier Name pane
-        nameLbl = new Label("Supplier");
+        // Product Name pane
+        nameLbl = new Label("Product");
         nameLbl.setStyle("-fx-text-fill: #000;");
         nameLbl.setPrefWidth(220); nameLbl.setPrefHeight(40);
         nameLbl.setLayoutX(56.0); nameLbl.setLayoutY(100);
 
         nameField = new TextField();
-        nameField.setPromptText("Enter Supplier name");
+        nameField.setPromptText("Enter Product Name");
         nameField.setStyle(Styles.getPopField());
         nameField.setPrefWidth(360); nameField.setPrefHeight(40);
         nameField.setLayoutX(144.0); nameField.setLayoutY(100);
@@ -97,17 +98,21 @@ public class AddNewSupplierPane extends AnchorPane {
         categoryBox.setLayoutX(144.0); categoryBox.setLayoutY(160);
         categoryBox.setItems(getCategories()); // testing
 
-        // Email Pane
-        emailLbl = new Label("E-mail");
-        emailLbl.setStyle("-fx-text-fill: #000;");
-        emailLbl.setPrefWidth(220); emailLbl.setPrefHeight(40);
-        emailLbl.setLayoutX(56.0); emailLbl.setLayoutY(220);
+        // Spinner Pane
+        numberLabel = new Label("Amount");
+        numberLabel.setStyle("-fx-text-fill: #000;");
+        numberLabel.setPrefWidth(220); numberLabel.setPrefHeight(40);
+        numberLabel.setLayoutX(56.0); numberLabel.setLayoutY(220);
 
-        emailField  =   new TextField();
-        emailField.setPromptText("Enter E-mail address");
-        emailField.setStyle(Styles.getPopField());
-        emailField.setPrefWidth(360); emailField.setPrefHeight(40);
-        emailField.setLayoutX(144.0); emailField.setLayoutY(220);
+        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
+        numberSpinner = new Spinner<>();
+        numberSpinner.setValueFactory(svf);
+        numberSpinner.disabledProperty();
+        numberSpinner.setEditable(true);
+        numberSpinner.setPromptText("Enter Number Of Products");
+        numberSpinner.setStyle(Styles.getPopField());
+        numberSpinner.setPrefWidth(360); numberSpinner.setPrefHeight(40);
+        numberSpinner.setLayoutX(144.0); numberSpinner.setLayoutY(220);
 
         // Phone Pane
         phoneLbl = new Label("Phone nr.");
@@ -122,13 +127,13 @@ public class AddNewSupplierPane extends AnchorPane {
         phoneField.setLayoutX(144.0);   phoneField.setLayoutY(280);
 
         // Button pane
-        addButton = new Button("ADD NEW SUPPLIER");
+        addButton = new Button("ADD NEW PRODUCT");
         addButton.setStyle(Styles.getPopAddButton());
         addButton.setPrefWidth(200); addButton.setPrefHeight(40);
         addButton.setLayoutX(75); addButton.setLayoutY(340);
         addButton.setOnAction(e -> {
-                addAction();
-                });
+            addAction();
+        });
 
         cancelButton = new Button("CANCEL");
         cancelButton.setStyle(Styles.getPopCancelButton());
@@ -141,8 +146,8 @@ public class AddNewSupplierPane extends AnchorPane {
                 title,
                 nameLbl, nameField,
                 categoryLbl, categoryBox,
-                emailLbl, emailField,
-                phoneLbl,phoneField,
+                numberLabel, numberSpinner,
+//                phoneLbl,phoneField,
                 addButton, cancelButton);
     }
 
@@ -150,21 +155,28 @@ public class AddNewSupplierPane extends AnchorPane {
      * Action performed Add-button
      */
     public void addAction() {
-        Supplier supp;
+        Product product;
 
-        String supplierName = nameField.getText();
-        String category     = categoryBox.getSelectionModel().getSelectedItem();
-        String email        = emailField.getText();
-        String phone        = phoneField.getText();
+        String productName = nameField.getText();
+        ProductCategories category     = categoryBox.getSelectionModel().getSelectedItem();
+        int quantity = numberSpinner.getValue();
+//        String phone        = phoneField.getText();
 
-        supp = new Supplier(supplierName, category, email, phone);
+        if ((productName != null ||productName != "") &&(category != null)) {
+            product = new Product(productName, category, quantity);
 
-        System.out.println(supp.toString());
+            System.out.println(product.toString());
 
-        if (callback.addSupplier(supp)) {
-            source.addNewSupplier(supp);
+            if (callback.addProductTest(product)) {
+                source.addNewProduct(product);
+
+                close();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Please enter a value for every field!");
         }
-        close();
+
+
     }
 
     /**
@@ -181,44 +193,33 @@ public class AddNewSupplierPane extends AnchorPane {
     }
 
 
-    /*
-    //From database
-    private ObservableList<String> getSuppliersFromDatabase() {
-        ObservableList<String> listSuppliers = FXCollections.observableArrayList();
-        ArrayList<Supplier> receivedSuppliers = callback.getSuppliers();
 
-        for (Supplier supplier: receivedSuppliers) {
-            listSuppliers.add(supplier.getName());
-        }
-        return listSuppliers;
-    }
-
-     */
+//    //From database
+//    private ObservableList<String> getSuppliersFromDatabase() {
+//        ObservableList<String> listProducts = FXCollections.observableArrayList();
+//        ArrayList<Product> receivedProducts = callback.getProductTest();
+//
+//        for (Product product: receivedProducts) {
+//            listProducts.add(product.getName());
+//        }
+//        return listProducts;
+//    }
 
 
-    /**
-     * For testing purposes
-     * @return
-     */
-    private ObservableList<String> getSuppliers() {
-        ObservableList<String> ingredients = FXCollections.observableArrayList();
-        ingredients.add("Lucas AB");
-        ingredients.add("Georg Inc");
-        ingredients.add("Paul M");
-        ingredients.add("Coca Cola");
-        return ingredients;
-    }
 
     /**
      * For testing purposes
      * @return
      */
-    private ObservableList<String> getCategories() {
-        ObservableList<String> ingredients = FXCollections.observableArrayList();
-        ingredients.add("Dry Food");
-        ingredients.add("Fresh Food");
-        ingredients.add("Drink");
-        return ingredients;
+    private ObservableList<ProductCategories> getCategories() {
+        ObservableList<ProductCategories> Products = FXCollections.observableArrayList();
+        Products.addAll(ProductCategories.Bread, ProductCategories.Fruit, ProductCategories.Vegetable, ProductCategories.Dairy, ProductCategories.Pastries);
+
+        return Products;
+    }
+
+    @Override
+    public Node getStyleableNode() {
+        return null;
     }
 }
-

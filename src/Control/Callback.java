@@ -48,4 +48,14 @@ public interface Callback {
     boolean decreaseIngredientTest(String ingredient);
     boolean decreaseIngredientTest(IngredientTest ingredient);
     boolean removeIngredientTest(String ingredient);
+
+    boolean addProductTest(Product product);
+    Product getProductTest(String product);
+    Product[] getProductTest();
+    int getNumProductTest(String product);
+    boolean increaseProductTest(String product);
+    boolean increaseProductTest(Product product);
+    boolean decreaseProductTest(String product);
+    boolean decreaseProductTest(Product  product);
+    boolean removeProductTest(String name);
 }
