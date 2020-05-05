@@ -141,8 +141,8 @@ public class ProductsPane extends StackPane {
 
         HBox hBox = new HBox(15, numberSpinner, btnAdd, btnRemove);
 
-        hBox.setMaxSize(623, 75);
-        hBox.setMinSize(623, 75);
+        hBox.setMaxSize(622, 75);
+        hBox.setMinSize(622, 75);
 
 
 

@@ -155,6 +155,11 @@ public class AddNewProductPane extends AnchorPane {
      * Action performed Add-button
      */
     public void addAction() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("Please enter a value for every field!");
+
         Product product;
 
         String productName = nameField.getText();
@@ -162,7 +167,7 @@ public class AddNewProductPane extends AnchorPane {
         int quantity = numberSpinner.getValue();
 //        String phone        = phoneField.getText();
 
-        if ((productName != null ||productName != "") &&(category != null)) {
+        if ((!productName.equals("")) &&(category != null)) {
             product = new Product(productName, category, quantity);
 
             System.out.println(product.toString());
@@ -173,7 +178,9 @@ public class AddNewProductPane extends AnchorPane {
                 close();
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Please enter a value for every field!");
+            alert.showAndWait();
+
+//            JOptionPane.showMessageDialog(null, "Please enter a value for every field!");
         }
 
 
@@ -208,8 +215,8 @@ public class AddNewProductPane extends AnchorPane {
 
 
     /**
-     * For testing purposes
-     * @return
+     * ObservableList that populates the comboBox
+     * @return the observableList which then is added to the comboBox
      */
     private ObservableList<ProductCategories> getCategories() {
         ObservableList<ProductCategories> Products = FXCollections.observableArrayList();
