@@ -1,5 +1,7 @@
 package View;
 
+import Entities.Ingredient;
+import Entities.Products;
 import Entities.Styles;
 import Entities.Views;
 import javafx.geometry.Insets;
@@ -26,8 +28,6 @@ public class MenuPane extends StackPane {
     private Button contractBtn;
     private Button expandBtn;
     private HBox toggleContainer;
-    private boolean toggled;
-    private int toggleCount = 0;
 
     public MenuPane(MainPane mainPane) {
         this.mainPane = mainPane;
@@ -56,14 +56,6 @@ public class MenuPane extends StackPane {
             mainContainer.getChildren().add(b);
         }
 
-        /*
-        toggleButton = new ToggleButton("ToggleButton");
-        toggleButton.setPrefSize(130, 50);
-        toggleButton.getStylesheets().add("LeftMenuBar.css");
-        toggleButton.getStyleClass().add("toggleButton");
-        toggleButton.setOnAction(e -> toggleMenu(mainPane));
-        */
-
         contractBtn = new Button("Toggle Button");
         contractBtn.setPrefSize(130, 50);
         contractBtn.getStylesheets().add("LeftMenuBar.css");
@@ -87,51 +79,100 @@ public class MenuPane extends StackPane {
         setPrefSize(280, 768);
     }
 
+    /**
+     * Contracts the menu
+     * @param pane Active Pane being viewed
+     */
     private void contract(MainPane pane) {
         Pane activePane = getActiveView(pane);
+        int activeIndex = pane.getActiveView();
+        Pane[] views = pane.getViews();
+
+        if (activePane instanceof Dashboard) {
+            ((Dashboard) views[activeIndex]).expand();
+        } else if (activePane instanceof IngredientsPane) {
+            ((IngredientsPane) views[activeIndex]).expand();
+        } else if (activePane instanceof ProductsPane) {
+            ((ProductsPane) views[activeIndex]).expand();
+        } else if (activePane instanceof SupplierPane) {
+            ((SupplierPane) views[activeIndex]).expand();
+        } else if (activePane instanceof SchedulePane) {
+            ((SchedulePane) views[activeIndex]).expand();
+        }
 
         setPrefSize(20,768);
+
         for (int i=0; i<Views.values().length; i++) {
             buttons[i].setText(""+Views.values()[i].name().charAt(0));
         }
+
         toggleContainer.getChildren().add(expandBtn);
         toggleContainer.getChildren().remove(contractBtn);
         toggleContainer.setPadding(new Insets(0, 0, 0, 30));
     }
 
+    /**
+     * Expands the menu
+     * @param pane Active pane being viewed
+     */
     private void expand(MainPane pane) {
+        Pane activePane = getActiveView(pane);
+        int activeIndex = pane.getActiveView();
+        Pane[] views = pane.getViews();
+
+        if (activePane instanceof Dashboard) {
+            ((Dashboard) views[activeIndex]).contract();
+        } else if (activePane instanceof IngredientsPane) {
+            ((IngredientsPane) views[activeIndex]).contract();
+        } else if (activePane instanceof ProductsPane) {
+            ((ProductsPane) views[activeIndex]).contract();
+        } else if (activePane instanceof SupplierPane) {
+            ((SupplierPane) views[activeIndex]).contract();
+        } else if (activePane instanceof SchedulePane) {
+            ((SchedulePane) views[activeIndex]).contract();
+        }
+
+        //activePane.contract(); //1086
+
         setPrefSize(280,768);
+
         for (int i=0; i<Views.values().length; i++) {
             buttons[i].setText(Views.values()[i].name());
         }
+
         toggleContainer.getChildren().add(contractBtn);
         toggleContainer.getChildren().remove(expandBtn);
         toggleContainer.setPadding(new Insets(0, 0, 0, 75));
     }
 
+    /**
+     * Checks which pane that is active
+     * @param pane Active pane
+     * @return Returns the active view
+     */
     private Pane getActiveView(MainPane pane) {
         int activePane = pane.getActiveView();
         Pane[] views = pane.getViews();
 
         if (views[activePane] instanceof Dashboard) {
-            System.out.println("Dashboard");
             return views[activePane];
         } else if (views[activePane] instanceof IngredientsPane) {
-            System.out.println("Ingredients");
             return views[activePane];
         } else if (views[activePane] instanceof ProductsPane) {
-            System.out.println("Products");
             return views[activePane];
         } else if (views[activePane] instanceof SupplierPane) {
-            System.out.println("Supplier");
             return views[activePane];
         } else if (views[activePane] instanceof SchedulePane) {
-            System.out.println("Schedule");
             return views[activePane];
         }
         return null;
     }
 
+    /**
+     * Initialize the buttons
+     * @param view Active view
+     * @return new styled button
+     */
     private Button initButton(Views view) {
         Button newButton = new Button(view.name());
         newButton.setPrefSize(280, 100);

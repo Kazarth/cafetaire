@@ -35,7 +35,14 @@ public class IngredientsPane extends StackPane {
     private TableColumn selectedColumn;
     private Callback callback;
 
-    public IngredientsPane() {}
+    private HBox mainContainer;
+    private VBox innerContainer;
+    private VBox mainVbox;
+    private HBox topHBox;
+    private HBox midHBox;
+    private HBox bottomHBox;
+    private HBox westHBOx;
+    private HBox eastHBox;
 
     public IngredientsPane (Callback callback) {
         this.callback = callback;
@@ -142,14 +149,14 @@ public class IngredientsPane extends StackPane {
          *  VBOX, HBOX. */
 
 
-        HBox mainContainer = new HBox(25);
-        VBox innerContainer = new VBox(25);
-        VBox mainVbox = new VBox();
-        HBox topHBox = new HBox();
-        HBox midHBox = new HBox();
-        HBox bottomHBox = new HBox();
-        HBox westHBOx = new HBox(5);
-        HBox eastHBox = new HBox(5);
+        mainContainer = new HBox(25);
+        innerContainer = new VBox(25);
+        mainVbox = new VBox();
+        topHBox = new HBox();
+        midHBox = new HBox();
+        bottomHBox = new HBox();
+        westHBOx = new HBox(5);
+        eastHBox = new HBox(5);
 
         getChildren().add(innerContainer);
 
@@ -161,9 +168,9 @@ public class IngredientsPane extends StackPane {
         midHBox.getChildren().add(overView);
         mainVbox.getChildren().add(bottomHBox);
 
-        bottomHBox.getChildren().addAll(westHBOx,eastHBox);
-        westHBOx.getChildren().addAll(addIngredients,removeIngredients);
-        eastHBox.getChildren().addAll(searchTextField ,addButton,removeButton);
+        bottomHBox.getChildren().addAll(westHBOx, eastHBox);
+        westHBOx.getChildren().addAll(addIngredients, removeIngredients);
+        eastHBox.getChildren().addAll(searchTextField, addButton,removeButton);
 
         innerContainer.setAlignment(Pos.CENTER);
         mainContainer.setAlignment(Pos.CENTER);
@@ -248,6 +255,36 @@ public class IngredientsPane extends StackPane {
             }
             tableView.refresh();
         }
+    }
+
+    /**
+     * When the menu contracts the Pane will extend
+     */
+    public void expand() {
+        setPrefWidth(1346);
+        innerContainer.setMaxSize(1180,698);
+        tableView.setMaxWidth(1124);
+        nameColumn.setPrefWidth(225);
+        categoryColumn.setPrefWidth(225);
+        stockColumn.setPrefWidth(224);
+        supplierColumn.setPrefWidth(224);
+        selectedColumn.setPrefWidth(224);
+        bottomHBox.setPrefSize(1180,75); // funkar ej
+    }
+
+    /**
+     * When the menu expands the Pane will narrow
+     */
+    public void contract() {
+        setPrefWidth(1086);
+        innerContainer.setMaxSize(1036,698);
+        tableView.setMaxWidth(980);
+        nameColumn.setPrefWidth(196);
+        categoryColumn.setPrefWidth(196);
+        stockColumn.setPrefWidth(196);
+        supplierColumn.setPrefWidth(195);
+        selectedColumn.setPrefWidth(195);
+        bottomHBox.setPrefSize(1036,75); // funkar ej
     }
 
     // Test values
