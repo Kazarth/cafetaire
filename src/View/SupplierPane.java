@@ -16,8 +16,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
-import javax.swing.*;
 import java.util.ArrayList;
 
 
@@ -36,8 +34,6 @@ public class SupplierPane extends StackPane {
     private TableColumn<Supplier, String> emailColumn;
     private TableColumn<Supplier, Integer> phoneColumn;
     private Callback callback;
-
-
 
 
     public SupplierPane(Callback callback) {
@@ -67,6 +63,9 @@ public class SupplierPane extends StackPane {
         Button buttonAdd = new Button("ADD SUPPLIER");
         buttonAdd.setOnAction(e -> addNewSupplierAction());
         Button buttonRemove = new Button("REMOVE SUPPLIER");
+        buttonRemove.setOnAction(e -> {
+            removeSupplier();
+        });
         Button buttonEdit = new Button("EDIT SUPPLIER");
 
         buttonAdd.setStyle(Styles.getButton());
@@ -181,6 +180,10 @@ public class SupplierPane extends StackPane {
         tableView.getItems().add(supplier);
     }
 
+
+    /**
+     * Add new Supplier
+     */
     public void addNewSupplierAction() {
         try {
             new AddNewSupplierPane(this, callback);
@@ -188,7 +191,7 @@ public class SupplierPane extends StackPane {
             e.printStackTrace();
         }
     }
-
+  
     public void expand() {
         setPrefWidth(1346);
         System.out.println("Expanding");
@@ -197,5 +200,14 @@ public class SupplierPane extends StackPane {
     public void contract() {
         setPrefWidth(1086);
         System.out.println("Contracting");
+
+    /**
+     * Removes selected supplier
+     */
+    public void removeSupplier() {
+        ObservableList<Supplier> supplierSelected, allSuppliers;
+        allSuppliers = tableView.getItems();
+        supplierSelected = tableView.getSelectionModel().getSelectedItems();
+        supplierSelected.forEach(allSuppliers::remove);
     }
 }
