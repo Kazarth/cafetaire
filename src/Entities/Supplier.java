@@ -1,8 +1,9 @@
 package Entities;
 
 /**
- * An entity used for containing the different suppliers and their contact information.
- * @author Tor Stenfeldt, Paul Moustakas
+ * Entity class for suppliers to store contact information.
+ * (NOTE :  this is a new class to match the suppliers needs and to fit into the system)
+ * @author Paul Moustakas
  * @version 2.0
  */
 public class Supplier {
@@ -11,17 +12,19 @@ public class Supplier {
     private String email;
     private String phone;
 
+
+    public Supplier () {
+        supplierName    = "";
+        category        = "";
+        email           = "";
+        phone           = "";
+    }
+
     public Supplier(String supplierName, String category, String email, String phone) {
         this.supplierName   = supplierName;
         this.category       = category;
         this.email          = email;
         this.phone          = phone;
-    }
-
-    public Supplier () {}
-
-    public Supplier(Supplier supplier) {
-        this.supplierName = supplier.getName();
     }
 
     public String getSupplierName() {
@@ -62,5 +65,12 @@ public class Supplier {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String toString() {
+        return "Name: " + supplierName + "\n" +
+                "Category: " + category + "\n" +
+                "Email: " + email + "\n" +
+                "Phone: " + phone;
     }
 }

@@ -112,18 +112,19 @@ public abstract class Styles {
 
     public static String getTableColumn(){
         return (
-                "-fx-text-fill: #21252B;" +
+                "-fx-text-fill: #fff;" +
                 "-fx-alignment: center;" +
                 "-fx-font-size: 12;" +
                 "-fx-font-family: Segoe UI;" +
                 "-fx-font-weight: bold;"
+                //"-fx-color: #21252B"
                 );
     }
     public static String getTableRowSelected() {
         return (
                 "-fx-selection-bar: #619F81;" +
                 "-fx-selection-bar-non-focused: #619F81;" +
-                "-fx-background-color: #eee; "
+                "-fx-background-color: #FFF; "
                 );
     }
   

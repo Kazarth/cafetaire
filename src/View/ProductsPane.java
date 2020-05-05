@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import Control.Callback;
 
 import javax.swing.*;
+import java.util.NoSuchElementException;
 
 /**
  * The products menu provides information regarding products that currently are in stock
@@ -29,10 +30,6 @@ import javax.swing.*;
  */
 
 public class ProductsPane extends StackPane {
-    private Button btnNewItem;
-    private Button btnRemoveItem;
-    private Button btnAdd;
-    private Button btnRemove;
     private TextField txtFieldNewProducts;
     private ComboBox<ProductCategories> cmbBoxProducts;
     private Spinner<Integer> numberSpinner = new Spinner<>();
@@ -66,9 +63,7 @@ public class ProductsPane extends StackPane {
         textTitle.setFont(MenuTitle);
         textTitle.setText("Products");
 
-        mainContainer.getChildren().add(getTopLabel());
-        mainContainer.getChildren().add(getHCenter());
-        mainContainer.getChildren().add(getFlowBottom());
+        mainContainer.getChildren().addAll(getTopLabel(), getFillerBox(), getHCenter(), getFlowBottom());
 
         getChildren().add(mainContainer);
 
@@ -88,14 +83,15 @@ public class ProductsPane extends StackPane {
     {
         HBox hBox = new HBox();
 
-        hBox.setPrefSize(1036, 65);
+        hBox.setMinSize(1036, 65);
+        hBox.setMaxSize(1036, 65);
 
         Label lbl = new MyLabel("Products");
         lbl.setPrefHeight(SIZE);
         lbl.prefWidthProperty().bind(widthProperty());
         lbl.setStyle("-fx-font-weight: bold;" +
                 "-fx-text-fill: #619F81;" +
-                "-fx-font-size: 36;" +
+                "-fx-font-size: 24;" +
                 "-fx-background-radius: 20 20 0 0");
 
         hBox.getChildren().add(lbl);
@@ -106,6 +102,16 @@ public class ProductsPane extends StackPane {
         return hBox;
     }
 
+    private HBox getFillerBox(){
+        HBox hBoxFiller = new HBox();
+        hBoxFiller.setMinSize(1036, 40);
+        hBoxFiller.setMaxSize(1036, 40);
+        hBoxFiller.setStyle("-fx-border-color: #6B6C6A;" +
+                            "-fx-background-color: #FFFFFF");
+
+        return hBoxFiller;
+    }
+
 
     /**
      * Method to create a HBox which stacks its content horizontally located below the Label
@@ -113,15 +119,16 @@ public class ProductsPane extends StackPane {
      */
     public HBox getHCenter()
     {
-        HBox hBox = new HBox();
+        HBox hBox = new HBox(15);
         hBox.setSpacing(10);
-        hBox.setPadding(new Insets(15, 12, 15, 12));
-        hBox.setPrefSize(1036, 75);
+//        hBox.setPadding(new Insets(15, 12, 15, 12));
+        hBox.setMinSize(1036, 75);
+        hBox.setMaxSize(1036, 75);
 
-        btnNewItem = new Button("Add New Item");
-        btnRemoveItem = new Button("Remove Item");
-        btnAdd = new Button("Add");
-        btnRemove = new Button("Remove");
+        Button btnNewItem = new Button("Add New Item");
+        Button btnRemoveItem = new Button("Remove Item");
+        Button btnAdd = new Button("Add");
+        Button btnRemove = new Button("Remove");
 
         txtFieldNewProducts = new TextField();
         txtFieldNewProducts.setPromptText("Enter a new product");
@@ -156,7 +163,7 @@ public class ProductsPane extends StackPane {
         txtFieldNewProducts.setPrefSize(150, 38);
 
         hBox.getChildren().addAll(btnNewItem, btnRemoveItem, txtFieldNewProducts, cmbBoxProducts, numberSpinner, btnAdd, btnRemove);
-        hBox.setAlignment(Pos.TOP_CENTER);
+        hBox.setAlignment(Pos.BOTTOM_CENTER);
 
         hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
@@ -181,7 +188,8 @@ public class ProductsPane extends StackPane {
 
         pane.setPadding(new Insets(15,15,15,15));
 
-        pane.setPrefSize(1036, 558);
+        pane.setMinSize(1036, 508);
+        pane.setMaxSize(1036, 508);
 
         tblView = new TableView<>();
 
@@ -189,20 +197,19 @@ public class ProductsPane extends StackPane {
         tblCategories.setCellValueFactory(new PropertyValueFactory<>("categories"));
         tblColumnStock.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        tblColumnName.setPrefWidth(325);
-        tblCategories.setPrefWidth(326);
-        tblColumnStock.setPrefWidth(326);
+        tblColumnName.setPrefWidth(311);
+        tblCategories.setPrefWidth(312);
+        tblColumnStock.setPrefWidth(312);
 
         tblColumnName.setStyle(Styles.getTableColumn());
         tblCategories.setStyle(Styles.getTableColumn());
         tblColumnStock.setStyle(Styles.getTableColumn());
 
-        tblView.getColumns().add(tblColumnName);
-        tblView.getColumns().add(tblCategories);
-        tblView.getColumns().add(tblColumnStock);
+        tblView.getColumns().addAll(tblColumnName, tblCategories, tblColumnStock);
 
-        tblView.setPrefSize(980, 530);
-//        tblView.setStyle(tableStyle);
+//        tblView.setPrefSize(980, 530);
+        tblView.setStyle(Styles.getTableRowSelected());
+        tblView.setStyle(tableStyle);
 
         pane.setAlignment(Pos.CENTER);
 
@@ -280,7 +287,7 @@ public class ProductsPane extends StackPane {
     {
         ObservableList<ProductCategories> categories = FXCollections.observableArrayList();
 
-        categories.addAll(ProductCategories.Bread, ProductCategories.Fruit, ProductCategories.Vegetable, ProductCategories.Dairy);
+        categories.addAll(ProductCategories.Bread, ProductCategories.Fruit, ProductCategories.Vegetable, ProductCategories.Dairy, ProductCategories.Pastries);
 
         return categories;
     }
@@ -314,17 +321,23 @@ public class ProductsPane extends StackPane {
 
         allItems = tblView.getItems();
         itemSelected = tblView.getSelectionModel().getSelectedItems();
-
-        itemSelected.forEach(allItems::remove);
+        try {
+            itemSelected.forEach(allItems::remove);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addQuantityToProduct()
     {
         Products products = tblView.getSelectionModel().getSelectedItem();
 
+    try {
         int prodQuantity = products.getQuantity();
-
         products.setQuantity(prodQuantity + getNumberSpinnerValue());
+    } catch (NumberFormatException e){
+        e.printStackTrace();
+    }
 
         tblView.refresh();
     }
@@ -333,9 +346,12 @@ public class ProductsPane extends StackPane {
     {
         Products products = tblView.getSelectionModel().getSelectedItem();
 
+    try {
         int prodQuantity = products.getQuantity();
-
         products.setQuantity(prodQuantity - getNumberSpinnerValue());
+    } catch (NumberFormatException e){
+        e.printStackTrace();
+    }
 
         tblView.refresh();
     }
