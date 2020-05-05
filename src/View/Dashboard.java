@@ -57,4 +57,12 @@ public class Dashboard extends StackPane {
         getChildren().add(boxes);
         setPrefSize(1086, 768);
     }
+
+    public void expand() {
+        setPrefWidth(1346);
+    }
+
+    public void contract() {
+        setPrefWidth(1086);
+    }
 }

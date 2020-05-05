@@ -297,7 +297,17 @@ public class ProductsPane extends StackPane {
         tblView.refresh();
     }
 
-    public void addNewProduct(Product product) {
+
+    public void expand() {
+        setPrefWidth(1346);
+        System.out.println("Expanding");
+    }
+
+    public void contract() {
+        setPrefWidth(1086);
+        System.out.println("Contracting");
+
+      public void addNewProduct(Product product) {
         tblView.getItems().add(product);
     }
 }
