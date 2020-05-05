@@ -1,15 +1,9 @@
-package View;
+ackage View;
 
-import Entities.Ingredient;
 import Entities.IngredientTest;
 import Entities.Styles;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -96,20 +90,21 @@ public class IngredientsPane extends StackPane{
         overView.setFill(Color.BLACK);
 
         /** Searchbar configuration */
+
         searchTextField = new TextField();
         searchTextField.setPromptText("SEARCH");
         searchTextField.setPrefHeight(32);
         searchTextField.setPrefWidth(250);
 
         /** Ingredient table configuration and design */
+
+
         tableView = new TableView();
         setPrefSize(1086,768);
         setStyle(Styles.getPane());
-        //searchRecord();
+        searchRecord();
 
-        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            searchRecord(observable, oldValue, newValue);
-        });
+
 
         nameColumn = new TableColumn("NAME");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -119,6 +114,7 @@ public class IngredientsPane extends StackPane{
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         supplierColumn  = new TableColumn("SUPPLIER");
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
+
 
         selectedColumn = new TableColumn("SELECTED ITEM");
         //selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
@@ -153,6 +149,8 @@ public class IngredientsPane extends StackPane{
 
         /** LayoutPane configurations and instantiation.
          *  VBOX, HBOX. */
+
+
         mainContainer = new HBox(25);
         innerContainer = new VBox(25);
         mainVbox = new VBox();
@@ -228,16 +226,6 @@ public class IngredientsPane extends StackPane{
     }
 
     /**
-     * Removes selected ingredient from the stock
-     */
-    public void removeIngredient(IngredientTest ingredientTest) {
-        ObservableList<IngredientTest> ingredientTestSelected, allIngredients;
-        allIngredients = tableView.getItems();
-        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
-        ingredientTestSelected.forEach(allIngredients::remove);
-    }
-
-    /**
      * Increments the selected ingredients stock by 1
      */
     public void addAmount() {
@@ -283,7 +271,7 @@ public class IngredientsPane extends StackPane{
         stockColumn.setPrefWidth(224);
         supplierColumn.setPrefWidth(224);
         selectedColumn.setPrefWidth(224);
-        //bottomHBox.setPrefSize(1180,75); // funkar ej
+        bottomHBox.setPrefSize(1180,75); // funkar ej
     }
 
     /**
@@ -298,15 +286,17 @@ public class IngredientsPane extends StackPane{
         stockColumn.setPrefWidth(196);
         supplierColumn.setPrefWidth(195);
         selectedColumn.setPrefWidth(195);
-        //bottomHBox.setPrefSize(1036,75); // funkar ej
+        bottomHBox.setPrefSize(1036,75); // funkar ej
     }
 
-/*
+
     * Searchbar functionality. (NEEDS REVISION).
     */
-   private void searchRecord(Observable observable, String oldValue, String newValue) {
-       if (!searchTextField.getText().equals("")) {
-           FilteredList<IngredientTest> filteredList = new FilteredList<>(getIngredientTest(), p -> true);
+
+   private void searchRecord() {
+
+       FilteredList <IngredientTest> filteredList = new FilteredList<>(getIngredientTest(),p -> true);
+       searchTextField.textProperty().addListener((observable,oldValue,newValue) -> {
            filteredList.setPredicate(tableView -> {
 
                if (newValue == null || newValue.isEmpty()) {
@@ -315,7 +305,7 @@ public class IngredientsPane extends StackPane{
 
                String typedText = newValue.toLowerCase();
 
-               if (tableView.getName().toLowerCase().contains(typedText)) {
+                if (tableView.getName().toLowerCase().contains(typedText)) {
                    return true;
                }
 
@@ -328,19 +318,18 @@ public class IngredientsPane extends StackPane{
                    return true;
                }
 
+
                return false;
            });
 
-           SortedList<IngredientTest> sortedList = new SortedList<>(filteredList);
+           SortedList <IngredientTest> sortedList = new SortedList<>(filteredList);
            sortedList.comparatorProperty().bind(tableView.comparatorProperty());
-           tableView.setItems(sortedList);
-       } else {
-           tableView.setItems(getIngredientTest());
-       }
+        //   tableView.setItems(sortedList);
+       });
      }
 
     // Test values
-    private ObservableList<IngredientTest> getIngredientTest() {
+    private ObservableList<IngredientTest>   getIngredientTest() {
             ObservableList <IngredientTest> ingredients = FXCollections.observableArrayList();
             IngredientTest[] receivedIngredients = callback.getIngredientsTest();
             ingredients.addAll(Arrays.asList(receivedIngredients));
