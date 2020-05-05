@@ -2,8 +2,12 @@ package View;
 
 import Entities.IngredientTest;
 import Entities.Styles;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -103,9 +107,7 @@ public class IngredientsPane extends StackPane{
         setPrefSize(1086,768);
         setStyle(Styles.getPane());
         searchRecord();
-
-
-
+        
         nameColumn = new TableColumn("NAME");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryColumn = new TableColumn("CATEGORY");
@@ -289,13 +291,13 @@ public class IngredientsPane extends StackPane{
         bottomHBox.setPrefSize(1036,75); // funkar ej
     }
 
-
+/*
     * Searchbar functionality. (NEEDS REVISION).
     */
 
    private void searchRecord() {
 
-       FilteredList <IngredientTest> filteredList = new FilteredList<>(getIngredientTest(),p -> true);
+       FilteredList<IngredientTest> filteredList = new FilteredList<>(getIngredientTest(), p -> true);
        searchTextField.textProperty().addListener((observable,oldValue,newValue) -> {
            filteredList.setPredicate(tableView -> {
 
@@ -322,7 +324,7 @@ public class IngredientsPane extends StackPane{
                return false;
            });
 
-           SortedList <IngredientTest> sortedList = new SortedList<>(filteredList);
+           SortedList<IngredientTest> sortedList = new SortedList<>(filteredList);
            sortedList.comparatorProperty().bind(tableView.comparatorProperty());
         //   tableView.setItems(sortedList);
        });
