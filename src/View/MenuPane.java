@@ -69,22 +69,23 @@ public class MenuPane extends StackPane {
         setPrefSize(280, 768);
     }
 
+    /**
+     * Activated ToggleButton
+     * @param button Button to be scaled
+     */
     private void toggle(Button button) {
         if (this.expanded) {
-            contract();
-            button.setText("Toggle");
+            contract(button);
         } else {
-            expand();
-            button.setText("Toggle Button");
+            expand(button);
         }
-
         this.expanded = !this.expanded;
     }
 
     /**
      * Contracts the menu
      */
-    private void contract() {
+    private void contract(Button button) {
         int activeIndex = this.mainPane.getActiveView();
         Pane[] views = this.mainPane.getViews();
 
@@ -115,13 +116,15 @@ public class MenuPane extends StackPane {
             this.buttons[i].setText(""+Views.values()[i].name().charAt(0));
         }
 
-        this.toggleContainer.setPadding(new Insets(0, 0, 0, 0));
+        button.setText("Toggle");
+        button.setPrefSize(80,50);
+        toggleContainer.setPadding(new Insets(0, 0, 0, 24));
     }
 
     /**
      * Expands the menu
      */
-    private void expand() {
+    private void expand(Button button) {
         int activeIndex = this.mainPane.getActiveView();
         Pane[] views = this.mainPane.getViews();
 
@@ -146,15 +149,15 @@ public class MenuPane extends StackPane {
                 break;
         }
 
-        //activePane.contract(); //1086
-
         setPrefSize(280,768);
 
         for (int i=0; i<Views.values().length; i++) {
             this.buttons[i].setText(Views.values()[i].name());
         }
 
-        this.toggleContainer.setPadding(new Insets(0, 0, 0, 75));
+        button.setText("Toggle Button");
+        button.setPrefSize(130,50);
+        toggleContainer.setPadding(new Insets(0, 0, 0, 75));
     }
 
     /**

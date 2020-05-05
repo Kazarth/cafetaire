@@ -60,11 +60,9 @@ public class Dashboard extends StackPane {
 
     public void expand() {
         setPrefWidth(1346);
-        System.out.println("Expanding");
     }
 
     public void contract() {
         setPrefWidth(1086);
-        System.out.println("Contracting");
     }
 }
