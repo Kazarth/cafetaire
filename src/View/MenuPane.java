@@ -3,6 +3,7 @@ package View;
 import Entities.Styles;
 import Entities.Views;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -74,8 +75,9 @@ public class MenuPane extends StackPane {
         toggleButton.setGraphic(toggleImage);
 
         toggleContainer = new HBox();
-        toggleContainer.setPadding(new Insets(0, 0, 0, 75));
+        toggleContainer.setPadding(new Insets(100, 0, 0, 75));
         toggleContainer.getChildren().add(toggleButton);
+        toggleContainer.setAlignment(Pos.BOTTOM_LEFT);
 
         mainContainer.getChildren().add(toggleContainer);
 
@@ -134,7 +136,7 @@ public class MenuPane extends StackPane {
         toggleImage = new ImageView(expandImage);
         toggleButton.setGraphic(toggleImage);
         button.setPrefSize(80,50);
-        toggleContainer.setPadding(new Insets(0, 0, 0, 24));
+        toggleContainer.setPadding(new Insets(100, 0, 0, 24));
     }
 
     /**
@@ -176,7 +178,7 @@ public class MenuPane extends StackPane {
 
 
         button.setPrefSize(130,50);
-        toggleContainer.setPadding(new Insets(0, 0, 0, 75));
+        toggleContainer.setPadding(new Insets(100, 0, 0, 75));
 
     }
 
