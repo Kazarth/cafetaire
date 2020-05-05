@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -75,10 +76,12 @@ public class IngredientsPane extends StackPane{
 
         /**  Title and overview text configuration */
 
-        Text titleText = new Text("INGREDIENTS");
-        Color seaDarkGreen = Color.web("#619f81");
-        titleText.setFill(seaDarkGreen);
-        titleText.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 40));
+        Text textTitle = new Text();
+        Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
+        textTitle.setFill(Paint.valueOf("#619f81"));
+        textTitle.setFont(MenuTitle);
+        textTitle.setText("Ingredients");
+
         Text overView = new Text("OVERVIEW");
         overView.setFont(Font.font("Segoe UI", FontWeight.LIGHT, FontPosture.REGULAR, 20));
         overView.setFill(Color.BLACK);
@@ -99,7 +102,6 @@ public class IngredientsPane extends StackPane{
         searchRecord();
 
 
-
         nameColumn = new TableColumn("NAME");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryColumn = new TableColumn("CATEGORY");
@@ -117,9 +119,7 @@ public class IngredientsPane extends StackPane{
 
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
-        tableView.setItems(getIngredientTest());
         // loads in data
-
 
         nameColumn.setPrefWidth(196);
         categoryColumn.setPrefWidth(196);
@@ -146,7 +146,7 @@ public class IngredientsPane extends StackPane{
         innerContainer.getChildren().add(mainVbox);
         innerContainer.getChildren().add(tableView);
         mainVbox.getChildren().add(topHBox);
-        topHBox.getChildren().add(titleText);
+        topHBox.getChildren().add(textTitle);
         mainVbox.getChildren().add(midHBox);
         midHBox.getChildren().add(overView);
         mainVbox.getChildren().add(bottomHBox);
