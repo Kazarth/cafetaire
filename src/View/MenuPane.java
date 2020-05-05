@@ -1,14 +1,10 @@
 package View;
 
-import Entities.Ingredient;
-import Entities.Products;
 import Entities.Styles;
 import Entities.Views;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -25,13 +21,13 @@ public class MenuPane extends StackPane {
     private Button[] buttons;
     private Button selectedButton;
 
-    private Button contractBtn;
-    private Button expandBtn;
     private HBox toggleContainer;
+    private boolean expanded;
 
     public MenuPane(MainPane mainPane) {
         this.mainPane = mainPane;
         buttons = new Button[Views.values().length];
+        this.expanded = true;
 
         for (int i=0; i<buttons.length; i++) {
             buttons[i] = initButton(Views.values()[i]);
@@ -56,21 +52,15 @@ public class MenuPane extends StackPane {
             mainContainer.getChildren().add(b);
         }
 
-        contractBtn = new Button("Toggle Button");
-        contractBtn.setPrefSize(130, 50);
-        contractBtn.getStylesheets().add("LeftMenuBar.css");
-        contractBtn.getStyleClass().add("toggleButton");
-        contractBtn.setOnAction(e -> contract(mainPane));
-
-        expandBtn = new Button("Toggle");
-        expandBtn.setPrefSize(65, 50);
-        expandBtn.getStylesheets().add("LeftMenuBar.css");
-        expandBtn.getStyleClass().add("toggleButton");
-        expandBtn.setOnAction(e -> expand(mainPane));
+        Button toggleButton = new Button("Toggle Button");
+        toggleButton.setPrefSize(130, 50);
+        toggleButton.getStylesheets().add("LeftMenuBar.css");
+        toggleButton.getStyleClass().add("toggleButton");
+        toggleButton.setOnAction(e -> toggle(toggleButton));
 
         toggleContainer = new HBox();
         toggleContainer.setPadding(new Insets(0, 0, 0, 75));
-        toggleContainer.getChildren().add(contractBtn);
+        toggleContainer.getChildren().add(toggleButton);
 
         mainContainer.getChildren().add(toggleContainer);
 
@@ -79,57 +69,81 @@ public class MenuPane extends StackPane {
         setPrefSize(280, 768);
     }
 
+    private void toggle(Button button) {
+        if (this.expanded) {
+            contract();
+            button.setText("Toggle");
+        } else {
+            expand();
+            button.setText("Toggle Button");
+        }
+
+        this.expanded = !this.expanded;
+    }
+
     /**
      * Contracts the menu
-     * @param pane Active Pane being viewed
      */
-    private void contract(MainPane pane) {
-        Pane activePane = getActiveView(pane);
-        int activeIndex = pane.getActiveView();
-        Pane[] views = pane.getViews();
+    private void contract() {
+        int activeIndex = this.mainPane.getActiveView();
+        Pane[] views = this.mainPane.getViews();
 
-        if (activePane instanceof Dashboard) {
-            ((Dashboard) views[activeIndex]).expand();
-        } else if (activePane instanceof IngredientsPane) {
-            ((IngredientsPane) views[activeIndex]).expand();
-        } else if (activePane instanceof ProductsPane) {
-            ((ProductsPane) views[activeIndex]).expand();
-        } else if (activePane instanceof SupplierPane) {
-            ((SupplierPane) views[activeIndex]).expand();
-        } else if (activePane instanceof SchedulePane) {
-            ((SchedulePane) views[activeIndex]).expand();
+        switch (activeIndex) {
+            case 0:
+                ((Dashboard) views[activeIndex]).expand();
+                break;
+            case 1:
+                ((IngredientsPane) views[activeIndex]).expand();
+                break;
+            case 2:
+                ((ProductsPane) views[activeIndex]).expand();
+                break;
+            case 3:
+                ((SupplierPane) views[activeIndex]).expand();
+                break;
+            case 4:
+                ((SchedulePane) views[activeIndex]).expand();
+                break;
+            default:
+                System.out.println("Shouldn't be here.");
+                break;
         }
 
         setPrefSize(20,768);
 
         for (int i=0; i<Views.values().length; i++) {
-            buttons[i].setText(""+Views.values()[i].name().charAt(0));
+            this.buttons[i].setText(""+Views.values()[i].name().charAt(0));
         }
 
-        toggleContainer.getChildren().add(expandBtn);
-        toggleContainer.getChildren().remove(contractBtn);
-        toggleContainer.setPadding(new Insets(0, 0, 0, 30));
+        this.toggleContainer.setPadding(new Insets(0, 0, 0, 0));
     }
 
     /**
      * Expands the menu
-     * @param pane Active pane being viewed
      */
-    private void expand(MainPane pane) {
-        Pane activePane = getActiveView(pane);
-        int activeIndex = pane.getActiveView();
-        Pane[] views = pane.getViews();
+    private void expand() {
+        int activeIndex = this.mainPane.getActiveView();
+        Pane[] views = this.mainPane.getViews();
 
-        if (activePane instanceof Dashboard) {
-            ((Dashboard) views[activeIndex]).contract();
-        } else if (activePane instanceof IngredientsPane) {
-            ((IngredientsPane) views[activeIndex]).contract();
-        } else if (activePane instanceof ProductsPane) {
-            ((ProductsPane) views[activeIndex]).contract();
-        } else if (activePane instanceof SupplierPane) {
-            ((SupplierPane) views[activeIndex]).contract();
-        } else if (activePane instanceof SchedulePane) {
-            ((SchedulePane) views[activeIndex]).contract();
+        switch (activeIndex) {
+            case 0:
+                ((Dashboard) views[activeIndex]).contract();
+                break;
+            case 1:
+                ((IngredientsPane) views[activeIndex]).contract();
+                break;
+            case 2:
+                ((ProductsPane) views[activeIndex]).contract();
+                break;
+            case 3:
+                ((SupplierPane) views[activeIndex]).contract();
+                break;
+            case 4:
+                ((SchedulePane) views[activeIndex]).contract();
+                break;
+            default:
+                System.out.println("Shouldn't be here.");
+                break;
         }
 
         //activePane.contract(); //1086
@@ -137,35 +151,10 @@ public class MenuPane extends StackPane {
         setPrefSize(280,768);
 
         for (int i=0; i<Views.values().length; i++) {
-            buttons[i].setText(Views.values()[i].name());
+            this.buttons[i].setText(Views.values()[i].name());
         }
 
-        toggleContainer.getChildren().add(contractBtn);
-        toggleContainer.getChildren().remove(expandBtn);
-        toggleContainer.setPadding(new Insets(0, 0, 0, 75));
-    }
-
-    /**
-     * Checks which pane that is active
-     * @param pane Active pane
-     * @return Returns the active view
-     */
-    private Pane getActiveView(MainPane pane) {
-        int activePane = pane.getActiveView();
-        Pane[] views = pane.getViews();
-
-        if (views[activePane] instanceof Dashboard) {
-            return views[activePane];
-        } else if (views[activePane] instanceof IngredientsPane) {
-            return views[activePane];
-        } else if (views[activePane] instanceof ProductsPane) {
-            return views[activePane];
-        } else if (views[activePane] instanceof SupplierPane) {
-            return views[activePane];
-        } else if (views[activePane] instanceof SchedulePane) {
-            return views[activePane];
-        }
-        return null;
+        this.toggleContainer.setPadding(new Insets(0, 0, 0, 75));
     }
 
     /**
