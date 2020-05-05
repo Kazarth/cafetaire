@@ -200,6 +200,7 @@ public class SupplierPane extends StackPane {
     public void contract() {
         setPrefWidth(1086);
         System.out.println("Contracting");
+    }
 
     /**
      * Removes selected supplier
