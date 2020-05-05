@@ -80,7 +80,7 @@ public class IngredientsPane extends StackPane{
         Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         textTitle.setFill(Paint.valueOf("#619f81"));
         textTitle.setFont(MenuTitle);
-        textTitle.setText("Ingredients");
+        textTitle.setText("INGREDIENTS");
 
         Text overView = new Text("OVERVIEW");
         overView.setFont(Font.font("Segoe UI", FontWeight.LIGHT, FontPosture.REGULAR, 20));
@@ -164,11 +164,13 @@ public class IngredientsPane extends StackPane{
         eastHBox.setAlignment(Pos.CENTER);
 
         innerContainer.setStyle("-fx-background-color: #FFFFFF ; -fx-background-radius: 20 20 20 20");
+        midHBox.setStyle("-fx-border-color: #6B6C6A;" +
+                "-fx-background-color: #FFFFFF");
         innerContainer.setMaxSize(1036,698);
 
         mainVbox.setPrefSize(1036,225);
         topHBox.setPrefSize(1036,75);
-        midHBox.setPrefSize(1036,75);
+        midHBox.setPrefSize(1036,40);
         bottomHBox.setPrefSize(1036,75);
         westHBOx.setPrefSize(518,37.5);
         eastHBox.setPrefSize(518,37.5);
