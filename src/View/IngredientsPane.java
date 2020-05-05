@@ -143,6 +143,7 @@ public class IngredientsPane extends StackPane{
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
         // loads in data
+        tableView.setItems(getIngredientTest());
 
         nameColumn.setPrefWidth(196);
         categoryColumn.setPrefWidth(196);

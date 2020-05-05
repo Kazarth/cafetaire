@@ -256,7 +256,6 @@ public class Database {
         return this.suppliers.removeIf(s -> s.getName().equals(name));
     }
 
-
     /* Testing purposes IngredientTest*/
     public boolean addIngredientTest(IngredientTest ingredient) {
         if (ingredients.containsKey(ingredient.getName())) {
