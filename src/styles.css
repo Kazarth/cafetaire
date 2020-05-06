@@ -99,6 +99,30 @@
     -fx-background-color: #2F4D3E;
 }
 
+.greenButtonPanel {
+    -fx-background-color: #619F81;
+    -fx-background-radius: 10;
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+}
+
+.greenButtonPanel:hover {
+    -fx-background-color: #2F4D3E;
+}
+
+.greenButtonSquare {
+    -fx-background-color: #619F81;
+    -fx-background-radius: 5;
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+}
+
+.greenButtonSquare:hover {
+    -fx-background-color: #2F4D3E;
+}
+
 .redButton {
     -fx-background-color: #FF5E6F;
     -fx-background-radius: 25;
