@@ -88,13 +88,7 @@ public class ActiveRecipePane extends StackPane { // extended Pane will be the g
                 "-fx-padding: 0, 10, 0, 100;"
         );
         backButton = new Button("BACK TO RECIPES");
-        backButton.setStyle(
-                "-fx-background-color: #619F81;" +
-                "-fx-background-radius: 25;" +
-                "-fx-text-fill: #fff;" +
-                "-fx-font-weight: bold;" +
-                "-fx-font-size: 14;"
-        );
+        backButton.getStyleClass().add("greenButton");
         backButton.setOnAction(e -> goBack());
         backButton.setPrefSize(160,32);
         backBox.getChildren().add(backButton);
@@ -119,13 +113,7 @@ public class ActiveRecipePane extends StackPane { // extended Pane will be the g
                 "-fx-padding: 0, 10, 0, 100;"
         );
         deleteButton = new Button("DELETE RECIPE");
-        deleteButton.setStyle(
-                "-fx-background-color: #FF5E6F;" +
-                "-fx-background-radius: 25;" +
-                "-fx-text-fill: #fff;" +
-                "-fx-font-weight: bold;" +
-                "-fx-font-size: 14;"
-        );
+        deleteButton.getStyleClass().add("redButton");
         deleteButton.setOnAction(e -> deleteRecipe());
         deleteButton.setPrefSize(160,32);
         deleteBox.getChildren().add(deleteButton);
@@ -151,13 +139,7 @@ public class ActiveRecipePane extends StackPane { // extended Pane will be the g
         ingredientsBox.setPrefSize(360,300);
         ingredientsBox.getStyleClass().add("text-field");
         editIngredientsButton = new Button("EDIT INGREDIENTS");
-        editIngredientsButton.setStyle(
-                "-fx-background-color: #619F81;" +
-                "-fx-background-radius: 20;" +
-                "-fx-text-fill: #fff;" +
-                "-fx-font-weight: bold;" +
-                 "-fx-font-size: 14;"
-        );
+        editIngredientsButton.getStyleClass().add("greenButton");
         editIngredientsButton.setOnAction(e -> editIngredients());
         editIngredientsButton.setPrefSize(150,40);
         ingredientsContainer.getChildren().addAll(ingredientsLabel, ingredientsBox, editIngredientsButton);
@@ -176,13 +158,7 @@ public class ActiveRecipePane extends StackPane { // extended Pane will be the g
         stepsBox.setPrefSize(360,300);
         stepsBox.getStyleClass().add("text-field");
         editStepsButton = new Button("EDIT STEPS");
-        editStepsButton.setStyle(
-                "-fx-background-color: #619F81;" +
-                "-fx-background-radius: 20;" +
-                "-fx-text-fill: #fff;" +
-                "-fx-font-weight: bold;" +
-                "-fx-font-size: 14;"
-        );
+        editStepsButton.getStyleClass().add("greenButton");
         editStepsButton.setOnAction(e -> editSteps());
         editStepsButton.setPrefSize(150,40);
         stepContainer.getChildren().addAll(stepLabel, stepsBox, editStepsButton);
@@ -204,13 +180,7 @@ public class ActiveRecipePane extends StackPane { // extended Pane will be the g
         amountField.setPromptText("Amount");
         amountField.setPrefSize(80, 60);
         bakeButton = new Button("BAKE");
-        bakeButton.setStyle(
-                "-fx-background-color: #619F81;" +
-                "-fx-background-radius: 30;" +
-                "-fx-text-fill: #fff;" +
-                "-fx-font-weight: bold;" +
-                "-fx-font-size: 24;"
-        );
+        bakeButton.getStyleClass().add("bigGreenButton");
         bakeButton.setOnAction(e -> bake());
         bakeButton.setPrefSize(200,60);
         bakeBox.getChildren().addAll(amountField, bakeButton);
