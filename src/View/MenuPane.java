@@ -30,6 +30,11 @@ public class MenuPane extends StackPane {
     private Button toggleButton;
 
     private ImageView toggleImage;
+    private ImageView viewLogo;
+    private Image logoText;
+    private Image logo;
+    private Image activeExpand;
+    private Image activeMinimize;
     private Image minimizeImage;
     private Image expandImage;
 
@@ -57,6 +62,7 @@ public class MenuPane extends StackPane {
         HBox titleContainer = new HBox();
         titleContainer.setPadding(new Insets(0, 0, 0, 28));
         titleContainer.getChildren().add(title);
+        titleContainer.setAlignment(Pos.CENTER);
 
         mainContainer.getChildren().add(titleContainer);
 
@@ -64,16 +70,34 @@ public class MenuPane extends StackPane {
             mainContainer.getChildren().add(b);
         }
 
-        minimizeImage = new Image(new FileInputStream("resources/toggleButton/Crop.png"));
-        expandImage = new Image(new FileInputStream("resources/toggleButton/Expand.png"));
+        logoText = new Image(new FileInputStream("resources/logo/logoText.png"));
+        logo = new Image(new FileInputStream("resources/logo/logo.png"));
+        viewLogo = new ImageView(logoText);
+
+
+        minimizeImage = new Image(new FileInputStream("resources/toggleButton/crop.png"));
+        expandImage = new Image(new FileInputStream("resources/toggleButton/expand.png"));
+        activeExpand = new Image(new FileInputStream("resources/toggleButton/expand-active.png"));
+        activeMinimize = new Image(new FileInputStream("resources/toggleButton/crop-active.png"));
+        toggleImage = new ImageView(minimizeImage);
+
 
         toggleButton = new Button("");
         toggleButton.setPrefSize(40, 40);
-        toggleButton.getStylesheets().add("LeftMenuBar.css");
-        toggleButton.getStyleClass().add("toggleButton");
+        toggleButton.setStyle("-fx-background-color: #21252B;");
         toggleButton.setOnAction(e -> toggle(toggleButton));
-        toggleImage = new ImageView(minimizeImage);
         toggleButton.setGraphic(toggleImage);
+
+        toggleButton.setOnMouseEntered(e-> {
+            toggleImage = new ImageView(activeMinimize);
+            toggleButton.setGraphic(toggleImage);
+
+            toggleButton.setOnMouseExited(a->{
+                toggleImage = new ImageView(minimizeImage);
+                toggleButton.setGraphic(toggleImage);
+            } );
+        });
+
 
         toggleContainer = new HBox();
         toggleContainer.setPadding(new Insets(40, 0, 0, 105));
@@ -81,7 +105,6 @@ public class MenuPane extends StackPane {
         toggleContainer.setAlignment(Pos.BOTTOM_LEFT);
 
         mainContainer.getChildren().add(toggleContainer);
-
         setStyle("-fx-background-color: #21252B;");
         getChildren().add(mainContainer);
         setPrefSize(280, 768);
@@ -136,6 +159,17 @@ public class MenuPane extends StackPane {
 
         toggleImage = new ImageView(expandImage);
         toggleButton.setGraphic(toggleImage);
+
+        toggleButton.setOnMouseEntered(e-> {
+            toggleImage = new ImageView(activeExpand);
+            toggleButton.setGraphic(toggleImage);
+        });
+
+        toggleButton.setOnMouseExited(a->{
+            toggleImage = new ImageView(expandImage);
+            toggleButton.setGraphic(toggleImage);
+        } );
+
         button.setPrefSize(40,40);
         toggleContainer.setPadding(new Insets(40, 0, 0, 40));
 
@@ -175,6 +209,17 @@ public class MenuPane extends StackPane {
         for (int i=0; i<Views.values().length; i++) {
             this.buttons[i].setText(Views.values()[i].name());
         }
+
+        toggleButton.setOnMouseEntered(e-> {
+            toggleImage = new ImageView(activeMinimize);
+            toggleButton.setGraphic(toggleImage);
+
+        });
+
+        toggleButton.setOnMouseExited(a->{
+            toggleImage = new ImageView(minimizeImage);
+            toggleButton.setGraphic(toggleImage);
+        } );
 
         toggleImage = new ImageView(minimizeImage);
         toggleButton.setGraphic(toggleImage);
