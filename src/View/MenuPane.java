@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
  * @version 4.0
  */
 public class MenuPane extends StackPane {
+    private Label title;
 
     private MainPane mainPane;
     private Button[] buttons;
@@ -49,7 +50,7 @@ public class MenuPane extends StackPane {
 
         VBox mainContainer = new VBox();
 
-        Label title = new Label("Cafetairé");
+        title = new Label("Cafetairé");
         title.getStylesheets().add("styles.css");
         title.getStyleClass().add("title");
 
@@ -66,8 +67,8 @@ public class MenuPane extends StackPane {
         minimizeImage = new Image(new FileInputStream("resources/toggleButton/Crop.png"));
         expandImage = new Image(new FileInputStream("resources/toggleButton/Expand.png"));
 
-        toggleButton = new Button("Minimize");
-        toggleButton.setPrefSize(130, 50);
+        toggleButton = new Button("");
+        toggleButton.setPrefSize(40, 40);
         toggleButton.getStylesheets().add("LeftMenuBar.css");
         toggleButton.getStyleClass().add("toggleButton");
         toggleButton.setOnAction(e -> toggle(toggleButton));
@@ -75,7 +76,7 @@ public class MenuPane extends StackPane {
         toggleButton.setGraphic(toggleImage);
 
         toggleContainer = new HBox();
-        toggleContainer.setPadding(new Insets(100, 0, 0, 75));
+        toggleContainer.setPadding(new Insets(40, 0, 0, 105));
         toggleContainer.getChildren().add(toggleButton);
         toggleContainer.setAlignment(Pos.BOTTOM_LEFT);
 
@@ -130,13 +131,15 @@ public class MenuPane extends StackPane {
         setPrefSize(20,768);
 
         for (int i=0; i<Views.values().length; i++) {
-            this.buttons[i].setText(""+Views.values()[i].name().charAt(0));
+            this.buttons[i].setText("");
         }
 
         toggleImage = new ImageView(expandImage);
         toggleButton.setGraphic(toggleImage);
-        button.setPrefSize(80,50);
-        toggleContainer.setPadding(new Insets(100, 0, 0, 24));
+        button.setPrefSize(40,40);
+        toggleContainer.setPadding(new Insets(40, 0, 0, 40));
+
+        title.setText("C");
     }
 
     /**
@@ -177,9 +180,10 @@ public class MenuPane extends StackPane {
         toggleButton.setGraphic(toggleImage);
 
 
-        button.setPrefSize(130,50);
-        toggleContainer.setPadding(new Insets(100, 0, 0, 75));
+        button.setPrefSize(40,40);
+        toggleContainer.setPadding(new Insets(40, 0, 0, 105));
 
+        title.setText("Cafetairé");
     }
 
     /**
@@ -215,7 +219,6 @@ public class MenuPane extends StackPane {
                 newButton.setStyle(Styles.getMenuButtonHighlighted());
                 newButton.setGraphic(selectedView);
         });
-
 
         newButton.setOnMouseExited((handler) -> {
             newButton.setStyle(Styles.getMenuButtonStandard());

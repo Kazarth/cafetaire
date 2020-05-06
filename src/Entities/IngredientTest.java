@@ -9,7 +9,6 @@ import Control.Callback;
  * @author Lucas Eliasson
  * @version 1.0
  */
-
 public class IngredientTest {
     private String name;
     private String category;
