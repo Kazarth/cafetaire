@@ -179,7 +179,6 @@ public class MenuPane extends StackPane {
         toggleImage = new ImageView(minimizeImage);
         toggleButton.setGraphic(toggleImage);
 
-
         button.setPrefSize(40,40);
         toggleContainer.setPadding(new Insets(40, 0, 0, 105));
 
