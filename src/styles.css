@@ -64,3 +64,13 @@
   -fx-font-family: Segoe UI;
   -fx-font-weight: bold;
 }
+
+.text-field{
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color:rgba(255,0,0,0.2); /* here rgba (corrected) */
+}
+
+.text-field:focused{
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color:rgba(97,159,129,62); /* here rgba (corrected) */
+}
