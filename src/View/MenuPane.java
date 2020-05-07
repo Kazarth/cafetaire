@@ -22,8 +22,8 @@ import java.io.FileNotFoundException;
  * @version 4.0
  */
 public class MenuPane extends StackPane {
-    private Label title;
 
+    private Label title;
     private MainPane mainPane;
     private Button[] buttons;
     private Button selectedButton;
@@ -70,17 +70,21 @@ public class MenuPane extends StackPane {
             mainContainer.getChildren().add(b);
         }
 
-        logoText = new Image(new FileInputStream("resources/logo/logoText.png"));
-        logo = new Image(new FileInputStream("resources/logo/logo.png"));
-        viewLogo = new ImageView(logoText);
+        try {
 
+            logoText = new Image(new FileInputStream("resources/logo/logoText.png"));
+            logo = new Image(new FileInputStream("resources/logo/logo.png"));
+            viewLogo = new ImageView(logoText);
 
-        minimizeImage = new Image(new FileInputStream("resources/toggleButton/crop.png"));
-        expandImage = new Image(new FileInputStream("resources/toggleButton/expand.png"));
-        activeExpand = new Image(new FileInputStream("resources/toggleButton/expand-active.png"));
-        activeMinimize = new Image(new FileInputStream("resources/toggleButton/crop-active.png"));
-        toggleImage = new ImageView(minimizeImage);
+            minimizeImage = new Image(new FileInputStream("resources/toggleButton/crop.png"));
+            expandImage = new Image(new FileInputStream("resources/toggleButton/expand.png"));
+            activeExpand = new Image(new FileInputStream("resources/toggleButton/expand-active.png"));
+            activeMinimize = new Image(new FileInputStream("resources/toggleButton/crop-active.png"));
+            toggleImage = new ImageView(minimizeImage);
 
+        } catch (FileNotFoundException fe) {
+            fe.printStackTrace();
+        }
 
         toggleButton = new Button("");
         toggleButton.setPrefSize(40, 40);
@@ -235,40 +239,45 @@ public class MenuPane extends StackPane {
      * @param view Active view
      * @return new styled button
      */
-    private Button initButton(Views view) throws FileNotFoundException {
+    private Button initButton(Views view)  {
         Button newButton = new Button(view.name());
         newButton.setPrefSize(280, 100);
 
         newButton.setStyle(Styles.getMenuButtonStandard());
 
-        Image image = new Image(new FileInputStream("resources/deSelectedImages/" + view.name() + ".png"));
-        ImageView imageView = new ImageView(image);
+        try {
+            Image image = new Image(new FileInputStream("resources/deSelectedImages/" + view.name() + ".png"));
+            ImageView imageView = new ImageView(image);
 
-        Image selectedImage = new Image(new FileInputStream("resources/activeImages/" + view.name() + ".png"));
-        ImageView selectedView = new ImageView(selectedImage);
+            Image selectedImage = new Image(new FileInputStream("resources/activeImages/" + view.name() + ".png"));
+            ImageView selectedView = new ImageView(selectedImage);
 
-        newButton.setGraphic(imageView);
+            newButton.setGraphic(imageView);
 
-        newButton.setOnMouseClicked((handler) -> {
-            for (Button b: buttons) {
-                b.setStyle(Styles.getMenuButtonStandard());
-            }
-            newButton.setGraphic(selectedView);
-            mainPane.setView(view);
-            newButton.setStyle(Styles.getMenuButtonHighlighted());
-            selectedButton = newButton;
-        });
+            newButton.setOnMouseClicked((handler) -> {
+                for (Button b : buttons) {
+                    b.setStyle(Styles.getMenuButtonStandard());
+                }
+                newButton.setGraphic(selectedView);
+                mainPane.setView(view);
+                newButton.setStyle(Styles.getMenuButtonHighlighted());
+                selectedButton = newButton;
+            });
 
-        newButton.setOnMouseEntered((handler) -> {
+            newButton.setOnMouseEntered((handler) -> {
                 newButton.setStyle(Styles.getMenuButtonHighlighted());
                 newButton.setGraphic(selectedView);
-        });
+            });
 
-        newButton.setOnMouseExited((handler) -> {
-            newButton.setStyle(Styles.getMenuButtonStandard());
-            newButton.setGraphic(imageView);
-            selectedButton.setStyle(Styles.getMenuButtonHighlighted());
-        });
+            newButton.setOnMouseExited((handler) -> {
+                newButton.setStyle(Styles.getMenuButtonStandard());
+                newButton.setGraphic(imageView);
+                selectedButton.setStyle(Styles.getMenuButtonHighlighted());
+            });
+
+        } catch (FileNotFoundException fe) {
+            fe.printStackTrace();
+        }
 
         return newButton;
     }
