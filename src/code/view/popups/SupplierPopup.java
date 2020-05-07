@@ -44,7 +44,6 @@ public class SupplierPopup extends AnchorPane {
     private int opener;
     private String orgSupp;
 
-
     public SupplierPopup(SupplierPane source, Callback callback, int opener) {
         // init Frame
         frame = new JFrame("FX");
@@ -195,7 +194,6 @@ public class SupplierPopup extends AnchorPane {
     private void close() {
         frame.dispose();
     }
-
 
     /*
     //From database

@@ -16,7 +16,6 @@ public class Controller {
     private Database database;
     private MainPane mainPane;
     private SaveLoad saveLoad;
-
     private ColourTxT colourTxT = new ColourTxT();
 
     public Controller() {
@@ -24,11 +23,9 @@ public class Controller {
         this.saveLoad = new SaveLoad(database);
         database = saveLoad.loadData();
 
-
         // TODO: must comment away for testing purposes?
         this.mainPane = new MainPane(new CallbackHandler());
     }
-
 
     /**
      * Method to handle unsaved data on application EXIT
@@ -38,8 +35,6 @@ public class Controller {
         System.err.println("Confirmed save and now Exit");
         System.exit(0);
     }
-
-
 
     public MainPane getMainPane() {
         return mainPane;

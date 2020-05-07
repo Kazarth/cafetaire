@@ -139,13 +139,11 @@ public class IngredientsPane extends StackPane {
 
         // loads in data
         tableView.setItems(getIngredientTest());
-
         nameColumn.setPrefWidth(196);
         categoryColumn.setPrefWidth(196);
         stockColumn.setPrefWidth(196);
         supplierColumn.setPrefWidth(195);
         selectedColumn.setPrefWidth(195);
-
 
         /* LayoutPane configurations and instantiation.
          *  VBOX, HBOX. */

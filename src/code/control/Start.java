@@ -37,8 +37,6 @@ public class Start {
         });
     }
 
-
-
     private static void initFX(Controller controller, JFXPanel fxPanel) {
         fxPanel.setScene(new Scene(controller.getMainPane()));
     }

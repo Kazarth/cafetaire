@@ -22,7 +22,6 @@ import java.io.FileNotFoundException;
  * @version 4.0
  */
 public class MenuPane extends StackPane {
-
     private Label title;
     private MainPane mainPane;
     private Button[] buttons;
@@ -71,14 +70,14 @@ public class MenuPane extends StackPane {
         }
 
         try {
-            logoText = new Image(new FileInputStream("resources/logo/logoText.png"));
-            logo = new Image(new FileInputStream("resources/logo/logo.png"));
+            logoText = new Image(new FileInputStream("src/resources/logo/logoText.png"));
+            logo = new Image(new FileInputStream("src/resources/logo/logo.png"));
             viewLogo = new ImageView(logoText);
 
-            minimizeImage = new Image(new FileInputStream("resources/toggleButton/crop.png"));
-            expandImage = new Image(new FileInputStream("resources/toggleButton/expand.png"));
-            activeExpand = new Image(new FileInputStream("resources/toggleButton/expand-active.png"));
-            activeMinimize = new Image(new FileInputStream("resources/toggleButton/crop-active.png"));
+            minimizeImage = new Image(new FileInputStream("src/resources/toggleButton/crop.png"));
+            expandImage = new Image(new FileInputStream("src/resources/toggleButton/expand.png"));
+            activeExpand = new Image(new FileInputStream("src/resources/toggleButton/expand-active.png"));
+            activeMinimize = new Image(new FileInputStream("src/resources/toggleButton/crop-active.png"));
             toggleImage = new ImageView(minimizeImage);
 
         } catch (FileNotFoundException fe) {
@@ -240,16 +239,14 @@ public class MenuPane extends StackPane {
     private Button initButton(Views view)  {
         Button newButton = new Button(view.name());
         newButton.setPrefSize(280, 100);
-
         newButton.setStyle(Styles.getMenuButtonStandard());
 
         try {
-            Image image = new Image(new FileInputStream("resources/deSelectedImages/" + view.name() + ".png"));
+            Image image = new Image(new FileInputStream("src/resources/deSelectedImages/" + view.name() + ".png"));
             ImageView imageView = new ImageView(image);
 
-            Image selectedImage = new Image(new FileInputStream("resources/activeImages/" + view.name() + ".png"));
+            Image selectedImage = new Image(new FileInputStream("src/resources/activeImages/" + view.name() + ".png"));
             ImageView selectedView = new ImageView(selectedImage);
-
             newButton.setGraphic(imageView);
 
             newButton.setOnMouseClicked((handler) -> {
