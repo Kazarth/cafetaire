@@ -40,8 +40,11 @@ public class AddNewSupplierPane extends AnchorPane {
     private SupplierPane source;
     private Callback callback;
 
+    private int opener;
+    private String orgSupp;
 
-    public AddNewSupplierPane(SupplierPane source, Callback callback) {
+
+    public AddNewSupplierPane(SupplierPane source, Callback callback, int opener) {
         // init Frame
         frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
@@ -54,6 +57,7 @@ public class AddNewSupplierPane extends AnchorPane {
         frame.setResizable(false);
         frame.setVisible(true);
         Platform.runLater(() -> fxPanel.setScene(new Scene(this)));
+        this.opener = opener;
 
         // Init source
         this.source = source;
@@ -122,13 +126,24 @@ public class AddNewSupplierPane extends AnchorPane {
         phoneField.setLayoutX(144.0);   phoneField.setLayoutY(280);
 
         // Button pane
-        addButton = new Button("ADD NEW SUPPLIER");
+        addButton = new Button();
         addButton.setStyle(Styles.getPopAddButton());
         addButton.setPrefWidth(200); addButton.setPrefHeight(40);
         addButton.setLayoutX(75); addButton.setLayoutY(340);
-        addButton.setOnAction(e -> {
+        // New supplier
+        if (opener == 0) {
+            addButton.setText("ADD NEW SUPPLIER");
+            addButton.setOnAction(e -> {
                 addAction();
-                });
+            });
+        }
+        // Edit supplier
+        if (opener == 1){
+            addButton.setText("SAVE SUPPLIER");
+            addButton.setOnAction(e -> {
+                editAction();
+            });
+        }
 
         cancelButton = new Button("CANCEL");
         cancelButton.setStyle(Styles.getPopCancelButton());
@@ -195,6 +210,48 @@ public class AddNewSupplierPane extends AnchorPane {
 
      */
 
+    /**
+     * Method used to edit and item in the tableView in SupplierPane and database
+     * if name remains unchanged set values from the other fields to supplier
+     * if name is changed remove old name from database and add the new one
+     */
+    public void editAction(){
+        String name = nameField.getText();
+        String category = categoryBox.getValue();
+        String email = emailField.getText();
+        String phone = phoneField.getText();
+
+        if (orgSupp.equals(name)){
+            Supplier supplier = callback.getSupplier(nameField.getText());
+            supplier.setCategory(category);
+            supplier.setEmail(email);
+            supplier.setPhone(phone);
+            source.refresh();
+            close();
+        } else if (!orgSupp.equals(name)){
+            Supplier supplier = new Supplier(name, category, email, phone);
+            callback.addSupplier(supplier);
+            callback.removeSupplier(orgSupp);
+            source.addNewSupplier(supplier);
+            source.removeSupplier();
+            source.refresh();
+            close();
+        }
+    }
+
+    /**
+     *
+     * @param name initial value for item to be edited
+     * @param category initial value for item to be edited
+     * @param email initial value for item to be edited
+     * @param phone initial value for item to be edited
+     */
+    public void setValuesForSupplier(String name, String category, String email, String phone){
+        nameField.setText(name);
+        categoryBox.getSelectionModel().select(category);
+        emailField.setText(email);
+        phoneField.setText(phone);
+    }
 
     /**
      * For testing purposes
@@ -219,6 +276,14 @@ public class AddNewSupplierPane extends AnchorPane {
         ingredients.add("Fresh Food");
         ingredients.add("Drink");
         return ingredients;
+    }
+
+    public String getOrgSupp() {
+        return orgSupp;
+    }
+
+    public void setOrgSupp(String orgSupp) {
+        this.orgSupp = orgSupp;
     }
 }
 

@@ -35,7 +35,10 @@ public class AddNewIngredientPane extends AnchorPane {
     private Callback callback; // get logic
     private ArrayList<String> suppliers; // test purposes
 
-    public AddNewIngredientPane(IngredientsPane source, Callback callback) {
+    private int opener;
+    private String orgIngredient;
+
+    public AddNewIngredientPane(IngredientsPane source, Callback callback, int opener) {
         // init Frame
         frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
@@ -48,6 +51,8 @@ public class AddNewIngredientPane extends AnchorPane {
         frame.setResizable(false);
         frame.setVisible(true);
         Platform.runLater(() -> fxPanel.setScene(new Scene(this)));
+        this.opener = opener;
+
 
         // Init source
         this.source = source;
@@ -116,11 +121,21 @@ public class AddNewIngredientPane extends AnchorPane {
         supplierBox.setItems(getSuppliersFromDatabase()); // testing
 
         // Button pane
-        addButton = new Button("ADD NEW INGREDIENT");
+        addButton = new Button();
         addButton.setStyle(Styles.getPopAddButton());
         addButton.setPrefWidth(200); addButton.setPrefHeight(40);
         addButton.setLayoutX(75); addButton.setLayoutY(310);
-        addButton.setOnAction(e -> addAction());
+
+        // New ingredient
+        if (opener == 0) {
+            addButton.setText("ADD NEW INGREDIENT");
+            addButton.setOnAction(e -> addAction());
+        }
+        // Edit ingredient
+        if (opener == 1){
+            addButton.setText("SAVE INGREDIENT");
+            addButton.setOnAction(e -> editAction());
+        }
 
         cancelButton = new Button("CANCEL");
         cancelButton.setStyle(Styles.getPopCancelButton());
@@ -152,6 +167,33 @@ public class AddNewIngredientPane extends AnchorPane {
             JOptionPane.showMessageDialog(null, "Please erase search-field to see updates");
         }
         close();
+    }
+
+    /**
+     * Method to edit an item in the tableView for IngredientPane
+     * if name remain unchanged set category and supplier to value from comboBoxes
+     * if name is changed remove existing name from database and add the new ingredient to the database
+     */
+    public void editAction(){
+        String name = nameField.getText();
+        String category = categoryBox.getValue();
+        String supplier = supplierBox.getValue();
+
+        if (orgIngredient.equals(name)) {
+            IngredientTest ingredientTest = callback.getIngredientTest(name);
+            ingredientTest.setCategory(category);
+            ingredientTest.setSupplier(supplier);
+            source.refresh();
+            close();
+        } else if (!orgIngredient.equals(name)){
+            IngredientTest ingredientTest = new IngredientTest(name, category, 1, supplier);
+            callback.addIngredientTest(ingredientTest);
+            callback.removeIngredient(orgIngredient);
+            source.addNewIngredient(ingredientTest);
+            source.removeIngredient();
+            source.refresh();
+            close();
+        }
     }
 
     /**
@@ -205,5 +247,24 @@ public class AddNewIngredientPane extends AnchorPane {
         ingredients.add("Fresh Food");
         ingredients.add("Drink");
         return ingredients;
+    }
+
+    public String getOrgIngredient() {
+        return orgIngredient;
+    }
+
+    public void setOrgIngredient(String orgIngredient) {
+        this.orgIngredient = orgIngredient;
+    }
+
+    /**
+     * @param name initial value for item to be edited
+     * @param category initial value for item to be edited
+     * @param supplier initial value for item to be edited
+     */
+    public void setValuesForIngredient(String name, String category, String supplier){
+        nameField.setText(name);
+        categoryBox.getSelectionModel().select(category);
+        supplierBox.getSelectionModel().select(supplier);
     }
 }

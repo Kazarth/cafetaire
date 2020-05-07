@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
 /**
  * The products menu provides information regarding products that currently are in stock
  * @author Viktor Polak
- * @version 4.0
+ * @version 5.0
  */
 
 public class ProductsPane extends StackPane {
@@ -32,6 +32,7 @@ public class ProductsPane extends StackPane {
     private TableColumn<Product, String> tblColumnName = new TableColumn<>("Name");
     private TableColumn<Product, Double> tblCategories = new TableColumn<>("Category");
     private TableColumn<Product, Integer> tblColumnStock = new TableColumn<>("Quantity");
+    private TableColumn<Product, String> tblColumnIngredients = new TableColumn<>("Ingredients");
     private TableView<Product> tblView;
 
     private Callback callback;
@@ -75,7 +76,12 @@ public class ProductsPane extends StackPane {
         return hBox;
     }
 
+    /**
+     * Filler box between titleBox and buttonBoxes
+     * @return filler HBox
+     */
     private HBox getFillerBox() {
+
         HBox hBoxFiller = new HBox();
         hBoxFiller.setMinSize(1036, 40);
         hBoxFiller.setMaxSize(1036, 40);
@@ -94,26 +100,33 @@ public class ProductsPane extends StackPane {
 
         Button btnNewItem = new Button("ADD PRODUCT");
         Button btnRemoveItem = new Button("REMOVE PRODUCT");
+        Button btnEditItem = new Button("EDIT PRODUCT");
 
         btnNewItem.setStyle(Styles.getButton());
         btnRemoveItem.setStyle(Styles.getButton());
+        btnEditItem.setStyle(Styles.getButton());
 
-        HBox hBox = new HBox(15, btnNewItem, btnRemoveItem);
+        HBox hBox = new HBox(15, btnNewItem, btnRemoveItem, btnEditItem);
         hBox.setSpacing(10);
-        hBox.setMinSize(413, 75);
-        hBox.setMaxSize(413, 75);
+        hBox.setMinSize(600, 75);
+        hBox.setMaxSize(600, 75);
         hBox.setAlignment(Pos.CENTER_LEFT);
 
         hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
         btnNewItem.setOnAction(e -> addNewProductAction());
         btnRemoveItem.setOnAction(e -> deleteItem());
+        btnEditItem.setOnAction(e -> editItem());
 
         hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50");
 
         return hBox;
     }
 
+    /**
+     * Contains buttons to the right in the view
+     * @return container HBox
+     */
     public HBox getHCenterRight(){
         Button btnAdd = new Button("ADD");
         Button btnRemove = new Button("REMOVE");
@@ -133,8 +146,8 @@ public class ProductsPane extends StackPane {
 
         HBox hBox = new HBox(15, numberSpinner, btnAdd, btnRemove);
 
-        hBox.setMaxSize(622, 75);
-        hBox.setMinSize(622, 75);
+        hBox.setMaxSize(435, 75);
+        hBox.setMinSize(435, 75);
 
         hBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -143,6 +156,10 @@ public class ProductsPane extends StackPane {
         return hBox;
     }
 
+    /**
+     * Collection box for buttonHBoxes
+     * @return container HBox
+     */
     public HBox getHBoxContainerBtn(){
         HBox hBox = new HBox();
         setPrefSize(1036, 75);
@@ -150,6 +167,10 @@ public class ProductsPane extends StackPane {
         return hBox;
     }
 
+    /**
+     * Collection box for the top 3 HBoxes
+     * @return container VBox
+     */
     public VBox getTopVBoxContainer(){
         VBox vBox =   new VBox(getHBoxTop(), getFillerBox(), getHBoxContainerBtn());
         vBox.setPrefSize(1036, 190);
@@ -178,15 +199,16 @@ public class ProductsPane extends StackPane {
         tblCategories.setCellValueFactory(new PropertyValueFactory<>("category"));
         tblColumnStock.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        tblColumnName.setPrefWidth(311);
-        tblCategories.setPrefWidth(312);
-        tblColumnStock.setPrefWidth(312);
+        tblColumnName.setPrefWidth(233);
+        tblCategories.setPrefWidth(234);
+        tblColumnStock.setPrefWidth(234);
+        tblColumnIngredients.setPrefWidth(234);
 
         tblColumnName.setStyle(Styles.getTableColumn());
         tblCategories.setStyle(Styles.getTableColumn());
         tblColumnStock.setStyle(Styles.getTableColumn());
 
-        tblView.getColumns().addAll(tblColumnName, tblCategories, tblColumnStock);
+        tblView.getColumns().addAll(tblColumnName, tblCategories, tblColumnStock, tblColumnIngredients);
 
         tblView.setPrefHeight(458);
         tblView.setStyle(Styles.getTableRowSelected());
@@ -206,6 +228,9 @@ public class ProductsPane extends StackPane {
         return pane;
     }
 
+    /**
+     * @return value of numberSpinner field
+     */
     public int getNumberSpinnerValue() {
         int value = numberSpinner.getValue();
 
@@ -231,7 +256,7 @@ public class ProductsPane extends StackPane {
      */
     public void addNewProductAction() {
         try {
-            new AddNewProductPane(this, callback);
+            new AddNewProductPane(this, callback, 0);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -240,7 +265,8 @@ public class ProductsPane extends StackPane {
     /**
      * Method used to delete the selected item in the tableView
      */
-    private void deleteItem() {
+
+    public void deleteItem() {
         ObservableList<Product> itemSelected;
         ObservableList<Product> allItems;
 
@@ -249,36 +275,69 @@ public class ProductsPane extends StackPane {
 
         try {
             itemSelected.forEach(allItems::remove);
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e){
             e.printStackTrace();
         }
     }
 
+
+    /**
+     * Add quantity to existing product
+     */
     public void addQuantityToProduct() {
         Product product = tblView.getSelectionModel().getSelectedItem();
 
-    try {
+    if (product != null){
         int prodQuantity = product.getQuantity();
         product.setQuantity(prodQuantity + getNumberSpinnerValue());
-    } catch (NumberFormatException e){
-        e.printStackTrace();
+    } else {
+        noProductSelected();
     }
 
-        tblView.refresh();
+        refresh();
     }
 
+
+    /**
+     * Remove quantity from existing product
+     */
     public void removeQuantityFromProduct() {
         Product product = tblView.getSelectionModel().getSelectedItem();
 
-    try {
+    if (product != null){
         int prodQuantity = product.getQuantity();
         product.setQuantity(prodQuantity - getNumberSpinnerValue());
-    } catch (NumberFormatException e){
-        e.printStackTrace();
+    } else {
+        noProductSelected();
     }
         tblView.refresh();
     }
 
+    /**
+     * Method used to edit a product in the tableView
+     */
+    public void editItem(){
+        String name = tblView.getSelectionModel().getSelectedItem().getName();
+        AddNewProductPane pane;
+
+        if (name != null) {
+            try {
+                pane = new AddNewProductPane(this, callback, 1);
+                Product product = callback.getProductTest(name);
+                pane.setOrgProd(name);
+                pane.setValuesForItem(product.getName(), product.getCategory(), product.getQuantity());
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        } else {
+            noProductSelected();
+        }
+    }
+
+
+    /**
+     * @param product add product to tableView
+     */
     public void expand() {
         setPrefWidth(1346);
         System.out.println("Expanding");
@@ -291,5 +350,24 @@ public class ProductsPane extends StackPane {
 
     public void addNewProduct(Product product) {
         tblView.getItems().add(product);
+    }
+
+    /**
+     * refresh the tableView
+     */
+    public void refresh(){
+        tblView.refresh();
+    }
+
+    /**
+     * run method if no product is selected in tableView
+     */
+    public void noProductSelected(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("No Product Selected");
+        alert.setHeaderText(null);
+        alert.setContentText("Please select a product!");
+
+        alert.showAndWait();
     }
 }

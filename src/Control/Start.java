@@ -5,6 +5,8 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 
 /**
@@ -21,15 +23,22 @@ public class Start {
         frame.setTitle("Cafetairé Inventory System 1.0");
         frame.add(fxPanel);
         frame.setBounds(200, 100, 1366, 768);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         frame.setResizable(false);
         frame.setVisible(true);
 
         Controller controller = new Controller();
-
         Platform.runLater(() -> initFX(controller, fxPanel));
+
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing (WindowEvent e) {
+                controller.handleClosing();
+            }
+        });
     }
+
+
 
     private static void initFX(Controller controller, JFXPanel fxPanel) {
         fxPanel.setScene(new Scene(controller.getMainPane()));

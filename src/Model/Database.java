@@ -3,8 +3,8 @@ package Model;
 import Entities.*;
 import Extra.ColourTxT;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -13,7 +13,7 @@ import java.util.HashMap;
  * @version 3.0
  */
 @SuppressWarnings("unused")
-public class Database {
+public class Database implements Serializable {
     private HashMap<String, Ingredient> ingredients;
     private HashMap<String, Integer> nIngredients;
 
@@ -48,13 +48,10 @@ public class Database {
         nIngredientsTest.put("cocoa", 5);
 
         ingredientsTest = new HashMap<>();
-        ingredientsTest.put("salt", new IngredientTest("salt", "Dry Food", nIngredientsTest.get("salt"), "Lucas AB"));
-        ingredientsTest.put("sugar", new IngredientTest("sugar", "Dry Food", nIngredientsTest.get("sugar"), "George AB"));
-        ingredientsTest.put("cocoa", new IngredientTest("cocoa", "Dry Food", nIngredientsTest.get("cocoa"),"Paul AB"));
+//        ingredientsTest.put("salt", new IngredientTest("salt", "Dry Food", nIngredientsTest.get("salt"), "Lucas AB"));
+//        ingredientsTest.put("sugar", new IngredientTest("sugar", "Dry Food", nIngredientsTest.get("sugar"), "George AB"));
+//        ingredientsTest.put("cocoa", new IngredientTest("cocoa", "Dry Food", nIngredientsTest.get("cocoa"),"Paul AB"));
 
-        suppliers.add(new Supplier("Lucas AB"));
-        suppliers.add(new Supplier("Georg AB"));
-        suppliers.add(new Supplier("Julia AB"));
 
         nProductsTest = new HashMap<>();
 //        nProductsTest.put("Apple", 0);
