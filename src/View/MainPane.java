@@ -23,7 +23,7 @@ public class MainPane extends StackPane {
 
     private int pane;
 
-    public MainPane(Callback callback) throws FileNotFoundException {
+    public MainPane(Callback callback)  {
         this.callback = callback;
         this.view = Views.Dashboard;
 

@@ -20,7 +20,7 @@ public class Controller {
 
     private ColourTxT colourTxT = new ColourTxT();
 
-    public Controller() throws FileNotFoundException {
+    public Controller() {
         this.database = new Database();
         this.saveLoad = new SaveLoad(database);
         database = saveLoad.loadData();

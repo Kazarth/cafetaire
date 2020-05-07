@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
  * @version 1.0
  */
 public class Start {
-    private static void initAndShowGUI() throws FileNotFoundException {
+    private static void initAndShowGUI(){
         JFrame frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
         frame.setTitle("Cafetairé Inventory System 1.0");
@@ -44,7 +44,7 @@ public class Start {
         fxPanel.setScene(new Scene(controller.getMainPane()));
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         initAndShowGUI();
     }
 }
