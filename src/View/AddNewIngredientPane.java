@@ -151,18 +151,21 @@ public class AddNewIngredientPane extends AnchorPane {
      * On press Add button
      */
     public void addAction() {
-        IngredientTest test = null;
+        try {
+            IngredientTest test = null;
 
-        String name = nameField.getText();
-        String category = categoryBox.getSelectionModel().getSelectedItem();
-        String supplier = supplierBox.getSelectionModel().getSelectedItem();
+            String name = nameField.getText();
+            String category = categoryBox.getSelectionModel().getSelectedItem();
+            String supplier = supplierBox.getSelectionModel().getSelectedItem();
 
-        test = new IngredientTest(name, category, 1, supplier);
+            test = new IngredientTest(name, category, 1, supplier);
 
-        if (callback.addIngredientTest(test)) {
-            source.addNewIngredient(test);
+            if (callback.addIngredientTest(test)) {
+                source.addNewIngredient(test);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Please erase search-field to see updates");
         }
-
         close();
     }
 

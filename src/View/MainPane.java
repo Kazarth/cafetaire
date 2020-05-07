@@ -6,6 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javax.swing.*;
+import java.io.FileNotFoundException;
 
 /**
  * TODO: move setView etc. to Controller?
@@ -18,9 +19,13 @@ public class MainPane extends StackPane {
     private Pane[] views;
     private StackPane menu;
     private Callback callback;
+    private Views view;
 
-    public MainPane(Callback callback) {
+    private int pane;
+
+    public MainPane(Callback callback) throws FileNotFoundException {
         this.callback = callback;
+        this.view = Views.Dashboard;
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -42,7 +47,7 @@ public class MainPane extends StackPane {
     }
 
     void setView(Views view) {
-        int pane = -1;
+        pane = -1;
 
         for (int i=0; i<Views.values().length; i++) {
             if (Views.values()[i] == view) {
@@ -52,5 +57,14 @@ public class MainPane extends StackPane {
         }
 
         ((HBox)getChildren().get(0)).getChildren().set(1, views[pane]);
+        this.view = view;
+    }
+
+    Pane[] getViews() {
+        return views;
+    }
+
+    int getActiveView() {
+        return pane;
     }
 }

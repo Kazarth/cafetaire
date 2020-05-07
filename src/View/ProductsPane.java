@@ -38,8 +38,7 @@ public class ProductsPane extends StackPane {
     private Callback callback;
 
 
-    public ProductsPane(Callback callback)
-    {
+    public ProductsPane(Callback callback) {
         this.callback = callback;
         VBox mainContainer = new VBox();
         mainContainer.setMaxSize(1036, 698);
@@ -53,7 +52,6 @@ public class ProductsPane extends StackPane {
         setStyle(Styles.getPane());
         mainContainer.setStyle(Styles.getPane());
 
-
         setPrefSize(1086, 768);
     }
 
@@ -61,8 +59,7 @@ public class ProductsPane extends StackPane {
      * Method which is used to create the top part of the panel
      * @return lbl - a label with the text "Products" which is displayed at the top of this panel
      */
-    private HBox getHBoxTop()
-    {
+    private HBox getHBoxTop() {
         Text textTitle = new Text();
         Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         textTitle.setFill(Paint.valueOf("#619f81"));
@@ -70,13 +67,9 @@ public class ProductsPane extends StackPane {
         textTitle.setText("PRODUCTS");
 
         HBox hBox = new HBox();
-
         hBox.setPrefSize(1036, 75);
-
         hBox.setAlignment(Pos.CENTER);
-
         hBox.getChildren().add(textTitle);
-
         hBox.setStyle("-fx-background-radius: 20 20 0 0;" +
                         "-fx-background-color: #FFFFFF;");
 
@@ -87,7 +80,8 @@ public class ProductsPane extends StackPane {
      * Filler box between titleBox and buttonBoxes
      * @return filler HBox
      */
-    private HBox getFillerBox(){
+    private HBox getFillerBox() {
+
         HBox hBoxFiller = new HBox();
         hBoxFiller.setMinSize(1036, 40);
         hBoxFiller.setMaxSize(1036, 40);
@@ -102,8 +96,7 @@ public class ProductsPane extends StackPane {
      * Method to create a HBox which stacks its content horizontally located below the Label
      * @return hBox - the box which contains every button, comboBox, textField and numberSpinner
      */
-    public HBox getHCenterLeft()
-    {
+    public HBox getHCenterLeft() {
 
         Button btnNewItem = new Button("ADD PRODUCT");
         Button btnRemoveItem = new Button("REMOVE PRODUCT");
@@ -156,13 +149,9 @@ public class ProductsPane extends StackPane {
         hBox.setMaxSize(435, 75);
         hBox.setMinSize(435, 75);
 
-
-
         hBox.setAlignment(Pos.CENTER_RIGHT);
 
         hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50;");
-
-
 
         return hBox;
     }
@@ -173,11 +162,8 @@ public class ProductsPane extends StackPane {
      */
     public HBox getHBoxContainerBtn(){
         HBox hBox = new HBox();
-
         setPrefSize(1036, 75);
-
         hBox.getChildren().addAll(getHCenterLeft(), getHCenterRight());
-
         return hBox;
     }
 
@@ -268,7 +254,7 @@ public class ProductsPane extends StackPane {
      * Method used to add a new item to the tableView
      * Opens a new window with information to be filled in
      */
-    public void addNewProductAction(){
+    public void addNewProductAction() {
         try {
             new AddNewProductPane(this, callback, 0);
         } catch (Exception e){
@@ -279,8 +265,8 @@ public class ProductsPane extends StackPane {
     /**
      * Method used to delete the selected item in the tableView
      */
-    public void deleteItem()
-    {
+
+    public void deleteItem() {
         ObservableList<Product> itemSelected;
         ObservableList<Product> allItems;
 
@@ -294,11 +280,11 @@ public class ProductsPane extends StackPane {
         }
     }
 
+
     /**
      * Add quantity to existing product
      */
-    public void addQuantityToProduct()
-    {
+    public void addQuantityToProduct() {
         Product product = tblView.getSelectionModel().getSelectedItem();
 
     if (product != null){
@@ -311,11 +297,11 @@ public class ProductsPane extends StackPane {
         refresh();
     }
 
+
     /**
      * Remove quantity from existing product
      */
-    public void removeQuantityFromProduct()
-    {
+    public void removeQuantityFromProduct() {
         Product product = tblView.getSelectionModel().getSelectedItem();
 
     if (product != null){
@@ -324,7 +310,6 @@ public class ProductsPane extends StackPane {
     } else {
         noProductSelected();
     }
-
         tblView.refresh();
     }
 
@@ -353,6 +338,16 @@ public class ProductsPane extends StackPane {
     /**
      * @param product add product to tableView
      */
+    public void expand() {
+        setPrefWidth(1346);
+        System.out.println("Expanding");
+    }
+
+    public void contract() {
+        setPrefWidth(1086);
+        System.out.println("Contracting");
+    }
+
     public void addNewProduct(Product product) {
         tblView.getItems().add(product);
     }
