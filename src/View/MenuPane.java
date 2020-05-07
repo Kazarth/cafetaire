@@ -18,7 +18,7 @@ import java.io.FileNotFoundException;
 /**
  * MenuBar.java
  * The main menu bar used for switching between panes.
- * @author Lucas Eliasson, Tor Stenfeldt,Georg Grankvist
+ * @author Lucas Eliasson, Tor Stenfeldt, Georg Grankvist
  * @version 4.0
  */
 public class MenuPane extends StackPane {
@@ -41,7 +41,7 @@ public class MenuPane extends StackPane {
     private HBox toggleContainer;
     private boolean expanded;
 
-    public MenuPane(MainPane mainPane) throws FileNotFoundException {
+    public MenuPane(MainPane mainPane) {
         this.mainPane = mainPane;
         buttons = new Button[Views.values().length];
         this.expanded = true;
