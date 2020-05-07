@@ -2,6 +2,8 @@ package Entities;
 
 import Control.Callback;
 
+import java.io.Serializable;
+
 /**
  * IngredientTest.java
  * Gjorde denna klassen för att inte påverka originalet. Vad jag sett ska "produkten" man lägger in ha samma
@@ -9,7 +11,7 @@ import Control.Callback;
  * @author Lucas Eliasson
  * @version 1.0
  */
-public class IngredientTest {
+public class IngredientTest implements Serializable {
     private String name;
     private String category;
     private int stock;

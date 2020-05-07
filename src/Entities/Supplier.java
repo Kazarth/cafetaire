@@ -1,12 +1,14 @@
 package Entities;
 
+import java.io.Serializable;
+
 /**
  * Entity class for suppliers to store contact information.
  * (NOTE :  this is a new class to match the suppliers needs and to fit into the system)
  * @author Paul Moustakas
  * @version 2.0
  */
-public class Supplier {
+public class Supplier implements Serializable {
     private String supplierName;
     private String category;
     private String email;
