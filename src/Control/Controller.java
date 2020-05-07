@@ -5,6 +5,8 @@ import Extra.ColourTxT;
 import Model.Database;
 import View.MainPane;
 
+import javax.swing.*;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -15,15 +17,31 @@ import java.util.ArrayList;
 public class Controller {
     private Database database;
     private MainPane mainPane;
+    private SaveLoad saveLoad;
 
     private ColourTxT colourTxT = new ColourTxT();
 
     public Controller() {
         this.database = new Database();
+        this.saveLoad = new SaveLoad(database);
+        database = saveLoad.loadData();
+
 
         // TODO: must comment away for testing purposes?
         this.mainPane = new MainPane(new CallbackHandler());
     }
+
+
+    /**
+     * Method to handle unsaved data on application EXIT
+     */
+    public void handleClosing () {
+        saveLoad.save();
+        System.err.println("Confirmed save and now Exit");
+        System.exit(0);
+    }
+
+
 
     public MainPane getMainPane() {
         return mainPane;
@@ -39,6 +57,7 @@ public class Controller {
     private class CallbackHandler implements Callback {
         @Override
         public boolean addIngredient(Ingredient ingredient) {
+            saveLoad.setEdited();
             return database.addIngredient(ingredient);
         }
 
@@ -79,11 +98,13 @@ public class Controller {
 
         @Override
         public boolean removeIngredient(String ingredient) {
+            saveLoad.setEdited();
             return database.removeIngredient(ingredient);
         }
 
         @Override
         public boolean addFood(Food food) {
+            saveLoad.setEdited();
             return database.addFood(food);
         }
 
@@ -124,16 +145,19 @@ public class Controller {
 
         @Override
         public boolean removeFood(String food) {
+            saveLoad.setEdited();
             return database.removeFood(food);
         }
 
         @Override
         public boolean addSupplier(Supplier supplier) {
+            saveLoad.setEdited();
             return database.addSupplier(supplier);
         }
 
         @Override
         public boolean addSupplier(String name) {
+            saveLoad.setEdited();
             return database.addSupplier(name);
         }
 
@@ -154,6 +178,7 @@ public class Controller {
 
         @Override
         public boolean removeSupplier(String name) {
+            saveLoad.setEdited();
             return database.removeSupplier(name);
         }
 
@@ -161,6 +186,7 @@ public class Controller {
         /* Testing purposes IngredientTest*/
         @Override
         public boolean addIngredientTest(IngredientTest ingredient) {
+            saveLoad.setEdited();
             System.out.println(colourTxT.NEONGREEN() + "Controller received:\n" +
                     "Name: " + ingredient.getName() + "\n" +
                     "Category: " + ingredient.getCategory() + "\n" +
@@ -207,12 +233,14 @@ public class Controller {
 
         @Override
         public boolean removeIngredientTest(String ingredient) {
+            saveLoad.setEdited();
             return database.removeIngredientTest(ingredient);
         }
 
         /*Testing purpose Product */
         @Override
         public boolean addProductTest(Product product) {
+            saveLoad.setEdited();
             System.out.println(colourTxT.NEONGREEN() + "Controller received:\n" +
                     "Name: " + product.getName() + "\n" +
                     "Category: " + product.getCategory() + "\n" +
@@ -258,6 +286,7 @@ public class Controller {
 
         @Override
         public boolean removeProductTest(String name) {
+            saveLoad.setEdited();
             return database.removeProductTest(name);
         }
     }

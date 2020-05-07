@@ -1,12 +1,14 @@
 package Entities;
 
+import java.io.Serializable;
+
 /**
  * Class used to store data about various products in the program
  * @author Viktor Polak
  * @version 1.1
  */
 
-public class Product {
+public class Product implements Serializable {
     private String name;
     private ProductCategories category;
     private int quantity;

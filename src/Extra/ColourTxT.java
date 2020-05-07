@@ -1,5 +1,7 @@
 package Extra;
 
+import java.io.Serializable;
+
 /**
  * This class support change of Text -and background colour used in the console.
  * Use the instantiated class to invoke colours of your choice.
@@ -7,7 +9,7 @@ package Extra;
  * @author Paul Moustakas
  * @version 1
  */
-public class ColourTxT extends Thread {
+public class ColourTxT extends Thread implements Serializable {
 
     //Text colours
     public static final String RESET   =   "\u001B[0m";
