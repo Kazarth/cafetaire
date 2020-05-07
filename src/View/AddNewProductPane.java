@@ -14,12 +14,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javax.swing.*;
-import java.util.ArrayList;
 
 /**
  * The class handles a Pop-up window for adding a product to products in database.
  * @author Viktor Polak, Lucas Eliasson
- * @version 1.0
+ * @version 2.0
  */
 
 public class AddNewProductPane extends AnchorPane {
@@ -40,9 +39,10 @@ public class AddNewProductPane extends AnchorPane {
 
     private ProductsPane source;
     private Callback callback;
+    private int opener;
+    private String orgProd;
 
-
-    public AddNewProductPane(ProductsPane source, Callback callback) {
+    public AddNewProductPane(ProductsPane source, Callback callback, int opener) {
         // init Frame
         frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
@@ -55,6 +55,7 @@ public class AddNewProductPane extends AnchorPane {
         frame.setResizable(false);
         frame.setVisible(true);
         Platform.runLater(() -> fxPanel.setScene(new Scene(this)));
+        this.opener = opener;
 
         // Init source
         this.source = source;
@@ -127,13 +128,26 @@ public class AddNewProductPane extends AnchorPane {
         phoneField.setLayoutX(144.0);   phoneField.setLayoutY(280);
 
         // Button pane
-        addButton = new Button("ADD NEW PRODUCT");
+        addButton = new Button();
         addButton.setStyle(Styles.getPopAddButton());
         addButton.setPrefWidth(200); addButton.setPrefHeight(40);
         addButton.setLayoutX(75); addButton.setLayoutY(340);
-        addButton.setOnAction(e -> {
-            addAction();
-        });
+
+        //New Product
+        if (opener == 0){
+            addButton.setText("ADD NEW PRODUCT");
+            addButton.setOnAction(e -> {
+                addAction();
+            });
+
+        // Edit Product
+        } else if (opener == 1){
+            addButton.setText("SAVE PRODUCT");
+            addButton.setOnAction(e -> {
+                editAction();
+            });
+        }
+
 
         cancelButton = new Button("CANCEL");
         cancelButton.setStyle(Styles.getPopCancelButton());
@@ -142,24 +156,20 @@ public class AddNewProductPane extends AnchorPane {
         cancelButton.setOnAction(e -> cancelAction());
 
         // Add all children
-        getChildren().addAll(
-                title,
-                nameLbl, nameField,
-                categoryLbl, categoryBox,
-                numberLabel, numberSpinner,
+
+            getChildren().addAll(
+                    title,
+                    nameLbl, nameField,
+                    categoryLbl, categoryBox,
+                    numberLabel, numberSpinner,
 //                phoneLbl,phoneField,
-                addButton, cancelButton);
+                    addButton, cancelButton);
     }
 
     /**
      * Action performed Add-button
      */
     public void addAction() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText(null);
-        alert.setContentText("Please enter a value for every field!");
-
         Product product;
 
         String productName = nameField.getText();
@@ -167,7 +177,7 @@ public class AddNewProductPane extends AnchorPane {
         int quantity = numberSpinner.getValue();
 //        String phone        = phoneField.getText();
 
-        if ((!productName.equals("")) &&(category != null)) {
+        if ((!productName.equals("")) && (category != null)) {
             product = new Product(productName, category, quantity);
 
             System.out.println(product.toString());
@@ -178,9 +188,7 @@ public class AddNewProductPane extends AnchorPane {
                 close();
             }
         } else {
-            alert.showAndWait();
-
-//            JOptionPane.showMessageDialog(null, "Please enter a value for every field!");
+            alert();
         }
 
 
@@ -199,6 +207,47 @@ public class AddNewProductPane extends AnchorPane {
         frame.dispose();
     }
 
+    /**
+     * Method used to edit an item in the tableView in ProductPane and in the database
+     * if name remains unchanged set values from the other fields to product
+     * if name is changed remove old name from database and add the new one
+     */
+    public void editAction(){
+        String name = nameField.getText();
+        ProductCategories category = categoryBox.getValue();
+        int quantity = numberSpinner.getValue();
+
+        if (orgProd.equals(name)){
+            Product product = callback.getProductTest(nameField.getText());
+            product.setCategory(category);
+            product.setQuantity(quantity);
+            source.refresh();
+            close();
+        } else if (!orgProd.equals(name)){
+            Product product = new Product(name, category, quantity);
+            callback.addProductTest(product);
+            callback.removeProductTest(orgProd);
+            source.addNewProduct(product);
+            source.deleteItem();
+            source.refresh();
+            close();
+        } else{
+            alert();
+        }
+
+    }
+
+    /**
+     *
+     * @param txt set initial value for item to edit
+     * @param category set initial value for item to edit
+     * @param quantity set initial value for item to edit
+     */
+    public void setValuesForItem(String txt, ProductCategories category, int quantity){
+        nameField.setText(txt);
+        categoryBox.getSelectionModel().select(category);
+        numberSpinner.getValueFactory().setValue(quantity);
+    }
 
 
 //    //From database
@@ -228,5 +277,25 @@ public class AddNewProductPane extends AnchorPane {
     @Override
     public Node getStyleableNode() {
         return null;
+    }
+
+    /**
+     * Alerts the user if a field is empty
+     */
+    private void alert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("Please enter a value for every field!");
+
+        alert.showAndWait();
+    }
+
+    public String getOrgProd() {
+        return orgProd;
+    }
+
+    public void setOrgProd(String orgProd) {
+        this.orgProd = orgProd;
     }
 }
