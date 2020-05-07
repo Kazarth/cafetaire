@@ -2,7 +2,7 @@ package View;
 
 
 import Control.Callback;
-import Entities.IngredientTest;
+import Entities.Ingredient;
 import Entities.Styles;
 import Entities.Supplier;
 import javafx.application.Platform;
@@ -137,15 +137,16 @@ public class AddNewIngredientPane extends AnchorPane {
      */
     public void addAction() {
         try {
-            IngredientTest test = null;
+            Ingredient test = null;
 
             String name = nameField.getText();
             String category = categoryBox.getSelectionModel().getSelectedItem();
             String supplier = supplierBox.getSelectionModel().getSelectedItem();
 
-            test = new IngredientTest(name, category, 1, supplier);
+            // TODO: fix supplier
+            test = new Ingredient(name, category, 1, supplier);
 
-            if (callback.addIngredientTest(test)) {
+            if (callback.addIngredient(test)) {
                 source.addNewIngredient(test);
             }
         } catch (Exception e) {

@@ -1,49 +1,101 @@
 package Entities;
 
 /**
- * An entity used to store individual ingredients and their information.
- * @author Tor Stenfeldt
- * @version 1.0
+ * Ingredient.java
+ * Class used to store objects simulating ingredients in stock.
+ * @author Tor Stenfeldt, Lucas Eliasson
+ * @version 1.1
  */
 public class Ingredient {
-    private String type;
+    private String type, category;
     private Supplier supplier;
-    private String category;
-
-    public Ingredient(Ingredient ingredient) {
-        this.type = ingredient.getType();
-        this.supplier = ingredient.getSupplier();
-    }
+    private int stock;
 
     public Ingredient(String type) {
         this.type = type;
-        this.supplier = new Supplier();
+        category = "";
+        supplier = new Supplier();
+        stock = 1;
     }
 
-    public Ingredient(String type, Supplier supplier) {
+    public Ingredient(String type, String category, int stock, Supplier supplier) {
         this.type = type;
+        this.category = category;
         this.supplier = supplier;
-    }
-
-    protected void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
+        this.stock = stock;
     }
 
     public String getType() {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public Supplier getSupplier() {
         return supplier;
     }
 
-    /**
-     * To be changed depending on how we fill the tables
-     * for now returns console output
-     * @return
-     */
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public boolean increment() {
+        if (stock == Integer.MAX_VALUE) {
+            return false;
+        }
+
+        stock++;
+        return true;
+    }
+
+    public boolean increment(int value) {
+        if (Integer.MAX_VALUE-stock-value <= 0) {
+            return false;
+        }
+
+        stock += value;
+        return true;
+    }
+
+    public boolean decrement() {
+        if (stock-1<0) {
+            return false;
+        }
+
+        stock--;
+        return true;
+    }
+
+    public boolean decrement(int value) {
+        if (stock-value<0) {
+            return false;
+        }
+
+        stock -= value;
+        return true;
+    }
+
     public String toString() {
-        return "Type: " + type + "\n" +
-                "Supplier: " + supplier.getName();
+        return "Name: " + this.type + "\n" +
+                "Category: " + this.category + "\n" +
+                "Stock: " + this.stock;
     }
 }

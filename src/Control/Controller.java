@@ -58,23 +58,43 @@ public class Controller {
         }
 
         @Override
-        public boolean increaseIngredient(String ingredient) {
-            return database.increaseIngredient(ingredient);
+        public boolean incrementIngredient(String ingredient) {
+            return database.incrementIngredient(ingredient);
         }
 
         @Override
-        public boolean increaseIngredient(Ingredient ingredient) {
-            return database.increaseIngredient(ingredient);
+        public boolean incrementIngredient(Ingredient ingredient) {
+            return database.incrementIngredient(ingredient);
         }
 
         @Override
-        public boolean decreaseIngredient(String ingredient) {
-            return database.decreaseIngredient(ingredient);
+        public boolean incrementIngredient(String ingredient, int value) {
+            return database.incrementIngredient(ingredient, value);
         }
 
         @Override
-        public boolean decreaseIngredient(Ingredient ingredient) {
-            return database.decreaseIngredient(ingredient);
+        public boolean incrementIngredient(Ingredient ingredient, int value) {
+            return database.incrementIngredient(ingredient, value);
+        }
+
+        @Override
+        public boolean decrementIngredient(String ingredient) {
+            return database.decrementIngredient(ingredient);
+        }
+
+        @Override
+        public boolean decrementIngredient(Ingredient ingredient) {
+            return database.decrementIngredient(ingredient);
+        }
+
+        @Override
+        public boolean decrementIngredient(String ingredient, int value) {
+            return database.decrementIngredient(ingredient, value);
+        }
+
+        @Override
+        public boolean decrementIngredient(Ingredient ingredient, int value) {
+            return database.decrementIngredient(ingredient, value);
         }
 
         @Override
@@ -155,59 +175,6 @@ public class Controller {
         @Override
         public boolean removeSupplier(String name) {
             return database.removeSupplier(name);
-        }
-
-
-        /* Testing purposes IngredientTest*/
-        @Override
-        public boolean addIngredientTest(IngredientTest ingredient) {
-            System.out.println(colourTxT.NEONGREEN() + "Controller received:\n" +
-                    "Name: " + ingredient.getName() + "\n" +
-                    "Category: " + ingredient.getCategory() + "\n" +
-                    "Supplier: " + ingredient.getSupplier() + colourTxT.RESET());
-            return database.addIngredientTest(ingredient);
-        }
-
-        @Override
-        public IngredientTest getIngredientTest(String ingredient) {
-            return database.getIngredientTest(ingredient);
-        }
-
-        @Override
-        public IngredientTest[] getIngredientsTest() {
-            return database.getIngredientsTest();
-        }
-
-        @Override
-        public int getNumIngredientsTest(String ingredient) {
-            return database.getNumIngredientsTest(ingredient);
-        }
-
-        @Override
-        public boolean increaseIngredientTest(String ingredient) {
-            return database.increaseIngredientTest(ingredient);
-        }
-
-        @Override
-        public boolean increaseIngredientTest(IngredientTest ingredient) {
-            System.out.println(colourTxT.NEONGREEN() + "Controller received increase request" + colourTxT.RESET());
-            return database.increaseIngredientTest(ingredient);
-        }
-
-        @Override
-        public boolean decreaseIngredientTest(String ingredient) {
-            return database.decreaseIngredientTest(ingredient);
-        }
-
-        @Override
-        public boolean decreaseIngredientTest(IngredientTest ingredient) {
-            System.out.println(colourTxT.NEONGREEN() + "Controller received decrease request" + colourTxT.RESET());
-            return database.decreaseIngredientTest(ingredient);
-        }
-
-        @Override
-        public boolean removeIngredientTest(String ingredient) {
-            return database.removeIngredientTest(ingredient);
         }
 
         /*Testing purpose Product */

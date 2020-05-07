@@ -15,10 +15,14 @@ public interface Callback {
     Ingredient getIngredient(String ingredient);
     Ingredient[] getIngredients();
     int getNumIngredients(String ingredient);
-    boolean increaseIngredient(String ingredient);
-    boolean increaseIngredient(Ingredient ingredient);
-    boolean decreaseIngredient(String ingredient);
-    boolean decreaseIngredient(Ingredient ingredient);
+    boolean incrementIngredient(String ingredient);
+    boolean incrementIngredient(Ingredient ingredient);
+    boolean incrementIngredient(String ingredient, int value);
+    boolean incrementIngredient(Ingredient ingredient, int value);
+    boolean decrementIngredient(String ingredient);
+    boolean decrementIngredient(Ingredient ingredient);
+    boolean decrementIngredient(String ingredient, int value);
+    boolean decrementIngredient(Ingredient ingredient, int value);
     boolean removeIngredient(String ingredient);
 
     boolean addFood(Food food);
@@ -39,16 +43,6 @@ public interface Callback {
     boolean removeSupplier (String name);
 
     /* Testing purposes */
-    boolean addIngredientTest(IngredientTest ingredient);
-    IngredientTest getIngredientTest(String ingredient);
-    IngredientTest[] getIngredientsTest();
-    int getNumIngredientsTest(String ingredient);
-    boolean increaseIngredientTest(String ingredient);
-    boolean increaseIngredientTest(IngredientTest ingredient);
-    boolean decreaseIngredientTest(String ingredient);
-    boolean decreaseIngredientTest(IngredientTest ingredient);
-    boolean removeIngredientTest(String ingredient);
-
     boolean addProductTest(Product product);
     Product getProductTest(String product);
     Product[] getProductTest();

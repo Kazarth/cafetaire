@@ -4,10 +4,10 @@ import Entities.*;
 import Extra.ColourTxT;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
+ * TODO: add 'this' before global references.
  * Contains the different ingredients, food and suppliers belonging to the database.
  * @author Tor Stenfeldt
  * @version 3.0
@@ -15,52 +15,29 @@ import java.util.HashMap;
 @SuppressWarnings("unused")
 public class Database {
     private HashMap<String, Ingredient> ingredients;
-    private HashMap<String, Integer> nIngredients;
-
 
     private HashMap<String, Food> food;
     private HashMap<String, Integer> nFood;
 
     private ArrayList<Supplier> suppliers;
 
-    /*Testing purpose IngredientTest */
-    private HashMap<String, IngredientTest> ingredientsTest;
-    private HashMap<String, Integer> nIngredientsTest;
+    // TODO: Testing purpose IngredientTest
     private ColourTxT colourTxT = new ColourTxT();
 
-    /*Testing purpose Product */
+    // TODO: Testing purpose Product
     private HashMap<String, Product> productsTest;
     private HashMap<String, Integer> nProductsTest;
 
     public Database() {
         this.ingredients = new HashMap<>();
-        this.nIngredients = new HashMap<>();
-
         this.food = new HashMap<>();
         this.nFood = new HashMap<>();
-
         this.suppliers = new ArrayList<>();
 
-        /* Testing purposes */
-        nIngredientsTest = new HashMap<>(); // Måste lägga in antal först för att kunna hitta det sen? --> inläsning av det först sen? Eller lägga stock i varje Ingredients-instans
-        nIngredientsTest.put("salt", 1);
-        nIngredientsTest.put("sugar", 10);
-        nIngredientsTest.put("cocoa", 5);
-
-        ingredientsTest = new HashMap<>();
-        ingredientsTest.put("salt", new IngredientTest("salt", "Dry Food", nIngredientsTest.get("salt"), "Lucas AB"));
-        ingredientsTest.put("sugar", new IngredientTest("sugar", "Dry Food", nIngredientsTest.get("sugar"), "George AB"));
-        ingredientsTest.put("cocoa", new IngredientTest("cocoa", "Dry Food", nIngredientsTest.get("cocoa"),"Paul AB"));
-
-        suppliers.add(new Supplier("Lucas AB"));
-        suppliers.add(new Supplier("Georg AB"));
-        suppliers.add(new Supplier("Julia AB"));
-
         nProductsTest = new HashMap<>();
-//        nProductsTest.put("Apple", 0);
-
         productsTest = new HashMap<>();
-//        productsTest.put("Apple", new Product("Apple", ProductCategories.Fruit, 3));
+
+        testPopulate();
     }
 
     public boolean addIngredient(Ingredient ingredient) {
@@ -69,7 +46,6 @@ public class Database {
         }
 
         ingredients.put(ingredient.getType(), ingredient);
-        nIngredients.put(ingredient.getType(), 1);
         return true;
     }
 
@@ -89,53 +65,63 @@ public class Database {
     }
 
     public int getNumIngredients(String ingredient) {
-        if (nIngredients.containsKey(ingredient)) {
-            return nIngredients.get(ingredient);
+        if (ingredients.containsKey(ingredient)) {
+            return ingredients.get(ingredient).getStock();
         }
 
         return -1;
     }
 
-    public boolean increaseIngredient(String ingredient) {
-        if (nIngredients.containsKey(ingredient)) {
-            int currentVal = nIngredients.get(ingredient);
-            nIngredients.put(ingredient, currentVal+1);
-            return true;
+    public boolean incrementIngredient(String ingredient) {
+        if (ingredients.containsKey(ingredient)) {
+            return ingredients.get(ingredient).increment();
         }
 
         return false;
     }
 
-    public boolean increaseIngredient(Ingredient ingredient) {
-        return increaseIngredient(ingredient.getType());
+    public boolean incrementIngredient(Ingredient ingredient) {
+        return incrementIngredient(ingredient.getType());
     }
 
-    public boolean decreaseIngredient(String ingredient) {
-        if (!nIngredients.containsKey(ingredient)) {
-            return false;
+    public boolean incrementIngredient(String ingredient, int value) {
+        if (ingredients.containsKey(ingredient)) {
+            return ingredients.get(ingredient).increment(value);
         }
 
-        int currentVal = nIngredients.get(ingredient);
-
-        if (currentVal <= 0) {
-            return false;
-        }
-
-        nIngredients.put(ingredient, currentVal-1);
-        return true;
+        return false;
     }
 
-    public boolean decreaseIngredient(Ingredient ingredient) {
-        return decreaseIngredient(ingredient.getType());
+    public boolean incrementIngredient(Ingredient ingredient, int value) {
+        return incrementIngredient(ingredient.getType(), value);
+    }
+
+    public boolean decrementIngredient(String ingredient) {
+        if (ingredients.containsKey(ingredient)) {
+            return ingredients.get(ingredient).decrement();
+        }
+
+        return false;
+    }
+
+    public boolean decrementIngredient(Ingredient ingredient) {
+        return decrementIngredient(ingredient.getType());
+    }
+
+    public boolean decrementIngredient(String ingredient, int value) {
+        if (ingredients.containsKey(ingredient)) {
+            return ingredients.get(ingredient).decrement(value);
+        }
+
+        return false;
+    }
+
+    public boolean decrementIngredient(Ingredient ingredient, int value) {
+        return decrementIngredient(ingredient.getType(), value);
     }
 
     public boolean removeIngredient(String ingredient) {
-        boolean containsKey = ingredients.containsKey(ingredient) && nIngredients.containsKey(ingredient);
-
-        ingredients.remove(ingredient);
-        nIngredients.remove(ingredient);
-
-        return containsKey;
+        return (ingredients.remove(ingredient) != null);
     }
 
     public boolean addFood(Food food) {
@@ -256,104 +242,6 @@ public class Database {
         return this.suppliers.removeIf(s -> s.getName().equals(name));
     }
 
-
-    /* Testing purposes IngredientTest*/
-    public boolean addIngredientTest(IngredientTest ingredient) {
-        if (ingredients.containsKey(ingredient.getName())) {
-            return false;
-        }
-
-        ingredientsTest.put(ingredient.getName(), ingredient);
-        nIngredientsTest.put(ingredient.getName(), 1);
-
-        System.out.println("\nAdded to Database:\n" +
-                "Name: " + ingredient.getName() + "\n" +
-                "Category: " + ingredient.getCategory() + "\n" +
-                "Supplier: " + ingredient.getSupplier() + "\n"
-        );
-
-        System.out.println("Get from ingredients HashMap:\n" +
-                ingredientsTest.get(ingredient.getName()));
-
-        System.out.println("\nGet from nIngredients HashMap:\n" +
-                nIngredientsTest.get(ingredient.getName()) + "\n");
-        return true;
-    }
-
-    public IngredientTest getIngredientTest(String ingredient) {
-        return ingredientsTest.get(ingredient);
-    }
-
-    public IngredientTest[] getIngredientsTest() {
-        IngredientTest[] ingredients = new IngredientTest[this.ingredientsTest.size()];
-
-        Object[] keys = this.ingredientsTest.keySet().toArray();
-
-        for (int i=0; i<ingredients.length; i++) {
-            ingredients[i] = this.ingredientsTest.get(keys[i]);
-        }
-
-        return ingredients;
-    }
-
-    public int getNumIngredientsTest(String ingredient) {
-        if (nIngredientsTest.containsKey(ingredient)) {
-            return nIngredientsTest.get(ingredient);
-        }
-
-        return -1;
-    }
-
-    public boolean increaseIngredientTest(String ingredient) {
-        if (nIngredientsTest.containsKey(ingredient)) {
-            int currentVal = nIngredientsTest.get(ingredient);
-            nIngredientsTest.put(ingredient, currentVal+1);
-
-            System.out.println(colourTxT.GREEN() + "Completed increase to database\n" +
-                    "Current stock: " + ingredientsTest.get(ingredient).getName() + " " + nIngredientsTest.get(ingredient) + colourTxT.RESET());
-
-            return true;
-        }
-        System.out.println(colourTxT.RED() + "Failed to add " + ingredient + " to database" + colourTxT.RESET());
-        return false;
-    }
-
-    public boolean increaseIngredientTest(IngredientTest ingredient) {
-        return increaseIngredientTest(ingredient.getName());
-    }
-
-    public boolean decreaseIngredientTest(String ingredient) {
-        if (!nIngredientsTest.containsKey(ingredient)) {
-            System.out.println(colourTxT.RED() + "Failed to remove " + ingredient + " to database" + colourTxT.RESET());
-            return false;
-        }
-
-        int currentVal = nIngredientsTest.get(ingredient);
-
-        if (currentVal <= 0) {
-            System.out.println(colourTxT.RED() + "Amount to remove from " + ingredient + " went below 0" + colourTxT.RESET());
-            return false;
-        }
-
-        nIngredientsTest.put(ingredient, currentVal-1);
-        System.out.println(colourTxT.GREEN() + "Completed decrease to database\n" +
-                "Current stock: " + ingredientsTest.get(ingredient).getName() + " " + nIngredientsTest.get(ingredient) + colourTxT.RESET());
-        return true;
-    }
-
-    public boolean decreaseIngredientTest(IngredientTest ingredient) {
-        return decreaseIngredientTest(ingredient.getName());
-    }
-
-    public boolean removeIngredientTest(String ingredient) {
-        boolean containsKey = ingredientsTest.containsKey(ingredient) && nIngredientsTest.containsKey(ingredient);
-
-        ingredientsTest.remove(ingredient);
-        nIngredientsTest.remove(ingredient);
-
-        return containsKey;
-    }
-
     /*Testing purpose PRODUCT*/
     public boolean addProductTest(Product product) {
         if (productsTest.containsKey(product.getName())) {
@@ -449,5 +337,26 @@ public class Database {
         nProductsTest.remove(product);
 
         return containsKey;
+    }
+
+    /**
+     * Used for testing purposes.
+     */
+    public void testPopulate() {
+        Supplier lucasAB = new Supplier("Lucas AB");
+        Supplier georgeAB = new Supplier("George AB");
+        Supplier paulAB = new Supplier("Paul AB");
+
+        addSupplier(lucasAB);
+        addSupplier(georgeAB);
+        addSupplier(paulAB);
+
+        Ingredient salt = new Ingredient("Salt", "Dry Food", 6, lucasAB);
+        Ingredient sugar = new Ingredient("Sugar", "Dry Food", 7, georgeAB);
+        Ingredient cocoa = new Ingredient("Cocoa", "Dry Food", 8, paulAB);
+
+        addIngredient(salt);
+        addIngredient(sugar);
+        addIngredient(cocoa);
     }
 }

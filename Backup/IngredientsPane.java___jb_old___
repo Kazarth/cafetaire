@@ -1,6 +1,6 @@
 ackage View;
 
-import Entities.IngredientTest;
+import Entities.Ingredient;
 import Entities.Styles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -219,23 +219,23 @@ public class IngredientsPane extends StackPane{
      * Removes selected ingredient from the stock
      */
     public void removeIngredient() {
-        ObservableList<IngredientTest> ingredientTestSelected, allIngredients;
+        ObservableList<IngredientTest> ingredientSelected, allIngredients;
         allIngredients = tableView.getItems();
-        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
-        ingredientTestSelected.forEach(allIngredients::remove);
+        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
+        ingredientSelected.forEach(allIngredients::remove);
     }
 
     /**
      * Increments the selected ingredients stock by 1
      */
     public void addAmount() {
-        ObservableList<IngredientTest> ingredientTestSelected;
-        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
-        if (ingredientTestSelected.size() <= 0) {
+        ObservableList<IngredientTest> ingredientSelected;
+        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
+        if (ingredientSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            if (callback.increaseIngredientTest(ingredientTestSelected.get(0))) {
-                ingredientTestSelected.get(0).increment(); // increment for view
+            if (callback.increaseIngredientTest(ingredientSelected.get(0))) {
+                ingredientSelected.get(0).increment(); // increment for view
                 System.out.println("Completed increase in View");
             }
             tableView.refresh();
@@ -246,13 +246,13 @@ public class IngredientsPane extends StackPane{
      * Decrements the selected ingredients stock by 1
      */
     public void removeAmount() {
-        ObservableList<IngredientTest> ingredientTestSelected;
-        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
-        if (ingredientTestSelected.size() <= 0) {
+        ObservableList<IngredientTest> ingredientSelected;
+        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
+        if (ingredientSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            if (callback.decreaseIngredientTest(ingredientTestSelected.get(0))) {
-                ingredientTestSelected.get(0).decrement(); // decrement for view
+            if (callback.decreaseIngredientTest(ingredientSelected.get(0))) {
+                ingredientSelected.get(0).decrement(); // decrement for view
                 System.out.println("Completed decrease in View");
             }
             tableView.refresh();
