@@ -58,6 +58,12 @@ public class IngredientsPane extends StackPane{
             removeIngredient();
         });
 
+        Button editIngredient = new Button("EDIT");
+        editIngredient.setStyle(Styles.getButton());
+        editIngredient.setOnAction(e -> {
+            editAction();
+        });
+
         Button addButton = new Button("ADD");
         addButton.setPrefHeight(30);
         addButton.setPrefWidth(100);
@@ -91,7 +97,7 @@ public class IngredientsPane extends StackPane{
         searchTextField = new TextField();
         searchTextField.setPromptText("SEARCH");
         searchTextField.setPrefHeight(32);
-        searchTextField.setPrefWidth(250);
+        searchTextField.setPrefWidth(150);
 
         /** Ingredient table configuration and design */
 
@@ -152,7 +158,7 @@ public class IngredientsPane extends StackPane{
         mainVbox.getChildren().add(bottomHBox);
 
         bottomHBox.getChildren().addAll(westHBOx,eastHBox);
-        westHBOx.getChildren().addAll(addIngredients,removeIngredients);
+        westHBOx.getChildren().addAll(addIngredients,removeIngredients, editIngredient);
         eastHBox.getChildren().addAll(searchTextField ,addButton,removeButton);
 
         innerContainer.setAlignment(Pos.CENTER);
@@ -172,8 +178,8 @@ public class IngredientsPane extends StackPane{
         topHBox.setPrefSize(1036,75);
         midHBox.setPrefSize(1036,40);
         bottomHBox.setPrefSize(1036,75);
-        westHBOx.setPrefSize(518,37.5);
-        eastHBox.setPrefSize(518,37.5);
+        westHBOx.setPrefSize(550,37.5);
+        eastHBox.setPrefSize(485,37.5);
 
         westHBOx.setSpacing(20);
         eastHBox.setSpacing(20);
@@ -192,11 +198,31 @@ public class IngredientsPane extends StackPane{
      */
     public void addNewIngredientAction() {
         try {
-            new AddNewIngredientPane(this, callback);
+            new AddNewIngredientPane(this, callback, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Method used to edit an item in the tableView
+     */
+    public void editAction(){
+        String name = tableView.getSelectionModel().getSelectedItem().getName();
+        AddNewIngredientPane pane;
+
+        if(name != null) {
+            try {
+                pane = new AddNewIngredientPane(this, callback, 1);
+                IngredientTest ingredientTest = callback.getIngredientTest(name);
+                pane.setOrgIngredient(name);
+                pane.setValuesForIngredient(ingredientTest.getName(), ingredientTest.getCategory(), ingredientTest.getSupplier());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     /**
      * Removes selected ingredient from the stock
@@ -289,6 +315,13 @@ public class IngredientsPane extends StackPane{
             IngredientTest[] receivedIngredients = callback.getIngredientsTest();
             ingredients.addAll(Arrays.asList(receivedIngredients));
             return ingredients;
+        }
+
+    /**
+     * Refreshes the tableView
+     */
+    public void refresh(){
+        tableView.refresh();
         }
     }
 
