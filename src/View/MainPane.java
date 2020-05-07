@@ -6,6 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javax.swing.*;
+import java.io.FileNotFoundException;
 
 /**
  * TODO: move setView etc. to Controller?
@@ -22,7 +23,7 @@ public class MainPane extends StackPane {
 
     private int pane;
 
-    public MainPane(Callback callback) {
+    public MainPane(Callback callback) throws FileNotFoundException {
         this.callback = callback;
         this.view = Views.Dashboard;
 

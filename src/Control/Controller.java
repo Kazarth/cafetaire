@@ -4,7 +4,6 @@ import Entities.*;
 import Extra.ColourTxT;
 import Model.Database;
 import View.MainPane;
-
 import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class Controller {
 
     private ColourTxT colourTxT = new ColourTxT();
 
-    public Controller() {
+    public Controller() throws FileNotFoundException {
         this.database = new Database();
         this.saveLoad = new SaveLoad(database);
         database = saveLoad.loadData();

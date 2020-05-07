@@ -3,12 +3,17 @@ package View;
 import Entities.Styles;
 import Entities.Views;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 /**
  * MenuBar.java
@@ -17,14 +22,26 @@ import javafx.scene.layout.VBox;
  * @version 4.0
  */
 public class MenuPane extends StackPane {
+    private Label title;
+
     private MainPane mainPane;
     private Button[] buttons;
     private Button selectedButton;
+    private Button toggleButton;
+
+    private ImageView toggleImage;
+    private ImageView viewLogo;
+    private Image logoText;
+    private Image logo;
+    private Image activeExpand;
+    private Image activeMinimize;
+    private Image minimizeImage;
+    private Image expandImage;
 
     private HBox toggleContainer;
     private boolean expanded;
 
-    public MenuPane(MainPane mainPane) {
+    public MenuPane(MainPane mainPane) throws FileNotFoundException {
         this.mainPane = mainPane;
         buttons = new Button[Views.values().length];
         this.expanded = true;
@@ -38,13 +55,14 @@ public class MenuPane extends StackPane {
 
         VBox mainContainer = new VBox();
 
-        Label title = new Label("Cafetairé");
+        title = new Label("Cafetairé");
         title.getStylesheets().add("styles.css");
         title.getStyleClass().add("title");
 
         HBox titleContainer = new HBox();
         titleContainer.setPadding(new Insets(0, 0, 0, 28));
         titleContainer.getChildren().add(title);
+        titleContainer.setAlignment(Pos.CENTER);
 
         mainContainer.getChildren().add(titleContainer);
 
@@ -52,18 +70,41 @@ public class MenuPane extends StackPane {
             mainContainer.getChildren().add(b);
         }
 
-        Button toggleButton = new Button("Toggle Button");
-        toggleButton.setPrefSize(130, 50);
-        toggleButton.getStylesheets().add("LeftMenuBar.css");
-        toggleButton.getStyleClass().add("toggleButton");
+        logoText = new Image(new FileInputStream("resources/logo/logoText.png"));
+        logo = new Image(new FileInputStream("resources/logo/logo.png"));
+        viewLogo = new ImageView(logoText);
+
+
+        minimizeImage = new Image(new FileInputStream("resources/toggleButton/crop.png"));
+        expandImage = new Image(new FileInputStream("resources/toggleButton/expand.png"));
+        activeExpand = new Image(new FileInputStream("resources/toggleButton/expand-active.png"));
+        activeMinimize = new Image(new FileInputStream("resources/toggleButton/crop-active.png"));
+        toggleImage = new ImageView(minimizeImage);
+
+
+        toggleButton = new Button("");
+        toggleButton.setPrefSize(40, 40);
+        toggleButton.setStyle("-fx-background-color: #21252B;");
         toggleButton.setOnAction(e -> toggle(toggleButton));
+        toggleButton.setGraphic(toggleImage);
+
+        toggleButton.setOnMouseEntered(e-> {
+            toggleImage = new ImageView(activeMinimize);
+            toggleButton.setGraphic(toggleImage);
+
+            toggleButton.setOnMouseExited(a->{
+                toggleImage = new ImageView(minimizeImage);
+                toggleButton.setGraphic(toggleImage);
+            } );
+        });
+
 
         toggleContainer = new HBox();
-        toggleContainer.setPadding(new Insets(0, 0, 0, 75));
+        toggleContainer.setPadding(new Insets(40, 0, 0, 105));
         toggleContainer.getChildren().add(toggleButton);
+        toggleContainer.setAlignment(Pos.BOTTOM_LEFT);
 
         mainContainer.getChildren().add(toggleContainer);
-
         setStyle("-fx-background-color: #21252B;");
         getChildren().add(mainContainer);
         setPrefSize(280, 768);
@@ -113,12 +154,26 @@ public class MenuPane extends StackPane {
         setPrefSize(20,768);
 
         for (int i=0; i<Views.values().length; i++) {
-            this.buttons[i].setText(""+Views.values()[i].name().charAt(0));
+            this.buttons[i].setText("");
         }
 
-        button.setText("Toggle");
-        button.setPrefSize(80,50);
-        toggleContainer.setPadding(new Insets(0, 0, 0, 24));
+        toggleImage = new ImageView(expandImage);
+        toggleButton.setGraphic(toggleImage);
+
+        toggleButton.setOnMouseEntered(e-> {
+            toggleImage = new ImageView(activeExpand);
+            toggleButton.setGraphic(toggleImage);
+        });
+
+        toggleButton.setOnMouseExited(a->{
+            toggleImage = new ImageView(expandImage);
+            toggleButton.setGraphic(toggleImage);
+        } );
+
+        button.setPrefSize(40,40);
+        toggleContainer.setPadding(new Insets(40, 0, 0, 40));
+
+        title.setText("C");
     }
 
     /**
@@ -155,9 +210,24 @@ public class MenuPane extends StackPane {
             this.buttons[i].setText(Views.values()[i].name());
         }
 
-        button.setText("Toggle Button");
-        button.setPrefSize(130,50);
-        toggleContainer.setPadding(new Insets(0, 0, 0, 75));
+        toggleButton.setOnMouseEntered(e-> {
+            toggleImage = new ImageView(activeMinimize);
+            toggleButton.setGraphic(toggleImage);
+
+        });
+
+        toggleButton.setOnMouseExited(a->{
+            toggleImage = new ImageView(minimizeImage);
+            toggleButton.setGraphic(toggleImage);
+        } );
+
+        toggleImage = new ImageView(minimizeImage);
+        toggleButton.setGraphic(toggleImage);
+
+        button.setPrefSize(40,40);
+        toggleContainer.setPadding(new Insets(40, 0, 0, 105));
+
+        title.setText("Cafetairé");
     }
 
     /**
@@ -165,26 +235,38 @@ public class MenuPane extends StackPane {
      * @param view Active view
      * @return new styled button
      */
-    private Button initButton(Views view) {
+    private Button initButton(Views view) throws FileNotFoundException {
         Button newButton = new Button(view.name());
         newButton.setPrefSize(280, 100);
 
         newButton.setStyle(Styles.getMenuButtonStandard());
 
+        Image image = new Image(new FileInputStream("resources/deSelectedImages/" + view.name() + ".png"));
+        ImageView imageView = new ImageView(image);
+
+        Image selectedImage = new Image(new FileInputStream("resources/activeImages/" + view.name() + ".png"));
+        ImageView selectedView = new ImageView(selectedImage);
+
+        newButton.setGraphic(imageView);
+
         newButton.setOnMouseClicked((handler) -> {
             for (Button b: buttons) {
                 b.setStyle(Styles.getMenuButtonStandard());
             }
-
+            newButton.setGraphic(selectedView);
             mainPane.setView(view);
             newButton.setStyle(Styles.getMenuButtonHighlighted());
             selectedButton = newButton;
         });
 
-        newButton.setOnMouseEntered((handler) -> newButton.setStyle(Styles.getMenuButtonHighlighted()));
+        newButton.setOnMouseEntered((handler) -> {
+                newButton.setStyle(Styles.getMenuButtonHighlighted());
+                newButton.setGraphic(selectedView);
+        });
 
         newButton.setOnMouseExited((handler) -> {
             newButton.setStyle(Styles.getMenuButtonStandard());
+            newButton.setGraphic(imageView);
             selectedButton.setStyle(Styles.getMenuButtonHighlighted());
         });
 

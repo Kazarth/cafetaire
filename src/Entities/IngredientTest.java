@@ -11,7 +11,6 @@ import java.io.Serializable;
  * @author Lucas Eliasson
  * @version 1.0
  */
-
 public class IngredientTest implements Serializable {
     private String name;
     private String category;

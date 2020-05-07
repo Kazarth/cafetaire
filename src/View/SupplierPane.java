@@ -67,6 +67,7 @@ public class SupplierPane extends StackPane {
             removeSupplier();
         });
         Button buttonEdit = new Button("EDIT SUPPLIER");
+        buttonEdit.setOnAction(e -> editSupplierAction());
 
         buttonAdd.setStyle(Styles.getButton());
         buttonRemove.setStyle(Styles.getButton());
@@ -186,7 +187,7 @@ public class SupplierPane extends StackPane {
      */
     public void addNewSupplierAction() {
         try {
-            new AddNewSupplierPane(this, callback);
+            new AddNewSupplierPane(this, callback, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -203,6 +204,25 @@ public class SupplierPane extends StackPane {
     }
 
     /**
+     * Method used to edit a supplier in the tableView
+     */
+    public void editSupplierAction(){
+        String name = tableView.getSelectionModel().getSelectedItem().getName();
+        AddNewSupplierPane pane;
+
+        if (name != null) {
+            try {
+                pane = new AddNewSupplierPane(this, callback, 1);
+                Supplier supplier = callback.getSupplier(name);
+                pane.setOrgSupp(name);
+                pane.setValuesForSupplier(supplier.getName(), supplier.getCategory(), supplier.getEmail(), supplier.getPhone());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * Removes selected supplier
      */
     public void removeSupplier() {
@@ -210,5 +230,9 @@ public class SupplierPane extends StackPane {
         allSuppliers = tableView.getItems();
         supplierSelected = tableView.getSelectionModel().getSelectedItems();
         supplierSelected.forEach(allSuppliers::remove);
+    }
+
+    public void refresh(){
+        tableView.refresh();
     }
 }

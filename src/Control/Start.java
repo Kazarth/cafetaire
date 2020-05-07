@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
 
 /**
  * TODO: start an instance of the Controller, which in turn contains the views.
@@ -16,10 +17,7 @@ import java.awt.event.WindowEvent;
  * @version 1.0
  */
 public class Start {
-    private static void initAndShowGUI() {
-
-
-
+    private static void initAndShowGUI() throws FileNotFoundException {
         JFrame frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
         frame.setTitle("Cafetairé Inventory System 1.0");
@@ -46,7 +44,7 @@ public class Start {
         fxPanel.setScene(new Scene(controller.getMainPane()));
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(Start::initAndShowGUI);
+    public static void main(String[] args) throws FileNotFoundException {
+        initAndShowGUI();
     }
 }
