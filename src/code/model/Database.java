@@ -6,6 +6,8 @@ import code.extra.ColourTxT;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 /**
  * TODO: add 'this' before global references.
@@ -15,6 +17,8 @@ import java.util.HashMap;
  */
 @SuppressWarnings("unused")
 public class Database implements Serializable {
+    private transient final double serialVersionUID = 41D;
+
     private HashMap<String, Ingredient> ingredients;
 
     private HashMap<String, Food> food;
@@ -56,10 +60,10 @@ public class Database implements Serializable {
 
     public Ingredient[] getIngredients() {
         Ingredient[] ingredients = new Ingredient[this.ingredients.size()];
-        String[] keys = ((String[])this.ingredients.keySet().toArray());
+        List<String> keys = new ArrayList<>(this.ingredients.keySet());
 
         for (int i=0; i<ingredients.length; i++) {
-            ingredients[i] = this.ingredients.get(keys[i]);
+            ingredients[i] = this.ingredients.get(keys.get(i));
         }
 
         return ingredients;

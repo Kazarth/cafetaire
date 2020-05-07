@@ -21,7 +21,6 @@ import javax.swing.*;
  * @author Viktor Polak, Lucas Eliasson
  * @version 2.0
  */
-
 public class ProductPopup extends AnchorPane {
     private JFrame frame;
 

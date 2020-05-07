@@ -21,7 +21,10 @@ public class Controller {
     public Controller() {
         this.database = new Database();
         this.saveLoad = new SaveLoad(database);
-        database = saveLoad.loadData();
+
+        if (saveLoad.hasData()) {
+            database = saveLoad.loadData();
+        }
 
         // TODO: must comment away for testing purposes?
         this.mainPane = new MainPane(new CallbackHandler());

@@ -1,6 +1,5 @@
 package code.view.panes;
 
-
 import code.entities.Ingredient;
 import code.entities.Styles;
 import code.view.popups.IngredientPopup;
@@ -26,7 +25,6 @@ import javax.swing.*;
 import java.util.Arrays;
 
 /**
- * TODO: parameterize a few tablecolumns etc?
  * The class is the Ingredients panel for the Cafetairé application.
  * @author Tor Stenfeldt, Georg Grankvist, Lucas Eliasson
  * @version 1.0
@@ -38,7 +36,7 @@ public class IngredientsPane extends StackPane {
     private TableColumn<Ingredient, Integer> stockColumn;
     private TableColumn<Ingredient, String> supplierColumn;
 
-    private TableColumn selectedColumn;
+    private TableColumn<Ingredient, Boolean> selectedColumn;
     private TextField searchTextField;
     private Callback callback;
 
@@ -109,7 +107,7 @@ public class IngredientsPane extends StackPane {
         searchTextField.textProperty().addListener(this::searchRecord);
       
         nameColumn = new TableColumn("NAME");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         categoryColumn = new TableColumn("CATEGORY");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         stockColumn = new TableColumn("STOCK");
@@ -121,15 +119,11 @@ public class IngredientsPane extends StackPane {
         //selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
         CheckBox checkBox = new CheckBox();
         checkBox.setDisable(true);
-        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
-                if (isPressed()) {
-                    checkBox.setSelected(true);
-                }
+        checkBox.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (isPressed()) {
+                checkBox.setSelected(true);
             }
         });
-        selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
 
         tableView.setStyle(Styles.getTableRowSelected() + "-fx-background-radius: 0 0 20 20;");
         tableView.setMaxWidth(980);
@@ -138,7 +132,7 @@ public class IngredientsPane extends StackPane {
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
         // loads in data
-        tableView.setItems(getIngredientTest());
+        tableView.setItems(getIngredient());
         nameColumn.setPrefWidth(196);
         categoryColumn.setPrefWidth(196);
         stockColumn.setPrefWidth(196);
@@ -221,15 +215,15 @@ public class IngredientsPane extends StackPane {
      * Method used to edit an item in the tableView
      */
     public void editAction() {
-        String name = tableView.getSelectionModel().getSelectedItem().getName();
+        String name = tableView.getSelectionModel().getSelectedItem().getType();
         IngredientPopup pane;
 
         if (name != null) {
             try {
                 pane = new IngredientPopup(this, callback, 1);
-                IngredientTest ingredientTest = callback.getIngredientTest(name);
+                Ingredient ingredient = callback.getIngredient(name);
                 pane.setOrgIngredient(name);
-                pane.setValuesForIngredient(ingredientTest.getName(), ingredientTest.getCategory(), ingredientTest.getSupplier());
+                pane.setValuesForIngredient(ingredient.getType(), ingredient.getCategory(), ingredient.getSupplier().getName());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -266,7 +260,7 @@ public class IngredientsPane extends StackPane {
         if (ingredientSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            if (callback.increaseIngredientTest(ingredientSelected.get(0))) {
+            if (callback.incrementIngredient(ingredientSelected.get(0))) {
                 ingredientSelected.get(0).increment(); // increment for view
                 System.out.println("Completed increase in View");
             }
@@ -283,7 +277,7 @@ public class IngredientsPane extends StackPane {
         if (ingredientSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            if (callback.decreaseIngredientTest(ingredientSelected.get(0))) {
+            if (callback.decrementIngredient(ingredientSelected.get(0))) {
                 ingredientSelected.get(0).decrement(); // decrement for view
                 System.out.println("Completed decrease in View");
             }
@@ -326,7 +320,7 @@ public class IngredientsPane extends StackPane {
     */
    private void searchRecord(Observable observable, String oldValue, String newValue) {
        if (!searchTextField.getText().equals("")) {
-           FilteredList<Ingredient> filteredList = new FilteredList<>(getIngredientTest(), p -> true);
+           FilteredList<Ingredient> filteredList = new FilteredList<>(getIngredient(), p -> true);
            filteredList.setPredicate(tableView -> {
 
                if (newValue == null || newValue.isEmpty()) {
@@ -354,14 +348,13 @@ public class IngredientsPane extends StackPane {
            sortedList.comparatorProperty().bind(tableView.comparatorProperty());
            tableView.setItems(sortedList);
        } else {
-           tableView.setItems(getIngredientTest());
+           tableView.setItems(getIngredient());
        }
    }
 
-   // Test values
-   private ObservableList<Ingredient> getIngredientTest() {
+   private ObservableList<Ingredient> getIngredient() {
        ObservableList <Ingredient> ingredients = FXCollections.observableArrayList();
-       Ingredient[] receivedIngredients = callback.getIngredientsTest();
+       Ingredient[] receivedIngredients = callback.getIngredients();
        ingredients.addAll(Arrays.asList(receivedIngredients));
        return ingredients;
    }

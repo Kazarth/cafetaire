@@ -1,12 +1,15 @@
 package code.entities;
 
+import java.io.Serializable;
+
 /**
  * Ingredient.java
  * Class used to store objects simulating ingredients in stock.
  * @author Tor Stenfeldt, Lucas Eliasson
  * @version 1.1
  */
-public class Ingredient {
+public class Ingredient implements Serializable {
+    private transient static double serialVersionUID = 51D;
     private String type, category;
     private Supplier supplier;
     private int stock;
