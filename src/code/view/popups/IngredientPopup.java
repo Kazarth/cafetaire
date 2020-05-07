@@ -1,6 +1,5 @@
 package code.view.popups;
 
-
 import code.control.Callback;
 import code.entities.IngredientTest;
 import code.entities.Styles;
@@ -35,7 +34,6 @@ public class IngredientPopup extends AnchorPane {
     private IngredientsPane source; // sourcePane
     private Callback callback; // get logic
     private ArrayList<String> suppliers; // test purposes
-
     private int opener;
     private String orgIngredient;
 
@@ -53,7 +51,6 @@ public class IngredientPopup extends AnchorPane {
         frame.setVisible(true);
         Platform.runLater(() -> fxPanel.setScene(new Scene(this)));
         this.opener = opener;
-
 
         // Init source
         this.source = source;
@@ -133,7 +130,7 @@ public class IngredientPopup extends AnchorPane {
             addButton.setOnAction(e -> addAction());
         }
         // Edit ingredient
-        if (opener == 1){
+        if (opener == 1) {
             addButton.setText("SAVE INGREDIENT");
             addButton.setOnAction(e -> editAction());
         }
@@ -175,7 +172,7 @@ public class IngredientPopup extends AnchorPane {
      * if name remain unchanged set category and supplier to value from comboBoxes
      * if name is changed remove existing name from database and add the new ingredient to the database
      */
-    public void editAction(){
+    public void editAction() {
         String name = nameField.getText();
         String category = categoryBox.getValue();
         String supplier = supplierBox.getValue();

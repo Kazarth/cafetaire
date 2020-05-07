@@ -143,7 +143,6 @@ public class ProductsPane extends StackPane {
         hBox.setMinSize(435, 75);
 
         hBox.setAlignment(Pos.CENTER_RIGHT);
-
         hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50;");
 
         return hBox;

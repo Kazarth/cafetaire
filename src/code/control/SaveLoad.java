@@ -12,10 +12,8 @@ import java.io.*;
  * @version 1.0
  */
 public class SaveLoad {
-
     private boolean isSaved;
     private Database data;
-
 
     public SaveLoad (Database data) {
         this.data = data;

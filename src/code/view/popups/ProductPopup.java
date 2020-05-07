@@ -149,7 +149,6 @@ public class ProductPopup extends AnchorPane {
             });
         }
 
-
         cancelButton = new Button("CANCEL");
         cancelButton.setStyle(Styles.getPopCancelButton());
         cancelButton.setPrefWidth(200); cancelButton.setPrefHeight(40);
@@ -180,19 +179,15 @@ public class ProductPopup extends AnchorPane {
 
         if ((!productName.equals("")) && (category != null)) {
             product = new Product(productName, category, quantity);
-
             System.out.println(product.toString());
 
             if (callback.addProductTest(product)) {
                 source.addNewProduct(product);
-
                 close();
             }
         } else {
             alert();
         }
-
-
     }
 
     /**
@@ -235,7 +230,6 @@ public class ProductPopup extends AnchorPane {
         } else{
             alert();
         }
-
     }
 
     /**
@@ -250,7 +244,6 @@ public class ProductPopup extends AnchorPane {
         numberSpinner.getValueFactory().setValue(quantity);
     }
 
-
 //    //From database
 //    private ObservableList<String> getSuppliersFromDatabase() {
 //        ObservableList<String> listProducts = FXCollections.observableArrayList();
@@ -261,8 +254,6 @@ public class ProductPopup extends AnchorPane {
 //        }
 //        return listProducts;
 //    }
-
-
 
     /**
      * ObservableList that populates the comboBox
