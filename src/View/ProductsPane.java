@@ -1,4 +1,5 @@
 package View;
+
 import Entities.Product;
 import Entities.ProductCategories;
 import Entities.Styles;
@@ -25,7 +26,6 @@ import java.util.NoSuchElementException;
  * @author Viktor Polak
  * @version 5.0
  */
-
 public class ProductsPane extends StackPane {
     private Spinner<Integer> numberSpinner = new Spinner<>();
 
@@ -34,18 +34,14 @@ public class ProductsPane extends StackPane {
     private TableColumn<Product, Integer> tblColumnStock = new TableColumn<>("Quantity");
     private TableColumn<Product, String> tblColumnIngredients = new TableColumn<>("Ingredients");
     private TableView<Product> tblView;
-
     private Callback callback;
-
 
     public ProductsPane(Callback callback) {
         this.callback = callback;
         VBox mainContainer = new VBox();
         mainContainer.setMaxSize(1036, 698);
 
-
         mainContainer.getChildren().addAll(getTopVBoxContainer(), getFlowBottom());
-
         getChildren().add(mainContainer);
 
         mainContainer.setAlignment(Pos.CENTER);
@@ -81,7 +77,6 @@ public class ProductsPane extends StackPane {
      * @return filler HBox
      */
     private HBox getFillerBox() {
-
         HBox hBoxFiller = new HBox();
         hBoxFiller.setMinSize(1036, 40);
         hBoxFiller.setMaxSize(1036, 40);
@@ -91,13 +86,11 @@ public class ProductsPane extends StackPane {
         return hBoxFiller;
     }
 
-
     /**
      * Method to create a HBox which stacks its content horizontally located below the Label
      * @return hBox - the box which contains every button, comboBox, textField and numberSpinner
      */
     public HBox getHCenterLeft() {
-
         Button btnNewItem = new Button("ADD PRODUCT");
         Button btnRemoveItem = new Button("REMOVE PRODUCT");
         Button btnEditItem = new Button("EDIT PRODUCT");
@@ -131,7 +124,6 @@ public class ProductsPane extends StackPane {
         Button btnAdd = new Button("ADD");
         Button btnRemove = new Button("REMOVE");
 
-
         final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
         numberSpinner.setValueFactory(svf);
         numberSpinner.disabledProperty();
@@ -160,7 +152,7 @@ public class ProductsPane extends StackPane {
      * Collection box for buttonHBoxes
      * @return container HBox
      */
-    public HBox getHBoxContainerBtn(){
+    public HBox getHBoxContainerBtn() {
         HBox hBox = new HBox();
         setPrefSize(1036, 75);
         hBox.getChildren().addAll(getHCenterLeft(), getHCenterRight());
@@ -184,8 +176,7 @@ public class ProductsPane extends StackPane {
      * Method that creates a pane containing a tableView with a number of columns
      * @return pane - a FlowPane which is located at the bottom of the panel
      */
-    public FlowPane getFlowBottom()
-    {
+    public FlowPane getFlowBottom() {
         FlowPane pane = new FlowPane();
 
         pane.setPadding(new Insets(15,15,15,15));
@@ -241,12 +232,9 @@ public class ProductsPane extends StackPane {
      * Method that returns an observableList which populates the columns in the tableView
      * @return items - the list which populates the columns
      */
-    public ObservableList<Product> itemsToTable()
-    {
+    public ObservableList<Product> itemsToTable() {
         ObservableList<Product> items = FXCollections.observableArrayList();
-
         items.add(new Product("Dummy Item", ProductCategories.Bread, 1));
-
         return items;
     }
 
@@ -304,19 +292,20 @@ public class ProductsPane extends StackPane {
     public void removeQuantityFromProduct() {
         Product product = tblView.getSelectionModel().getSelectedItem();
 
-    if (product != null){
-        int prodQuantity = product.getQuantity();
-        product.setQuantity(prodQuantity - getNumberSpinnerValue());
-    } else {
-        noProductSelected();
-    }
+        if (product != null){
+            int prodQuantity = product.getQuantity();
+            product.setQuantity(prodQuantity - getNumberSpinnerValue());
+        } else {
+            noProductSelected();
+        }
+
         tblView.refresh();
     }
 
     /**
      * Method used to edit a product in the tableView
      */
-    public void editItem(){
+    public void editItem() {
         String name = tblView.getSelectionModel().getSelectedItem().getName();
         AddNewProductPane pane;
 
@@ -334,10 +323,6 @@ public class ProductsPane extends StackPane {
         }
     }
 
-
-    /**
-     * @param product add product to tableView
-     */
     public void expand() {
         setPrefWidth(1346);
         System.out.println("Expanding");
@@ -348,6 +333,9 @@ public class ProductsPane extends StackPane {
         System.out.println("Contracting");
     }
 
+    /**
+     * @param product add product to tableView
+     */
     public void addNewProduct(Product product) {
         tblView.getItems().add(product);
     }
@@ -362,7 +350,7 @@ public class ProductsPane extends StackPane {
     /**
      * run method if no product is selected in tableView
      */
-    public void noProductSelected(){
+    public void noProductSelected() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("No Product Selected");
         alert.setHeaderText(null);

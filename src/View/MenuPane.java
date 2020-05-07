@@ -74,13 +74,11 @@ public class MenuPane extends StackPane {
         logo = new Image(new FileInputStream("resources/logo/logo.png"));
         viewLogo = new ImageView(logoText);
 
-
         minimizeImage = new Image(new FileInputStream("resources/toggleButton/crop.png"));
         expandImage = new Image(new FileInputStream("resources/toggleButton/expand.png"));
         activeExpand = new Image(new FileInputStream("resources/toggleButton/expand-active.png"));
         activeMinimize = new Image(new FileInputStream("resources/toggleButton/crop-active.png"));
         toggleImage = new ImageView(minimizeImage);
-
 
         toggleButton = new Button("");
         toggleButton.setPrefSize(40, 40);
@@ -91,13 +89,12 @@ public class MenuPane extends StackPane {
         toggleButton.setOnMouseEntered(e-> {
             toggleImage = new ImageView(activeMinimize);
             toggleButton.setGraphic(toggleImage);
-
-            toggleButton.setOnMouseExited(a->{
-                toggleImage = new ImageView(minimizeImage);
-                toggleButton.setGraphic(toggleImage);
-            } );
         });
 
+        toggleButton.setOnMouseExited(a-> {
+            toggleImage = new ImageView(minimizeImage);
+            toggleButton.setGraphic(toggleImage);
+        });
 
         toggleContainer = new HBox();
         toggleContainer.setPadding(new Insets(40, 0, 0, 105));

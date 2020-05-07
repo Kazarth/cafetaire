@@ -1,6 +1,5 @@
 package View;
 
-import Entities.Ingredient;
 import Entities.IngredientTest;
 import Entities.Styles;
 import javafx.beans.Observable;
@@ -29,8 +28,7 @@ import java.util.Arrays;
  * @author Georg Grankvist, Lucas Eliasson
  * @version 1.0
  */
-
-public class IngredientsPane extends StackPane{
+public class IngredientsPane extends StackPane {
     private TableView<IngredientTest> tableView;
     private TableColumn<IngredientTest, String> nameColumn;
     private TableColumn<IngredientTest, String> categoryColumn;
@@ -52,8 +50,7 @@ public class IngredientsPane extends StackPane{
     public IngredientsPane (Callback callback) {
         this.callback = callback;
 
-        /** Button instantiation and Configurations */
-
+        // Button instantiation and Configurations
         Button addIngredients = new Button("ADD NEW INGREDIENT");
         addIngredients.setStyle(Styles.getButton());
         addIngredients.setPrefWidth(200);
@@ -92,8 +89,7 @@ public class IngredientsPane extends StackPane{
             removeAmount();
         });
 
-        /**  Title and overview text configuration */
-
+        // Title and overview text configuration
         Text textTitle = new Text();
         Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         textTitle.setFill(Paint.valueOf("#619f81"));
@@ -229,11 +225,11 @@ public class IngredientsPane extends StackPane{
     /**
      * Method used to edit an item in the tableView
      */
-    public void editAction(){
+    public void editAction() {
         String name = tableView.getSelectionModel().getSelectedItem().getName();
         AddNewIngredientPane pane;
 
-        if(name != null) {
+        if (name != null) {
             try {
                 pane = new AddNewIngredientPane(this, callback, 1);
                 IngredientTest ingredientTest = callback.getIngredientTest(name);
@@ -330,7 +326,7 @@ public class IngredientsPane extends StackPane{
         //bottomHBox.setPrefSize(1036,75); // funkar ej
     }
 
-/*
+    /**
     * Searchbar functionality. (NEEDS REVISION).
     */
    private void searchRecord(Observable observable, String oldValue, String newValue) {
@@ -366,20 +362,20 @@ public class IngredientsPane extends StackPane{
        } else {
            tableView.setItems(getIngredientTest());
        }
-     }
+   }
 
-    // Test values
-    private ObservableList<IngredientTest> getIngredientTest() {
-            ObservableList <IngredientTest> ingredients = FXCollections.observableArrayList();
-            IngredientTest[] receivedIngredients = callback.getIngredientsTest();
-            ingredients.addAll(Arrays.asList(receivedIngredients));
-            return ingredients;
-        }
+   // Test values
+   private ObservableList<IngredientTest> getIngredientTest() {
+       ObservableList <IngredientTest> ingredients = FXCollections.observableArrayList();
+       IngredientTest[] receivedIngredients = callback.getIngredientsTest();
+       ingredients.addAll(Arrays.asList(receivedIngredients));
+       return ingredients;
+   }
 
     /**
      * Refreshes the tableView
      */
     public void refresh(){
         tableView.refresh();
-        }
     }
+}

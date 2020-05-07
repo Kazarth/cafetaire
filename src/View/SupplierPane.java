@@ -18,7 +18,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
 
-
 /**
  * Supplier Menu.java
  * The supplier menu provides the GUI containing information of the Suppliers {@link Entities.Supplier}.
@@ -27,14 +26,12 @@ import java.util.ArrayList;
  */
 
 public class SupplierPane extends StackPane {
-
     private TableView<Supplier> tableView;
     private TableColumn<Supplier, String> supplierColumn;
     private TableColumn<Supplier, String> categoryColumn;
     private TableColumn<Supplier, String> emailColumn;
     private TableColumn<Supplier, Integer> phoneColumn;
     private Callback callback;
-
 
     public SupplierPane(Callback callback) {
         this.callback = callback;
@@ -63,9 +60,7 @@ public class SupplierPane extends StackPane {
         Button buttonAdd = new Button("ADD SUPPLIER");
         buttonAdd.setOnAction(e -> addNewSupplierAction());
         Button buttonRemove = new Button("REMOVE SUPPLIER");
-        buttonRemove.setOnAction(e -> {
-            removeSupplier();
-        });
+        buttonRemove.setOnAction(e -> removeSupplier());
         Button buttonEdit = new Button("EDIT SUPPLIER");
         buttonEdit.setOnAction(e -> editSupplierAction());
 
@@ -138,7 +133,6 @@ public class SupplierPane extends StackPane {
     }
 
     public void setTableView () {
-
         tableView = new TableView();
         tableView.setStyle(Styles.getTableRowSelected());
         setPrefSize(1068,768);
