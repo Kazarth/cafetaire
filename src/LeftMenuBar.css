@@ -16,10 +16,10 @@
 }
 
 .toggleButton {
-  -fx-border-width: 3px;
+  -fx-border-width: 0px;
   -fx-border-color: #619F81;
-  -fx-border-radius: 50px;
-  -fx-background-radius: 50px;
+  -fx-border-radius: 100px;
+  -fx-background-radius: 100px;
   -fx-background-color: #21252B;
   -fx-font-weight: bold;
   -fx-text-fill: #fff;
