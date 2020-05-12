@@ -75,7 +75,7 @@ public class ProductsPane extends StackPane {
     }
 
     /**
-     * Filler box between titleBox and buttonBoxes
+     * Filler box between titleBox and buttonBoxes // Change to 'filter', ändra från max/min till 50 padding kanske?
      * @return filler HBox
      */
     private HBox initHBoxFillerBox() {
@@ -83,7 +83,8 @@ public class ProductsPane extends StackPane {
         hBoxFiller.setMinSize(1036, 40);
         hBoxFiller.setMaxSize(1036, 40);
         hBoxFiller.setStyle("-fx-border-color: #6B6C6A;" +
-                            "-fx-background-color: #FFFFFF");
+                            "-fx-border-width: 1 0 1 0;" +
+                            "-fx-background-color: #fff");
 
         return hBoxFiller;
     }
@@ -131,9 +132,13 @@ public class ProductsPane extends StackPane {
         numberSpinner.disabledProperty();
         numberSpinner.setEditable(true);
         numberSpinner.setPrefHeight(38);
+        numberSpinner.setPrefWidth(100);
 
         button_Add.setStyle(Styles.getButton());
         button_Remove.setStyle(Styles.getButton());
+
+        button_Add.setPrefSize(100,30);
+        button_Remove.setPrefSize(100,30);
 
         button_Add.setOnAction(e -> addQuantity());
         button_Remove.setOnAction(e -> removeQuantity());
@@ -213,7 +218,7 @@ public class ProductsPane extends StackPane {
         tableView.setItems(getItemList());
 
         pane.setStyle("-fx-alignment: center;" +
-                " -fx-background-color: #FFFFFF;" +
+                " -fx-background-color: #fff;" +
                 " -fx-background-radius: 0 0 20 20;" +
                 " -fx-padding: 0 0 50 0;");
 
