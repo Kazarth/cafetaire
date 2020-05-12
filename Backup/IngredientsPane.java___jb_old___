@@ -22,8 +22,7 @@ import java.util.Arrays;
  * @author Georg Grankvist, Lucas Eliasson
  * @version 1.0
  */
-
-public class IngredientsPane extends StackPane{
+public class IngredientsPane extends StackPane {
     private TableView<IngredientTest> tableView;
     private TableColumn<IngredientTest, String> nameColumn;
     private TableColumn<IngredientTest, String> categoryColumn;
@@ -45,8 +44,7 @@ public class IngredientsPane extends StackPane{
     public IngredientsPane (Callback callback) {
         this.callback = callback;
 
-        /** Button instantiation and Configurations */
-
+        /* Button instantiation and Configurations */
         Button addIngredients = new Button("ADD NEW INGREDIENT");
         addIngredients.setStyle(Styles.getButton());
         addIngredients.setPrefWidth(200);
@@ -79,7 +77,7 @@ public class IngredientsPane extends StackPane{
             removeAmount();
         });
 
-        /**  Title and overview text configuration */
+        /*  Title and overview text configuration */
 
         Text titleText = new Text("INGREDIENTS");
         Color seaDarkGreen = Color.web("#619f81");
@@ -89,22 +87,18 @@ public class IngredientsPane extends StackPane{
         overView.setFont(Font.font("Segoe UI", FontWeight.LIGHT, FontPosture.REGULAR, 20));
         overView.setFill(Color.BLACK);
 
-        /** Searchbar configuration */
+        /* Searchbar configuration */
 
         searchTextField = new TextField();
         searchTextField.setPromptText("SEARCH");
         searchTextField.setPrefHeight(32);
         searchTextField.setPrefWidth(250);
 
-        /** Ingredient table configuration and design */
-
-
+        /* Ingredient table configuration and design */
         tableView = new TableView();
         setPrefSize(1086,768);
         setStyle(Styles.getPane());
         searchRecord();
-
-
 
         nameColumn = new TableColumn("NAME");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -219,24 +213,25 @@ public class IngredientsPane extends StackPane{
      * Removes selected ingredient from the stock
      */
     public void removeIngredient() {
-        ObservableList<IngredientTest> ingredientTestSelected, allIngredients;
+        ObservableList<IngredientTest> ingredientSelected, allIngredients;
         allIngredients = tableView.getItems();
-        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
-        ingredientTestSelected.forEach(allIngredients::remove);
+        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
+        ingredientSelected.forEach(allIngredients::remove);
     }
 
     /**
      * Increments the selected ingredients stock by 1
      */
     public void addAmount() {
-        ObservableList<IngredientTest> ingredientTestSelected;
-        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
-        if (ingredientTestSelected.size() <= 0) {
+        ObservableList<IngredientTest> ingredientSelected;
+        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
+        if (ingredientSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            if (callback.increaseIngredientTest(ingredientTestSelected.get(0))) {
-                ingredientTestSelected.get(0).increment(); // increment for code.view
-                System.out.println("Completed increase in code.view");
+            if (callback.increaseIngredientTest(ingredientSelected.get(0))) {
+                ingredientSelected.get(0).increment(); // increment for view
+                System.out.println("Completed increase in View");
+
             }
             tableView.refresh();
         }
@@ -246,14 +241,15 @@ public class IngredientsPane extends StackPane{
      * Decrements the selected ingredients stock by 1
      */
     public void removeAmount() {
-        ObservableList<IngredientTest> ingredientTestSelected;
-        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
-        if (ingredientTestSelected.size() <= 0) {
+        ObservableList<IngredientTest> ingredientSelected;
+        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
+        if (ingredientSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            if (callback.decreaseIngredientTest(ingredientTestSelected.get(0))) {
-                ingredientTestSelected.get(0).decrement(); // decrement for code.view
-                System.out.println("Completed decrease in code.view");
+            if (callback.decreaseIngredientTest(ingredientSelected.get(0))) {
+                ingredientSelected.get(0).decrement(); // decrement for view
+                System.out.println("Completed decrease in View");
+
             }
             tableView.refresh();
         }
