@@ -16,8 +16,7 @@ public class TestSuite {
     private Callback callback;
 
     public TestSuite() {
-        Controller controller = new Controller();
-        this.callback = controller.getCallback();
+        this.callback = new Controller();
     }
 
     @Test

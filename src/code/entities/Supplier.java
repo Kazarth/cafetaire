@@ -14,7 +14,6 @@ public class Supplier implements Serializable {
     private String email;
     private String phone;
 
-
     public Supplier () {
         supplierName    = "";
         category        = "";

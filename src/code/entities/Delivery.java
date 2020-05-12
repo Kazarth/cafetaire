@@ -1,5 +1,10 @@
 package code.entities;
 
+/**
+ * TODO: desc
+ * TODO: utilize
+ * @param <T>
+ */
 public class Delivery<T> {
     private int day, hour;
     private Supplier supplier;

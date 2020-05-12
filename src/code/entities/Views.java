@@ -1,7 +1,7 @@
 package code.entities;
 
 /**
- * TODO: desc
+ * Defines the different views, used to set up and switch between them.
  * @author Tor Stenfeldt
  * @version 1.0
  */

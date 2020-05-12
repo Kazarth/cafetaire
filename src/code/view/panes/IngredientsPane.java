@@ -100,22 +100,22 @@ public class IngredientsPane extends StackPane {
         searchTextField.setPrefWidth(150);
 
         // Ingredient table configuration and design
-        tableView = new TableView();
+        tableView = new TableView<>();
         setPrefSize(1086,768);
         setStyle(Styles.getPane());
 
         searchTextField.textProperty().addListener(this::searchRecord);
       
-        nameColumn = new TableColumn("NAME");
+        nameColumn = new TableColumn<>("NAME");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        categoryColumn = new TableColumn("CATEGORY");
+        categoryColumn = new TableColumn<>("CATEGORY");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-        stockColumn = new TableColumn("STOCK");
+        stockColumn = new TableColumn<>("STOCK");
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        supplierColumn  = new TableColumn("SUPPLIER");
+        supplierColumn  = new TableColumn<>("SUPPLIER");
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
 
-        selectedColumn = new TableColumn("SELECTED ITEM");
+        selectedColumn = new TableColumn<>("SELECTED ITEM");
         //selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
         CheckBox checkBox = new CheckBox();
         checkBox.setDisable(true);

@@ -8,7 +8,6 @@ import javafx.scene.layout.StackPane;
 import javax.swing.*;
 
 /**
- * TODO: move setView etc. to Controller?
  * MainPane.java
  * Contains the different panes, making up the application.
  * @author Tor Stenfeldt
@@ -16,23 +15,16 @@ import javax.swing.*;
  */
 public class MainPane extends StackPane {
     private Pane[] views;
-    private StackPane menu;
-    private Callback callback;
-    private Views view;
-
     private int pane;
 
-    public MainPane(Callback callback)  {
-        this.callback = callback;
-        this.view = Views.Dashboard;
-
+    public MainPane(Callback callback) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
-        menu = new MenuPane(this);
+        StackPane menu = new MenuPane(this);
         views = new Pane[5];
         views[0] = new DashboardPane();
         views[1] = new IngredientsPane(callback);
@@ -56,7 +48,6 @@ public class MainPane extends StackPane {
         }
 
         ((HBox)getChildren().get(0)).getChildren().set(1, views[pane]);
-        this.view = view;
     }
 
     Pane[] getViews() {
