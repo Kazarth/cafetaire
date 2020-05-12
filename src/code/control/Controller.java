@@ -16,12 +16,14 @@ public class Controller {
     private Database database;
     private MainPane mainPane;
     private SaveLoad saveLoad;
-    private ColourTxT colourTxT = new ColourTxT();
 
     public Controller() {
         this.database = new Database();
         this.saveLoad = new SaveLoad(database);
-        database = saveLoad.loadData();
+
+        if (saveLoad.hasData()) {
+            database = saveLoad.loadData();
+        }
 
         // TODO: must comment away for testing purposes?
         this.mainPane = new MainPane(new CallbackHandler());
@@ -70,23 +72,43 @@ public class Controller {
         }
 
         @Override
-        public boolean increaseIngredient(String ingredient) {
-            return database.increaseIngredient(ingredient);
+        public boolean incrementIngredient(String ingredient) {
+            return database.incrementIngredient(ingredient);
         }
 
         @Override
-        public boolean increaseIngredient(Ingredient ingredient) {
-            return database.increaseIngredient(ingredient);
+        public boolean incrementIngredient(Ingredient ingredient) {
+            return database.incrementIngredient(ingredient);
         }
 
         @Override
-        public boolean decreaseIngredient(String ingredient) {
-            return database.decreaseIngredient(ingredient);
+        public boolean incrementIngredient(String ingredient, int value) {
+            return database.incrementIngredient(ingredient, value);
         }
 
         @Override
-        public boolean decreaseIngredient(Ingredient ingredient) {
-            return database.decreaseIngredient(ingredient);
+        public boolean incrementIngredient(Ingredient ingredient, int value) {
+            return database.incrementIngredient(ingredient, value);
+        }
+
+        @Override
+        public boolean decrementIngredient(String ingredient) {
+            return database.decrementIngredient(ingredient);
+        }
+
+        @Override
+        public boolean decrementIngredient(Ingredient ingredient) {
+            return database.decrementIngredient(ingredient);
+        }
+
+        @Override
+        public boolean decrementIngredient(String ingredient, int value) {
+            return database.decrementIngredient(ingredient, value);
+        }
+
+        @Override
+        public boolean decrementIngredient(Ingredient ingredient, int value) {
+            return database.decrementIngredient(ingredient, value);
         }
 
         @Override
@@ -96,50 +118,48 @@ public class Controller {
         }
 
         @Override
-        public boolean addFood(Food food) {
+        public boolean addProduct(Product product) {
             saveLoad.setEdited();
-            return database.addFood(food);
+            return database.addProduct(product);
         }
 
         @Override
-        public Food getFood(String food) {
-            return database.getFood(food);
+        public Product getProduct(String product) {
+            return database.getProduct(product);
         }
 
         @Override
-        public Food[] getFood() {
-            return database.getFood();
+        public Product[] getProduct() {
+            return database.getProducts();
+        }
+
+        public int getNumProduct(String product) {
+            return database.getNumProduct(product);
         }
 
         @Override
-        public int getNumFood(String food) {
-            return database.getNumFood(food);
+        public boolean incrementProduct(String product) {
+            return database.incrementProduct(product);
+        }
+
+        public boolean incrementProduct(Product product) {
+            return database.incrementProduct(product);
         }
 
         @Override
-        public boolean increaseFood(String food) {
-            return database.increaseFood(food);
+        public boolean decrementProduct(String product) {
+            return database.decrementProduct(product);
         }
 
         @Override
-        public boolean increaseFood(Food food) {
-            return database.increaseFood(food);
+        public boolean decrementProduct(Product product) {
+            return database.decrementProduct(product);
         }
 
         @Override
-        public boolean decreaseFood(String food) {
-            return database.decreaseFood(food);
-        }
-
-        @Override
-        public boolean decreaseFood(Food food) {
-            return database.decreaseFood(food);
-        }
-
-        @Override
-        public boolean removeFood(String food) {
+        public boolean removeProduct(String product) {
             saveLoad.setEdited();
-            return database.removeFood(food);
+            return database.removeProduct(product);
         }
 
         @Override
@@ -173,114 +193,6 @@ public class Controller {
         public boolean removeSupplier(String name) {
             saveLoad.setEdited();
             return database.removeSupplier(name);
-        }
-
-
-        /* Testing purposes IngredientTest*/
-        @Override
-        public boolean addIngredientTest(IngredientTest ingredient) {
-            saveLoad.setEdited();
-            System.out.println(colourTxT.NEONGREEN() + "Controller received:\n" +
-                    "Name: " + ingredient.getName() + "\n" +
-                    "Category: " + ingredient.getCategory() + "\n" +
-                    "Supplier: " + ingredient.getSupplier() + colourTxT.RESET());
-            return database.addIngredientTest(ingredient);
-        }
-
-        @Override
-        public IngredientTest getIngredientTest(String ingredient) {
-            return database.getIngredientTest(ingredient);
-        }
-
-        @Override
-        public IngredientTest[] getIngredientsTest() {
-            return database.getIngredientsTest();
-        }
-
-        @Override
-        public int getNumIngredientsTest(String ingredient) {
-            return database.getNumIngredientsTest(ingredient);
-        }
-
-        @Override
-        public boolean increaseIngredientTest(String ingredient) {
-            return database.increaseIngredientTest(ingredient);
-        }
-
-        @Override
-        public boolean increaseIngredientTest(IngredientTest ingredient) {
-            System.out.println(colourTxT.NEONGREEN() + "Controller received increase request" + colourTxT.RESET());
-            return database.increaseIngredientTest(ingredient);
-        }
-
-        @Override
-        public boolean decreaseIngredientTest(String ingredient) {
-            return database.decreaseIngredientTest(ingredient);
-        }
-
-        @Override
-        public boolean decreaseIngredientTest(IngredientTest ingredient) {
-            System.out.println(colourTxT.NEONGREEN() + "Controller received decrease request" + colourTxT.RESET());
-            return database.decreaseIngredientTest(ingredient);
-        }
-
-        @Override
-        public boolean removeIngredientTest(String ingredient) {
-            saveLoad.setEdited();
-            return database.removeIngredientTest(ingredient);
-        }
-
-        /*Testing purpose Product */
-        @Override
-        public boolean addProductTest(Product product) {
-            saveLoad.setEdited();
-            System.out.println(colourTxT.NEONGREEN() + "Controller received:\n" +
-                    "Name: " + product.getName() + "\n" +
-                    "Category: " + product.getCategory() + "\n" +
-                    "Amount: " + product.getQuantity() + colourTxT.RESET());
-            return database.addProductTest(product);
-        }
-
-        @Override
-        public Product getProductTest(String product) {
-            return database.getProductTest(product);
-        }
-
-        @Override
-        public Product[] getProductTest() {
-            return database.getProductTest();
-        }
-
-        @Override
-        public int getNumProductTest(String product) {
-            return database.getNumProductTest(product);
-        }
-
-        @Override
-        public boolean increaseProductTest(String product) {
-            return database.increaseProductTest(product);
-        }
-
-        @Override
-        public boolean increaseProductTest(Product product) {
-            return database.increaseProductTest(product);
-        }
-
-        @Override
-        public boolean decreaseProductTest(String product) {
-            return database.decreaseProductTest(product);
-        }
-
-        @Override
-        public boolean decreaseProductTest(Product product) {
-            return database.decreaseProductTest(product);
-        }
-
-
-        @Override
-        public boolean removeProductTest(String name) {
-            saveLoad.setEdited();
-            return database.removeProductTest(name);
         }
     }
 }
