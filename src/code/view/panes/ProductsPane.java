@@ -75,7 +75,7 @@ public class ProductsPane extends StackPane {
     }
 
     /**
-     * Filler box between titleBox and buttonBoxes // Change to 'filter', ändra från max/min till 50 padding kanske?
+     * Filler box between titleBox and buttonBoxes
      * @return filler HBox
      */
     private HBox initHBoxFillerBox() {
@@ -83,8 +83,7 @@ public class ProductsPane extends StackPane {
         hBoxFiller.setMinSize(1036, 40);
         hBoxFiller.setMaxSize(1036, 40);
         hBoxFiller.setStyle("-fx-border-color: #6B6C6A;" +
-                            "-fx-border-width: 1 0 1 0;" +
-                            "-fx-background-color: #fff");
+                            "-fx-background-color: #FFFFFF");
 
         return hBoxFiller;
     }
@@ -132,13 +131,9 @@ public class ProductsPane extends StackPane {
         numberSpinner.disabledProperty();
         numberSpinner.setEditable(true);
         numberSpinner.setPrefHeight(38);
-        numberSpinner.setPrefWidth(100);
 
         button_Add.setStyle(Styles.getButton());
         button_Remove.setStyle(Styles.getButton());
-
-        button_Add.setPrefSize(100,30);
-        button_Remove.setPrefSize(100,30);
 
         button_Add.setOnAction(e -> addQuantity());
         button_Remove.setOnAction(e -> removeQuantity());
@@ -192,9 +187,9 @@ public class ProductsPane extends StackPane {
 
         tableView = new TableView<>();
 
-        tableColumn_Name.setCellValueFactory(new PropertyValueFactory<>("type"));
+        tableColumn_Name.setCellValueFactory(new PropertyValueFactory<>("name"));
         tableColumn_Categories.setCellValueFactory(new PropertyValueFactory<>("category"));
-        tableColumn_Stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        tableColumn_Stock.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         tableColumn_Name.setPrefWidth(233);
         tableColumn_Categories.setPrefWidth(234);
@@ -218,7 +213,7 @@ public class ProductsPane extends StackPane {
         tableView.setItems(getItemList());
 
         pane.setStyle("-fx-alignment: center;" +
-                " -fx-background-color: #fff;" +
+                " -fx-background-color: #FFFFFF;" +
                 " -fx-background-radius: 0 0 20 20;" +
                 " -fx-padding: 0 0 50 0;");
 
@@ -242,8 +237,8 @@ public class ProductsPane extends StackPane {
         ObservableList<Product> items = FXCollections.observableArrayList();
         // temp item to populate tableView
         Product product = new Product("Dummy Item", ProductCategories.Bread, 1);
-        callback.addProduct(product);
-        Product[] receivedProducts = callback.getProduct();
+        callback.addProductTest(product);
+        Product[] receivedProducts = callback.getProductTest();
         items.addAll(Arrays.asList(receivedProducts));
 
         return items;
@@ -275,7 +270,7 @@ public class ProductsPane extends StackPane {
 
         try {
             itemSelected.forEach(allItems::remove);
-            callback.removeProduct(product.getType());
+            callback.removeProductTest(product.getName());
         } catch (NoSuchElementException e){
             e.printStackTrace();
         }
@@ -290,8 +285,8 @@ public class ProductsPane extends StackPane {
         Product product = tableView.getSelectionModel().getSelectedItem();
 
     if (product != null){
-        int prodQuantity = product.getStock();
-        product.setStock(prodQuantity + getNumberSpinnerValue());
+        int prodQuantity = product.getQuantity();
+        product.setQuantity(prodQuantity + getNumberSpinnerValue());
     } else {
         noProductSelected();
     }
@@ -307,8 +302,8 @@ public class ProductsPane extends StackPane {
         Product product = tableView.getSelectionModel().getSelectedItem();
 
         if (product != null){
-            int prodQuantity = product.getStock();
-            product.setStock(prodQuantity - getNumberSpinnerValue());
+            int prodQuantity = product.getQuantity();
+            product.setQuantity(prodQuantity - getNumberSpinnerValue());
         } else {
             noProductSelected();
         }
@@ -319,17 +314,16 @@ public class ProductsPane extends StackPane {
     /**
      * Method used to edit a product in the tableView
      */
-
     public void editProduct() {
-        String name = tableView.getSelectionModel().getSelectedItem().getType();
+        String name = tableView.getSelectionModel().getSelectedItem().getName();
         ProductPopup pane;
 
         if (name != null) {
             try {
                 pane = new ProductPopup(this, callback, 1);
-                Product product = callback.getProduct(name);
+                Product product = callback.getProductTest(name);
                 pane.setOrgProd(name);
-                pane.setValuesForItem(product.getType(), product.getCategory(), product.getStock());
+                pane.setValuesForItem(product.getName(), product.getCategory(), product.getQuantity());
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }

@@ -8,7 +8,7 @@ import java.io.*;
  * Class to save and load the database.
  * The class invokes the save method should any new data be added
  * before closing - force save to avoid data loss.
- * @author Paul Moustakas, Tor Stenfeldt
+ * @author Paul Moustakas
  * @version 1.0
  */
 public class SaveLoad {
@@ -55,17 +55,7 @@ public class SaveLoad {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("src/resources/save.ser"))) {
             data = (Database)ois.readObject();
             isSaved = true;
-        } catch (IOException | ClassNotFoundException e ) {
-            e.printStackTrace();
-        }
+        } catch (IOException | ClassNotFoundException e ) {e.printStackTrace();}
         return data;
-    }
-
-    public boolean hasData() {
-        try (ObjectInputStream input = new ObjectInputStream((new FileInputStream("src/resources/save.ser")))) {
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
     }
 }

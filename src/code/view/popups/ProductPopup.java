@@ -21,6 +21,7 @@ import javax.swing.*;
  * @author Viktor Polak, Lucas Eliasson
  * @version 2.0
  */
+
 public class ProductPopup extends AnchorPane {
     private JFrame frame;
 
@@ -179,7 +180,7 @@ public class ProductPopup extends AnchorPane {
             product = new Product(productName, category, quantity);
             System.out.println(product.toString());
 
-            if (callback.addProduct(product)) {
+            if (callback.addProductTest(product)) {
                 source.addNewProduct(product);
                 close();
             }
@@ -213,15 +214,15 @@ public class ProductPopup extends AnchorPane {
         int quantity = numberSpinner.getValue();
 
         if (orgProd.equals(name)){
-            Product product = callback.getProduct(textField_Name.getText());
+            Product product = callback.getProductTest(textField_Name.getText());
             product.setCategory(category);
-            product.setStock(quantity);
+            product.setQuantity(quantity);
             source.refresh();
             close();
         } else if (!orgProd.equals(name)){
             Product product = new Product(name, category, quantity);
-            callback.addProduct(product);
-            callback.removeProduct(orgProd);
+            callback.addProductTest(product);
+            callback.removeProductTest(orgProd);
             source.addNewProduct(product);
             source.removeProduct();
             source.refresh();

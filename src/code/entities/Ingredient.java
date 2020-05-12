@@ -1,104 +1,49 @@
 package code.entities;
 
-import java.io.Serializable;
-
 /**
- * Ingredient.java
- * Class used to store objects simulating ingredients in stock.
- * @author Tor Stenfeldt, Lucas Eliasson
- * @version 1.1
+ * An entity used to store individual ingredients and their information.
+ * @author Tor Stenfeldt
+ * @version 1.0
  */
-public class Ingredient implements Serializable {
-    private transient static double serialVersionUID = 51D;
-    private String type, category;
+public class Ingredient {
+    private String type;
     private Supplier supplier;
-    private int stock;
+    private String category;
+
+    public Ingredient(Ingredient ingredient) {
+        this.type = ingredient.getType();
+        this.supplier = ingredient.getSupplier();
+    }
 
     public Ingredient(String type) {
         this.type = type;
-        category = "";
-        supplier = new Supplier();
-        stock = 1;
+        this.supplier = new Supplier();
     }
 
-    public Ingredient(String type, String category, int stock, Supplier supplier) {
+    public Ingredient(String type, Supplier supplier) {
         this.type = type;
-        this.category = category;
         this.supplier = supplier;
-        this.stock = stock;
+    }
+
+    protected void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public Supplier getSupplier() {
         return supplier;
     }
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
-    public boolean increment() {
-        if (stock == Integer.MAX_VALUE) {
-            return false;
-        }
-
-        stock++;
-        return true;
-    }
-
-    public boolean increment(int value) {
-        if (Integer.MAX_VALUE-stock-value <= 0) {
-            return false;
-        }
-
-        stock += value;
-        return true;
-    }
-
-    public boolean decrement() {
-        if (stock-1<0) {
-            return false;
-        }
-
-        stock--;
-        return true;
-    }
-
-    public boolean decrement(int value) {
-        if (stock-value<0) {
-            return false;
-        }
-
-        stock -= value;
-        return true;
-    }
-
+    /**
+     * To be changed depending on how we fill the tables
+     * for now returns console output
+     * @return
+     */
     public String toString() {
-        return "Name: " + this.type + "\n" +
-                "Category: " + this.category + "\n" +
-                "Stock: " + this.stock;
+        return "Type: " + type + "\n" +
+                "Supplier: " + supplier.getName();
     }
 }

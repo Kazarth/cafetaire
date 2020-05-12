@@ -1,6 +1,6 @@
 package code.view.panes;
 
-import code.entities.Ingredient;
+import code.entities.IngredientTest;
 import code.entities.Styles;
 import code.view.popups.IngredientPopup;
 import javafx.beans.Observable;
@@ -26,17 +26,16 @@ import java.util.Arrays;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
- * @author Tor Stenfeldt, Georg Grankvist, Lucas Eliasson
+ * @author Georg Grankvist, Lucas Eliasson
  * @version 1.0
  */
 public class IngredientsPane extends StackPane {
-    private TableView<Ingredient> tableView;
-    private TableColumn<Ingredient, String> nameColumn;
-    private TableColumn<Ingredient, String> categoryColumn;
-    private TableColumn<Ingredient, Integer> stockColumn;
-    private TableColumn<Ingredient, String> supplierColumn;
-
-    private TableColumn<Ingredient, Boolean> selectedColumn;
+    private TableView<IngredientTest> tableView;
+    private TableColumn<IngredientTest, String> nameColumn;
+    private TableColumn<IngredientTest, String> categoryColumn;
+    private TableColumn<IngredientTest, Integer> stockColumn;
+    private TableColumn<IngredientTest, String> supplierColumn;
+    private TableColumn selectedColumn;
     private TextField searchTextField;
     private Callback callback;
 
@@ -57,13 +56,17 @@ public class IngredientsPane extends StackPane {
         addIngredients.setStyle(Styles.getButton());
         addIngredients.setPrefWidth(200);
         addIngredients.setPrefHeight(30);
-        addIngredients.setOnAction(e -> addNewIngredientAction());
+        addIngredients.setOnAction(e -> {
+            addNewIngredientAction();
+        });
 
         Button removeIngredients = new Button("REMOVE INGREDIENT");
         removeIngredients.setStyle(Styles.getButton());
         removeIngredients.setPrefHeight(30);
         removeIngredients.setPrefWidth(200);
-        removeIngredients.setOnAction(e -> removeIngredient());
+        removeIngredients.setOnAction(e -> {
+            removeIngredient();
+        });
 
         Button editIngredient = new Button("EDIT");
         editIngredient.setStyle(Styles.getButton());
@@ -75,14 +78,19 @@ public class IngredientsPane extends StackPane {
         addButton.setPrefHeight(30);
         addButton.setPrefWidth(100);
         addButton.setStyle(Styles.getButton());
-        addButton.setOnAction(e -> addAmount());
+        addButton.setOnAction(e -> {
+            addAmount();
+        });
 
         Button removeButton = new Button("REMOVE");
         removeButton.setPrefHeight(30);
         removeButton.setPrefWidth(100);
         removeButton.setStyle(Styles.getButton());
-        removeButton.setOnAction(e -> removeAmount());
+        removeButton.setOnAction(e -> {
+            removeAmount();
+        });
 
+        // Title and overview text configuration
         Text textTitle = new Text();
         Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         textTitle.setFill(Paint.valueOf("#619f81"));
@@ -93,21 +101,23 @@ public class IngredientsPane extends StackPane {
         overView.setFont(Font.font("Segoe UI", FontWeight.LIGHT, FontPosture.REGULAR, 20));
         overView.setFill(Color.BLACK);
 
-        // Searchbar configuration
+        /** Searchbar configuration */
         searchTextField = new TextField();
         searchTextField.setPromptText("SEARCH");
         searchTextField.setPrefHeight(32);
         searchTextField.setPrefWidth(150);
 
-        // Ingredient table configuration and design
+        /** Ingredient table configuration and design */
         tableView = new TableView();
         setPrefSize(1086,768);
         setStyle(Styles.getPane());
 
-        searchTextField.textProperty().addListener(this::searchRecord);
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchRecord(observable, oldValue, newValue);
+        });
       
         nameColumn = new TableColumn("NAME");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryColumn = new TableColumn("CATEGORY");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         stockColumn = new TableColumn("STOCK");
@@ -119,11 +129,15 @@ public class IngredientsPane extends StackPane {
         //selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
         CheckBox checkBox = new CheckBox();
         checkBox.setDisable(true);
-        checkBox.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (isPressed()) {
-                checkBox.setSelected(true);
+        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                if (isPressed()) {
+                    checkBox.setSelected(true);
+                }
             }
         });
+        selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
 
         tableView.setStyle(Styles.getTableRowSelected() + "-fx-background-radius: 0 0 20 20;");
         tableView.setMaxWidth(980);
@@ -132,14 +146,14 @@ public class IngredientsPane extends StackPane {
         tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
 
         // loads in data
-        tableView.setItems(getIngredient());
+        tableView.setItems(getIngredientTest());
         nameColumn.setPrefWidth(196);
         categoryColumn.setPrefWidth(196);
         stockColumn.setPrefWidth(196);
         supplierColumn.setPrefWidth(195);
         selectedColumn.setPrefWidth(195);
 
-        /* LayoutPane configurations and instantiation.
+        /** LayoutPane configurations and instantiation.
          *  VBOX, HBOX. */
         mainContainer = new HBox(25);
         innerContainer = new VBox(25);
@@ -172,14 +186,9 @@ public class IngredientsPane extends StackPane {
         westHBOx.setAlignment(Pos.CENTER);
         eastHBox.setAlignment(Pos.CENTER);
 
-        innerContainer.setStyle(
-                "-fx-background-color: #FFFFFF;" +
-                "-fx-background-radius: 20 20 20 20"
-        );
-        midHBox.setStyle(
-                "-fx-border-color: #6B6C6A;" +
-                "-fx-background-color: #FFFFFF"
-        );
+        innerContainer.setStyle("-fx-background-color: #FFFFFF ; -fx-background-radius: 20 20 20 20");
+        midHBox.setStyle("-fx-border-color: #6B6C6A;" +
+                "-fx-background-color: #FFFFFF");
         innerContainer.setMaxSize(1036,698);
 
         mainVbox.setPrefSize(1036,225);
@@ -194,9 +203,10 @@ public class IngredientsPane extends StackPane {
     }
 
     /**
+     *
      * @param ingredient
      */
-    public void addNewIngredient(Ingredient ingredient) {
+    public void addNewIngredient(IngredientTest ingredient) {
         tableView.getItems().add(ingredient);
     }
 
@@ -215,21 +225,15 @@ public class IngredientsPane extends StackPane {
      * Method used to edit an item in the tableView
      */
     public void editAction() {
-        String name = tableView.getSelectionModel().getSelectedItem().getType();
+        String name = tableView.getSelectionModel().getSelectedItem().getName();
         IngredientPopup pane;
 
         if (name != null) {
             try {
                 pane = new IngredientPopup(this, callback, 1);
-                Ingredient ingredient = callback.getIngredient(name);
+                IngredientTest ingredientTest = callback.getIngredientTest(name);
                 pane.setOrgIngredient(name);
-
-                if (ingredient.getSupplier() == null) {
-                    pane.setValuesForIngredient(ingredient.getType(), ingredient.getCategory(), "");
-                } else {
-                    pane.setValuesForIngredient(ingredient.getType(), ingredient.getCategory(), ingredient.getSupplier().getName());
-                }
-
+                pane.setValuesForIngredient(ingredientTest.getName(), ingredientTest.getCategory(), ingredientTest.getSupplier());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -241,33 +245,33 @@ public class IngredientsPane extends StackPane {
      * Removes selected ingredient from the stock
      */
     public void removeIngredient() {
-        ObservableList<Ingredient> ingredientSelected, allIngredients;
+        ObservableList<IngredientTest> ingredientTestSelected, allIngredients;
         allIngredients = tableView.getItems();
-        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
-        ingredientSelected.forEach(allIngredients::remove);
+        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
+        ingredientTestSelected.forEach(allIngredients::remove);
     }
 
     /**
      * Removes selected ingredient from the stock
      */
-    public void removeIngredient(Ingredient ingredient) {
-        ObservableList<Ingredient> ingredientSelected, allIngredients;
+    public void removeIngredient(IngredientTest ingredientTest) {
+        ObservableList<IngredientTest> ingredientTestSelected, allIngredients;
         allIngredients = tableView.getItems();
-        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
-        ingredientSelected.forEach(allIngredients::remove);
+        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
+        ingredientTestSelected.forEach(allIngredients::remove);
     }
 
     /**
      * Increments the selected ingredients stock by 1
      */
     public void addAmount() {
-        ObservableList<Ingredient> ingredientSelected;
-        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
-        if (ingredientSelected.size() <= 0) {
+        ObservableList<IngredientTest> ingredientTestSelected;
+        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
+        if (ingredientTestSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            if (callback.incrementIngredient(ingredientSelected.get(0))) {
-                ingredientSelected.get(0).increment(); // increment for view
+            if (callback.increaseIngredientTest(ingredientTestSelected.get(0))) {
+                ingredientTestSelected.get(0).increment(); // increment for code.view
                 System.out.println("Completed increase in View");
             }
             tableView.refresh();
@@ -278,13 +282,13 @@ public class IngredientsPane extends StackPane {
      * Decrements the selected ingredients stock by 1
      */
     public void removeAmount() {
-        ObservableList<Ingredient> ingredientSelected;
-        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
-        if (ingredientSelected.size() <= 0) {
+        ObservableList<IngredientTest> ingredientTestSelected;
+        ingredientTestSelected = tableView.getSelectionModel().getSelectedItems();
+        if (ingredientTestSelected.size() <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
-            if (callback.decrementIngredient(ingredientSelected.get(0))) {
-                ingredientSelected.get(0).decrement(); // decrement for view
+            if (callback.decreaseIngredientTest(ingredientTestSelected.get(0))) {
+                ingredientTestSelected.get(0).decrement(); // decrement for code.view
                 System.out.println("Completed decrease in View");
             }
             tableView.refresh();
@@ -303,7 +307,7 @@ public class IngredientsPane extends StackPane {
         stockColumn.setPrefWidth(224);
         supplierColumn.setPrefWidth(224);
         selectedColumn.setPrefWidth(224);
-        //bottomHBox.setPrefSize(1180,75); // not working
+        //bottomHBox.setPrefSize(1180,75); // funkar ej
     }
 
     /**
@@ -318,7 +322,7 @@ public class IngredientsPane extends StackPane {
         stockColumn.setPrefWidth(196);
         supplierColumn.setPrefWidth(195);
         selectedColumn.setPrefWidth(195);
-        //bottomHBox.setPrefSize(1036,75); // not working
+        //bottomHBox.setPrefSize(1036,75); // funkar ej
     }
 
     /**
@@ -326,7 +330,7 @@ public class IngredientsPane extends StackPane {
     */
    private void searchRecord(Observable observable, String oldValue, String newValue) {
        if (!searchTextField.getText().equals("")) {
-           FilteredList<Ingredient> filteredList = new FilteredList<>(getIngredient(), p -> true);
+           FilteredList<IngredientTest> filteredList = new FilteredList<>(getIngredientTest(), p -> true);
            filteredList.setPredicate(tableView -> {
 
                if (newValue == null || newValue.isEmpty()) {
@@ -335,11 +339,12 @@ public class IngredientsPane extends StackPane {
 
                String typedText = newValue.toLowerCase();
 
-               if (tableView.getType().toLowerCase().contains(typedText)) {
+               if (tableView.getName().toLowerCase().contains(typedText)) {
                    return true;
                }
 
-               if (tableView.getSupplier().getName().toLowerCase().contains(typedText)) {
+
+               if (tableView.getSupplier().toLowerCase().contains(typedText)) {
                    return true;
                }
 
@@ -350,17 +355,18 @@ public class IngredientsPane extends StackPane {
                return false;
            });
 
-           SortedList<Ingredient> sortedList = new SortedList<>(filteredList);
+           SortedList<IngredientTest> sortedList = new SortedList<>(filteredList);
            sortedList.comparatorProperty().bind(tableView.comparatorProperty());
            tableView.setItems(sortedList);
        } else {
-           tableView.setItems(getIngredient());
+           tableView.setItems(getIngredientTest());
        }
    }
 
-   private ObservableList<Ingredient> getIngredient() {
-       ObservableList <Ingredient> ingredients = FXCollections.observableArrayList();
-       Ingredient[] receivedIngredients = callback.getIngredients();
+   // Test values
+   private ObservableList<IngredientTest> getIngredientTest() {
+       ObservableList <IngredientTest> ingredients = FXCollections.observableArrayList();
+       IngredientTest[] receivedIngredients = callback.getIngredientsTest();
        ingredients.addAll(Arrays.asList(receivedIngredients));
        return ingredients;
    }

@@ -52,7 +52,7 @@ public class TestSuite {
     void increaseIngredient() {
         Ingredient ingredient = new Ingredient("Sugar");
         callback.addIngredient(ingredient);
-        callback.incrementIngredient(ingredient.getType());
+        callback.increaseIngredient(ingredient.getType());
 
         int nIngredients = callback.getNumIngredients(ingredient.getType());
         assertEquals(nIngredients, 2);
@@ -61,7 +61,7 @@ public class TestSuite {
     @Test
     @DisplayName("Tries increasing a non-existent value")
     void increaseIngredientFaulty() {
-        assertFalse(callback.incrementIngredient("Sugar"));
+        assertFalse(callback.increaseIngredient("Sugar"));
     }
 
     @Test
@@ -69,8 +69,8 @@ public class TestSuite {
     void decreaseIngredient() {
         Ingredient ingredient = new Ingredient("Sugar");
         callback.addIngredient(ingredient);
-        callback.incrementIngredient(ingredient.getType());
-        callback.decrementIngredient(ingredient.getType());
+        callback.increaseIngredient(ingredient.getType());
+        callback.decreaseIngredient(ingredient.getType());
 
         int nIngredients = callback.getNumIngredients(ingredient.getType());
         assertEquals(nIngredients, 1);

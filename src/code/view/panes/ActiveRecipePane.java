@@ -226,7 +226,7 @@ public class ActiveRecipePane extends StackPane { // extended Pane will be the g
 
     }
 
-    private static void initAndShowGUI() {
+    private static void initAndShowGUI() throws FileNotFoundException {
         JFrame frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
         frame.setTitle("Recipe Pane");
@@ -243,7 +243,7 @@ public class ActiveRecipePane extends StackPane { // extended Pane will be the g
         fxPanel.setScene(new Scene(new ActiveRecipePane()));
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         initAndShowGUI();
     }
 }

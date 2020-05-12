@@ -9,90 +9,44 @@ import java.io.Serializable;
  */
 
 public class Product implements Serializable {
-    private String type;
+    private String name;
     private ProductCategories category;
-    private int stock;
-    private Recipe recipe;
+    private int quantity;
 
-    public Product(String type, ProductCategories category, int stock) {
-        this.type = type;
+    public Product(String name, ProductCategories category, int quantity) {
+        this.name = name;
         this.category = category;
-        this.stock = stock;
-        this.recipe = null;
+        this.quantity = quantity;
     }
 
-    public String getType() {
-        return this.type;
+    public String getName() {
+        return name;
     }
 
     public ProductCategories getCategory() {
-        return this.category;
+        return category;
     }
 
-    public int getStock() {
-        return this.stock;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setCategory(ProductCategories category) {
         this.category = category;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
-    public Recipe getRecipe() {
-        return this.recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
-
-    public boolean increment() {
-        if (stock == Integer.MAX_VALUE) {
-            return false;
-        }
-
-        stock++;
-        return true;
-    }
-
-    public boolean increment(int value) {
-        if (Integer.MAX_VALUE-stock-value <= 0) {
-            return false;
-        }
-
-        stock += value;
-        return true;
-    }
-
-    public boolean decrement() {
-        if (stock-1<0) {
-            return false;
-        }
-
-        stock--;
-        return true;
-    }
-
-    public boolean decrement(int value) {
-        if (stock-value<0) {
-            return false;
-        }
-
-        stock -= value;
-        return true;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     @Override
     public String toString(){
-        return "Name: " + this.type + "\n" +
-                "Category: " + this.category + "\n" +
-                "Amount: " + this.stock;
+        return "Name: " + name + "\n" +
+                "Category: " + category + "\n" +
+                "Amount: " + quantity;
     }
 }

@@ -15,25 +15,21 @@ public interface Callback {
     Ingredient getIngredient(String ingredient);
     Ingredient[] getIngredients();
     int getNumIngredients(String ingredient);
-    boolean incrementIngredient(String ingredient);
-    boolean incrementIngredient(Ingredient ingredient);
-    boolean incrementIngredient(String ingredient, int value);
-    boolean incrementIngredient(Ingredient ingredient, int value);
-    boolean decrementIngredient(String ingredient);
-    boolean decrementIngredient(Ingredient ingredient);
-    boolean decrementIngredient(String ingredient, int value);
-    boolean decrementIngredient(Ingredient ingredient, int value);
+    boolean increaseIngredient(String ingredient);
+    boolean increaseIngredient(Ingredient ingredient);
+    boolean decreaseIngredient(String ingredient);
+    boolean decreaseIngredient(Ingredient ingredient);
     boolean removeIngredient(String ingredient);
 
-    boolean addProduct(Product product);
-    Product getProduct(String product);
-    Product[] getProduct();
-    int getNumProduct(String product);
-    boolean incrementProduct(String product);
-    boolean incrementProduct(Product product);
-    boolean decrementProduct(String product);
-    boolean decrementProduct(Product product);
-    boolean removeProduct(String product);
+    boolean addFood(Food food);
+    Food getFood(String food);
+    Food[] getFood();
+    int getNumFood(String food);
+    boolean increaseFood(String food);
+    boolean increaseFood(Food food);
+    boolean decreaseFood(String food);
+    boolean decreaseFood(Food food);
+    boolean removeFood(String food);
 
     boolean addSupplier (Supplier supplier);
     boolean addSupplier (String name);
@@ -41,4 +37,25 @@ public interface Callback {
     ArrayList<Supplier> getSuppliers();
     int getNumSuppliers();
     boolean removeSupplier (String name);
+
+    /* Testing purposes */
+    boolean addIngredientTest(IngredientTest ingredient);
+    IngredientTest getIngredientTest(String ingredient);
+    IngredientTest[] getIngredientsTest();
+    int getNumIngredientsTest(String ingredient);
+    boolean increaseIngredientTest(String ingredient);
+    boolean increaseIngredientTest(IngredientTest ingredient);
+    boolean decreaseIngredientTest(String ingredient);
+    boolean decreaseIngredientTest(IngredientTest ingredient);
+    boolean removeIngredientTest(String ingredient);
+
+    boolean addProductTest(Product product);
+    Product getProductTest(String product);
+    Product[] getProductTest();
+    int getNumProductTest(String product);
+    boolean increaseProductTest(String product);
+    boolean increaseProductTest(Product product);
+    boolean decreaseProductTest(String product);
+    boolean decreaseProductTest(Product  product);
+    boolean removeProductTest(String name);
 }
