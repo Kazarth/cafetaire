@@ -4,8 +4,6 @@ import code.entities.Ingredient;
 import code.entities.Styles;
 import code.view.popups.IngredientPopup;
 import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -100,22 +98,22 @@ public class IngredientsPane extends StackPane {
         searchTextField.setPrefWidth(150);
 
         // Ingredient table configuration and design
-        tableView = new TableView();
+        tableView = new TableView<>();
         setPrefSize(1086,768);
         setStyle(Styles.getPane());
 
         searchTextField.textProperty().addListener(this::searchRecord);
       
-        nameColumn = new TableColumn("NAME");
+        nameColumn = new TableColumn<>("NAME");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        categoryColumn = new TableColumn("CATEGORY");
+        categoryColumn = new TableColumn<>("CATEGORY");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-        stockColumn = new TableColumn("STOCK");
+        stockColumn = new TableColumn<>("STOCK");
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        supplierColumn  = new TableColumn("SUPPLIER");
+        supplierColumn  = new TableColumn<>("SUPPLIER");
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
 
-        selectedColumn = new TableColumn("SELECTED ITEM");
+        selectedColumn = new TableColumn<>("SELECTED ITEM");
         //selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
         CheckBox checkBox = new CheckBox();
         checkBox.setDisable(true);
@@ -244,7 +242,10 @@ public class IngredientsPane extends StackPane {
         ObservableList<Ingredient> ingredientSelected, allIngredients;
         allIngredients = tableView.getItems();
         ingredientSelected = tableView.getSelectionModel().getSelectedItems();
+        code.entities.Ingredient ingredient = tableView.getSelectionModel().getSelectedItem();
         ingredientSelected.forEach(allIngredients::remove);
+
+        callback.removeIngredient(ingredient.getType());
     }
 
     /**

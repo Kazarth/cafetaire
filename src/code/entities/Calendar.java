@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 
 /**
  * TODO: desc
+ * TODO: utilize; fix listeners.
  * @author Tor Stenfeldt, Lucas Eliasson
  * @version 1.0
  */
