@@ -4,8 +4,6 @@ import code.entities.Ingredient;
 import code.entities.Styles;
 import code.view.popups.IngredientPopup;
 import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -244,7 +242,10 @@ public class IngredientsPane extends StackPane {
         ObservableList<Ingredient> ingredientSelected, allIngredients;
         allIngredients = tableView.getItems();
         ingredientSelected = tableView.getSelectionModel().getSelectedItems();
+        code.entities.Ingredient ingredient = tableView.getSelectionModel().getSelectedItem();
         ingredientSelected.forEach(allIngredients::remove);
+
+        callback.removeIngredient(ingredient.getType());
     }
 
     /**
