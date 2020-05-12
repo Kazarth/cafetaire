@@ -1,7 +1,6 @@
 package code.model;
 
 import code.entities.*;
-import code.extra.ColourTxT;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,9 +19,6 @@ public class Database implements Serializable {
     private HashMap<String, Ingredient> ingredients;
     private HashMap<String, Product> products;
     private ArrayList<Supplier> suppliers;
-
-    // TODO: Testing purpose IngredientTest
-    private ColourTxT colourTxT = new ColourTxT();
 
     public Database() {
         this.ingredients = new HashMap<>();

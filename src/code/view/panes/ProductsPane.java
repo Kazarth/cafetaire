@@ -229,9 +229,7 @@ public class ProductsPane extends StackPane {
      * @return value of numberSpinner field
      */
     public int getNumberSpinnerValue() {
-        int value = numberSpinner.getValue();
-
-        return value;
+        return numberSpinner.getValue();
     }
 
     /**

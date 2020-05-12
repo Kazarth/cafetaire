@@ -4,10 +4,9 @@ import java.io.Serializable;
 
 /**
  * Class used to store data about various products in the program
- * @author Viktor Polak
- * @version 1.1
+ * @author Tor Stenfeldt, Viktor Polak
+ * @version 4.0
  */
-
 public class Product implements Serializable {
     private String type;
     private ProductCategories category;

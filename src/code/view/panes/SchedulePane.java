@@ -11,9 +11,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
- * TODO: desc
+ * A class for showing a schedule of incoming deliveries etc.
  * @author Tor Stenfeldt, Lucas Eliasson
- * @version 1.0
+ * @version 3.0
  */
 public class SchedulePane extends StackPane {
     public SchedulePane(Callback callback) {

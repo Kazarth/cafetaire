@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Ingredient.java
  * Class used to store objects simulating ingredients in stock.
  * @author Tor Stenfeldt, Lucas Eliasson
- * @version 1.1
+ * @version 4.0
  */
 public class Ingredient implements Serializable {
     private transient static double serialVersionUID = 51D;

@@ -1,6 +1,5 @@
 package code.view.popups;
 
-
 import code.control.Callback;
 import code.entities.Product;
 import code.entities.ProductCategories;
@@ -22,146 +21,144 @@ import javax.swing.*;
  * @version 2.0
  */
 public class ProductPopup extends AnchorPane {
+    private ProductsPane source;
+    private Callback callback;
+
     private JFrame frame;
-
-    private Label label_Title;
-    private Label label_Name;
-    private Label label_Category;
-    private Label label_Number;
-    private Label label_Phone;
-
     private TextField textField_Name;
     private ComboBox<ProductCategories> categoryBox;
     private Spinner<Integer> numberSpinner;
-    private TextField textField_Phone;
-
-    private Button button_Add;
-    private Button button_Cancel;
-
-    private ProductsPane source;
-    private Callback callback;
     private String orgProd;
 
     public ProductPopup(ProductsPane source, Callback callback, int opener) {
-        // init Frame
-        frame = new JFrame("FX");
-        final JFXPanel fxPanel = new JFXPanel();
-        frame.setTitle("Add new PRODUCT");
-        frame.add(fxPanel);
-        frame.setSize(600,460);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setUndecorated(true);
-        frame.setResizable(false);
-        frame.setVisible(true);
-        Platform.runLater(() -> fxPanel.setScene(new Scene(this)));
-
-        // Init source
         this.source = source;
         this.callback = callback;
 
         // Background pane
         setMaxWidth(600); setMaxHeight(400);
         setPrefWidth(600); setPrefHeight(400);
-        setStyle(
-                "-fx-background-color: #fff"
-        );
+        setStyle("-fx-background-color: #fff");
 
         // title pane
-        label_Title = new Label("ADD NEW PRODUCT");
+        Label label_Title = new Label("ADD NEW PRODUCT");
         label_Title.setStyle(Styles.getPopTitle());
         label_Title.setLayoutX(162.0); label_Title.setLayoutY(20);
         label_Title.setPrefWidth(300); label_Title.setPrefHeight(40);
 
         // Product Name pane
-        label_Name = new Label("Product");
+        Label label_Name = new Label("Product");
         label_Name.setStyle("-fx-text-fill: #000;");
         label_Name.setPrefWidth(220); label_Name.setPrefHeight(40);
         label_Name.setLayoutX(56.0); label_Name.setLayoutY(100);
 
-        textField_Name = new TextField();
-        textField_Name.setPromptText("Enter Product Name");
-        textField_Name.setStyle(Styles.getPopField());
-        textField_Name.setPrefWidth(360); textField_Name.setPrefHeight(40);
-        textField_Name.setLayoutX(144.0); textField_Name.setLayoutY(100);
+        this.textField_Name = new TextField();
+        this.textField_Name.setPromptText("Enter Product Name");
+        this.textField_Name.setStyle(Styles.getPopField());
+        this.textField_Name.setPrefWidth(360);
+        this.textField_Name.setPrefHeight(40);
+        this.textField_Name.setLayoutX(144.0);
+        this.textField_Name.setLayoutY(100);
 
         // Category pane
-        label_Category = new Label("Category");
+        Label label_Category = new Label("Category");
         label_Category.setStyle("-fx-text-fill: #000;");
         label_Category.setPrefWidth(220.0); label_Category.setPrefHeight(40);
         label_Category.setLayoutX(56.0); label_Category.setLayoutY(160);
 
-        categoryBox = new ComboBox();
-        categoryBox.setPromptText("Select category");
-        categoryBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
-        categoryBox.setPrefWidth(360.0); categoryBox.setPrefHeight(40);
-        categoryBox.setLayoutX(144.0); categoryBox.setLayoutY(160);
-        categoryBox.setItems(getCategories()); // testing
+        this.categoryBox = new ComboBox<>();
+        this.categoryBox.setPromptText("Select category");
+        this.categoryBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
+        this.categoryBox.setPrefWidth(360.0);
+        this.categoryBox.setPrefHeight(40);
+        this.categoryBox.setLayoutX(144.0);
+        this.categoryBox.setLayoutY(160);
+        this.categoryBox.setItems(getCategories()); // testing
 
         // Spinner Pane
-        label_Number = new Label("Amount");
+        Label label_Number = new Label("Amount");
         label_Number.setStyle("-fx-text-fill: #000;");
         label_Number.setPrefWidth(220); label_Number.setPrefHeight(40);
         label_Number.setLayoutX(56.0); label_Number.setLayoutY(220);
 
         final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
-        numberSpinner = new Spinner<>();
-        numberSpinner.setValueFactory(svf);
-        numberSpinner.disabledProperty();
-        numberSpinner.setEditable(true);
-        numberSpinner.setPromptText("Enter Number Of Products");
-        numberSpinner.setStyle(Styles.getPopField());
-        numberSpinner.setPrefWidth(360); numberSpinner.setPrefHeight(40);
-        numberSpinner.setLayoutX(144.0); numberSpinner.setLayoutY(220);
+        this.numberSpinner = new Spinner<>();
+        this.numberSpinner.setValueFactory(svf);
+        this.numberSpinner.disabledProperty();
+        this.numberSpinner.setEditable(true);
+        this.numberSpinner.setPromptText("Enter Number Of Products");
+        this.numberSpinner.setStyle(Styles.getPopField());
+        this.numberSpinner.setPrefWidth(360);
+        this.numberSpinner.setPrefHeight(40);
+        this.numberSpinner.setLayoutX(144.0);
+        this.numberSpinner.setLayoutY(220);
 
         // Phone Pane
-        label_Phone = new Label("Phone nr.");
+        Label label_Phone = new Label("Phone nr.");
         label_Phone.setStyle("-fx-text-fill: #000;");
         label_Phone.setPrefWidth(220); label_Phone.setPrefHeight(40);
         label_Phone.setLayoutX(56.0);  label_Phone.setLayoutY(280);
 
-        textField_Phone =   new TextField();
+        TextField textField_Phone = new TextField();
         textField_Phone.setPromptText("Enter phone number");
         textField_Phone.setStyle(Styles.getPopField());
         textField_Phone.setPrefWidth(360);   textField_Phone.setPrefHeight(40);
         textField_Phone.setLayoutX(144.0);   textField_Phone.setLayoutY(280);
 
         // Button pane
-        button_Add = new Button();
+        Button button_Add = new Button();
         button_Add.setStyle(Styles.getPopAddButton());
         button_Add.setPrefWidth(200); button_Add.setPrefHeight(40);
         button_Add.setLayoutX(75); button_Add.setLayoutY(340);
 
         //New Product
-        if (opener == 0){
+        if (opener == 0) {
             button_Add.setText("ADD NEW PRODUCT");
-            button_Add.setOnAction(e -> {
-                addAction();
-            });
+            button_Add.setOnAction(e -> addAction());
 
         // Edit Product
-        } else if (opener == 1){
+        } else if (opener == 1) {
             button_Add.setText("SAVE PRODUCT");
-            button_Add.setOnAction(e -> {
-                editAction();
-            });
+            button_Add.setOnAction(e -> editAction());
         }
 
-        button_Cancel = new Button("CANCEL");
+        Button button_Cancel = new Button("CANCEL");
         button_Cancel.setStyle(Styles.getPopCancelButton());
         button_Cancel.setPrefWidth(200); button_Cancel.setPrefHeight(40);
         button_Cancel.setLayoutX(325.0); button_Cancel.setLayoutY(340);
         button_Cancel.setOnAction(e -> cancelAction());
 
         // Add all children
+        getChildren().addAll(
+                label_Title,
+                label_Name,
+                this.textField_Name,
+                label_Category,
+                this.categoryBox,
+                label_Number,
+                this.numberSpinner,
+//               phoneLbl,phoneField,
+                button_Add,
+                button_Cancel
+        );
 
-            getChildren().addAll(
-                    label_Title,
-                    label_Name, textField_Name,
-                    label_Category, categoryBox,
-                    label_Number, numberSpinner,
-//                phoneLbl,phoneField,
-                    button_Add, button_Cancel);
+        initFrame();
+    }
+
+    public void initFrame() {
+        this.frame = new JFrame("FX");
+        this.frame.setTitle("Add new PRODUCT");
+
+        final JFXPanel fxPanel = new JFXPanel();
+        this.frame.add(fxPanel);
+
+        this.frame.setSize(600,460);
+        this.frame.setLocationRelativeTo(null);
+        this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.frame.setUndecorated(true);
+        this.frame.setResizable(false);
+        this.frame.setVisible(true);
+
+        Platform.runLater(() -> fxPanel.setScene(new Scene(this)));
     }
 
     /**
@@ -170,17 +167,17 @@ public class ProductPopup extends AnchorPane {
     public void addAction() {
         Product product;
 
-        String productName = textField_Name.getText();
-        ProductCategories category     = categoryBox.getSelectionModel().getSelectedItem();
-        int quantity = numberSpinner.getValue();
+        String productName = this.textField_Name.getText();
+        ProductCategories category = this.categoryBox.getSelectionModel().getSelectedItem();
+        int quantity = this.numberSpinner.getValue();
 //        String phone        = phoneField.getText();
 
         if ((!productName.equals("")) && (category != null)) {
             product = new Product(productName, category, quantity);
             System.out.println(product.toString());
 
-            if (callback.addProduct(product)) {
-                source.addNewProduct(product);
+            if (this.callback.addProduct(product)) {
+                this.source.addNewProduct(product);
                 close();
             }
         } else {
@@ -199,7 +196,7 @@ public class ProductPopup extends AnchorPane {
      * Close the frame
      */
     private void close() {
-        frame.dispose();
+        this.frame.dispose();
     }
 
     /**
@@ -208,26 +205,24 @@ public class ProductPopup extends AnchorPane {
      * if name is changed remove old name from database and add the new one
      */
     public void editAction(){
-        String name = textField_Name.getText();
-        ProductCategories category = categoryBox.getValue();
-        int quantity = numberSpinner.getValue();
+        String name = this.textField_Name.getText();
+        ProductCategories category = this.categoryBox.getValue();
+        int quantity = this.numberSpinner.getValue();
 
-        if (orgProd.equals(name)){
-            Product product = callback.getProduct(textField_Name.getText());
+        if (this.orgProd.equals(name)){
+            Product product = this.callback.getProduct(this.textField_Name.getText());
             product.setCategory(category);
             product.setStock(quantity);
-            source.refresh();
+            this.source.refresh();
             close();
-        } else if (!orgProd.equals(name)){
+        } else {
             Product product = new Product(name, category, quantity);
-            callback.addProduct(product);
-            callback.removeProduct(orgProd);
-            source.addNewProduct(product);
-            source.removeProduct();
-            source.refresh();
+            this.callback.addProduct(product);
+            this.callback.removeProduct(this.orgProd);
+            this.source.addNewProduct(product);
+            this.source.removeProduct();
+            this.source.refresh();
             close();
-        } else{
-            alert();
         }
     }
 
@@ -237,22 +232,11 @@ public class ProductPopup extends AnchorPane {
      * @param category set initial value for item to edit
      * @param quantity set initial value for item to edit
      */
-    public void setValuesForItem(String txt, ProductCategories category, int quantity){
-        textField_Name.setText(txt);
-        categoryBox.getSelectionModel().select(category);
-        numberSpinner.getValueFactory().setValue(quantity);
+    public void setValuesForItem(String txt, ProductCategories category, int quantity) {
+        this.textField_Name.setText(txt);
+        this.categoryBox.getSelectionModel().select(category);
+        this.numberSpinner.getValueFactory().setValue(quantity);
     }
-
-//    //From database
-//    private ObservableList<String> getSuppliersFromDatabase() {
-//        ObservableList<String> listProducts = FXCollections.observableArrayList();
-//        ArrayList<Product> receivedProducts = callback.getProductTest();
-//
-//        for (Product product: receivedProducts) {
-//            listProducts.add(product.getName());
-//        }
-//        return listProducts;
-//    }
 
     /**
      * ObservableList that populates the comboBox
@@ -260,7 +244,14 @@ public class ProductPopup extends AnchorPane {
      */
     private ObservableList<ProductCategories> getCategories() {
         ObservableList<ProductCategories> Products = FXCollections.observableArrayList();
-        Products.addAll(ProductCategories.Bread, ProductCategories.Fruit, ProductCategories.Vegetable, ProductCategories.Dairy, ProductCategories.Pastries);
+
+        Products.addAll(
+                ProductCategories.Bread,
+                ProductCategories.Fruit,
+                ProductCategories.Vegetable,
+                ProductCategories.Dairy,
+                ProductCategories.Pastries
+        );
 
         return Products;
     }
@@ -283,7 +274,7 @@ public class ProductPopup extends AnchorPane {
     }
 
     public String getOrgProd() {
-        return orgProd;
+        return this.orgProd;
     }
 
     public void setOrgProd(String orgProd) {

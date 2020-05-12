@@ -9,7 +9,7 @@ import java.io.*;
  * The class invokes the save method should any new data be added
  * before closing - force save to avoid data loss.
  * @author Paul Moustakas, Tor Stenfeldt
- * @version 1.0
+ * @version 1.1
  */
 public class SaveLoad {
     private boolean isSaved;
@@ -62,7 +62,7 @@ public class SaveLoad {
     }
 
     public boolean hasData() {
-        try (ObjectInputStream input = new ObjectInputStream((new FileInputStream("src/resources/save.ser")))) {
+        try (ObjectInputStream ignored = new ObjectInputStream((new FileInputStream("src/resources/save.ser")))) {
             return true;
         } catch (IOException e) {
             return false;
