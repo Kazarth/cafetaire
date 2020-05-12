@@ -121,17 +121,17 @@ public class Controller {
         @Override
         public boolean addFood(Food food) {
             saveLoad.setEdited();
-            return database.addFood(food);
+            return database.addProduct(food);
         }
 
         @Override
         public Food getFood(String food) {
-            return database.getFood(food);
+            return database.getProduct(food);
         }
 
         @Override
         public Food[] getFood() {
-            return database.getFood();
+            return database.getProducts();
         }
 
         @Override
@@ -203,9 +203,9 @@ public class Controller {
         public boolean addProductTest(Product product) {
             saveLoad.setEdited();
             System.out.println(colourTxT.NEONGREEN() + "Controller received:\n" +
-                    "Name: " + product.getName() + "\n" +
+                    "Name: " + product.getType() + "\n" +
                     "Category: " + product.getCategory() + "\n" +
-                    "Amount: " + product.getQuantity() + colourTxT.RESET());
+                    "Amount: " + product.getStock() + colourTxT.RESET());
             return database.addProductTest(product);
         }
 

@@ -9,44 +9,54 @@ import java.io.Serializable;
  */
 
 public class Product implements Serializable {
-    private String name;
+    private String type;
     private ProductCategories category;
-    private int quantity;
+    private int stock;
+    private Recipe recipe;
 
-    public Product(String name, ProductCategories category, int quantity) {
-        this.name = name;
+    public Product(String type, ProductCategories category, int stock) {
+        this.type = type;
         this.category = category;
-        this.quantity = quantity;
+        this.stock = stock;
+        this.recipe = null;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return this.type;
     }
 
     public ProductCategories getCategory() {
-        return category;
+        return this.category;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getStock() {
+        return this.stock;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setCategory(ProductCategories category) {
         this.category = category;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public Recipe getRecipe() {
+        return this.recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     @Override
     public String toString(){
-        return "Name: " + name + "\n" +
-                "Category: " + category + "\n" +
-                "Amount: " + quantity;
+        return "Name: " + this.type + "\n" +
+                "Category: " + this.category + "\n" +
+                "Amount: " + this.stock;
     }
 }

@@ -215,7 +215,7 @@ public class ProductPopup extends AnchorPane {
         if (orgProd.equals(name)){
             Product product = callback.getProductTest(nameField.getText());
             product.setCategory(category);
-            product.setQuantity(quantity);
+            product.setStock(quantity);
             source.refresh();
             close();
         } else if (!orgProd.equals(name)){

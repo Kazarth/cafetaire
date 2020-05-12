@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * TODO: add 'this' before global references.
@@ -21,7 +20,7 @@ public class Database implements Serializable {
 
     private HashMap<String, Ingredient> ingredients;
 
-    private HashMap<String, Food> food;
+    private HashMap<String, Product> products;
     private HashMap<String, Integer> nFood;
 
     private ArrayList<Supplier> suppliers;
@@ -35,27 +34,27 @@ public class Database implements Serializable {
 
     public Database() {
         this.ingredients = new HashMap<>();
-        this.food = new HashMap<>();
+        this.products = new HashMap<>();
         this.nFood = new HashMap<>();
         this.suppliers = new ArrayList<>();
 
-        nProductsTest = new HashMap<>();
-        productsTest = new HashMap<>();
+        this.nProductsTest = new HashMap<>();
+        this.productsTest = new HashMap<>();
 
         testPopulate();
     }
 
     public boolean addIngredient(Ingredient ingredient) {
-        if (ingredients.containsKey(ingredient.getType())) {
+        if (this.ingredients.containsKey(ingredient.getType())) {
             return false;
         }
 
-        ingredients.put(ingredient.getType(), ingredient);
+        this.ingredients.put(ingredient.getType(), ingredient);
         return true;
     }
 
     public Ingredient getIngredient(String ingredient) {
-        return ingredients.get(ingredient);
+        return this.ingredients.get(ingredient);
     }
 
     public Ingredient[] getIngredients() {
@@ -70,16 +69,16 @@ public class Database implements Serializable {
     }
 
     public int getNumIngredients(String ingredient) {
-        if (ingredients.containsKey(ingredient)) {
-            return ingredients.get(ingredient).getStock();
+        if (this.ingredients.containsKey(ingredient)) {
+            return this.ingredients.get(ingredient).getStock();
         }
 
         return -1;
     }
 
     public boolean incrementIngredient(String ingredient) {
-        if (ingredients.containsKey(ingredient)) {
-            return ingredients.get(ingredient).increment();
+        if (this.ingredients.containsKey(ingredient)) {
+            return this.ingredients.get(ingredient).increment();
         }
 
         return false;
@@ -90,8 +89,8 @@ public class Database implements Serializable {
     }
 
     public boolean incrementIngredient(String ingredient, int value) {
-        if (ingredients.containsKey(ingredient)) {
-            return ingredients.get(ingredient).increment(value);
+        if (this.ingredients.containsKey(ingredient)) {
+            return this.ingredients.get(ingredient).increment(value);
         }
 
         return false;
@@ -102,8 +101,8 @@ public class Database implements Serializable {
     }
 
     public boolean decrementIngredient(String ingredient) {
-        if (ingredients.containsKey(ingredient)) {
-            return ingredients.get(ingredient).decrement();
+        if (this.ingredients.containsKey(ingredient)) {
+            return this.ingredients.get(ingredient).decrement();
         }
 
         return false;
@@ -114,8 +113,8 @@ public class Database implements Serializable {
     }
 
     public boolean decrementIngredient(String ingredient, int value) {
-        if (ingredients.containsKey(ingredient)) {
-            return ingredients.get(ingredient).decrement(value);
+        if (this.ingredients.containsKey(ingredient)) {
+            return this.ingredients.get(ingredient).decrement(value);
         }
 
         return false;
@@ -126,47 +125,47 @@ public class Database implements Serializable {
     }
 
     public boolean removeIngredient(String ingredient) {
-        return (ingredients.remove(ingredient) != null);
+        return (this.ingredients.remove(ingredient) != null);
     }
 
-    public boolean addFood(Food food) {
-        if (this.food.containsKey(food.getType())) {
+    public boolean addProduct(Product product) {
+        if (this.products.containsKey(product.getType())) {
             return false;
         }
 
-        this.food.put(food.getType(), food);
-        this.nFood.put(food.getType(), 1);
+        this.products.put(product.getType(), product);
+        this.nFood.put(product.getType(), 1);
         return true;
     }
 
 
-    public Food getFood(String food) {
-        return this.food.get(food);
+    public Product getProduct(String product) {
+        return this.products.get(product);
     }
 
-    public Food[] getFood() {
-        Food[] food = new Food[this.food.size()];
-        String[] keys = ((String[])this.food.keySet().toArray());
+    public Product[] getProducts() {
+        Product[] products = new Product[this.products.size()];
+        String[] keys = ((String[])this.products.keySet().toArray());
 
-        for (int i=0; i<food.length; i++) {
-            food[i] = this.food.get(keys[i]);
+        for (int i=0; i<products.length; i++) {
+            products[i] = this.products.get(keys[i]);
         }
 
-        return food;
+        return products;
     }
 
     public int getNumFood(String food) {
-        if (nFood.containsKey(food)) {
-            return nFood.get(food);
+        if (this.nFood.containsKey(food)) {
+            return this.nFood.get(food);
         }
 
         return -1;
     }
 
     public boolean increaseFood(String food) {
-        if (nFood.containsKey(food)) {
-            int currentVal = nFood.get(food);
-            nFood.put(food, currentVal+1);
+        if (this.nFood.containsKey(food)) {
+            int currentVal = this.nFood.get(food);
+            this.nFood.put(food, currentVal+1);
             return true;
         }
 
@@ -178,17 +177,17 @@ public class Database implements Serializable {
     }
 
     public boolean decreaseFood(String food) {
-        if (!nFood.containsKey(food)) {
+        if (!this.nFood.containsKey(food)) {
             return false;
         }
 
-        int currentVal = nFood.get(food);
+        int currentVal = this.nFood.get(food);
 
         if (currentVal <= 0) {
             return false;
         }
 
-        nFood.put(food, currentVal-1);
+        this.nFood.put(food, currentVal-1);
         return true;
     }
 
@@ -197,9 +196,9 @@ public class Database implements Serializable {
     }
 
     public boolean removeFood(String food) {
-        boolean containsKey = this.food.containsKey(food) && this.nFood.containsKey(food);
+        boolean containsKey = this.products.containsKey(food) && this.nFood.containsKey(food);
 
-        this.food.remove(food);
+        this.products.remove(food);
         this.nFood.remove(food);
 
         return containsKey;
@@ -240,7 +239,7 @@ public class Database implements Serializable {
     }
 
     public int getNumSuppliers() {
-        return suppliers.size();
+        return this.suppliers.size();
     }
 
     public boolean removeSupplier(String name) {
@@ -249,29 +248,29 @@ public class Database implements Serializable {
 
     /*Testing purpose PRODUCT*/
     public boolean addProductTest(Product product) {
-        if (productsTest.containsKey(product.getName())) {
+        if (this.productsTest.containsKey(product.getType())) {
             return false;
         }
 
-        productsTest.put(product.getName(), product);
-        nProductsTest.put(product.getName(), 1);
+        this.productsTest.put(product.getType(), product);
+        this.nProductsTest.put(product.getType(), 1);
 
         System.out.println("\nAdded to Database:\n" +
-                "Name: " + product.getName() + "\n" +
+                "Name: " + product.getType() + "\n" +
                 "Category: " + product.getCategory() + "\n" +
-                "Amount: " + product.getQuantity() + "\n"
+                "Amount: " + product.getStock() + "\n"
         );
 
         System.out.println("Get from products HashMap:\n" +
-                productsTest.get(product.getName()));
+                this.productsTest.get(product.getType()));
 
         System.out.println("\nGet from nProducts HashMap:\n" +
-                nProductsTest.get(product.getName()) + "\n");
+                this.nProductsTest.get(product.getType()) + "\n");
         return true;
     }
 
     public Product getProductTest(String product) {
-        return productsTest.get(product);
+        return this.productsTest.get(product);
     }
 
     public Product[] getProductTest() {
@@ -287,20 +286,20 @@ public class Database implements Serializable {
     }
 
     public int getNumProductTest(String product) {
-        if (nProductsTest.containsKey(product)) {
-            return nProductsTest.get(product);
+        if (this.nProductsTest.containsKey(product)) {
+            return this.nProductsTest.get(product);
         }
 
         return -1;
     }
 
     public boolean increaseProductTest(String product) {
-        if (nProductsTest.containsKey(product)) {
-            int currentVal = nProductsTest.get(product);
-            nProductsTest.put(product, currentVal+1);
+        if (this.nProductsTest.containsKey(product)) {
+            int currentVal = this.nProductsTest.get(product);
+            this.nProductsTest.put(product, currentVal+1);
 
             System.out.println(colourTxT.GREEN() + "Completed increase to database\n" +
-                    "Current stock: " + productsTest.get(product).getName() + " " + nProductsTest.get(product) + colourTxT.RESET());
+                    "Current stock: " + productsTest.get(product).getType() + " " + nProductsTest.get(product) + colourTxT.RESET());
 
             return true;
         }
@@ -309,7 +308,7 @@ public class Database implements Serializable {
     }
 
     public boolean increaseProductTest(Product product) {
-        return increaseProductTest(product.getName());
+        return increaseProductTest(product.getType());
     }
 
     public boolean decreaseProductTest(String product) {
@@ -327,12 +326,12 @@ public class Database implements Serializable {
 
         nProductsTest.put(product, currentVal-1);
         System.out.println(colourTxT.GREEN() + "Completed decrease to database\n" +
-                "Current stock: " + productsTest.get(product).getName() + " " + nProductsTest.get(product) + colourTxT.RESET());
+                "Current stock: " + productsTest.get(product).getType() + " " + nProductsTest.get(product) + colourTxT.RESET());
         return true;
     }
 
     public boolean decreaseProductTest(Product product) {
-        return decreaseProductTest(product.getName());
+        return decreaseProductTest(product.getType());
     }
 
     public boolean removeProductTest(String product) {
