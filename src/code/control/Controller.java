@@ -1,7 +1,6 @@
 package code.control;
 
 import code.entities.*;
-import code.extra.ColourTxT;
 import code.model.Database;
 import code.view.panes.MainPane;
 

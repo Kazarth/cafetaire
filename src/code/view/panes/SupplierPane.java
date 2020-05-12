@@ -224,7 +224,10 @@ public class SupplierPane extends StackPane {
         ObservableList<Supplier> supplierSelected, allSuppliers;
         allSuppliers = tableView.getItems();
         supplierSelected = tableView.getSelectionModel().getSelectedItems();
+        Supplier supplier = tableView.getSelectionModel().getSelectedItem();
         supplierSelected.forEach(allSuppliers::remove);
+
+        callback.removeSupplier(supplier.getName());
     }
 
     public void refresh(){
