@@ -192,9 +192,9 @@ public class ProductsPane extends StackPane {
 
         tableView = new TableView<>();
 
-        tableColumn_Name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tableColumn_Name.setCellValueFactory(new PropertyValueFactory<>("type"));
         tableColumn_Categories.setCellValueFactory(new PropertyValueFactory<>("category"));
-        tableColumn_Stock.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        tableColumn_Stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
         tableColumn_Name.setPrefWidth(233);
         tableColumn_Categories.setPrefWidth(234);
@@ -242,8 +242,8 @@ public class ProductsPane extends StackPane {
         ObservableList<Product> items = FXCollections.observableArrayList();
         // temp item to populate tableView
         Product product = new Product("Dummy Item", ProductCategories.Bread, 1);
-        callback.addProductTest(product);
-        Product[] receivedProducts = callback.getProductTest();
+        callback.addProduct(product);
+        Product[] receivedProducts = callback.getProduct();
         items.addAll(Arrays.asList(receivedProducts));
 
         return items;
@@ -275,7 +275,7 @@ public class ProductsPane extends StackPane {
 
         try {
             itemSelected.forEach(allItems::remove);
-            callback.removeProductTest(product.getName());
+            callback.removeProduct(product.getType());
         } catch (NoSuchElementException e){
             e.printStackTrace();
         }
@@ -290,8 +290,8 @@ public class ProductsPane extends StackPane {
         Product product = tableView.getSelectionModel().getSelectedItem();
 
     if (product != null){
-        int prodQuantity = product.getQuantity();
-        product.setQuantity(prodQuantity + getNumberSpinnerValue());
+        int prodQuantity = product.getStock();
+        product.setStock(prodQuantity + getNumberSpinnerValue());
     } else {
         noProductSelected();
     }
@@ -307,8 +307,8 @@ public class ProductsPane extends StackPane {
         Product product = tableView.getSelectionModel().getSelectedItem();
 
         if (product != null){
-            int prodQuantity = product.getQuantity();
-            product.setQuantity(prodQuantity - getNumberSpinnerValue());
+            int prodQuantity = product.getStock();
+            product.setStock(prodQuantity - getNumberSpinnerValue());
         } else {
             noProductSelected();
         }
@@ -319,16 +319,17 @@ public class ProductsPane extends StackPane {
     /**
      * Method used to edit a product in the tableView
      */
+
     public void editProduct() {
-        String name = tableView.getSelectionModel().getSelectedItem().getName();
+        String name = tableView.getSelectionModel().getSelectedItem().getType();
         ProductPopup pane;
 
         if (name != null) {
             try {
                 pane = new ProductPopup(this, callback, 1);
-                Product product = callback.getProductTest(name);
+                Product product = callback.getProduct(name);
                 pane.setOrgProd(name);
-                pane.setValuesForItem(product.getName(), product.getCategory(), product.getQuantity());
+                pane.setValuesForItem(product.getType(), product.getCategory(), product.getStock());
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
