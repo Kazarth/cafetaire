@@ -20,21 +20,22 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import code.control.Callback;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 /**
  * The products menu provides information regarding products that currently are in stock
  * @author Viktor Polak
- * @version 5.0
+ * @version 5.1
  */
 public class ProductsPane extends StackPane {
     private Spinner<Integer> numberSpinner = new Spinner<>();
 
-    private TableColumn<Product, String> tblColumnName = new TableColumn<>("Name");
-    private TableColumn<Product, Double> tblCategories = new TableColumn<>("Category");
-    private TableColumn<Product, Integer> tblColumnStock = new TableColumn<>("Quantity");
-    private TableColumn<Product, String> tblColumnIngredients = new TableColumn<>("Ingredients");
-    private TableView<Product> tblView;
+    private TableColumn<Product, String> tableColumn_Name = new TableColumn<>("Name");
+    private TableColumn<Product, Double> tableColumn_Categories = new TableColumn<>("Category");
+    private TableColumn<Product, Integer> tableColumn_Stock = new TableColumn<>("Quantity");
+    private TableColumn<Product, String> tableColumn_Ingredients = new TableColumn<>("Ingredients");
+    private TableView<Product> tableView;
     private Callback callback;
 
     public ProductsPane(Callback callback) {
@@ -42,7 +43,7 @@ public class ProductsPane extends StackPane {
         VBox mainContainer = new VBox();
         mainContainer.setMaxSize(1036, 698);
 
-        mainContainer.getChildren().addAll(getTopVBoxContainer(), getFlowBottom());
+        mainContainer.getChildren().addAll(initTopVBoxContainer(), initFlowBottom());
         getChildren().add(mainContainer);
 
         mainContainer.setAlignment(Pos.CENTER);
@@ -56,7 +57,7 @@ public class ProductsPane extends StackPane {
      * Method which is used to create the top part of the panel
      * @return lbl - a label with the text "Products" which is displayed at the top of this panel
      */
-    private HBox getHBoxTop() {
+    private HBox initHBoxTop() {
         Text textTitle = new Text();
         Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         textTitle.setFill(Paint.valueOf("#619f81"));
@@ -74,15 +75,16 @@ public class ProductsPane extends StackPane {
     }
 
     /**
-     * Filler box between titleBox and buttonBoxes
+     * Filler box between titleBox and buttonBoxes // Change to 'filter', ändra från max/min till 50 padding kanske?
      * @return filler HBox
      */
-    private HBox getFillerBox() {
+    private HBox initHBoxFillerBox() {
         HBox hBoxFiller = new HBox();
         hBoxFiller.setMinSize(1036, 40);
         hBoxFiller.setMaxSize(1036, 40);
         hBoxFiller.setStyle("-fx-border-color: #6B6C6A;" +
-                            "-fx-background-color: #FFFFFF");
+                            "-fx-border-width: 1 0 1 0;" +
+                            "-fx-background-color: #fff");
 
         return hBoxFiller;
     }
@@ -91,16 +93,16 @@ public class ProductsPane extends StackPane {
      * Method to create a HBox which stacks its content horizontally located below the Label
      * @return hBox - the box which contains every button, comboBox, textField and numberSpinner
      */
-    public HBox getHCenterLeft() {
-        Button btnNewItem = new Button("ADD PRODUCT");
-        Button btnRemoveItem = new Button("REMOVE PRODUCT");
-        Button btnEditItem = new Button("EDIT PRODUCT");
+    public HBox initHBoxCenterLeft() {
+        Button button_NewItem = new Button("ADD PRODUCT");
+        Button button_RemoveItem = new Button("REMOVE PRODUCT");
+        Button button_EditItem = new Button("EDIT PRODUCT");
 
-        btnNewItem.setStyle(Styles.getButton());
-        btnRemoveItem.setStyle(Styles.getButton());
-        btnEditItem.setStyle(Styles.getButton());
+        button_NewItem.setStyle(Styles.getButton());
+        button_RemoveItem.setStyle(Styles.getButton());
+        button_EditItem.setStyle(Styles.getButton());
 
-        HBox hBox = new HBox(15, btnNewItem, btnRemoveItem, btnEditItem);
+        HBox hBox = new HBox(15, button_NewItem, button_RemoveItem, button_EditItem);
         hBox.setSpacing(10);
         hBox.setMinSize(600, 75);
         hBox.setMaxSize(600, 75);
@@ -108,9 +110,9 @@ public class ProductsPane extends StackPane {
 
         hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        btnNewItem.setOnAction(e -> addNewProductAction());
-        btnRemoveItem.setOnAction(e -> deleteItem());
-        btnEditItem.setOnAction(e -> editItem());
+        button_NewItem.setOnAction(e -> addNewProductAction());
+        button_RemoveItem.setOnAction(e -> removeProduct());
+        button_EditItem.setOnAction(e -> editProduct());
 
         hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50");
 
@@ -121,23 +123,27 @@ public class ProductsPane extends StackPane {
      * Contains buttons to the right in the code.view
      * @return container HBox
      */
-    public HBox getHCenterRight(){
-        Button btnAdd = new Button("ADD");
-        Button btnRemove = new Button("REMOVE");
+    public HBox initHBoxCenterRight(){
+        Button button_Add = new Button("ADD");
+        Button button_Remove = new Button("REMOVE");
 
         final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
         numberSpinner.setValueFactory(svf);
         numberSpinner.disabledProperty();
         numberSpinner.setEditable(true);
         numberSpinner.setPrefHeight(38);
+        numberSpinner.setPrefWidth(100);
 
-        btnAdd.setStyle(Styles.getButton());
-        btnRemove.setStyle(Styles.getButton());
+        button_Add.setStyle(Styles.getButton());
+        button_Remove.setStyle(Styles.getButton());
 
-        btnAdd.setOnAction(e -> addQuantityToProduct());
-        btnRemove.setOnAction(e -> removeQuantityFromProduct());
+        button_Add.setPrefSize(100,30);
+        button_Remove.setPrefSize(100,30);
 
-        HBox hBox = new HBox(15, numberSpinner, btnAdd, btnRemove);
+        button_Add.setOnAction(e -> addQuantity());
+        button_Remove.setOnAction(e -> removeQuantity());
+
+        HBox hBox = new HBox(15, numberSpinner, button_Add, button_Remove);
 
         hBox.setMaxSize(435, 75);
         hBox.setMinSize(435, 75);
@@ -152,10 +158,10 @@ public class ProductsPane extends StackPane {
      * Collection box for buttonHBoxes
      * @return container HBox
      */
-    public HBox getHBoxContainerBtn() {
+    public HBox initHBoxContainerBtn() {
         HBox hBox = new HBox();
         setPrefSize(1036, 75);
-        hBox.getChildren().addAll(getHCenterLeft(), getHCenterRight());
+        hBox.getChildren().addAll(initHBoxCenterLeft(), initHBoxCenterRight());
         return hBox;
     }
 
@@ -163,8 +169,8 @@ public class ProductsPane extends StackPane {
      * Collection box for the top 3 HBoxes
      * @return container VBox
      */
-    public VBox getTopVBoxContainer(){
-        VBox vBox =   new VBox(getHBoxTop(), getFillerBox(), getHBoxContainerBtn());
+    public VBox initTopVBoxContainer(){
+        VBox vBox =   new VBox(initHBoxTop(), initHBoxFillerBox(), initHBoxContainerBtn());
         vBox.setPrefSize(1036, 190);
         vBox.setAlignment(Pos.BOTTOM_CENTER);
         vBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20 20 0 0;");
@@ -176,7 +182,7 @@ public class ProductsPane extends StackPane {
      * Method that creates a pane containing a tableView with a number of columns
      * @return pane - a FlowPane which is located at the bottom of the panel
      */
-    public FlowPane getFlowBottom() {
+    public FlowPane initFlowBottom() {
         FlowPane pane = new FlowPane();
 
         pane.setPadding(new Insets(15,15,15,15));
@@ -184,35 +190,35 @@ public class ProductsPane extends StackPane {
         pane.setMinSize(1036, 508);
         pane.setMaxSize(1036, 508);
 
-        tblView = new TableView<>();
+        tableView = new TableView<>();
 
-        tblColumnName.setCellValueFactory(new PropertyValueFactory<>("type"));
-        tblCategories.setCellValueFactory(new PropertyValueFactory<>("category"));
-        tblColumnStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        tableColumn_Name.setCellValueFactory(new PropertyValueFactory<>("type"));
+        tableColumn_Categories.setCellValueFactory(new PropertyValueFactory<>("category"));
+        tableColumn_Stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
-        tblColumnName.setPrefWidth(233);
-        tblCategories.setPrefWidth(234);
-        tblColumnStock.setPrefWidth(234);
-        tblColumnIngredients.setPrefWidth(234);
+        tableColumn_Name.setPrefWidth(233);
+        tableColumn_Categories.setPrefWidth(234);
+        tableColumn_Stock.setPrefWidth(234);
+        tableColumn_Ingredients.setPrefWidth(234);
 
-        tblColumnName.setStyle(Styles.getTableColumn());
-        tblCategories.setStyle(Styles.getTableColumn());
-        tblColumnStock.setStyle(Styles.getTableColumn());
+        tableColumn_Name.setStyle(Styles.getTableColumn());
+        tableColumn_Categories.setStyle(Styles.getTableColumn());
+        tableColumn_Stock.setStyle(Styles.getTableColumn());
 
-        tblView.getColumns().addAll(tblColumnName, tblCategories, tblColumnStock, tblColumnIngredients);
+        tableView.getColumns().addAll(tableColumn_Name, tableColumn_Categories, tableColumn_Stock, tableColumn_Ingredients);
 
-        tblView.setPrefHeight(458);
-        tblView.setStyle(Styles.getTableRowSelected());
+        tableView.setPrefHeight(458);
+        tableView.setStyle(Styles.getTableRowSelected());
 
         pane.setAlignment(Pos.CENTER);
 
         pane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-        pane.getChildren().add(tblView);
+        pane.getChildren().add(tableView);
 
-        tblView.setItems(itemsToTable());
+        tableView.setItems(getItemList());
 
         pane.setStyle("-fx-alignment: center;" +
-                " -fx-background-color: #FFFFFF;" +
+                " -fx-background-color: #fff;" +
                 " -fx-background-radius: 0 0 20 20;" +
                 " -fx-padding: 0 0 50 0;");
 
@@ -232,9 +238,14 @@ public class ProductsPane extends StackPane {
      * Method that returns an observableList which populates the columns in the tableView
      * @return items - the list which populates the columns
      */
-    public ObservableList<Product> itemsToTable() {
+    public ObservableList<Product> getItemList() {
         ObservableList<Product> items = FXCollections.observableArrayList();
-        items.add(new Product("Dummy Item", ProductCategories.Bread, 1));
+        // temp item to populate tableView
+        Product product = new Product("Dummy Item", ProductCategories.Bread, 1);
+        callback.addProduct(product);
+        Product[] receivedProducts = callback.getProduct();
+        items.addAll(Arrays.asList(receivedProducts));
+
         return items;
     }
 
@@ -253,27 +264,30 @@ public class ProductsPane extends StackPane {
     /**
      * Method used to delete the selected item in the tableView
      */
-
-    public void deleteItem() {
+    public void removeProduct() {
         ObservableList<Product> itemSelected;
         ObservableList<Product> allItems;
 
-        allItems = tblView.getItems();
-        itemSelected = tblView.getSelectionModel().getSelectedItems();
+        allItems = tableView.getItems();
+        itemSelected = tableView.getSelectionModel().getSelectedItems();
+
+        Product product = tableView.getSelectionModel().getSelectedItem();
 
         try {
             itemSelected.forEach(allItems::remove);
+            callback.removeProduct(product.getType());
         } catch (NoSuchElementException e){
             e.printStackTrace();
         }
+
     }
 
 
     /**
      * Add quantity to existing product
      */
-    public void addQuantityToProduct() {
-        Product product = tblView.getSelectionModel().getSelectedItem();
+    public void addQuantity() {
+        Product product = tableView.getSelectionModel().getSelectedItem();
 
     if (product != null){
         int prodQuantity = product.getStock();
@@ -289,8 +303,8 @@ public class ProductsPane extends StackPane {
     /**
      * Remove quantity from existing product
      */
-    public void removeQuantityFromProduct() {
-        Product product = tblView.getSelectionModel().getSelectedItem();
+    public void removeQuantity() {
+        Product product = tableView.getSelectionModel().getSelectedItem();
 
         if (product != null){
             int prodQuantity = product.getStock();
@@ -299,14 +313,15 @@ public class ProductsPane extends StackPane {
             noProductSelected();
         }
 
-        tblView.refresh();
+        tableView.refresh();
     }
 
     /**
      * Method used to edit a product in the tableView
      */
-    public void editItem() {
-        String name = tblView.getSelectionModel().getSelectedItem().getType();
+
+    public void editProduct() {
+        String name = tableView.getSelectionModel().getSelectedItem().getType();
         ProductPopup pane;
 
         if (name != null) {
@@ -323,11 +338,17 @@ public class ProductsPane extends StackPane {
         }
     }
 
+    /**
+     * Expands the pane and makes the menuPane smaller
+     */
     public void expand() {
         setPrefWidth(1346);
         System.out.println("Expanding");
     }
 
+    /**
+     * Makes the pane smaller and expands the menuPane
+     */
     public void contract() {
         setPrefWidth(1086);
         System.out.println("Contracting");
@@ -337,14 +358,14 @@ public class ProductsPane extends StackPane {
      * @param product add product to tableView
      */
     public void addNewProduct(Product product) {
-        tblView.getItems().add(product);
+        tableView.getItems().add(product);
     }
 
     /**
      * refresh the tableView
      */
     public void refresh(){
-        tblView.refresh();
+        tableView.refresh();
     }
 
     /**
