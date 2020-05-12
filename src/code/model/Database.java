@@ -178,7 +178,7 @@ public class Database implements Serializable {
     }
 
     public boolean removeProduct(String product) {
-        return (this.ingredients.remove(product) != null);
+        return (this.products.remove(product) != null);
     }
 
     public boolean addSupplier(Supplier supplier) {
