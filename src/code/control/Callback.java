@@ -41,4 +41,6 @@ public interface Callback {
     ArrayList<Supplier> getSuppliers();
     int getNumSuppliers();
     boolean removeSupplier (String name);
+
+    void setupPane();
 }

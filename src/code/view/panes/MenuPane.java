@@ -101,7 +101,7 @@ public class MenuPane extends StackPane {
         });
 
         toggleContainer = new HBox();
-        toggleContainer.setPadding(new Insets(40, 0, 0, 105));
+        toggleContainer.setPadding(new Insets(20, 0, 20, 105));
         toggleContainer.getChildren().add(toggleButton);
         toggleContainer.setAlignment(Pos.BOTTOM_LEFT);
 
@@ -145,6 +145,9 @@ public class MenuPane extends StackPane {
                 ((SupplierPane) views[activeIndex]).expand();
                 break;
             case 4:
+                ((RecipeListPane) views[activeIndex]).expand();
+                break;
+            case 5:
                 ((SchedulePane) views[activeIndex]).expand();
                 break;
             default:
@@ -172,7 +175,7 @@ public class MenuPane extends StackPane {
         } );
 
         button.setPrefSize(40,40);
-        toggleContainer.setPadding(new Insets(40, 0, 0, 40));
+        toggleContainer.setPadding(new Insets(20, 0, 20, 35));
 
         title.setText("C");
     }
@@ -198,6 +201,9 @@ public class MenuPane extends StackPane {
                 ((SupplierPane) views[activeIndex]).contract();
                 break;
             case 4:
+                ((RecipeListPane) views[activeIndex]).contract();
+                break;
+            case 5:
                 ((SchedulePane) views[activeIndex]).contract();
                 break;
             default:
@@ -226,7 +232,7 @@ public class MenuPane extends StackPane {
         toggleButton.setGraphic(toggleImage);
 
         button.setPrefSize(40,40);
-        toggleContainer.setPadding(new Insets(40, 0, 0, 105));
+        toggleContainer.setPadding(new Insets(20, 0, 20, 105));
 
         title.setText("Cafetairé");
     }

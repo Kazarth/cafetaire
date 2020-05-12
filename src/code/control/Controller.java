@@ -180,9 +180,17 @@ public class Controller implements Callback {
         return database.getNumSuppliers();
     }
 
-    @Override
-    public boolean removeSupplier(String name) {
-        saveLoad.setEdited();
-        return database.removeSupplier(name);
+        @Override
+        public boolean removeSupplier(String name) {
+            saveLoad.setEdited();
+            return database.removeSupplier(name);
+        }
+
+        @Override
+        public void setupPane() {
+            // get centerPane
+            // remove current
+            // add new
+        }
     }
 }
