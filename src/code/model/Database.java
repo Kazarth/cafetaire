@@ -1,5 +1,6 @@
 package code.model;
 
+import code.entities.Ingredient;
 import code.entities.*;
 
 import java.io.Serializable;

@@ -4,8 +4,6 @@ import code.entities.Ingredient;
 import code.entities.Styles;
 import code.view.popups.IngredientPopup;
 import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -23,6 +21,7 @@ import javafx.scene.text.Text;
 import code.control.Callback;
 import javax.swing.*;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
@@ -244,7 +243,15 @@ public class IngredientsPane extends StackPane {
         ObservableList<Ingredient> ingredientSelected, allIngredients;
         allIngredients = tableView.getItems();
         ingredientSelected = tableView.getSelectionModel().getSelectedItems();
-        ingredientSelected.forEach(allIngredients::remove);
+        code.entities.Ingredient ingredient = tableView.getSelectionModel().getSelectedItem();
+
+        try {
+            ingredientSelected.forEach(allIngredients::remove);
+            callback.removeIngredient(ingredient.getType());
+
+        }catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
