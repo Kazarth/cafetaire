@@ -132,10 +132,10 @@ public class Database implements Serializable {
 
     public Product[] getProducts() {
         Product[] products = new Product[this.products.size()];
-        String[] keys = ((String[])this.products.keySet().toArray());
+        List<String> keys = new ArrayList<>(this.products.keySet());
 
         for (int i=0; i<products.length; i++) {
-            products[i] = this.products.get(keys[i]);
+            products[i] = this.products.get(keys.get(i));
         }
 
         return products;
