@@ -125,7 +125,7 @@ public class RecipePane extends StackPane {
         searchButton.getStyleClass().add("greenButtonSquare");
         searchButton.setOnAction(e -> search());
         try {
-            Image selectedImage = new Image(new FileInputStream("resources/search.png"));
+            Image selectedImage = new Image(new FileInputStream("src/resources/search.png"));
             ImageView selectedView = new ImageView(selectedImage);
             selectedView.setFitWidth(20);
             selectedView.setFitHeight(20);
@@ -180,6 +180,14 @@ public class RecipePane extends StackPane {
     private Boolean removeRecipe() {
         System.out.println("REMOVE");
         return false;
+    }
+
+    public void expand() {
+        System.out.println("expand");
+    }
+
+    public void contract() {
+        System.out.println("contract");
     }
 
     private void viewRecipe() {

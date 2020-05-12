@@ -10,5 +10,6 @@ public enum Views {
     Ingredients,
     Products,
     Suppliers,
+    Recipes,
     Schedule
 }
