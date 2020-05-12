@@ -134,3 +134,15 @@
 .redButton:hover {
     -fx-background-color: #DC4854;
 }
+
+.bigGrayButton {
+    -fx-background-color: #eee;
+    -fx-background-radius: 30;
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+    -fx-font-size: 24;
+}
+
+.bigGrayButton:hover {
+    -fx-background-color: #ddd;
+}

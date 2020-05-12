@@ -145,7 +145,7 @@ public class MenuPane extends StackPane {
                 ((SupplierPane) views[activeIndex]).expand();
                 break;
             case 4:
-                ((RecipePane) views[activeIndex]).expand();
+                ((RecipeListPane) views[activeIndex]).expand();
                 break;
             case 5:
                 ((SchedulePane) views[activeIndex]).expand();
@@ -201,7 +201,7 @@ public class MenuPane extends StackPane {
                 ((SupplierPane) views[activeIndex]).contract();
                 break;
             case 4:
-                ((RecipePane) views[activeIndex]).contract();
+                ((RecipeListPane) views[activeIndex]).contract();
                 break;
             case 5:
                 ((SchedulePane) views[activeIndex]).contract();

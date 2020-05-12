@@ -1,5 +1,7 @@
 package code.view.panes;
 
+import code.control.Callback;
+import code.entities.RecipePanes;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Pos;
@@ -14,7 +16,6 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
 import javax.swing.*;
-import java.io.FileNotFoundException;
 
 /**
  * ActiveRecipePane.java
@@ -22,7 +23,7 @@ import java.io.FileNotFoundException;
  * @author Lucas Eliasson
  * @version 1.0
  */
-public class ActiveRecipePane extends StackPane { // extended Pane will be the gray area
+public class RecipeViewPane extends StackPane { // extended Pane will be the gray area
     private VBox container; // White box
 
     private Label titleLabel; // title
@@ -41,7 +42,13 @@ public class ActiveRecipePane extends StackPane { // extended Pane will be the g
 
     private TextField amountField; // amount of satser??
 
-    public ActiveRecipePane() {
+    private Callback callback;
+    private RecipePane recipePane;
+
+    public RecipeViewPane(Callback callback, RecipePane source) {
+        this.callback = callback;
+        this.recipePane = source;
+
         /* Gray background */
         setPrefSize(1086,768);
         setStyle(
@@ -191,6 +198,7 @@ public class ActiveRecipePane extends StackPane { // extended Pane will be the g
 
     private void goBack() {
         System.out.println("RETURN");
+        recipePane.setView(RecipePanes.RecipeListPane);
     }
 
     private Boolean deleteRecipe() {
@@ -224,26 +232,5 @@ public class ActiveRecipePane extends StackPane { // extended Pane will be the g
 
     private void activeButton() {
 
-    }
-
-    private static void initAndShowGUI() {
-        JFrame frame = new JFrame("FX");
-        final JFXPanel fxPanel = new JFXPanel();
-        frame.setTitle("Recipe Pane");
-        frame.add(fxPanel);
-        frame.setBounds(200, 100, 1086, 768);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setResizable(true);
-        frame.setVisible(true);
-
-        Platform.runLater(() -> initFX(fxPanel));
-    }
-
-    private static void initFX(JFXPanel fxPanel) {
-        fxPanel.setScene(new Scene(new ActiveRecipePane()));
-    }
-
-    public static void main(String[] args) {
-        initAndShowGUI();
     }
 }

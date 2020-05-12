@@ -38,7 +38,7 @@ public class MainPane extends StackPane {
         views[1] = new IngredientsPane(callback);
         views[2] = new ProductsPane(callback);
         views[3] = new SupplierPane(callback);
-        views[4] = new RecipePane();
+        views[4] = new RecipePane(callback);
         views[5] = new SchedulePane(callback);
 
         HBox hBox = new HBox();
