@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import code.control.Callback;
 import javax.swing.*;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 /**
  * The class is the Ingredients panel for the Cafetairé application.
@@ -243,9 +244,14 @@ public class IngredientsPane extends StackPane {
         allIngredients = tableView.getItems();
         ingredientSelected = tableView.getSelectionModel().getSelectedItems();
         code.entities.Ingredient ingredient = tableView.getSelectionModel().getSelectedItem();
-        ingredientSelected.forEach(allIngredients::remove);
 
-        callback.removeIngredient(ingredient.getType());
+        try {
+            ingredientSelected.forEach(allIngredients::remove);
+            callback.removeIngredient(ingredient.getType());
+
+        }catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

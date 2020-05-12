@@ -18,6 +18,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 /**
  * Supplier Menu.java
@@ -224,9 +225,15 @@ public class SupplierPane extends StackPane {
         allSuppliers = tableView.getItems();
         supplierSelected = tableView.getSelectionModel().getSelectedItems();
         Supplier supplier = tableView.getSelectionModel().getSelectedItem();
-        supplierSelected.forEach(allSuppliers::remove);
 
-        callback.removeSupplier(supplier.getName());
+        try {
+            supplierSelected.forEach(allSuppliers::remove);
+            callback.removeSupplier(supplier.getName()); 
+
+        }catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void refresh(){
