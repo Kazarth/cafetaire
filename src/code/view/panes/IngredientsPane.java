@@ -223,7 +223,13 @@ public class IngredientsPane extends StackPane {
                 pane = new IngredientPopup(this, callback, 1);
                 Ingredient ingredient = callback.getIngredient(name);
                 pane.setOrgIngredient(name);
-                pane.setValuesForIngredient(ingredient.getType(), ingredient.getCategory(), ingredient.getSupplier().getName());
+
+                if (ingredient.getSupplier() == null) {
+                    pane.setValuesForIngredient(ingredient.getType(), ingredient.getCategory(), "");
+                } else {
+                    pane.setValuesForIngredient(ingredient.getType(), ingredient.getCategory(), ingredient.getSupplier().getName());
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

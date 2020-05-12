@@ -180,7 +180,7 @@ public class ProductPopup extends AnchorPane {
             product = new Product(productName, category, quantity);
             System.out.println(product.toString());
 
-            if (callback.addProductTest(product)) {
+            if (callback.addProduct(product)) {
                 source.addNewProduct(product);
                 close();
             }
@@ -213,15 +213,15 @@ public class ProductPopup extends AnchorPane {
         int quantity = numberSpinner.getValue();
 
         if (orgProd.equals(name)){
-            Product product = callback.getProductTest(nameField.getText());
+            Product product = callback.getProduct(nameField.getText());
             product.setCategory(category);
             product.setStock(quantity);
             source.refresh();
             close();
         } else if (!orgProd.equals(name)){
             Product product = new Product(name, category, quantity);
-            callback.addProductTest(product);
-            callback.removeProductTest(orgProd);
+            callback.addProduct(product);
+            callback.removeProduct(orgProd);
             source.addNewProduct(product);
             source.deleteItem();
             source.refresh();

@@ -125,7 +125,7 @@ public class RecipePane extends StackPane {
         searchButton.getStyleClass().add("greenButtonSquare");
         searchButton.setOnAction(e -> search());
         try {
-            Image selectedImage = new Image(new FileInputStream("resources/search.png"));
+            Image selectedImage = new Image(new FileInputStream("src/resources/search.png"));
             ImageView selectedView = new ImageView(selectedImage);
             selectedView.setFitWidth(20);
             selectedView.setFitHeight(20);
@@ -190,7 +190,7 @@ public class RecipePane extends StackPane {
         System.out.println("SEARCH");
     }
 
-    private static void initAndShowGUI() throws FileNotFoundException {
+    private static void initAndShowGUI() {
         JFrame frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
         frame.setTitle("Recipe Pane");
@@ -207,7 +207,7 @@ public class RecipePane extends StackPane {
         fxPanel.setScene(new Scene(new RecipePane()));
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         initAndShowGUI();
     }
 }

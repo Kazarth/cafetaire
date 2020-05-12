@@ -53,6 +53,42 @@ public class Product implements Serializable {
         this.recipe = recipe;
     }
 
+    public boolean increment() {
+        if (stock == Integer.MAX_VALUE) {
+            return false;
+        }
+
+        stock++;
+        return true;
+    }
+
+    public boolean increment(int value) {
+        if (Integer.MAX_VALUE-stock-value <= 0) {
+            return false;
+        }
+
+        stock += value;
+        return true;
+    }
+
+    public boolean decrement() {
+        if (stock-1<0) {
+            return false;
+        }
+
+        stock--;
+        return true;
+    }
+
+    public boolean decrement(int value) {
+        if (stock-value<0) {
+            return false;
+        }
+
+        stock -= value;
+        return true;
+    }
+
     @Override
     public String toString(){
         return "Name: " + this.type + "\n" +

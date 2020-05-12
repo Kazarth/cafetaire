@@ -186,9 +186,9 @@ public class ProductsPane extends StackPane {
 
         tblView = new TableView<>();
 
-        tblColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tblColumnName.setCellValueFactory(new PropertyValueFactory<>("type"));
         tblCategories.setCellValueFactory(new PropertyValueFactory<>("category"));
-        tblColumnStock.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        tblColumnStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
         tblColumnName.setPrefWidth(233);
         tblCategories.setPrefWidth(234);
@@ -312,7 +312,7 @@ public class ProductsPane extends StackPane {
         if (name != null) {
             try {
                 pane = new ProductPopup(this, callback, 1);
-                Product product = callback.getProductTest(name);
+                Product product = callback.getProduct(name);
                 pane.setOrgProd(name);
                 pane.setValuesForItem(product.getType(), product.getCategory(), product.getStock());
             } catch (NullPointerException e) {
