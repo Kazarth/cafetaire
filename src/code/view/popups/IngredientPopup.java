@@ -1,7 +1,7 @@
 package code.view.popups;
 
 import code.control.Callback;
-import code.entities.IngredientTest;
+import code.entities.Ingredient;
 import code.entities.Styles;
 import code.entities.Supplier;
 import code.view.panes.IngredientsPane;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 /**
  * The class presents a OK or CANCEL pane.
- * @author Lucas Eliasson
+ * @author Lucas Eliasson, Tor Stenfeldt
  * @version 1.0
  */
 public class IngredientPopup extends AnchorPane {
@@ -150,15 +150,17 @@ public class IngredientPopup extends AnchorPane {
      */
     public void addAction() {
         try {
-            IngredientTest test = null;
+            Ingredient test;
 
             String name = nameField.getText();
             String category = categoryBox.getSelectionModel().getSelectedItem();
-            String supplier = supplierBox.getSelectionModel().getSelectedItem();
+            String supplierName = supplierBox.getSelectionModel().getSelectedItem();
+            Supplier supplier = callback.getSupplier(supplierName);
 
-            test = new IngredientTest(name, category, 1, supplier);
+            // TODO: fix supplier
+            test = new Ingredient(name, category, 1, supplier);
 
-            if (callback.addIngredientTest(test)) {
+            if (callback.addIngredient(test)) {
                 source.addNewIngredient(test);
             }
         } catch (Exception e) {
@@ -175,17 +177,18 @@ public class IngredientPopup extends AnchorPane {
     public void editAction() {
         String name = nameField.getText();
         String category = categoryBox.getValue();
-        String supplier = supplierBox.getValue();
+        String supplierName = supplierBox.getValue();
+        Supplier supplier = callback.getSupplier(supplierName);
 
         if (orgIngredient.equals(name)) {
-            IngredientTest ingredientTest = callback.getIngredientTest(name);
-            ingredientTest.setCategory(category);
-            ingredientTest.setSupplier(supplier);
+            Ingredient ingredient = callback.getIngredient(name);
+            ingredient.setCategory(category);
+            ingredient.setSupplier(supplier);
             source.refresh();
             close();
-        } else if (!orgIngredient.equals(name)){
-            IngredientTest ingredientTest = new IngredientTest(name, category, 1, supplier);
-            callback.addIngredientTest(ingredientTest);
+        } else {
+            Ingredient ingredientTest = new Ingredient(name, category, 1, supplier);
+            callback.addIngredient(ingredientTest);
             callback.removeIngredient(orgIngredient);
             source.addNewIngredient(ingredientTest);
             source.removeIngredient();
