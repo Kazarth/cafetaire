@@ -175,7 +175,7 @@ public class Database implements Serializable {
     }
 
     public boolean removeProduct(String product) {
-        return (this.ingredients.remove(product) != null);
+        return (this.products.remove(product) != null);
     }
 
     public boolean addSupplier(Supplier supplier) {
@@ -224,6 +224,8 @@ public class Database implements Serializable {
      * Used for testing purposes.
      */
     public void testPopulate() {
+
+        /*
         Supplier lucasAB = new Supplier("Lucas AB");
         Supplier georgeAB = new Supplier("George AB");
         Supplier paulAB = new Supplier("Paul AB");
@@ -239,5 +241,7 @@ public class Database implements Serializable {
         addIngredient(salt);
         addIngredient(sugar);
         addIngredient(cocoa);
+
+         */
     }
 }

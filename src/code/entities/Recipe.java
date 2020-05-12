@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class Recipe {
     private String name;
+    private String category;
     private ArrayList<Ingredient> ingredients;
     private String instructions;
 
@@ -16,6 +17,7 @@ public class Recipe {
         this.name = name;
         this.ingredients = new ArrayList<>();
         this.instructions = "";
+        this.category = "test";
     }
 
     public void setInstructions(String instructions) {

@@ -233,6 +233,7 @@ public class SupplierPane extends StackPane {
         }catch (NoSuchElementException e) {
             e.printStackTrace();
         }
+
     }
 
     public void refresh(){
