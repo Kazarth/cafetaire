@@ -82,9 +82,7 @@ public class ProductsPane extends StackPane {
         HBox hBoxFiller = new HBox();
         hBoxFiller.setMinSize(1036, 40);
         hBoxFiller.setMaxSize(1036, 40);
-        hBoxFiller.setStyle("-fx-border-color: #6B6C6A;" +
-                            "-fx-border-width: 1 0 1 0;" +
-                            "-fx-background-color: #fff");
+        hBoxFiller.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF");
 
         return hBoxFiller;
     }
@@ -229,9 +227,7 @@ public class ProductsPane extends StackPane {
      * @return value of numberSpinner field
      */
     public int getNumberSpinnerValue() {
-        int value = numberSpinner.getValue();
-
-        return value;
+        return numberSpinner.getValue();
     }
 
     /**

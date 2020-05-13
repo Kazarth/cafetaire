@@ -25,7 +25,6 @@ import java.util.ArrayList;
  * @author Paul Moustakas, Tor Stenfeldt
  * @version 3.0
  */
-
 public class SupplierPane extends StackPane {
     private TableView<Supplier> tableView;
     private TableColumn<Supplier, String> supplierColumn;
@@ -134,20 +133,20 @@ public class SupplierPane extends StackPane {
     }
 
     public void setTableView () {
-        tableView = new TableView();
+        tableView = new TableView<>();
         tableView.setStyle(Styles.getTableRowSelected());
         setPrefSize(1068,768);
 
-        supplierColumn = new TableColumn("Supplier");
+        supplierColumn = new TableColumn<>("Supplier");
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
         supplierColumn.setStyle(Styles.getTableColumn());
-        categoryColumn = new TableColumn("category");
+        categoryColumn = new TableColumn<>("category");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         categoryColumn.setStyle(Styles.getTableColumn());
-        emailColumn = new TableColumn("Email");
+        emailColumn = new TableColumn<>("Email");
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         emailColumn.setStyle(Styles.getTableColumn());
-        phoneColumn = new TableColumn("Phone");
+        phoneColumn = new TableColumn<>("Phone");
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         phoneColumn.setStyle(Styles.getTableColumn());
 
@@ -224,7 +223,10 @@ public class SupplierPane extends StackPane {
         ObservableList<Supplier> supplierSelected, allSuppliers;
         allSuppliers = tableView.getItems();
         supplierSelected = tableView.getSelectionModel().getSelectedItems();
+        Supplier supplier = tableView.getSelectionModel().getSelectedItem();
         supplierSelected.forEach(allSuppliers::remove);
+
+        callback.removeSupplier(supplier.getName());
     }
 
     public void refresh(){

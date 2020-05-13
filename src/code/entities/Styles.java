@@ -3,7 +3,7 @@ package code.entities;
 /**
  * Can be used in order to get styles for different types of components.
  * @author Tor Stenfeldt
- * @version 1.0
+ * @version 3.0
  */
 public abstract class Styles {
     public static String getMenuButtonStandard() {
@@ -88,8 +88,6 @@ public abstract class Styles {
                 "-fx-padding: 5"
         );
     }
-
-
 
     public static String getPane() {
         return "-fx-background-color: #6B6C6A;";

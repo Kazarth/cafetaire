@@ -1,7 +1,7 @@
 package code.model;
 
+import code.entities.Ingredient;
 import code.entities.*;
-import code.extra.ColourTxT;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,9 +20,6 @@ public class Database implements Serializable {
     private HashMap<String, Ingredient> ingredients;
     private HashMap<String, Product> products;
     private ArrayList<Supplier> suppliers;
-
-    // TODO: Testing purpose IngredientTest
-    private ColourTxT colourTxT = new ColourTxT();
 
     public Database() {
         this.ingredients = new HashMap<>();
@@ -178,7 +175,7 @@ public class Database implements Serializable {
     }
 
     public boolean removeProduct(String product) {
-        return (this.ingredients.remove(product) != null);
+        return (this.products.remove(product) != null);
     }
 
     public boolean addSupplier(Supplier supplier) {
@@ -227,6 +224,8 @@ public class Database implements Serializable {
      * Used for testing purposes.
      */
     public void testPopulate() {
+
+        /*
         Supplier lucasAB = new Supplier("Lucas AB");
         Supplier georgeAB = new Supplier("George AB");
         Supplier paulAB = new Supplier("Paul AB");
@@ -242,5 +241,7 @@ public class Database implements Serializable {
         addIngredient(salt);
         addIngredient(sugar);
         addIngredient(cocoa);
+
+         */
     }
 }

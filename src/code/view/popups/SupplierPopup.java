@@ -21,131 +21,106 @@ import javax.swing.*;
  * @author Paul Moustakas, Lucas Eliasson
  * @version 1.0
  */
-
 public class SupplierPopup extends AnchorPane {
+    private SupplierPane source;
+    private Callback callback;
+
     private JFrame frame;
-
-    private Label title;
-    private Label nameLbl;
-    private Label categoryLbl;
-    private Label emailLbl;
-    private Label phoneLbl;
-
     private TextField nameField;
     private ComboBox<String> categoryBox;
     private TextField emailField;
     private TextField phoneField;
-
-    private Button addButton, cancelButton;
-
-    private SupplierPane source;
-    private Callback callback;
-
-    private int opener;
     private String orgSupp;
 
     public SupplierPopup(SupplierPane source, Callback callback, int opener) {
-        // init Frame
-        frame = new JFrame("FX");
-        final JFXPanel fxPanel = new JFXPanel();
-        frame.setTitle("Add new ingredient");
-        frame.add(fxPanel);
-        frame.setSize(600,460);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setUndecorated(true);
-        frame.setResizable(false);
-        frame.setVisible(true);
-        Platform.runLater(() -> fxPanel.setScene(new Scene(this)));
-        this.opener = opener;
-
-        // Init source
         this.source = source;
         this.callback = callback;
 
         // Background pane
         setMaxWidth(600); setMaxHeight(400);
         setPrefWidth(600); setPrefHeight(400);
-        setStyle(
-                "-fx-background-color: #fff"
-        );
+        setStyle("-fx-background-color: #fff");
 
         // title pane
-        title = new Label("ADD NEW SUPPLIER");
+        Label title = new Label("ADD NEW SUPPLIER");
         title.setStyle(Styles.getPopTitle());
         title.setLayoutX(162.0); title.setLayoutY(20);
         title.setPrefWidth(300); title.setPrefHeight(40);
 
         // Supplier Name pane
-        nameLbl = new Label("Supplier");
+        Label nameLbl = new Label("Supplier");
         nameLbl.setStyle("-fx-text-fill: #000;");
         nameLbl.setPrefWidth(220); nameLbl.setPrefHeight(40);
         nameLbl.setLayoutX(56.0); nameLbl.setLayoutY(100);
 
-        nameField = new TextField();
-        nameField.setPromptText("Enter Supplier name");
-        nameField.setStyle(Styles.getPopField());
-        nameField.setPrefWidth(360); nameField.setPrefHeight(40);
-        nameField.setLayoutX(144.0); nameField.setLayoutY(100);
+        this.nameField = new TextField();
+        this.nameField.setPromptText("Enter Supplier name");
+        this.nameField.setStyle(Styles.getPopField());
+        this.nameField.setPrefWidth(360);
+        this.nameField.setPrefHeight(40);
+        this.nameField.setLayoutX(144.0);
+        this.nameField.setLayoutY(100);
 
         // Category pane
-        categoryLbl = new Label("Category");
+        Label categoryLbl = new Label("Category");
         categoryLbl.setStyle("-fx-text-fill: #000;");
         categoryLbl.setPrefWidth(220.0); categoryLbl.setPrefHeight(40);
         categoryLbl.setLayoutX(56.0); categoryLbl.setLayoutY(160);
 
-        categoryBox = new ComboBox();
-        categoryBox.setPromptText("Select category");
-        categoryBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
-        categoryBox.setPrefWidth(360.0); categoryBox.setPrefHeight(40);
-        categoryBox.setLayoutX(144.0); categoryBox.setLayoutY(160);
-        categoryBox.setItems(getCategories()); // testing
+        this.categoryBox = new ComboBox<>();
+        this.categoryBox.setPromptText("Select category");
+        this.categoryBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
+        this.categoryBox.setPrefWidth(360.0);
+        this.categoryBox.setPrefHeight(40);
+        this.categoryBox.setLayoutX(144.0);
+        this.categoryBox.setLayoutY(160);
+        this.categoryBox.setItems(getCategories()); // testing
 
         // Email Pane
-        emailLbl = new Label("E-mail");
+        Label emailLbl = new Label("E-mail");
         emailLbl.setStyle("-fx-text-fill: #000;");
         emailLbl.setPrefWidth(220); emailLbl.setPrefHeight(40);
         emailLbl.setLayoutX(56.0); emailLbl.setLayoutY(220);
 
-        emailField  =   new TextField();
-        emailField.setPromptText("Enter E-mail address");
-        emailField.setStyle(Styles.getPopField());
-        emailField.setPrefWidth(360); emailField.setPrefHeight(40);
-        emailField.setLayoutX(144.0); emailField.setLayoutY(220);
+        this.emailField  =   new TextField();
+        this.emailField.setPromptText("Enter E-mail address");
+        this.emailField.setStyle(Styles.getPopField());
+        this.emailField.setPrefWidth(360);
+        this.emailField.setPrefHeight(40);
+        this.emailField.setLayoutX(144.0);
+        this.emailField.setLayoutY(220);
 
         // Phone Pane
-        phoneLbl = new Label("Phone nr.");
+        Label phoneLbl = new Label("Phone nr.");
         phoneLbl.setStyle("-fx-text-fill: #000;");
         phoneLbl.setPrefWidth(220); phoneLbl.setPrefHeight(40);
         phoneLbl.setLayoutX(56.0);  phoneLbl.setLayoutY(280);
 
-        phoneField  =   new TextField();
-        phoneField.setPromptText("Enter phone number");
-        phoneField.setStyle(Styles.getPopField());
-        phoneField.setPrefWidth(360);   phoneField.setPrefHeight(40);
-        phoneField.setLayoutX(144.0);   phoneField.setLayoutY(280);
+        this.phoneField = new TextField();
+        this.phoneField.setPromptText("Enter phone number");
+        this.phoneField.setStyle(Styles.getPopField());
+        this.phoneField.setPrefWidth(360);
+        this.phoneField.setPrefHeight(40);
+        this.phoneField.setLayoutX(144.0);
+        this.phoneField.setLayoutY(280);
 
         // Button pane
-        addButton = new Button();
+        Button addButton = new Button();
         addButton.setStyle(Styles.getPopAddButton());
         addButton.setPrefWidth(200); addButton.setPrefHeight(40);
         addButton.setLayoutX(75); addButton.setLayoutY(340);
         // New supplier
         if (opener == 0) {
             addButton.setText("ADD NEW SUPPLIER");
-            addButton.setOnAction(e -> {
-                addAction();
-            });
+            addButton.setOnAction(e -> addAction());
         }
         // Edit supplier
         if (opener == 1){
             addButton.setText("SAVE SUPPLIER");
-            addButton.setOnAction(e -> {
-                editAction();
-            });
+            addButton.setOnAction(e -> editAction());
         }
 
-        cancelButton = new Button("CANCEL");
+        Button cancelButton = new Button("CANCEL");
         cancelButton.setStyle(Styles.getPopCancelButton());
         cancelButton.setPrefWidth(200); cancelButton.setPrefHeight(40);
         cancelButton.setLayoutX(325.0); cancelButton.setLayoutY(340);
@@ -154,11 +129,36 @@ public class SupplierPopup extends AnchorPane {
         // Add all children
         getChildren().addAll(
                 title,
-                nameLbl, nameField,
-                categoryLbl, categoryBox,
-                emailLbl, emailField,
-                phoneLbl,phoneField,
-                addButton, cancelButton);
+                nameLbl,
+                this.nameField,
+                categoryLbl,
+                this.categoryBox,
+                emailLbl,
+                this.emailField,
+                phoneLbl,
+                this.phoneField,
+                addButton,
+                cancelButton
+        );
+
+        initPanel();
+    }
+
+    public void initPanel() {
+        this.frame = new JFrame("FX");
+        this.frame.setTitle("Add new ingredient");
+
+        final JFXPanel fxPanel = new JFXPanel();
+        this.frame.add(fxPanel);
+
+        this.frame.setSize(600,460);
+        this.frame.setLocationRelativeTo(null);
+        this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.frame.setUndecorated(true);
+        this.frame.setResizable(false);
+        this.frame.setVisible(true);
+
+        Platform.runLater(() -> fxPanel.setScene(new Scene(this)));
     }
 
     /**
@@ -167,17 +167,17 @@ public class SupplierPopup extends AnchorPane {
     public void addAction() {
         Supplier supp;
 
-        String supplierName = nameField.getText();
-        String category     = categoryBox.getSelectionModel().getSelectedItem();
-        String email        = emailField.getText();
-        String phone        = phoneField.getText();
+        String supplierName = this.nameField.getText();
+        String category     = this.categoryBox.getSelectionModel().getSelectedItem();
+        String email        = this.emailField.getText();
+        String phone        = this.phoneField.getText();
 
         supp = new Supplier(supplierName, category, email, phone);
 
         System.out.println(supp.toString());
 
-        if (callback.addSupplier(supp)) {
-            source.addNewSupplier(supp);
+        if (this.callback.addSupplier(supp)) {
+            this.source.addNewSupplier(supp);
         }
         close();
     }
@@ -192,22 +192,8 @@ public class SupplierPopup extends AnchorPane {
      * Close the frame
      */
     private void close() {
-        frame.dispose();
+        this.frame.dispose();
     }
-
-    /*
-    //From database
-    private ObservableList<String> getSuppliersFromDatabase() {
-        ObservableList<String> listSuppliers = FXCollections.observableArrayList();
-        ArrayList<Supplier> receivedSuppliers = callback.getSuppliers();
-
-        for (Supplier supplier: receivedSuppliers) {
-            listSuppliers.add(supplier.getName());
-        }
-        return listSuppliers;
-    }
-
-     */
 
     /**
      * Method used to edit and item in the tableView in SupplierPane and database
@@ -215,25 +201,25 @@ public class SupplierPopup extends AnchorPane {
      * if name is changed remove old name from database and add the new one
      */
     public void editAction(){
-        String name = nameField.getText();
-        String category = categoryBox.getValue();
-        String email = emailField.getText();
-        String phone = phoneField.getText();
+        String name = this.nameField.getText();
+        String category = this.categoryBox.getValue();
+        String email = this.emailField.getText();
+        String phone = this.phoneField.getText();
 
-        if (orgSupp.equals(name)){
-            Supplier supplier = callback.getSupplier(nameField.getText());
+        if (this.orgSupp.equals(name)){
+            Supplier supplier = this.callback.getSupplier(this.nameField.getText());
             supplier.setCategory(category);
             supplier.setEmail(email);
             supplier.setPhone(phone);
-            source.refresh();
+            this.source.refresh();
             close();
-        } else if (!orgSupp.equals(name)){
+        } else {
             Supplier supplier = new Supplier(name, category, email, phone);
-            callback.addSupplier(supplier);
-            callback.removeSupplier(orgSupp);
-            source.addNewSupplier(supplier);
-            source.removeSupplier();
-            source.refresh();
+            this.callback.addSupplier(supplier);
+            this.callback.removeSupplier(this.orgSupp);
+            this.source.addNewSupplier(supplier);
+            this.source.removeSupplier();
+            this.source.refresh();
             close();
         }
     }
@@ -245,11 +231,11 @@ public class SupplierPopup extends AnchorPane {
      * @param email initial value for item to be edited
      * @param phone initial value for item to be edited
      */
-    public void setValuesForSupplier(String name, String category, String email, String phone){
-        nameField.setText(name);
-        categoryBox.getSelectionModel().select(category);
-        emailField.setText(email);
-        phoneField.setText(phone);
+    public void setValuesForSupplier(String name, String category, String email, String phone) {
+        this.nameField.setText(name);
+        this.categoryBox.getSelectionModel().select(category);
+        this.emailField.setText(email);
+        this.phoneField.setText(phone);
     }
 
     /**

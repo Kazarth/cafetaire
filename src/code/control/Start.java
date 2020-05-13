@@ -9,14 +9,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * TODO: start an instance of the Controller, which in turn contains the views.
  * Start.java
- * The class which starts an instance of the Controller, MainPane etc.
+ * The class which starts the application by setting up a container JFXPanel and a Controller to manage the application.
  * @author Tor Stenfeldt
- * @version 1.0
+ * @version 4.0
  */
 public class Start {
-    private static void initAndShowGUI(){
+    public static void main(String[] args) {
         JFrame frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
         frame.setTitle("Cafetairé Inventory System 1.0");
@@ -29,20 +28,13 @@ public class Start {
         frame.setVisible(true);
 
         Controller controller = new Controller();
-        Platform.runLater(() -> initFX(controller, fxPanel));
-
         frame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing (WindowEvent e) {
                 controller.handleClosing();
             }
         });
-    }
 
-    private static void initFX(Controller controller, JFXPanel fxPanel) {
-        fxPanel.setScene(new Scene(controller.getMainPane()));
-    }
-
-    public static void main(String[] args) {
-        initAndShowGUI();
+        Platform.runLater(() -> fxPanel.setScene(new Scene(controller.getMainPane())));
     }
 }

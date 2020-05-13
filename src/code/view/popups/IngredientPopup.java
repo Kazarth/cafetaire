@@ -24,102 +24,76 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class IngredientPopup extends AnchorPane {
+    private IngredientsPane source;                     // sourcePane
+    private Callback callback;                          // get logic
+
     private JFrame frame;
-    private Label title;
-    private Label nameLbl;
     private TextField nameField;
-    private Label categoryLbl, supplierLbl;
-    private ComboBox<String> categoryBox, supplierBox; // lägg in och läs in listor som vanligt?
-    private Button addButton, cancelButton;
-    private IngredientsPane source; // sourcePane
-    private Callback callback; // get logic
-    private ArrayList<String> suppliers; // test purposes
-    private int opener;
+    private ComboBox<String> categoryBox, supplierBox;  // lägg in och läs in listor som vanligt?
     private String orgIngredient;
 
     public IngredientPopup(IngredientsPane source, Callback callback, int opener) {
-        // init Frame
-        frame = new JFrame("FX");
-        final JFXPanel fxPanel = new JFXPanel();
-        frame.setTitle("Add new ingredient");
-        frame.add(fxPanel);
-        frame.setSize(600,400);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setUndecorated(true);
-        frame.setResizable(false);
-        frame.setVisible(true);
-        Platform.runLater(() -> fxPanel.setScene(new Scene(this)));
-        this.opener = opener;
-
-        // Init source
         this.source = source;
         this.callback = callback;
-
-        // test values
-        suppliers = new ArrayList();
-        suppliers.add("Lucas");
-        suppliers.add("Julia");
-        suppliers.add("Coca Cola");
 
         // Background pane
         setMaxWidth(600); setMaxHeight(400);
         setPrefWidth(600); setPrefHeight(400);
-        setStyle(
-                "-fx-background-color: #fff"
-                );
+        setStyle("-fx-background-color: #fff");
 
         // title pane
-        title = new Label("ADD NEW INGREDIENT");
+        Label title = new Label("ADD NEW INGREDIENT");
         title.setStyle(Styles.getPopTitle());
         title.setLayoutX(162.0); title.setLayoutY(20);
         title.setPrefWidth(300); title.setPrefHeight(40);
 
         // Name pane
-        nameLbl = new Label("Enter name");
-        nameLbl.setStyle(
-                "-fx-text-fill: #000;"
-        );
+        Label nameLbl = new Label("Enter name");
+        nameLbl.setStyle("-fx-text-fill: #000;");
         nameLbl.setPrefWidth(220); nameLbl.setPrefHeight(40);
         nameLbl.setLayoutX(56.0); nameLbl.setLayoutY(100);
 
-        nameField = new TextField();
-        nameField.setPromptText("Enter name");
-        nameField.setStyle(Styles.getPopField());
-        nameField.setPrefWidth(360); nameField.setPrefHeight(40);
-        nameField.setLayoutX(144.0); nameField.setLayoutY(100);
+        this.nameField = new TextField();
+        this.nameField.setPromptText("Enter name");
+        this.nameField.setStyle(Styles.getPopField());
+        this.nameField.setPrefWidth(360);
+        this.nameField.setPrefHeight(40);
+        this.nameField.setLayoutX(144.0);
+        this.nameField.setLayoutY(100);
 
         // Category pane
-        categoryLbl = new Label("Category");
-        categoryLbl.setStyle(
-                "-fx-text-fill: #000;");
+        Label categoryLbl = new Label("Category");
+        categoryLbl.setStyle("-fx-text-fill: #000;");
         categoryLbl.setPrefWidth(220.0); categoryLbl.setPrefHeight(40);
         categoryLbl.setLayoutX(56.0); categoryLbl.setLayoutY(160);
 
-        categoryBox = new ComboBox();
-        categoryBox.setPromptText("Select category");
-        categoryBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
-        categoryBox.setPrefWidth(360.0); categoryBox.setPrefHeight(40);
-        categoryBox.setLayoutX(144.0); categoryBox.setLayoutY(160);
-        categoryBox.setItems(getCategories()); // testing
+        this.categoryBox = new ComboBox<>();
+        this.categoryBox.setPromptText("Select category");
+        this.categoryBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
+        this.categoryBox.setPrefWidth(360.0);
+        this.categoryBox.setPrefHeight(40);
+        this.categoryBox.setLayoutX(144.0);
+        this.categoryBox.setLayoutY(160);
+        this.categoryBox.setItems(getCategories()); // testing
 
         // Supplier pane
-        supplierLbl = new Label("Supplier");
-        supplierLbl.setStyle(
-                "-fx-text-fill: #000;");
+        Label supplierLbl = new Label("Supplier");
+        supplierLbl.setStyle("-fx-text-fill: #000;");
         supplierLbl.setPrefWidth(220); supplierLbl.setPrefHeight(40);
         supplierLbl.setLayoutX(56.0); supplierLbl.setLayoutY(220);
 
-        supplierBox = new ComboBox<>();
-        supplierBox.setPromptText("Enter supplier");
-        supplierBox.setEditable(true);
-        supplierBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
-        supplierBox.setPrefWidth(360); supplierBox.setPrefHeight(40);
-        supplierBox.setLayoutX(144.0); supplierBox.setLayoutY(220);
-        supplierBox.setItems(getSuppliersFromDatabase()); // testing
+        this.supplierBox = new ComboBox<>();
+        this.supplierBox.setPromptText("Enter supplier");
+        this.supplierBox.setEditable(true);
+        this.supplierBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
+        this.supplierBox.setPrefWidth(360);
+        this.supplierBox.setPrefHeight(40);
+        this.supplierBox.setLayoutX(144.0);
+        this.supplierBox.setLayoutY(220);
+        this.supplierBox.setItems(getSuppliersFromDatabase()); // testing
 
         // Button pane
-        addButton = new Button();
+        Button addButton = new Button();
         addButton.setStyle(Styles.getPopAddButton());
         addButton.setPrefWidth(200); addButton.setPrefHeight(40);
         addButton.setLayoutX(75); addButton.setLayoutY(310);
@@ -135,14 +109,46 @@ public class IngredientPopup extends AnchorPane {
             addButton.setOnAction(e -> editAction());
         }
 
-        cancelButton = new Button("CANCEL");
+        Button cancelButton = new Button("CANCEL");
         cancelButton.setStyle(Styles.getPopCancelButton());
         cancelButton.setPrefWidth(200); cancelButton.setPrefHeight(40);
         cancelButton.setLayoutX(325.0); cancelButton.setLayoutY(310);
         cancelButton.setOnAction(e -> cancelAction());
 
         // Add all children
-        getChildren().addAll(title, nameLbl, nameField, categoryLbl, categoryBox, supplierLbl, supplierBox, addButton, cancelButton);
+        getChildren().addAll(
+                title,
+                nameLbl,
+                this.nameField,
+                categoryLbl,
+                this.categoryBox,
+                supplierLbl,
+                this.supplierBox,
+                addButton,
+                cancelButton
+        );
+
+        initPanel();
+    }
+
+    /**
+     * TODO: comment
+     */
+    public void initPanel() {
+        this.frame = new JFrame("FX");
+        this.frame.setTitle("Add new ingredient");
+
+        final JFXPanel fxPanel = new JFXPanel();
+        this.frame.add(fxPanel);
+
+        this.frame.setSize(600,400);
+        this.frame.setLocationRelativeTo(null);
+        this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.frame.setUndecorated(true);
+        this.frame.setResizable(false);
+        this.frame.setVisible(true);
+
+        Platform.runLater(() -> fxPanel.setScene(new Scene(this)));
     }
     
     /**
@@ -150,18 +156,17 @@ public class IngredientPopup extends AnchorPane {
      */
     public void addAction() {
         try {
-            Ingredient test;
+            Ingredient ingredient;
 
-            String name = nameField.getText();
-            String category = categoryBox.getSelectionModel().getSelectedItem();
-            String supplierName = supplierBox.getSelectionModel().getSelectedItem();
-            Supplier supplier = callback.getSupplier(supplierName);
+            String name = this.nameField.getText();
+            String category = this.categoryBox.getSelectionModel().getSelectedItem();
+            String supplierName = this.supplierBox.getSelectionModel().getSelectedItem();
+            Supplier supplier = this.callback.getSupplier(supplierName);
 
-            // TODO: fix supplier
-            test = new Ingredient(name, category, 1, supplier);
+            ingredient = new Ingredient(name, category, 1, supplier);
 
-            if (callback.addIngredient(test)) {
-                source.addNewIngredient(test);
+            if (this.callback.addIngredient(ingredient)) {
+                this.source.addNewIngredient(ingredient);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Please erase search-field to see updates");
@@ -175,24 +180,24 @@ public class IngredientPopup extends AnchorPane {
      * if name is changed remove existing name from database and add the new ingredient to the database
      */
     public void editAction() {
-        String name = nameField.getText();
-        String category = categoryBox.getValue();
-        String supplierName = supplierBox.getValue();
-        Supplier supplier = callback.getSupplier(supplierName);
+        String name = this.nameField.getText();
+        String category = this.categoryBox.getValue();
+        String supplierName = this.supplierBox.getValue();
+        Supplier supplier = this.callback.getSupplier(supplierName);
 
-        if (orgIngredient.equals(name)) {
-            Ingredient ingredient = callback.getIngredient(name);
+        if (this.orgIngredient.equals(name)) {
+            Ingredient ingredient = this.callback.getIngredient(name);
             ingredient.setCategory(category);
             ingredient.setSupplier(supplier);
-            source.refresh();
+            this.source.refresh();
             close();
         } else {
             Ingredient ingredientTest = new Ingredient(name, category, 1, supplier);
-            callback.addIngredient(ingredientTest);
-            callback.removeIngredient(orgIngredient);
-            source.addNewIngredient(ingredientTest);
-            source.removeIngredient();
-            source.refresh();
+            this.callback.addIngredient(ingredientTest);
+            this.callback.removeIngredient(orgIngredient);
+            this.source.addNewIngredient(ingredientTest);
+            this.source.removeIngredient();
+            this.source.refresh();
             close();
         }
     }
@@ -208,7 +213,7 @@ public class IngredientPopup extends AnchorPane {
      * Close the frame
      */
     private void close() {
-        frame.dispose();
+        this.frame.dispose();
     }
 
     /**
@@ -217,7 +222,7 @@ public class IngredientPopup extends AnchorPane {
      */
     private ObservableList<String> getSuppliersFromDatabase() {
         ObservableList<String> listSuppliers = FXCollections.observableArrayList();
-        ArrayList<Supplier> receivedSuppliers = callback.getSuppliers();
+        ArrayList<Supplier> receivedSuppliers = this.callback.getSuppliers();
 
         for (Supplier supplier: receivedSuppliers) {
             listSuppliers.add(supplier.getName());
@@ -251,7 +256,7 @@ public class IngredientPopup extends AnchorPane {
     }
 
     public String getOrgIngredient() {
-        return orgIngredient;
+        return this.orgIngredient;
     }
 
     public void setOrgIngredient(String orgIngredient) {
@@ -264,8 +269,8 @@ public class IngredientPopup extends AnchorPane {
      * @param supplier initial value for item to be edited
      */
     public void setValuesForIngredient(String name, String category, String supplier){
-        nameField.setText(name);
-        categoryBox.getSelectionModel().select(category);
-        supplierBox.getSelectionModel().select(supplier);
+        this.nameField.setText(name);
+        this.categoryBox.getSelectionModel().select(category);
+        this.supplierBox.getSelectionModel().select(supplier);
     }
 }
