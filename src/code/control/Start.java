@@ -19,10 +19,11 @@ public class Start {
         JFrame frame = new JFrame("FX");
         final JFXPanel fxPanel = new JFXPanel();
         frame.setTitle("Cafetairé Inventory System 1.0");
+        ImageIcon icon = new ImageIcon("src/resources/logo/icon.png");
+        frame.setIconImage(icon.getImage());
         frame.add(fxPanel);
         frame.setBounds(200, 100, 1366, 768);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
         frame.setResizable(false);
         frame.setVisible(true);
 
