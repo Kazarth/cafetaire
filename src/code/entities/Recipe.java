@@ -20,6 +20,14 @@ public class Recipe {
         this.category = "test";
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
@@ -32,11 +40,24 @@ public class Recipe {
         return name;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
     public String getInstructions() {
         return instructions;
     }
 
     public ArrayList<Ingredient> getIngredients() {
         return ingredients;
+    }
+
+    // test
+    public String toString() {
+        String out = "";
+        for (Ingredient i: ingredients) {
+            out += i.toString() + "\n";
+        }
+        return out;
     }
 }

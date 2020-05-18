@@ -31,7 +31,7 @@ public class Controller implements Callback {
     /**
      * Method to handle unsaved data on application EXIT
      */
-    public void handleClosing () {
+    public void handleClosing() {
         saveLoad.save();
         System.err.println("Confirmed save and now Exit");
         System.exit(0);
