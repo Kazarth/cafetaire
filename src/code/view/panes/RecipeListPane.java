@@ -47,7 +47,6 @@ public class RecipeListPane extends StackPane {
     private TextField searchField;
     private Button searchButton;
     private TableView<Recipe> recipeView;
-
     private RecipePane pane;
 
     public RecipeListPane(Callback callback, RecipePane pane) {
@@ -62,7 +61,7 @@ public class RecipeListPane extends StackPane {
         container.setPrefSize(1036,698);
         container.setStyle(
                 "-fx-background-color: #fff;" +
-                        "-fx-background-radius: 25"
+                        "-fx-background-radius: 20"
         );
         container.setAlignment(Pos.CENTER);
 
@@ -72,25 +71,23 @@ public class RecipeListPane extends StackPane {
 
         /* Title */
         HBox titleBox = new HBox();
-        titleBox.setPrefSize(1086, 48);
+        titleBox.setPrefSize(1086, 85);
         titleBox.setAlignment(Pos.CENTER);
         titleBox.setStyle(
-                "-fx-background-radius: 25 25 0 0;" +
+                "-fx-background-radius: 20 20 0 0;" +
                         "-fx-border-width: 0 0 1 0;" +
                         "-fx-border-color: #000;" +
                         "-fx-padding: 10;"
         );
-        Font titleFont = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 32);
+        Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         titleLabel = new Label("RECIPES");
-        titleLabel.setFont(titleFont);
+        titleLabel.setFont(MenuTitle);
         titleLabel.setTextFill(Paint.valueOf("#619f81"));
         titleBox.getChildren().add(titleLabel);
 
         /* Label */
         HBox filterBox = new HBox();
-        filterBox.setStyle(
-                "-fx-padding: 30, 0, 0, 0"
-        );
+        filterBox.setPadding(new Insets(20,30,0,30));
         filterBox.setAlignment(Pos.CENTER_LEFT);
         filterBox.setPrefSize(1086,20);
         filterLabel = new Label("ALL RECIPES");
@@ -168,10 +165,10 @@ public class RecipeListPane extends StackPane {
                 "-fx-background-color: #fff;" +
                 "-fx-background-radius: 25, 25, 25, 25"
         );
-        bottomSpacing.setPrefSize(1086, 80);
+        bottomSpacing.setPrefSize(1086, 70);
 
         /* Collect to add */
-        container.getChildren().addAll(titleBox, spaceBox, filterBox, buttonAndSearchContainer, viewContainer, bottomSpacing);
+        container.getChildren().addAll(titleBox, filterBox, buttonAndSearchContainer, viewContainer, bottomSpacing);
         getChildren().add(container);
     }
 

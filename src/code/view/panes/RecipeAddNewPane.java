@@ -6,6 +6,7 @@ import code.entities.RecipePanes;
 import code.entities.Styles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -61,21 +62,21 @@ public class RecipeAddNewPane extends StackPane {
         container.setPrefSize(1036,698);
         container.setStyle(
                 "-fx-background-color: #fff;" +
-                        "-fx-background-radius: 25"
+                        "-fx-background-radius: 20"
         );
         container.setAlignment(Pos.CENTER);
 
         /* Title */
         HBox titleBox = new HBox();
-        titleBox.setPrefSize(1086, 48);
+        titleBox.setPrefSize(1086, 60);
         titleBox.setAlignment(Pos.CENTER);
         titleBox.setStyle(
-                "-fx-background-radius: 25 25 0 0;" +
+                "-fx-background-radius: 20 20 0 0;" +
                         "-fx-border-width: 0 0 1 0;" +
-                        "-fx-border-color: #000;" +
-                        "-fx-padding: 10;"
+                        "-fx-border-color: #000;"
         );
-        Font titleFont = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 32);
+        titleBox.setPadding(new Insets(0,0,10,0));
+        Font titleFont = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         titleLabel = new Label("ADD NEW RECIPE");
         titleLabel.setFont(titleFont);
         titleLabel.setTextFill(Paint.valueOf("#619f81"));
@@ -208,7 +209,7 @@ public class RecipeAddNewPane extends StackPane {
         bottomSpacing.setPrefSize(1086, 40);
 
         /* Collect to add */
-        container.getChildren().addAll(titleBox, spaceBox, recipeNameBox, container_list_instr, fieldBox, spacing_addAndButtons, buttonBox, bottomSpacing);
+        container.getChildren().addAll(titleBox, recipeNameBox, container_list_instr, fieldBox, spacing_addAndButtons, buttonBox, bottomSpacing);
         getChildren().add(container);
     }
 
