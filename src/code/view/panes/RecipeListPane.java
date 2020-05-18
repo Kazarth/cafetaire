@@ -100,7 +100,7 @@ public class RecipeListPane extends StackPane {
         addButton = new Button("ADD RECIPE");
         addButton.setPrefSize(160,40);
         addButton.getStyleClass().add("greenButtonPanel");
-        addButton.setOnAction(e -> addNewRecipe());
+        addButton.setOnAction(e -> createAddView());
         deleteButton = new Button("DELETE RECIPE");
         deleteButton.setPrefSize(160,40);
         deleteButton.getStyleClass().add("greenButtonPanel");
@@ -172,8 +172,12 @@ public class RecipeListPane extends StackPane {
         getChildren().add(container);
     }
 
+    public void addNewRecipe(Recipe recipe) {
+        recipeView.getItems().add(recipe);
+    }
+
     // TODO: add to callback
-    private Boolean addNewRecipe() {
+    private Boolean createAddView() {
         System.out.println("ADD");
         pane.setView(RecipePanes.RecipeAddNewPane);
         return false;
@@ -187,18 +191,23 @@ public class RecipeListPane extends StackPane {
 
     /* In i callback -- wait */
     private void viewRecipe() {
-        // get name
-        TablePosition pos = recipeView.getSelectionModel().getSelectedCells().get(0);
-        int row = pos.getRow();
-        TableColumn col = pos.getTableColumn();
-        Recipe item = recipeView.getItems().get(row);
-        String recipe = (String) col.getCellObservableValue(item).getValue();
-        System.out.println(recipe);
+        try {
+            // get name
+            TablePosition pos = recipeView.getSelectionModel().getSelectedCells().get(0);
+            int row = pos.getRow();
+            TableColumn col = pos.getTableColumn();
+            Recipe item = recipeView.getItems().get(row);
+            String recipe = (String) col.getCellObservableValue(item).getValue();
+            System.out.println(recipe);
 
-        // check against recipe list
+            // check against recipe list
 
-        // open new RecipePane with info
-        pane.setView(RecipePanes.RecipeViewPane);
+            // open new RecipePane with info
+            pane.setView(RecipePanes.RecipeViewPane);
+            //pane.loadRecipe(recipeView, recipe);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Please choose a recipe before pressing View");
+        }
     }
 
     private void search() {

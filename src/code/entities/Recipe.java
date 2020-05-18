@@ -42,11 +42,26 @@ public class Recipe {
         return instructions;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public String getInstructions() {
+
     public Content[] getContents() {
         return contents;
     }
 
     public String getCategory() {
         return category;
+    }
+
+    // test
+    public String toString() {
+        String out = "";
+        for (Ingredient i: ingredients) {
+            out += i.toString() + "\n";
+        }
+        return out;
     }
 }

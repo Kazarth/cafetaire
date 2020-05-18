@@ -1,9 +1,7 @@
 package code.view.panes;
 
 import code.control.Callback;
-import code.entities.Ingredient;
-import code.entities.RecipePanes;
-import code.entities.Styles;
+import code.entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -17,6 +15,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class RecipeAddNewPane extends StackPane {
@@ -27,10 +28,10 @@ public class RecipeAddNewPane extends StackPane {
 
     // lis values
     private Label listLabel;
-    private TableView<String> ingredientsList; // Change to tableView with input as columns
-    TableColumn<String, String> nameCol;
-    TableColumn<String, Double> amountCol;
-    TableColumn<String, String> unitCol;
+    private TableView<IngredientRecipe> ingredientsList; // Change to tableView with input as columns
+    TableColumn<IngredientRecipe, String> nameCol;
+    TableColumn<IngredientRecipe, Double> amountCol;
+    TableColumn<IngredientRecipe, String> unitCol;
 
     // input
     private ComboBox field_Name;
@@ -46,12 +47,14 @@ public class RecipeAddNewPane extends StackPane {
     private Button button_Cancel;
 
     // source
-    private RecipePane pane;
+    private RecipePane source;
+    private RecipeListPane pane;
 
-    public RecipeAddNewPane(Callback callback, RecipePane source) {
+    public RecipeAddNewPane(Callback callback, RecipePane source, RecipeListPane pane) {
         getStylesheets().add("styles.css");
 
-        this.pane = source;
+        this.source = source;
+        this.pane = pane;
 
         /* callback */
         this.callback = callback;
@@ -112,15 +115,15 @@ public class RecipeAddNewPane extends StackPane {
         nameCol = new TableColumn<>();
         nameCol.setPrefWidth(248);
         nameCol.setText("Name");
-        //nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         amountCol = new TableColumn<>();
         amountCol.setPrefWidth(115);
         amountCol.setText("Amount");
-        //amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
         unitCol  = new TableColumn<>();
         unitCol.setPrefWidth(115);
         unitCol.setText("Unit");
-        //unitCol.setCellValueFactory(new PropertyValueFactory<>("unit"));
+        unitCol.setCellValueFactory(new PropertyValueFactory<>("unit"));
 
         ingredientsList.getColumns().addAll(nameCol, amountCol, unitCol);
 
@@ -166,6 +169,15 @@ public class RecipeAddNewPane extends StackPane {
         field_Unit.setItems(getUnits());
         field_Unit.setPromptText("Unit");
         field_Unit.getStyleClass().add("text-field");
+        field_Unit.setButtonCell(new ListCell<String>(){
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if(!(empty || item==null)){
+                    setText(item.toString());
+                }
+            }
+        });
 
         button_Enter = new Button("ADD");
         button_Enter.setPrefSize(100,30);
@@ -214,31 +226,96 @@ public class RecipeAddNewPane extends StackPane {
     }
 
     private void saveRecipe() {
-        System.out.println(field_RName.getText());
+        String name, instructions;
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        Recipe recipe;
+        Ingredient ingredient;
+
+        name = field_RName.getText();
+        instructions = field_Instructions.getText();
+
+        for (IngredientRecipe i: ingredientsList.getItems()) {
+            if (!callback.addIngredient(ingredient = new Ingredient(i.getType()))) {
+                ingredients.add(ingredient);
+            } else {
+                System.out.println("Create new");
+                callback.addIngredient(ingredient);
+                ingredients.add(ingredient);
+            }
+        }
+
+        recipe = new Recipe(name);
+        recipe.setIngredients(ingredients);
+        recipe.setInstructions(instructions);
+
+        System.out.println();
+
+        System.out.println("Name: " + recipe.getName());
+        System.out.println("Instructions: " + recipe.getInstructions());
+        System.out.println("Ingredients: " + recipe.toString());
+
+        pane.addNewRecipe(recipe);
+        goBack();
     }
 
+    /**
+     * 
+     */
     private void addIngredient() {
-        String name = null, unit = null;
+        String name = "", unit = null;
         double amount = 0;
+        Ingredient ingredient; // To check against the database
         try {
             name = (String) field_Name.getValue();
             amount = Double.parseDouble((String) field_Amount.getValue());
             unit = (String) field_Unit.getValue();
+
+            if (!(name.equals("") || amount == 0.0 || unit == null)) {
+                System.out.println("Added Ingredient: \n" +
+                        "Name" + name + "\n" +
+                        "Amount: " + amount + " " + unit);
+                clearInput();
+            } else {
+                JOptionPane.showMessageDialog(null, "Please choose an unit");
+            }
+
         } catch (Exception e) {
             System.out.println("Please enter a correct amount");
         }
 
+        ingredient = new Ingredient(name);
+
         // if ingredient exist, use it, else create new
-
-        System.out.println("Added Ingredient: \n" +
-                "Name" + name + "\n" +
-                "Amount: " + amount + " " + unit);
+        if (!callback.addIngredient(ingredient)) {
+            System.out.println("Already exist");
+            ingredient = callback.getIngredient(ingredient.getType());
+        } else {
+            System.out.println("Created new ingredient: " + ingredient.getType());
+        }
+        IngredientRecipe ingredientRecipe = new IngredientRecipe(name, amount, unit);
+        ingredientsList.getItems().add(ingredientRecipe);
     }
 
+    /**
+     * Clear the input comboboxes
+     */
+    private void clearInput() {
+        field_Name.setValue("");
+        field_Amount.setValue("");
+        field_Unit.setValue("Unit");
+    }
+
+    /**
+     * Return to the landing page
+     */
     private void goBack() {
-        pane.setView(RecipePanes.RecipeListPane);
+        source.setView(RecipePanes.RecipeListPane);
     }
 
+    /**
+     * Returns an array of units
+     * @return ObservableList of units
+     */
     private ObservableList<String> getUnits() {
         ObservableList<String> unitList = FXCollections.observableArrayList();
         String[] units = {"DL", "MSK", "TSK"};
@@ -246,11 +323,12 @@ public class RecipeAddNewPane extends StackPane {
         return unitList;
     }
 
-    private ObservableList<String> getTestValues() {
-        ObservableList <String> ingredients = FXCollections.observableArrayList();
-        String[] newIngredients = new String[2];
-        newIngredients[0] = "Mjöl";
-        newIngredients[1] = "Socker";
+    // Testing
+    private ObservableList<IngredientRecipe> getTestValues() {
+        ObservableList <IngredientRecipe> ingredients = FXCollections.observableArrayList();
+        IngredientRecipe[] newIngredients = new IngredientRecipe[2];
+        newIngredients[0] = new IngredientRecipe("mjöl", 2, "DL");
+        newIngredients[1] = new IngredientRecipe("Socker", 2, "DL");
         ingredients.addAll(Arrays.asList(newIngredients));
         return ingredients;
     }

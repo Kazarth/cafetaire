@@ -1,6 +1,7 @@
 package code.view.panes;
 
 import code.control.Callback;
+import code.entities.Recipe;
 import code.entities.RecipePanes;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -44,6 +45,8 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
 
     private Callback callback;
     private RecipePane recipePane;
+
+    private Recipe recipe;
 
     public RecipeViewPane(Callback callback, RecipePane source) {
         this.callback = callback;
@@ -107,7 +110,7 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
                 "-fx-padding: 0, 10, 0, 100;"
         );
         Font productFont = Font.font("Segoe UI",FontWeight.BOLD, FontPosture.REGULAR, 32);
-        productNameLabel = new Label("PRODUCT NAME"); // replace with getter
+        productNameLabel = new Label("name"); // replace with getter
         productNameLabel.setFont(productFont);
         nameBox.getChildren().add(productNameLabel);
 
@@ -194,6 +197,13 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
         /* Collect to add */
         container.getChildren().addAll(titleBox, spaceBox, barContainer, guideContainer, bakeBox);
         getChildren().add(container);
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+        productNameLabel.setText(recipe.getName());
+        ingredientsBox.setText(recipe.toString());
+        stepsBox.setText(recipe.getInstructions());
     }
 
     private void goBack() {
