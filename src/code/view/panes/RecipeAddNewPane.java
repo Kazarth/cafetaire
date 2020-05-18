@@ -28,10 +28,10 @@ public class RecipeAddNewPane extends StackPane {
 
     // lis values
     private Label listLabel;
-    private TableView<IngredientRecipe> ingredientsList; // Change to tableView with input as columns
-    TableColumn<IngredientRecipe, String> nameCol;
-    TableColumn<IngredientRecipe, Double> amountCol;
-    TableColumn<IngredientRecipe, String> unitCol;
+    private TableView<Content> ingredientsList; // Change to tableView with input as columns
+    TableColumn<Content, Ingredient> nameCol;
+    TableColumn<Content, Double> amountCol;
+    TableColumn<Content, Units> unitCol;
 
     // input
     private ComboBox field_Name;
@@ -108,18 +108,17 @@ public class RecipeAddNewPane extends StackPane {
 
         ingredientsList = new TableView<>();
         ingredientsList.setPrefSize(460,200);
-        ingredientsList.setItems(getTestValues());
         ingredientsList.getStyleClass().add("list");
         ingredientsList.setEditable(false);
 
         nameCol = new TableColumn<>();
         nameCol.setPrefWidth(248);
         nameCol.setText("Name");
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("ingredient"));
         amountCol = new TableColumn<>();
         amountCol.setPrefWidth(115);
         amountCol.setText("Amount");
-        amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        amountCol.setCellValueFactory(new PropertyValueFactory<>("value"));
         unitCol  = new TableColumn<>();
         unitCol.setPrefWidth(115);
         unitCol.setText("Unit");
@@ -170,9 +169,8 @@ public class RecipeAddNewPane extends StackPane {
         field_Unit.setPromptText("Unit");
         field_Unit.getStyleClass().add("text-field");
         field_Unit.setButtonCell(new ListCell<String>(){
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
+            protected void updateItem(Units item, boolean empty) {
+                super.updateItem(String.valueOf(item), empty);
                 if(!(empty || item==null)){
                     setText(item.toString());
                 }
@@ -225,17 +223,22 @@ public class RecipeAddNewPane extends StackPane {
         getChildren().add(container);
     }
 
+    /**
+     * Saves the Recipe to the database
+     */
     private void saveRecipe() {
         String name, instructions;
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         Recipe recipe;
         Ingredient ingredient;
+        Content content;
 
         name = field_RName.getText();
         instructions = field_Instructions.getText();
 
-        for (IngredientRecipe i: ingredientsList.getItems()) {
-            if (!callback.addIngredient(ingredient = new Ingredient(i.getType()))) {
+        for (Content c: ingredientsList.getItems()) {
+            ingredient = new Ingredient(c.getIngredient().getType());
+            if (!callback.addIngredient(ingredient)) {
                 ingredients.add(ingredient);
             } else {
                 System.out.println("Create new");
@@ -245,9 +248,11 @@ public class RecipeAddNewPane extends StackPane {
         }
 
         recipe = new Recipe(name);
-
-        //recipe.setContents(ingredient);
-        //recipe.setInstructions(instructions);
+        for (Content c : ingredientsList.getItems()) {
+            content = c;
+            recipe.addContent(content);
+        }
+        recipe.setInstructions(instructions);
 
         System.out.println();
 
@@ -256,24 +261,26 @@ public class RecipeAddNewPane extends StackPane {
         System.out.println("Ingredients: " + recipe.toString());
 
         pane.addNewRecipe(recipe);
+        callback.addRecipe(recipe);
         goBack();
     }
 
     /**
-     *
+     * Adds ingredient to the tableView
      */
     private void addIngredient() {
-        String name = "", unit = null;
+        String name = "";
+        Units unit = null;
         double amount = 0;
         Ingredient ingredient; // To check against the database
         try {
             name = (String) field_Name.getValue();
             amount = Double.parseDouble((String) field_Amount.getValue());
-            unit = (String) field_Unit.getValue();
+            unit = (Units) field_Unit.getValue();
 
             if (!(name.equals("") || amount == 0.0 || unit == null)) {
                 System.out.println("Added Ingredient: \n" +
-                        "Name" + name + "\n" +
+                        "Name: " + name + "\n" +
                         "Amount: " + amount + " " + unit);
                 clearInput();
             } else {
@@ -293,8 +300,8 @@ public class RecipeAddNewPane extends StackPane {
         } else {
             System.out.println("Created new ingredient: " + ingredient.getType());
         }
-        IngredientRecipe ingredientRecipe = new IngredientRecipe(name, amount, unit);
-        ingredientsList.getItems().add(ingredientRecipe);
+        Content content = new Content(ingredient, amount, unit);
+        ingredientsList.getItems().add(content);
     }
 
     /**
@@ -317,19 +324,16 @@ public class RecipeAddNewPane extends StackPane {
      * Returns an array of units
      * @return ObservableList of units
      */
-    private ObservableList<String> getUnits() {
-        ObservableList<String> unitList = FXCollections.observableArrayList();
-        String[] units = {"DL", "MSK", "TSK"};
-        unitList.addAll(Arrays.asList(units));
+    private ObservableList<Units> getUnits() {
+        ObservableList<Units> unitList = FXCollections.observableArrayList();
+        unitList.addAll(Arrays.asList(Units.values()));
         return unitList;
     }
 
     // Testing
-    private ObservableList<IngredientRecipe> getTestValues() {
-        ObservableList <IngredientRecipe> ingredients = FXCollections.observableArrayList();
-        IngredientRecipe[] newIngredients = new IngredientRecipe[2];
-        newIngredients[0] = new IngredientRecipe("mjöl", 2, "DL");
-        newIngredients[1] = new IngredientRecipe("Socker", 2, "DL");
+    private ObservableList<Content> getTestValues() {
+        ObservableList <Content> ingredients = FXCollections.observableArrayList();
+        Content[] newIngredients = new Content[2];
         ingredients.addAll(Arrays.asList(newIngredients));
         return ingredients;
     }

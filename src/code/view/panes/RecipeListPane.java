@@ -1,6 +1,7 @@
 package code.view.panes;
 
 import code.control.Callback;
+import code.entities.Ingredient;
 import code.entities.Recipe;
 import code.entities.RecipePanes;
 import code.entities.Styles;
@@ -157,7 +158,7 @@ public class RecipeListPane extends StackPane {
         categoryCol.setPrefWidth(490);
         recipeView.getColumns().addAll(nameCol, categoryCol);
 
-        recipeView.setItems(getTestValues());
+        recipeView.setItems(getRecipes());
 
         /* Bottom container */
         HBox bottomSpacing = new HBox();
@@ -222,11 +223,9 @@ public class RecipeListPane extends StackPane {
         System.out.println("contract");
     }
 
-    private ObservableList<Recipe> getTestValues() {
+    private ObservableList<Recipe> getRecipes() {
         ObservableList <Recipe> recipes = FXCollections.observableArrayList();
-        Recipe[] newRecipes = new Recipe[2];
-        newRecipes[0] = new Recipe("Choklad Muffins");
-        newRecipes[1] = new Recipe("Kanelbullar");
+        Recipe[] newRecipes = callback.getRecipes();
         recipes.addAll(Arrays.asList(newRecipes));
         return recipes;
     }

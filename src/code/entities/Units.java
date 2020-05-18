@@ -7,5 +7,6 @@ public enum Units {
     krm,
     tsk,
     msk,
-    g
+    g,
+    st
 }
