@@ -18,6 +18,10 @@ public class Recipe {
         this.category = "test";
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setInstructions(String[] instructions) {
         this.instructions = instructions;
     }
@@ -44,17 +48,5 @@ public class Recipe {
 
     public String getCategory() {
         return category;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
