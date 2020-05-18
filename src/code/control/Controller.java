@@ -154,6 +154,27 @@ public class Controller implements Callback {
     }
 
     @Override
+    public boolean addRecipe(Recipe recipe) {
+        saveLoad.setEdited();
+        return database.addRecipe(recipe);
+    }
+
+    @Override
+    public Recipe getRecipe(String recipe) {
+        return database.getRecipe(recipe);
+    }
+
+    @Override
+    public Recipe[] getRecipes() {
+        return database.getRecipes();
+    }
+
+    @Override
+    public boolean removeRecipe(String recipe) {
+        return database.removeRecipe(recipe);
+    }
+
+    @Override
     public boolean addSupplier(Supplier supplier) {
         saveLoad.setEdited();
         return database.addSupplier(supplier);
@@ -185,7 +206,7 @@ public class Controller implements Callback {
         saveLoad.setEdited();
         return database.removeSupplier(name);
     }
-  
+
     @Override
     public void setupPane() {
         // get centerPane
