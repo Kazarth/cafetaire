@@ -245,6 +245,7 @@ public class RecipeAddNewPane extends StackPane {
         }
 
         recipe = new Recipe(name);
+
         //recipe.setContents(ingredient);
         //recipe.setInstructions(instructions);
 
@@ -259,7 +260,7 @@ public class RecipeAddNewPane extends StackPane {
     }
 
     /**
-     * 
+     *
      */
     private void addIngredient() {
         String name = "", unit = null;
