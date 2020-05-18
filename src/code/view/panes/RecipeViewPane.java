@@ -147,6 +147,9 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
         ingredientsBox = new TextArea();
         ingredientsBox.setPrefSize(360,300);
         ingredientsBox.getStyleClass().add("text-field");
+        Font ingredientsFont = Font.font("Segoe UI",FontWeight.NORMAL, FontPosture.REGULAR, 16);
+        ingredientsBox.setFont(ingredientsFont);
+        ingredientsBox.setEditable(false);
         editIngredientsButton = new Button("EDIT INGREDIENTS");
         editIngredientsButton.getStyleClass().add("greenButton");
         editIngredientsButton.setOnAction(e -> editIngredients());
@@ -201,9 +204,9 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
-        productNameLabel.setText(recipe.getName());
-        ingredientsBox.setText(recipe.toString());
-        //stepsBox.setText(recipe.getInstructions());
+        productNameLabel.setText(recipe.getName().toUpperCase());
+        ingredientsBox.setText(recipe.getIngredients());
+        stepsBox.setText(recipe.getInstructions());
     }
 
     private void goBack() {

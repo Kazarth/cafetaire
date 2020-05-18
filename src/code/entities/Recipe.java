@@ -1,20 +1,25 @@
 package code.entities;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * TODO: description
  * @author Tor Stenfeldt
  * @version 1.0
  */
-public class Recipe {
+public class Recipe implements Serializable {
+    private transient static double serialVersionUID = 61D;
     private String name;
-    private String[] instructions;
+    private String instructions;
     private Content[] contents;
+    private ArrayList<Content> contentList;
     private String category;
 
     public Recipe(String name) {
         this.name = name;
-        this.instructions = new String[10];
         this.contents = new Content[10];
+        this.contentList = new ArrayList<>();
         this.category = "test";
     }
 
@@ -22,8 +27,12 @@ public class Recipe {
         this.name = name;
     }
 
-    public void setInstructions(String[] instructions) {
+    public void setInstructions(String instructions) {
         this.instructions = instructions;
+    }
+
+    public void addContent(Content content) {
+        this.contentList.add(content);
     }
 
     public void setContents(Content[] contents) {
@@ -38,10 +47,6 @@ public class Recipe {
         return name;
     }
 
-    public String[] getInstructions() {
-        return instructions;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -50,16 +55,25 @@ public class Recipe {
         return contents;
     }
 
-    // test
-    public String toString() {
-        String out = "";
-        for (String i: instructions) {
-            System.out.println(i);
+    // change to %5 for structure
+    public String getIngredients() {
+        StringBuilder out = new StringBuilder();
+        for (Content c: contentList) {
+            out.append(c.getIngredient().getType());
+            out.append(": ");
+            out.append(c.getValue());
+            out.append(" ");
+            out.append(c.getUnit());
+            out.append("\n");
         }
+        return out.toString();
+    }
 
-        for (Content c: contents) {
-            System.out.println(c);
+    public String getInstructions() {
+        StringBuilder out = new StringBuilder();
+        for (Content c: contentList) {
+            out.append(c.getIngredient().getType()).append(", ");
         }
-        return out;
+        return instructions;
     }
 }

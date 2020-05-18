@@ -1,6 +1,9 @@
 package code.entities;
 
-public class Content {
+import java.io.Serializable;
+
+public class Content implements Serializable {
+    private transient static double serialVersionUID = 71D;
     private Ingredient ingredient;
     private double value;
     private Units unit;
