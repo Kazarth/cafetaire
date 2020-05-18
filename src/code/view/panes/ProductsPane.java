@@ -236,9 +236,6 @@ public class ProductsPane extends StackPane {
      */
     public ObservableList<Product> getItemList() {
         ObservableList<Product> items = FXCollections.observableArrayList();
-        // temp item to populate tableView
-        Product product = new Product("Dummy Item", ProductCategories.Bread, 1);
-        callback.addProduct(product);
         Product[] receivedProducts = callback.getProduct();
         items.addAll(Arrays.asList(receivedProducts));
 

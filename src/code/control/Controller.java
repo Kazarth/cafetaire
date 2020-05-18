@@ -185,11 +185,11 @@ public class Controller implements Callback {
         saveLoad.setEdited();
         return database.removeSupplier(name);
     }
-
+  
     @Override
     public void setupPane() {
         // get centerPane
         // remove current
         // add new
     }
-
+}

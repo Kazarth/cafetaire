@@ -39,4 +39,16 @@ public class Recipe {
     public ArrayList<Ingredient> getIngredients() {
         return ingredients;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
