@@ -47,10 +47,6 @@ public class Recipe implements Serializable {
         return name;
     }
 
-    public String getInstructions() {
-        return instructions;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -59,12 +55,25 @@ public class Recipe implements Serializable {
         return contents;
     }
 
-    @Override
-    public String toString() {
+    // change to %5 for structure
+    public String getIngredients() {
+        StringBuilder out = new StringBuilder();
+        for (Content c: contentList) {
+            out.append(c.getIngredient().getType());
+            out.append(": ");
+            out.append(c.getValue());
+            out.append(" ");
+            out.append(c.getUnit());
+            out.append("\n");
+        }
+        return out.toString();
+    }
+
+    public String getInstructions() {
         StringBuilder out = new StringBuilder();
         for (Content c: contentList) {
             out.append(c.getIngredient().getType()).append(", ");
         }
-        return out.toString();
+        return instructions;
     }
 }

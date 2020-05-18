@@ -201,11 +201,8 @@ public class RecipeListPane extends StackPane {
             String recipe = (String) col.getCellObservableValue(item).getValue();
             System.out.println(recipe);
 
-            // check against recipe list
-
             // open new RecipePane with info
-            pane.setView(RecipePanes.RecipeViewPane);
-            //pane.loadRecipe(recipeView, recipe);
+            pane.loadRecipe(RecipePanes.RecipeViewPane, callback.getRecipe(recipe));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Please choose a recipe before pressing View");
         }
