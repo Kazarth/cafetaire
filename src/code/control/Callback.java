@@ -35,6 +35,11 @@ public interface Callback {
     boolean decrementProduct(Product product);
     boolean removeProduct(String product);
 
+    boolean addRecipe(Recipe recipe);
+    Recipe getRecipe(String recipe);
+    Recipe[] getRecipes();
+    boolean removeRecipe(String recipe);
+
     boolean addSupplier (Supplier supplier);
     boolean addSupplier (String name);
     Supplier getSupplier(String supplier);

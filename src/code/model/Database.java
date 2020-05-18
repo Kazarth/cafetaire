@@ -16,17 +16,18 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Database implements Serializable {
     private transient final double serialVersionUID = 41D;
-
     private HashMap<String, Ingredient> ingredients;
     private HashMap<String, Product> products;
+    private HashMap<String, Recipe> recipes;
     private ArrayList<Supplier> suppliers;
 
     public Database() {
         this.ingredients = new HashMap<>();
         this.products = new HashMap<>();
+        this.recipes = new HashMap<>();
         this.suppliers = new ArrayList<>();
 
-        testPopulate();
+        //testPopulate();
     }
 
     public boolean addIngredient(Ingredient ingredient) {
@@ -178,6 +179,34 @@ public class Database implements Serializable {
         return (this.products.remove(product) != null);
     }
 
+    public boolean addRecipe(Recipe recipe) {
+        if (this.recipes.containsKey(recipe.getName())) {
+            return false;
+        }
+
+        this.recipes.put(recipe.getName(), recipe);
+        return true;
+    }
+
+    public Recipe getRecipe(String recipe) {
+        return this.recipes.get(recipe);
+    }
+
+    public Recipe[] getRecipes() {
+        Recipe[] recipes = new Recipe[this.recipes.size()];
+        List<String> keys = new ArrayList<>(this.recipes.keySet());
+
+        for (int i=0; i<recipes.length; i++) {
+            recipes[i] = this.recipes.get(keys.get(i));
+        }
+
+        return recipes;
+    }
+
+    public boolean removeRecipe(String recipe) {
+        return (this.recipes.remove(recipe) != null);
+    }
+
     public boolean addSupplier(Supplier supplier) {
         if (!this.suppliers.contains(supplier)) {
             this.suppliers.add(supplier);
@@ -224,8 +253,6 @@ public class Database implements Serializable {
      * Used for testing purposes.
      */
     public void testPopulate() {
-
-        /*
         Supplier lucasAB = new Supplier("Lucas AB");
         Supplier georgeAB = new Supplier("George AB");
         Supplier paulAB = new Supplier("Paul AB");
@@ -241,7 +268,5 @@ public class Database implements Serializable {
         addIngredient(salt);
         addIngredient(sugar);
         addIngredient(cocoa);
-
-         */
     }
 }

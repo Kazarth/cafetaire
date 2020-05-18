@@ -1,7 +1,5 @@
 package code.entities;
 
-import java.util.ArrayList;
-
 /**
  * TODO: description
  * @author Tor Stenfeldt
@@ -9,35 +7,39 @@ import java.util.ArrayList;
  */
 public class Recipe {
     private String name;
+    private String[] instructions;
+    private Content[] contents;
     private String category;
-    private ArrayList<Ingredient> ingredients;
-    private String instructions;
 
     public Recipe(String name) {
         this.name = name;
-        this.ingredients = new ArrayList<>();
-        this.instructions = "";
+        this.instructions = new String[0];
+        this.contents = new Content[0];
         this.category = "test";
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setInstructions(String instructions) {
+    public void setInstructions(String[] instructions) {
         this.instructions = instructions;
     }
 
-    public void setIngredients(ArrayList<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public void setContents(Content[] contents) {
+        this.contents = contents;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String[] getInstructions() {
+        return instructions;
     }
 
     public String getCategory() {
@@ -45,11 +47,13 @@ public class Recipe {
     }
 
     public String getInstructions() {
-        return instructions;
+
+    public Content[] getContents() {
+        return contents;
     }
 
-    public ArrayList<Ingredient> getIngredients() {
-        return ingredients;
+    public String getCategory() {
+        return category;
     }
 
     // test
