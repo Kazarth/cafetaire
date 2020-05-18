@@ -65,6 +65,18 @@
   -fx-font-weight: bold;
 }
 
+.list {
+    -fx-selection-bar: #619F81;
+    -fx-selection-bar-non-focused: #619F81;
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color:rgba(255,0,0,0.2); /* here rgba (corrected) */
+}
+
+.list:focused {
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color:rgba(97,159,129,62); /* here rgba (corrected) */
+}
+
 .text-field {
     -fx-faint-focus-color: transparent;
     -fx-focus-color:rgba(255,0,0,0.2); /* here rgba (corrected) */

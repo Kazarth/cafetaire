@@ -274,7 +274,7 @@ public class IngredientsPane extends StackPane {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
             if (callback.incrementIngredient(ingredientSelected.get(0))) {
-                ingredientSelected.get(0).increment(); // increment for view
+                //ingredientSelected.get(0).increment(); // increment for view
                 System.out.println("Completed increase in View");
             }
             tableView.refresh();
@@ -291,7 +291,7 @@ public class IngredientsPane extends StackPane {
             JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
         } else {
             if (callback.decrementIngredient(ingredientSelected.get(0))) {
-                ingredientSelected.get(0).decrement(); // decrement for view
+                //ingredientSelected.get(0).decrement(); // decrement for view
                 System.out.println("Completed decrease in View");
             }
             tableView.refresh();
