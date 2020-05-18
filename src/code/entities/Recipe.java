@@ -50,4 +50,16 @@ public class Recipe {
         return contents;
     }
 
+    // test
+    public String toString() {
+        String out = "";
+        for (String i: instructions) {
+            System.out.println(i);
+        }
+
+        for (Content c: contents) {
+            System.out.println(c);
+        }
+        return out;
+    }
 }

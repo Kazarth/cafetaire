@@ -245,7 +245,8 @@ public class RecipeAddNewPane extends StackPane {
         }
 
         recipe = new Recipe(name);
-        //recipe.setIngredients(ingredients);
+
+        //recipe.setContents(ingredient);
         //recipe.setInstructions(instructions);
 
         System.out.println();
