@@ -13,8 +13,8 @@ public class Recipe {
 
     public Recipe(String name) {
         this.name = name;
-        this.instructions = new String[0];
-        this.contents = new Content[0];
+        this.instructions = new String[10];
+        this.contents = new Content[10];
         this.category = "test";
     }
 
@@ -46,22 +46,8 @@ public class Recipe {
         return category;
     }
 
-    public String getInstructions() {
-
     public Content[] getContents() {
         return contents;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    // test
-    public String toString() {
-        String out = "";
-        for (Ingredient i: ingredients) {
-            out += i.toString() + "\n";
-        }
-        return out;
-    }
 }

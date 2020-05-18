@@ -203,7 +203,7 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
         this.recipe = recipe;
         productNameLabel.setText(recipe.getName());
         ingredientsBox.setText(recipe.toString());
-        stepsBox.setText(recipe.getInstructions());
+        //stepsBox.setText(recipe.getInstructions());
     }
 
     private void goBack() {
