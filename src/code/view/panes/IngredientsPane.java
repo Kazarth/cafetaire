@@ -34,10 +34,10 @@ public class IngredientsPane extends StackPane {
     private Spinner<Integer> numberSpinner = new Spinner<>();
 
     private TableView<Ingredient> tableView;
-    private TableColumn<Ingredient, String> nameColumn = new TableColumn<>();
-    private TableColumn<Ingredient, String> categoryColumn = new TableColumn<>();
-    private TableColumn<Ingredient, Integer> stockColumn = new TableColumn<>();
-    private TableColumn<Ingredient, String> supplierColumn = new TableColumn<>();
+    private TableColumn<Ingredient, String> nameColumn = new TableColumn<>("Name");
+    private TableColumn<Ingredient, String> categoryColumn = new TableColumn<>("Category");
+    private TableColumn<Ingredient, Integer> stockColumn = new TableColumn<>("Stock");
+    private TableColumn<Ingredient, String> supplierColumn = new TableColumn<>("Supplier");
 
     private TextField searchTextField;
 
