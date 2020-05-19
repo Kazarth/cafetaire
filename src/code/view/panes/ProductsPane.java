@@ -1,7 +1,6 @@
 package code.view.panes;
 
 import code.entities.Product;
-import code.entities.ProductCategories;
 import code.entities.Styles;
 import code.view.popups.ProductPopup;
 import javafx.collections.FXCollections;
@@ -28,7 +27,7 @@ import java.util.NoSuchElementException;
  * @author Viktor Polak
  * @version 5.1
  */
-public class ProductsPane extends StackPane {
+public class ProductsPane extends StackPane implements EnhancedPane {
     private Spinner<Integer> numberSpinner = new Spinner<>();
 
     private TableColumn<Product, String> tableColumn_Name = new TableColumn<>("Name");
@@ -236,7 +235,7 @@ public class ProductsPane extends StackPane {
      */
     public ObservableList<Product> getItemList() {
         ObservableList<Product> items = FXCollections.observableArrayList();
-        Product[] receivedProducts = callback.getProduct();
+        Product[] receivedProducts = callback.getProducts();
         items.addAll(Arrays.asList(receivedProducts));
 
         return items;

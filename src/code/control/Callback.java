@@ -27,7 +27,7 @@ public interface Callback {
 
     boolean addProduct(Product product);
     Product getProduct(String product);
-    Product[] getProduct();
+    Product[] getProducts();
     int getNumProduct(String product);
     boolean incrementProduct(String product);
     boolean incrementProduct(Product product);

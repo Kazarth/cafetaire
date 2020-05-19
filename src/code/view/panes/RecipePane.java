@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
 
-public class RecipePane extends StackPane {
+public class RecipePane extends StackPane implements EnhancedPane {
     private Pane[] views;
     private Pane currentPane;
     private RecipePanes panes;
@@ -54,5 +54,9 @@ public class RecipePane extends StackPane {
         }
         getChildren().set(0, views[pane]);
         this.panes = view;
+    }
+
+    public void refresh() {
+        // TODO: refresh anything?
     }
 }

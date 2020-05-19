@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  * @author Tor Stenfeldt, Georg Grankvist, Lucas Eliasson
  * @version 1.0
  */
-public class IngredientsPane extends StackPane {
+public class IngredientsPane extends StackPane implements EnhancedPane {
     private TableView<Ingredient> tableView;
     private TableColumn<Ingredient, String> nameColumn;
     private TableColumn<Ingredient, String> categoryColumn;

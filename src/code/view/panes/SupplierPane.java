@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
  * @author Paul Moustakas, Tor Stenfeldt
  * @version 3.0
  */
-public class SupplierPane extends StackPane {
+public class SupplierPane extends StackPane implements EnhancedPane {
     private TableView<Supplier> tableView;
     private TableColumn<Supplier, String> supplierColumn;
     private TableColumn<Supplier, String> categoryColumn;

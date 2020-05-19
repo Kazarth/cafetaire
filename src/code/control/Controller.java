@@ -120,7 +120,7 @@ public class Controller implements Callback {
     }
 
     @Override
-    public Product[] getProduct() {
+    public Product[] getProducts() {
         return database.getProducts();
     }
 

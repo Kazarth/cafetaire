@@ -118,6 +118,16 @@ public abstract class Styles {
                 //"-fx-color: #21252B"
                 );
     }
+
+    public static String getDashboardTable() {
+        return ("-fx-selection-bar: #619F81;" +
+                "-fx-selection-bar-non-focused: #619F81;" +
+                "-fx-background-color: #FFF;" +
+                "-fx-background-radius: 0 0 20 20;" +
+                ""
+        );
+    }
+
     public static String getTableRowSelected() {
         return (
                 "-fx-selection-bar: #619F81;" +

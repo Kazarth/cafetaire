@@ -129,7 +129,7 @@ public class MenuPane extends StackPane {
      */
     private void contract(Button button) {
         int activeIndex = this.mainPane.getActiveView();
-        Pane[] views = this.mainPane.getViews();
+        EnhancedPane[] views = this.mainPane.getViews();
 
         switch (activeIndex) {
             case 0:
@@ -185,7 +185,7 @@ public class MenuPane extends StackPane {
      */
     private void expand(Button button) {
         int activeIndex = this.mainPane.getActiveView();
-        Pane[] views = this.mainPane.getViews();
+        EnhancedPane[] views = this.mainPane.getViews();
 
         switch (activeIndex) {
             case 0:
