@@ -3,6 +3,7 @@ package code.view.popups;
 import code.control.Callback;
 import code.entities.Product;
 import code.entities.ProductCategories;
+import code.entities.Recipe;
 import code.entities.Styles;
 import code.view.panes.ProductsPane;
 import javafx.application.Platform;
@@ -27,6 +28,7 @@ public class ProductPopup extends AnchorPane {
     private JFrame frame;
     private TextField textField_Name;
     private ComboBox<ProductCategories> categoryBox;
+    private ComboBox<Recipe> ComboBox_Recipe;
     private Spinner<Integer> numberSpinner;
     private String orgProd;
 
@@ -92,17 +94,21 @@ public class ProductPopup extends AnchorPane {
         this.numberSpinner.setLayoutX(144.0);
         this.numberSpinner.setLayoutY(220);
 
-        // Phone Pane
-        Label label_Phone = new Label("Phone nr.");
-        label_Phone.setStyle("-fx-text-fill: #000;");
-        label_Phone.setPrefWidth(220); label_Phone.setPrefHeight(40);
-        label_Phone.setLayoutX(56.0);  label_Phone.setLayoutY(280);
+        // Recipe Pane
+        Label label_Recipe = new Label("Recipe");
+        label_Recipe.setStyle("-fx-text-fill: #000;");
+        label_Recipe.setPrefWidth(220); label_Recipe.setPrefHeight(40);
+        label_Recipe.setLayoutX(56.0);  label_Recipe.setLayoutY(280);
 
-        TextField textField_Phone = new TextField();
-        textField_Phone.setPromptText("Enter phone number");
-        textField_Phone.setStyle(Styles.getPopField());
-        textField_Phone.setPrefWidth(360);   textField_Phone.setPrefHeight(40);
-        textField_Phone.setLayoutX(144.0);   textField_Phone.setLayoutY(280);
+        this.ComboBox_Recipe = new ComboBox<>();
+        this.ComboBox_Recipe.setPromptText("Select a recipe");
+        this.ComboBox_Recipe.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
+        this.ComboBox_Recipe.setPrefWidth(360);
+        this.ComboBox_Recipe.setPrefHeight(40);
+        this.ComboBox_Recipe.setLayoutX(144);
+        this.ComboBox_Recipe.setLayoutY(280);
+        this.ComboBox_Recipe.setItems(populateRecipeBox());
+        this.ComboBox_Recipe.setEditable(false);
 
         // Button pane
         Button button_Add = new Button();
@@ -136,7 +142,8 @@ public class ProductPopup extends AnchorPane {
                 this.categoryBox,
                 label_Number,
                 this.numberSpinner,
-//               phoneLbl,phoneField,
+                label_Recipe,
+                this.ComboBox_Recipe,
                 button_Add,
                 button_Cancel
         );
@@ -170,11 +177,17 @@ public class ProductPopup extends AnchorPane {
         String productName = this.textField_Name.getText();
         ProductCategories category = this.categoryBox.getSelectionModel().getSelectedItem();
         int quantity = this.numberSpinner.getValue();
-//        String phone        = phoneField.getText();
+        Recipe recipe = this.ComboBox_Recipe.getValue();
+        Recipe noRecipe = new Recipe("No Recipe");
 
         if ((!productName.equals("")) && (category != null)) {
-            product = new Product(productName, category, quantity);
-            System.out.println(product.toString());
+            if (recipe != null) {
+                product = new Product(productName, category, quantity, recipe);
+                System.out.println(product.toString());
+                System.out.println(recipe.toString());
+            } else {
+                product = new Product(productName, category, quantity, noRecipe);
+            }
 
             if (this.callback.addProduct(product)) {
                 this.source.addNewProduct(product);
@@ -208,22 +221,31 @@ public class ProductPopup extends AnchorPane {
         String name = this.textField_Name.getText();
         ProductCategories category = this.categoryBox.getValue();
         int quantity = this.numberSpinner.getValue();
+        Recipe recipe = this.ComboBox_Recipe.getValue();
+        Product product;
 
         if (this.orgProd.equals(name)){
-            Product product = this.callback.getProduct(this.textField_Name.getText());
+            product = this.callback.getProduct(this.textField_Name.getText());
             product.setCategory(category);
             product.setStock(quantity);
-            this.source.refresh();
-            close();
+            if (recipe == null) {
+                product.setRecipe(null);
+            } else {
+                product.setRecipe(recipe);
+            }
         } else {
-            Product product = new Product(name, category, quantity);
+            if (recipe == null){
+                product = new Product(name, category, quantity, null);
+            } else {
+                product = new Product(name, category, quantity, recipe);
+            }
             this.callback.addProduct(product);
             this.callback.removeProduct(this.orgProd);
             this.source.addNewProduct(product);
             this.source.removeProduct();
-            this.source.refresh();
-            close();
         }
+        this.source.refresh();
+        close();
     }
 
     /**
@@ -232,10 +254,11 @@ public class ProductPopup extends AnchorPane {
      * @param category set initial value for item to edit
      * @param quantity set initial value for item to edit
      */
-    public void setValuesForItem(String txt, ProductCategories category, int quantity) {
+    public void setValuesForItem(String txt, ProductCategories category, int quantity, Recipe recipe) {
         this.textField_Name.setText(txt);
         this.categoryBox.getSelectionModel().select(category);
         this.numberSpinner.getValueFactory().setValue(quantity);
+        this.ComboBox_Recipe.getSelectionModel().select(recipe);
     }
 
     /**
@@ -254,6 +277,16 @@ public class ProductPopup extends AnchorPane {
         );
 
         return Products;
+    }
+
+    private ObservableList<Recipe> populateRecipeBox(){
+        ObservableList<Recipe> recipes = FXCollections.observableArrayList();
+        Recipe noRecipe = new Recipe("No Recipe");
+
+        recipes.add(noRecipe);
+        recipes.addAll(callback.getRecipes());
+
+        return recipes;
     }
 
     @Override

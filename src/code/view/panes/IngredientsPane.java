@@ -2,6 +2,7 @@ package code.view.panes;
 
 import code.entities.Ingredient;
 import code.entities.Styles;
+import code.entities.Supplier;
 import code.view.popups.IngredientPopup;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;

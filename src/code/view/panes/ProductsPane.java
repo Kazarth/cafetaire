@@ -1,7 +1,7 @@
 package code.view.panes;
 
 import code.entities.Product;
-import code.entities.ProductCategories;
+import code.entities.Recipe;
 import code.entities.Styles;
 import code.view.popups.ProductPopup;
 import javafx.collections.FXCollections;
@@ -38,7 +38,7 @@ public class ProductsPane extends StackPane {
     private TableColumn<Product, String> tableColumn_Name = new TableColumn<>("Name");
     private TableColumn<Product, Double> tableColumn_Categories = new TableColumn<>("Category");
     private TableColumn<Product, Integer> tableColumn_Stock = new TableColumn<>("Quantity");
-    private TableColumn<Product, String> tableColumn_Ingredients = new TableColumn<>("Ingredients");
+    private TableColumn<Product, Recipe> tableColumn_Recipe = new TableColumn<>("Recipe");
     private TableView<Product> tableView;
     private Callback callback;
 
@@ -226,17 +226,18 @@ public class ProductsPane extends StackPane {
         tableColumn_Name.setCellValueFactory(new PropertyValueFactory<>("type"));
         tableColumn_Categories.setCellValueFactory(new PropertyValueFactory<>("category"));
         tableColumn_Stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        tableColumn_Recipe.setCellValueFactory(new PropertyValueFactory<>("recipe"));
 
         tableColumn_Name.setPrefWidth(233);
         tableColumn_Categories.setPrefWidth(234);
         tableColumn_Stock.setPrefWidth(234);
-        tableColumn_Ingredients.setPrefWidth(234);
+        tableColumn_Recipe.setPrefWidth(234);
 
         tableColumn_Name.setStyle(Styles.getTableColumn());
         tableColumn_Categories.setStyle(Styles.getTableColumn());
         tableColumn_Stock.setStyle(Styles.getTableColumn());
 
-        tableView.getColumns().addAll(tableColumn_Name, tableColumn_Categories, tableColumn_Stock, tableColumn_Ingredients);
+        tableView.getColumns().addAll(tableColumn_Name, tableColumn_Categories, tableColumn_Stock, tableColumn_Recipe);
 
         tableView.setPrefHeight(458);
         tableView.setStyle(Styles.getTableRowSelected());
@@ -355,7 +356,7 @@ public class ProductsPane extends StackPane {
                 pane = new ProductPopup(this, callback, 1);
                 Product product = callback.getProduct(name);
                 pane.setOrgProd(name);
-                pane.setValuesForItem(product.getType(), product.getCategory(), product.getStock());
+                pane.setValuesForItem(product.getType(), product.getCategory(), product.getStock(), product.getRecipe());
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
