@@ -1,6 +1,7 @@
 package code.view.panes;
 
 import code.entities.Ingredient;
+import code.entities.Product;
 import code.entities.Styles;
 import code.view.popups.IngredientPopup;
 import javafx.beans.Observable;
@@ -8,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -29,167 +31,184 @@ import java.util.NoSuchElementException;
  * @version 1.0
  */
 public class IngredientsPane extends StackPane {
-    private TableView<Ingredient> tableView;
-    private TableColumn<Ingredient, String> nameColumn;
-    private TableColumn<Ingredient, String> categoryColumn;
-    private TableColumn<Ingredient, Integer> stockColumn;
-    private TableColumn<Ingredient, String> supplierColumn;
 
-    private TableColumn<Ingredient, Boolean> selectedColumn;
+    private Spinner<Integer> numberSpinner = new Spinner<>();
+
+    private TableView<Ingredient> tableView;
+    private TableColumn<Ingredient, String> nameColumn = new TableColumn<>();
+    private TableColumn<Ingredient, String> categoryColumn = new TableColumn<>();
+    private TableColumn<Ingredient, Integer> stockColumn = new TableColumn<>();
+    private TableColumn<Ingredient, String> supplierColumn = new TableColumn<>();
+
     private TextField searchTextField;
+
     private Callback callback;
 
-    private HBox mainContainer;
-    private VBox innerContainer;
-    private VBox mainVbox;
-    private HBox topHBox;
-    private HBox midHBox;
-    private HBox bottomHBox;
-    private HBox westHBOx;
-    private HBox eastHBox;
 
     public IngredientsPane (Callback callback) {
         this.callback = callback;
+        VBox mainContainer = new VBox();
+        mainContainer.setMaxSize(1036, 698);
 
-        // Button instantiation and Configurations
-        Button addIngredients = new Button("ADD NEW INGREDIENT");
-        addIngredients.setStyle(Styles.getButton());
-        addIngredients.setPrefWidth(200);
-        addIngredients.setPrefHeight(30);
-        addIngredients.setOnAction(e -> addNewIngredientAction());
+        mainContainer.getChildren().addAll(initTopVBoxContainer(), initFlowBottom());
+        getChildren().add(mainContainer);
 
-        Button removeIngredients = new Button("REMOVE INGREDIENT");
-        removeIngredients.setStyle(Styles.getButton());
-        removeIngredients.setPrefHeight(30);
-        removeIngredients.setPrefWidth(200);
-        removeIngredients.setOnAction(e -> removeIngredient());
+        mainContainer.setAlignment(Pos.CENTER);
+        setStyle(Styles.getPane());
+        mainContainer.setStyle(Styles.getPane());
 
-        Button editIngredient = new Button("EDIT");
-        editIngredient.setStyle(Styles.getButton());
-        editIngredient.setOnAction(e -> {
-            editAction();
-        });
+        setPrefSize(1086, 768);
+    }
 
-        Button addButton = new Button("ADD");
-        addButton.setPrefHeight(30);
-        addButton.setPrefWidth(100);
-        addButton.setStyle(Styles.getButton());
-        addButton.setOnAction(e -> addAmount());
-
-        Button removeButton = new Button("REMOVE");
-        removeButton.setPrefHeight(30);
-        removeButton.setPrefWidth(100);
-        removeButton.setStyle(Styles.getButton());
-        removeButton.setOnAction(e -> removeAmount());
+    public HBox initUpperHBox () {
 
         Text textTitle = new Text();
-        Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
+        Font menuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         textTitle.setFill(Paint.valueOf("#619f81"));
-        textTitle.setFont(MenuTitle);
+        textTitle.setFont(menuTitle);
         textTitle.setText("INGREDIENTS");
 
-        Text overView = new Text("OVERVIEW");
-        overView.setFont(Font.font("Segoe UI", FontWeight.LIGHT, FontPosture.REGULAR, 20));
-        overView.setFill(Color.BLACK);
+        HBox hBox = new HBox();
+        hBox.setPrefSize(1036, 75);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.getChildren().add(textTitle);
+        hBox.setStyle("-fx-background-radius: 20 20 0 0;" +
+                "-fx-background-color: #FFFFFF;");
 
-        // Searchbar configuration
+        return hBox;
+    }
+
+    public HBox initFillerHBox () {
+        HBox hBoxFiller = new HBox();
+        hBoxFiller.setMinSize(1036, 40);
+        hBoxFiller.setMaxSize(1036, 40);
+        hBoxFiller.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF");
+        return hBoxFiller;
+    }
+
+    public HBox initHBoxLeft() {
+
+        Button button_newIngredient = new Button("ADD NEW INGREDIENT");
+        Button button_removeIngredient = new Button("REMOVE INGREDIENT");
+        Button button_editIngredient = new Button( "EDIT");
         searchTextField = new TextField();
-        searchTextField.setPromptText("SEARCH");
-        searchTextField.setPrefHeight(32);
-        searchTextField.setPrefWidth(150);
 
-        // Ingredient table configuration and design
+        button_newIngredient.setStyle(Styles.getButton());
+        button_editIngredient.setStyle(Styles.getButton());
+        button_removeIngredient.setStyle(Styles.getButton());
+
+        HBox hBox = new HBox(15, button_newIngredient, button_removeIngredient, button_editIngredient);
+        hBox.setSpacing(10);
+        hBox.setMinSize(600, 75);
+        hBox.setMaxSize(600, 75);
+        hBox.setAlignment(Pos.CENTER_LEFT);
+
+        hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        button_newIngredient.setOnAction(e -> addNewIngredientAction());
+        button_removeIngredient.setOnAction(e -> removeIngredient());
+        button_editIngredient.setOnAction(e -> editAction());
+
+        hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50");
+
+        return hBox;
+    }
+
+    public HBox initHBoxCenterRight(){
+        Button button_Add = new Button("ADD");
+        Button button_Remove = new Button("REMOVE");
+
+        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
+        numberSpinner.setValueFactory(svf);
+        numberSpinner.disabledProperty();
+        numberSpinner.setEditable(true);
+        numberSpinner.setPrefHeight(38);
+        numberSpinner.setPrefWidth(100);
+
+        button_Add.setStyle(Styles.getButton());
+        button_Remove.setStyle(Styles.getButton());
+
+        button_Add.setPrefSize(100,30);
+        button_Remove.setPrefSize(100,30);
+
+        button_Add.setOnAction(e -> addQuantity());
+        button_Remove.setOnAction(e -> removeQuantity());
+
+        HBox hBox = new HBox(15, numberSpinner, button_Add, button_Remove);
+
+        hBox.setMaxSize(435, 75);
+        hBox.setMinSize(435, 75);
+
+        hBox.setAlignment(Pos.CENTER_RIGHT);
+        hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50;");
+
+        return hBox;
+    }
+
+    public HBox initHBoxContainerBtn() {
+        HBox hBox = new HBox();
+        setPrefSize(1036, 75);
+        hBox.getChildren().addAll(initHBoxLeft(), initHBoxCenterRight());
+        return hBox;
+    }
+
+    public FlowPane initFlowBottom() {
+        FlowPane pane = new FlowPane();
+
+        pane.setPadding(new Insets(15,15,15,15));
+
+        pane.setMinSize(1036, 508);
+        pane.setMaxSize(1036, 508);
+
         tableView = new TableView<>();
-        setPrefSize(1086,768);
-        setStyle(Styles.getPane());
 
-        searchTextField.textProperty().addListener(this::searchRecord);
-      
-        nameColumn = new TableColumn<>("NAME");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        categoryColumn = new TableColumn<>("CATEGORY");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-        stockColumn = new TableColumn<>("STOCK");
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        supplierColumn  = new TableColumn<>("SUPPLIER");
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
 
-        selectedColumn = new TableColumn<>("SELECTED ITEM");
-        //selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
-        CheckBox checkBox = new CheckBox();
-        checkBox.setDisable(true);
-        checkBox.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (isPressed()) {
-                checkBox.setSelected(true);
-            }
-        });
 
-        tableView.setStyle(Styles.getTableRowSelected() + "-fx-background-radius: 0 0 20 20;");
-        tableView.setMaxWidth(980);
-        tableView.setMaxHeight(473);
+        nameColumn.setPrefWidth(233);
+        categoryColumn.setPrefWidth(234);
+        stockColumn.setPrefWidth(234);
+        supplierColumn.setPrefWidth(234);
 
-        tableView.getColumns().addAll(nameColumn,categoryColumn,stockColumn,supplierColumn,selectedColumn);
+        nameColumn.setStyle(Styles.getTableColumn());
+        categoryColumn.setStyle(Styles.getTableColumn());
+        stockColumn.setStyle(Styles.getTableColumn());
+        supplierColumn.setStyle(Styles.getTableColumn());
 
-        // loads in data
+        tableView.getColumns().addAll(nameColumn, categoryColumn, stockColumn, supplierColumn);
+
+        tableView.setPrefHeight(458);
+        tableView.setStyle(Styles.getTableRowSelected());
+
+        pane.setAlignment(Pos.CENTER);
+
+        pane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        pane.getChildren().add(tableView);
+
         tableView.setItems(getIngredient());
-        nameColumn.setPrefWidth(196);
-        categoryColumn.setPrefWidth(196);
-        stockColumn.setPrefWidth(196);
-        supplierColumn.setPrefWidth(195);
-        selectedColumn.setPrefWidth(195);
 
-        /* LayoutPane configurations and instantiation.
-         *  VBOX, HBOX. */
-        mainContainer = new HBox(25);
-        innerContainer = new VBox(25);
-        mainVbox = new VBox();
-        topHBox = new HBox();
-        midHBox = new HBox();
-        bottomHBox = new HBox();
-        westHBOx = new HBox(5);
-        eastHBox = new HBox(5);
+        pane.setStyle("-fx-alignment: center;" +
+                " -fx-background-color: #fff;" +
+                " -fx-background-radius: 0 0 20 20;" +
+                " -fx-padding: 0 0 50 0;");
 
-        getChildren().add(innerContainer);
+        return pane;
+    }
 
-        innerContainer.getChildren().add(mainVbox);
-        innerContainer.getChildren().add(tableView);
-        mainVbox.getChildren().add(topHBox);
-        topHBox.getChildren().add(textTitle);
-        mainVbox.getChildren().add(midHBox);
-        midHBox.getChildren().add(overView);
-        mainVbox.getChildren().add(bottomHBox);
+    public VBox initTopVBoxContainer(){
+        VBox vBox =   new VBox(initUpperHBox(),initFillerHBox(), initHBoxContainerBtn());
+        vBox.setPrefSize(1036, 190);
+        vBox.setAlignment(Pos.BOTTOM_CENTER);
+        vBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20 20 0 0;");
 
-        bottomHBox.getChildren().addAll(westHBOx,eastHBox);
-        westHBOx.getChildren().addAll(addIngredients,removeIngredients, editIngredient);
-        eastHBox.getChildren().addAll(searchTextField ,addButton,removeButton);
+        return vBox;
+    }
 
-        innerContainer.setAlignment(Pos.CENTER);
-        mainContainer.setAlignment(Pos.CENTER);
-        topHBox.setAlignment(Pos.CENTER);
-        midHBox.setAlignment(Pos.CENTER);
-        bottomHBox.setAlignment(Pos.CENTER);
-        westHBOx.setAlignment(Pos.CENTER);
-        eastHBox.setAlignment(Pos.CENTER);
-
-        innerContainer.setStyle(
-                "-fx-background-color: #FFFFFF;" +
-                "-fx-background-radius: 20 20 20 20"
-        );
-        midHBox.setStyle(
-                "-fx-border-color: #6B6C6A;" +
-                "-fx-background-color: #FFFFFF"
-        );
-        innerContainer.setMaxSize(1036,698);
-
-        mainVbox.setPrefSize(1036,225);
-        topHBox.setPrefSize(1036,75);
-        midHBox.setPrefSize(1036,40);
-        bottomHBox.setPrefSize(1036,75);
-        westHBOx.setPrefSize(550,37.5);
-        eastHBox.setPrefSize(485,37.5);
-
-        westHBOx.setSpacing(20);
-        eastHBox.setSpacing(20);
+    public int getNumberSpinnerValue() {
+        return numberSpinner.getValue();
     }
 
     /**
@@ -267,69 +286,54 @@ public class IngredientsPane extends StackPane {
     /**
      * Increments the selected ingredients stock by 1
      */
-    public void addAmount() {
-        ObservableList<Ingredient> ingredientSelected;
-        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
-        if (ingredientSelected.size() <= 0) {
-            JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
+    public void addQuantity() {
+        Ingredient ingredient = tableView.getSelectionModel().getSelectedItem();
+
+        if (ingredient != null){
+            int prodQuantity = ingredient.getStock();
+            ingredient.setStock(prodQuantity + getNumberSpinnerValue());
         } else {
-            if (callback.incrementIngredient(ingredientSelected.get(0))) {
-                //ingredientSelected.get(0).increment(); // increment for view
-                System.out.println("Completed increase in View");
-            }
-            tableView.refresh();
+            noIngredientSelected();
         }
+
+        refresh();
     }
 
+
     /**
-     * Decrements the selected ingredients stock by 1
+     * Remove quantity from existing product
      */
-    public void removeAmount() {
-        ObservableList<Ingredient> ingredientSelected;
-        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
-        if (ingredientSelected.size() <= 0) {
-            JOptionPane.showMessageDialog(null, "Invalid request \nPlease choose an item first.");
+    public void removeQuantity() {
+        Ingredient ingredient = tableView.getSelectionModel().getSelectedItem();
+
+        if (ingredient != null){
+            int prodQuantity = ingredient.getStock();
+            ingredient.setStock(prodQuantity - getNumberSpinnerValue());
         } else {
-            if (callback.decrementIngredient(ingredientSelected.get(0))) {
-                //ingredientSelected.get(0).decrement(); // decrement for view
-                System.out.println("Completed decrease in View");
-            }
-            tableView.refresh();
+            noIngredientSelected();
         }
+
+        tableView.refresh();
     }
 
     /**
-     * When the menu contracts the Pane will extend
+     * Expands the pane and makes the menuPane smaller
      */
     public void expand() {
         setPrefWidth(1346);
-        innerContainer.setMaxSize(1180,698);
-        tableView.setMaxWidth(1124);
-        nameColumn.setPrefWidth(225);
-        categoryColumn.setPrefWidth(225);
-        stockColumn.setPrefWidth(224);
-        supplierColumn.setPrefWidth(224);
-        selectedColumn.setPrefWidth(224);
-        //bottomHBox.setPrefSize(1180,75); // not working
+        System.out.println("Expanding");
     }
 
     /**
-     * When the menu expands the Pane will narrow
+     * Makes the pane smaller and expands the menuPane
      */
     public void contract() {
         setPrefWidth(1086);
-        innerContainer.setMaxSize(1036,698);
-        tableView.setMaxWidth(980);
-        nameColumn.setPrefWidth(196);
-        categoryColumn.setPrefWidth(196);
-        stockColumn.setPrefWidth(196);
-        supplierColumn.setPrefWidth(195);
-        selectedColumn.setPrefWidth(195);
-        //bottomHBox.setPrefSize(1036,75); // not working
+        System.out.println("Contracting");
     }
 
     /**
-    * Searchbar functionality. (NEEDS REVISION).
+    * Searchbar functionality.
     */
    private void searchRecord(Observable observable, String oldValue, String newValue) {
        if (!searchTextField.getText().equals("")) {
@@ -371,6 +375,15 @@ public class IngredientsPane extends StackPane {
        ingredients.addAll(Arrays.asList(receivedIngredients));
        return ingredients;
    }
+
+    public void noIngredientSelected() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("No Ingredient Selected");
+        alert.setHeaderText(null);
+        alert.setContentText("Please select an ingredient!");
+
+        alert.showAndWait();
+    }
 
     /**
      * Refreshes the tableView
