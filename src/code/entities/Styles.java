@@ -1,9 +1,13 @@
 package code.entities;
 
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+
 /**
  * Can be used in order to get styles for different types of components.
- * @author Tor Stenfeldt
- * @version 3.0
+ * @author Tor Stenfeldt, Paul Moustakas, Lucas Eliasson
+ * @version 4.0
  */
 public abstract class Styles {
     public static String getMenuButtonStandard() {
@@ -36,10 +40,17 @@ public abstract class Styles {
                 " -fx-text-fill: #FFFFFF;" +
                 " -fx-font-family: Segoe UI;" +
                 "-fx-font-weight: bold;" +
-                "-fx-font-size: 16;" +
+                "-fx-font-size: 14;" +
                 "-fx-padding: 5 10 5 10;" +
-                "-fx-background-radius: 10;"
+                "-fx-background-radius: 10;" +
+                "-fx-pref-height: 40;" +
+                "-fx-pref-width: 160;"
+
         );
+    }
+
+    public static Font getValueButtonsFont () {
+        return Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 36);
     }
 
     public static String getSearchBar() {

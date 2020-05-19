@@ -11,6 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -20,6 +22,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import code.control.Callback;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
@@ -40,6 +44,7 @@ public class ProductsPane extends StackPane {
 
     public ProductsPane(Callback callback) {
         this.callback = callback;
+        this.getStylesheets().add("styles.css");
         VBox mainContainer = new VBox();
         mainContainer.setMaxSize(1036, 698);
 
@@ -82,7 +87,7 @@ public class ProductsPane extends StackPane {
         HBox hBoxFiller = new HBox();
         hBoxFiller.setMinSize(1036, 40);
         hBoxFiller.setMaxSize(1036, 40);
-        hBoxFiller.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF");
+        hBoxFiller.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF; -fx-border-width: 1 0 1 0");
 
         return hBoxFiller;
     }
@@ -96,11 +101,19 @@ public class ProductsPane extends StackPane {
         Button button_RemoveItem = new Button("REMOVE PRODUCT");
         Button button_EditItem = new Button("EDIT PRODUCT");
 
-        button_NewItem.setStyle(Styles.getButton());
-        button_RemoveItem.setStyle(Styles.getButton());
-        button_EditItem.setStyle(Styles.getButton());
+        button_NewItem.getStyleClass().add("greenButtonPanel");
+        button_NewItem.setPrefWidth(160);
+        button_NewItem.setPrefHeight(40);
 
-        HBox hBox = new HBox(15, button_NewItem, button_RemoveItem, button_EditItem);
+        button_RemoveItem.getStyleClass().add("greenButtonPanel");
+        button_RemoveItem.setPrefWidth(160);
+        button_RemoveItem.setPrefHeight(40);
+
+        button_EditItem.getStyleClass().add("greenButtonPanel");
+        button_EditItem.setPrefWidth(160);
+        button_EditItem.setPrefHeight(40);
+
+        HBox hBox = new HBox( button_NewItem, button_RemoveItem, button_EditItem);
         hBox.setSpacing(10);
         hBox.setMinSize(600, 75);
         hBox.setMaxSize(600, 75);
@@ -122,8 +135,8 @@ public class ProductsPane extends StackPane {
      * @return container HBox
      */
     public HBox initHBoxCenterRight(){
-        Button button_Add = new Button("ADD");
-        Button button_Remove = new Button("REMOVE");
+        Button button_Add = new Button();
+        Button button_Remove = new Button();
 
         final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
         numberSpinner.setValueFactory(svf);
@@ -132,11 +145,34 @@ public class ProductsPane extends StackPane {
         numberSpinner.setPrefHeight(38);
         numberSpinner.setPrefWidth(100);
 
-        button_Add.setStyle(Styles.getButton());
-        button_Remove.setStyle(Styles.getButton());
+        button_Add.getStyleClass().add("greenButtonPanel");
+        button_Add.setPrefSize(40, 40);
 
-        button_Add.setPrefSize(100,30);
-        button_Remove.setPrefSize(100,30);
+        button_Remove.getStyleClass().add("greenButtonPanel");
+        button_Remove.setPrefSize(40, 40);
+
+        try {
+            Image selectedImage = new Image(new FileInputStream("src/resources/plus-40.png"));
+            ImageView selectedView = new ImageView(selectedImage);
+            selectedView.setFitWidth(20);
+            selectedView.setFitHeight(20);
+            button_Add.setGraphic(selectedView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Image selectedImage = new Image(new FileInputStream("src/resources/minus-40.png"));
+            ImageView selectedView = new ImageView(selectedImage);
+            selectedView.setFitWidth(20);
+            selectedView.setFitHeight(20);
+            button_Remove.setGraphic(selectedView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
 
         button_Add.setOnAction(e -> addQuantity());
         button_Remove.setOnAction(e -> removeQuantity());
