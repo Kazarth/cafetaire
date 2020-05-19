@@ -11,5 +11,5 @@ public enum Views {
     Products,
     Suppliers,
     Recipes,
-    Schedule
+    Calendar
 }

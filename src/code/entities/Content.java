@@ -25,4 +25,16 @@ public class Content implements Serializable {
     public Units getUnit() {
         return unit;
     }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public void setUnit(Units unit) {
+        this.unit = unit;
+    }
 }
