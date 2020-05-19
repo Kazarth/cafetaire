@@ -114,6 +114,7 @@ public class SupplierPane extends StackPane {
         Label labelSearch = new Label("SEARCH:");
         labelSearch.setStyle(Styles.getSearchBar());
         TextField textFieldSearch   =   new TextField();
+        textFieldSearch.setPrefSize(160, 40);
         textFieldSearch.setPromptText("Search");
 
         // CONTAINER FOR SEARCH BAR (RIGHT) - SEARCH LABEL, SEARCH FIELD
@@ -174,7 +175,7 @@ public class SupplierPane extends StackPane {
         supplierColumn = new TableColumn<>("Supplier");
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
         supplierColumn.setStyle(Styles.getTableColumn());
-        categoryColumn = new TableColumn<>("category");
+        categoryColumn = new TableColumn<>("Category");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         categoryColumn.setStyle(Styles.getTableColumn());
         emailColumn = new TableColumn<>("Email");

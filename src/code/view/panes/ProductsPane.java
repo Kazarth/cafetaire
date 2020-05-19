@@ -142,7 +142,7 @@ public class ProductsPane extends StackPane {
         numberSpinner.setValueFactory(svf);
         numberSpinner.disabledProperty();
         numberSpinner.setEditable(true);
-        numberSpinner.setPrefHeight(38);
+        numberSpinner.setPrefHeight(40);
         numberSpinner.setPrefWidth(100);
 
         button_Add.getStyleClass().add("greenButtonPanel");
@@ -171,13 +171,10 @@ public class ProductsPane extends StackPane {
             e.printStackTrace();
         }
 
-
-
-
         button_Add.setOnAction(e -> addQuantity());
         button_Remove.setOnAction(e -> removeQuantity());
 
-        HBox hBox = new HBox(15, numberSpinner, button_Add, button_Remove);
+        HBox hBox = new HBox(10, numberSpinner, button_Add, button_Remove);
 
         hBox.setMaxSize(435, 75);
         hBox.setMinSize(435, 75);
