@@ -50,7 +50,7 @@ public class IngredientsPane extends StackPane {
         VBox mainContainer = new VBox();
         mainContainer.setMaxSize(1036, 698);
 
-        mainContainer.getChildren().addAll(initTopVBoxContainer(), initFlowBottom());
+        mainContainer.getChildren().addAll(initTopContainer(), initFlowBottom());
         getChildren().add(mainContainer);
 
         mainContainer.setAlignment(Pos.CENTER);
@@ -119,7 +119,7 @@ public class IngredientsPane extends StackPane {
         return hBox;
     }
 
-    public HBox initHBoxCenterRight(){
+    public HBox initHBoxRight(){
         Button button_Add = new Button("INCREASE");
         Button button_Remove = new Button("DECREASE");
 
@@ -150,10 +150,10 @@ public class IngredientsPane extends StackPane {
         return hBox;
     }
 
-    public HBox initHBoxContainerBtn() {
+    public HBox initBtnContainer() {
         HBox hBox = new HBox();
         setPrefSize(1036, 75);
-        hBox.getChildren().addAll(initHBoxLeft(), initHBoxCenterRight());
+        hBox.getChildren().addAll(initHBoxLeft(), initHBoxRight());
         return hBox;
     }
 
@@ -202,8 +202,8 @@ public class IngredientsPane extends StackPane {
         return pane;
     }
 
-    public VBox initTopVBoxContainer(){
-        VBox vBox =  new VBox(initUpperHBox(),initFillerHBox(), initHBoxContainerBtn());
+    public VBox initTopContainer(){
+        VBox vBox =  new VBox(initUpperHBox(),initFillerHBox(), initBtnContainer());
         vBox.setPrefSize(1036, 190);
         vBox.setAlignment(Pos.BOTTOM_CENTER);
         vBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20 20 0 0;");
