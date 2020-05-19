@@ -80,9 +80,16 @@
 .text-field {
     -fx-faint-focus-color: transparent;
     -fx-focus-color:rgba(255,0,0,0.2); /* here rgba (corrected) */
+    -fx-selection-bar-non-focused: #619F81;
 }
 
 .text-field:focused {
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color:rgba(97,159,129,62); /* here rgba (corrected) */
+    -fx-selection-bar: #619F81;
+}
+
+.text-field:selected {
     -fx-faint-focus-color: transparent;
     -fx-focus-color:rgba(97,159,129,62); /* here rgba (corrected) */
 }
@@ -97,6 +104,7 @@
 
 .bigGreenButton:hover {
     -fx-background-color: #2F4D3E;
+    -fx-cursor: hand;
 }
 
 .greenButton {
@@ -109,6 +117,7 @@
 
 .greenButton:hover {
     -fx-background-color: #2F4D3E;
+    -fx-cursor: hand;
 }
 
 .greenButtonPanel {
@@ -121,6 +130,7 @@
 
 .greenButtonPanel:hover {
     -fx-background-color: #2F4D3E;
+    -fx-cursor: hand;
 }
 
 .greenButtonSquare {
@@ -133,6 +143,7 @@
 
 .greenButtonSquare:hover {
     -fx-background-color: #2F4D3E;
+    -fx-cursor: hand;
 }
 
 .redButton {
@@ -145,6 +156,7 @@
 
 .redButton:hover {
     -fx-background-color: #DC4854;
+    -fx-cursor: hand;
 }
 
 .bigGrayButton {
@@ -157,4 +169,18 @@
 
 .bigGrayButton:hover {
     -fx-background-color: #ddd;
+    -fx-cursor: hand;
+}
+
+.grayButton {
+    -fx-background-color: #eee;
+    -fx-background-radius: 25;
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+}
+
+.grayButton:hover {
+    -fx-background-color: #ddd;
+    -fx-cursor: hand;
 }

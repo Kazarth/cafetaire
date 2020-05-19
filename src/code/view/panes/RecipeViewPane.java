@@ -1,13 +1,14 @@
 package code.view.panes;
 
 import code.control.Callback;
-import code.entities.Recipe;
-import code.entities.RecipePanes;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
+import code.entities.*;
+import code.view.popups.ContentPopup;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -15,8 +16,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * ActiveRecipePane.java
@@ -35,12 +36,15 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
     private Button backButton; // back button
     private Button deleteButton; // delete recipe button
     private Button editIngredientsButton; // edit ingredients
+    private Button saveEditIngredientsButton;
     private Button editStepsButton; // edit Steps
     private Button bakeButton; // BAKE
 
-    private TextArea ingredientsBox; // show ingredients
+    private TableView<Content> ingredientsList; // show ingredients
+    private TableColumn<Content, String> nameCol;
+    private TableColumn<Content, Double> amountCol;
+    private TableColumn<Content, Units> unitCol;
     private TextArea stepsBox; // show steps
-
     private TextField amountField; // amount of satser??
 
     private Callback callback;
@@ -65,28 +69,28 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
         container.setPrefSize(1036,698);
         container.setStyle(
                 "-fx-background-color: #fff;" +
-                "-fx-background-radius: 25"
+                "-fx-background-radius: 20"
         );
         container.setAlignment(Pos.CENTER);
 
         /* Spacing */
         HBox spaceBox = new HBox();
-        spaceBox.setPrefSize(1086,20);
+        spaceBox.setPrefSize(1086,6);
 
         /* Title */
         HBox titleBox = new HBox();
-        titleBox.setPrefSize(1086, 48);
+        titleBox.setPrefSize(1086, 60);
         titleBox.setAlignment(Pos.CENTER);
         titleBox.setStyle(
-                "-fx-background-radius: 25 25 0 0;" +
+                "-fx-background-radius: 20 20 0 0;" +
                 "-fx-border-width: 0 0 1 0;" +
-                "-fx-border-color: #000;" +
-                "-fx-padding: 10;"
+                "-fx-border-color: #000;"
         );
-        Font titleFont = Font.font("Segoe UI",FontWeight.BOLD, FontPosture.REGULAR, 32);
+        Font titleFont = Font.font("Segoe UI",FontWeight.BOLD, FontPosture.REGULAR, 24);
         titleLabel = new Label("RECIPES");
         titleLabel.setFont(titleFont);
         titleLabel.setTextFill(Paint.valueOf("#619f81"));
+        titleLabel.setPadding(new Insets(0,0,17,0));
         titleBox.getChildren().add(titleLabel);
 
         /* Back Button */
@@ -144,17 +148,29 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
                 "-fx-border-width: 0 0 1 0, 0 0 1 0, 0 0 1 0;" +
                 "-fx-border-insets: 0 0 1 0, 0 0 2 0, 0 0 3 0;"
         );
-        ingredientsBox = new TextArea();
-        ingredientsBox.setPrefSize(360,300);
-        ingredientsBox.getStyleClass().add("text-field");
-        Font ingredientsFont = Font.font("Segoe UI",FontWeight.NORMAL, FontPosture.REGULAR, 16);
-        ingredientsBox.setFont(ingredientsFont);
-        ingredientsBox.setEditable(false);
+        ingredientsList = new TableView<>();
+        ingredientsList.setPrefSize(360,300);
+        ingredientsList.getStyleClass().add("list");
+        ingredientsList.setEditable(false);
+        nameCol = new TableColumn<>();
+        nameCol.setPrefWidth(180);
+        nameCol.setText("Name");
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("ingredient"));
+        amountCol = new TableColumn<>();
+        amountCol.setPrefWidth(90);
+        amountCol.setText("Amount");
+        amountCol.setCellValueFactory(new PropertyValueFactory<>("value"));
+        unitCol  = new TableColumn<>();
+        unitCol.setPrefWidth(90);
+        unitCol.setText("Unit");
+        unitCol.setCellValueFactory(new PropertyValueFactory<>("unit"));
+        ingredientsList.getColumns().addAll(nameCol, amountCol, unitCol);
+
         editIngredientsButton = new Button("EDIT INGREDIENTS");
         editIngredientsButton.getStyleClass().add("greenButton");
         editIngredientsButton.setOnAction(e -> editIngredients());
         editIngredientsButton.setPrefSize(150,40);
-        ingredientsContainer.getChildren().addAll(ingredientsLabel, ingredientsBox, editIngredientsButton);
+        ingredientsContainer.getChildren().addAll(ingredientsLabel, ingredientsList, editIngredientsButton);
 
         /* Guide */
         VBox stepContainer = new VBox(10);
@@ -169,9 +185,10 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
         stepsBox = new TextArea();
         stepsBox.setPrefSize(360,300);
         stepsBox.getStyleClass().add("text-field");
+        stepsBox.setEditable(true);
         editStepsButton = new Button("EDIT STEPS");
         editStepsButton.getStyleClass().add("greenButton");
-        editStepsButton.setOnAction(e -> editSteps());
+        editStepsButton.setOnAction(e -> editInstructions());
         editStepsButton.setPrefSize(150,40);
         stepContainer.getChildren().addAll(stepLabel, stepsBox, editStepsButton);
 
@@ -202,48 +219,81 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
         getChildren().add(container);
     }
 
+    public ArrayList<Content> getRecipeContent() {
+        return recipe.getContentList();
+    }
+
+    /**
+     * Gets the already stored recipes from the database and adds them to the tableview
+     */
+    private void loadIngredients() {
+        ObservableList <Content> ingredients = FXCollections.observableArrayList();
+        ArrayList<Content> content = callback.getRecipe(recipe.getName()).getContentList();
+        Content[] newContent = new Content[content.size()];
+        for (int i = 0; i < content.size(); i++) {
+            newContent[i] = content.get(i);
+        }
+        ingredients.addAll(Arrays.asList(newContent));
+        ingredientsList.setItems(ingredients);
+    }
+
+    /**
+     * Sets the values to the chosen recipe from the source pane
+     * @param recipe Chosen recipe
+     */
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
         productNameLabel.setText(recipe.getName().toUpperCase());
-        ingredientsBox.setText(recipe.getIngredients());
         stepsBox.setText(recipe.getInstructions());
+
+        loadIngredients();
     }
 
+    /**
+     * Return to the source pane
+     */
     private void goBack() {
         System.out.println("RETURN");
         recipePane.setView(RecipePanes.RecipeListPane);
     }
 
-    private Boolean deleteRecipe() {
-        System.out.println("DELETE");
-        return false;
+    /**
+     * Delete active recipe
+     */
+    private void deleteRecipe() {
+        recipePane.deleteRecipe(this.recipe);
+        goBack();
     }
 
-    private Boolean editIngredients() {
-        System.out.println("EDIT INGREDIENTS");
-        return false;
+    /**
+     * Edit ingredients
+     */
+    private void editIngredients() {
+        new ContentPopup(this, callback);
     }
 
-    private Boolean editSteps() {
+    /**
+     * Let's the user
+     * @return
+     */
+    private void editInstructions() {
         System.out.println("EDIT STEPS");
-        return false;
+        stepsBox.setEditable(true);
     }
 
+    /**
+     * Removes batch
+     */
     private void bake() {
         if (amountField.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setHeaderText("NO AMOUNT");
             alert.setContentText("Ooops, please enter an amount to bake!");
-
             alert.showAndWait();
         } else {
             String print = "BAKE " + amountField.getText() + " COOKIES";
             System.out.println(print);
         }
-    }
-
-    private void activeButton() {
-
     }
 }

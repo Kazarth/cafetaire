@@ -54,7 +54,7 @@ public class MenuPane extends StackPane {
 
         VBox mainContainer = new VBox();
 
-        title = new Label("Cafetairé");
+        title = new Label();
         title.getStylesheets().add("styles.css");
         title.getStyleClass().add("title");
 
@@ -84,9 +84,10 @@ public class MenuPane extends StackPane {
             fe.printStackTrace();
         }
 
+        title.setGraphic(viewLogo);
         toggleButton = new Button("");
         toggleButton.setPrefSize(40, 40);
-        toggleButton.setStyle("-fx-background-color: #21252B;");
+        toggleButton.setStyle("-fx-background-color: #21252B;" + "-fx-cursor: hand;");
         toggleButton.setOnAction(e -> toggle(toggleButton));
         toggleButton.setGraphic(toggleImage);
 
@@ -178,6 +179,7 @@ public class MenuPane extends StackPane {
         toggleContainer.setPadding(new Insets(20, 0, 20, 35));
 
         title.setText("C");
+        title.setGraphic(null);
     }
 
     /**
@@ -234,7 +236,8 @@ public class MenuPane extends StackPane {
         button.setPrefSize(40,40);
         toggleContainer.setPadding(new Insets(20, 0, 20, 105));
 
-        title.setText("Cafetairé");
+        title.setText("");
+        title.setGraphic(viewLogo);
     }
 
     /**

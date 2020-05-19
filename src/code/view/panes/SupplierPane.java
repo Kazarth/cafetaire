@@ -9,6 +9,8 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -17,6 +19,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -36,6 +41,7 @@ public class SupplierPane extends StackPane {
 
     public SupplierPane(Callback callback) {
         this.callback = callback;
+        this.getStylesheets().add("styles.css");
 
         setTableView();
 
@@ -48,14 +54,14 @@ public class SupplierPane extends StackPane {
 
         // TOP CONTAINER FOR SUPPLIER MENU TITLE
         HBox    hBoxTitleContainer   =   new HBox(textTitle);
-        hBoxTitleContainer.setPrefSize(1036, 65);
+        hBoxTitleContainer.setPrefSize(1036, 75);
         hBoxTitleContainer.setAlignment(Pos.CENTER);
         hBoxTitleContainer.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20 20 0 0");
 
         // MIDDLE CONTAINER FOR FILTERS IN SUPPLIER MENU. TODO: implement filters
         HBox    hBoxFilterContainer   =   new HBox();
         hBoxFilterContainer.setPrefSize(1036, 40);
-        hBoxFilterContainer.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF");
+        hBoxFilterContainer.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF; -fx-border-width: 1 0 1 0");
 
         // BUTTONS FOR BUTTON BAR (LEFT) ADD, REMOVE, EDIT
         Button buttonAdd = new Button("ADD SUPPLIER");
@@ -65,26 +71,54 @@ public class SupplierPane extends StackPane {
         Button buttonEdit = new Button("EDIT SUPPLIER");
         buttonEdit.setOnAction(e -> editSupplierAction());
 
-        buttonAdd.setStyle(Styles.getButton());
-        buttonRemove.setStyle(Styles.getButton());
-        buttonEdit.setStyle(Styles.getButton());
+
+        buttonAdd.getStyleClass().add("greenButtonPanel");
+        buttonAdd.setPrefWidth(160);
+        buttonAdd.setPrefHeight(40);
+
+        buttonRemove.getStyleClass().add("greenButtonPanel");
+        buttonRemove.setPrefWidth(160);
+        buttonRemove.setPrefHeight(40);
+
+        buttonEdit.getStyleClass().add("greenButtonPanel");
+        buttonEdit.setPrefWidth(160);
+        buttonEdit.setPrefHeight(40);
+
 
         // CONTAINER FOR BUTTON BAR (LEFT) - ADD, REMOVE, EDIT
-        HBox    hBoxButtonContainer   =   new HBox(15, buttonAdd, buttonRemove, buttonEdit);
+        HBox    hBoxButtonContainer   =   new HBox(10, buttonAdd, buttonRemove, buttonEdit);
         hBoxButtonContainer.setPrefSize(623, 75);
         hBoxButtonContainer.setStyle("-fx-background-color: #FFFFFF;");
         hBoxButtonContainer.setAlignment(Pos.CENTER_LEFT);
 
-        Button buttonSearch = new Button("O");
-        buttonSearch.setStyle(Styles.getButton());
+        Button buttonSearch = new Button();
+
+        buttonSearch.getStyleClass().add("greenButtonPanel");
+        buttonSearch.setPrefWidth(40);
+        buttonSearch.setPrefHeight(40);
+
+
+        buttonSearch.setOnAction(e -> search());
+        try {
+            Image selectedImage = new Image(new FileInputStream("src/resources/search.png"));
+            ImageView selectedView = new ImageView(selectedImage);
+            selectedView.setFitWidth(20);
+            selectedView.setFitHeight(20);
+            buttonSearch.setGraphic(selectedView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
         Label labelSearch = new Label("SEARCH:");
         labelSearch.setStyle(Styles.getSearchBar());
         TextField textFieldSearch   =   new TextField();
+        textFieldSearch.setPrefSize(160, 40);
         textFieldSearch.setPromptText("Search");
 
         // CONTAINER FOR SEARCH BAR (RIGHT) - SEARCH LABEL, SEARCH FIELD
-        HBox    hBoxSearchContainer   =   new HBox(15, labelSearch, textFieldSearch, buttonSearch);
+        HBox    hBoxSearchContainer   =   new HBox(10, labelSearch, textFieldSearch, buttonSearch);
         hBoxSearchContainer.setPrefSize(413, 75);
         hBoxSearchContainer.setStyle("-fx-background-color: #FFFFFF;");
         hBoxSearchContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -141,7 +175,7 @@ public class SupplierPane extends StackPane {
         supplierColumn = new TableColumn<>("Supplier");
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
         supplierColumn.setStyle(Styles.getTableColumn());
-        categoryColumn = new TableColumn<>("category");
+        categoryColumn = new TableColumn<>("Category");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         categoryColumn.setStyle(Styles.getTableColumn());
         emailColumn = new TableColumn<>("Email");
@@ -234,6 +268,10 @@ public class SupplierPane extends StackPane {
             e.printStackTrace();
         }
 
+    }
+
+    private void search() {
+        System.out.println("SEARCH");
     }
 
     public void refresh(){
