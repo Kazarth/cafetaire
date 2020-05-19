@@ -30,6 +30,7 @@ import java.util.NoSuchElementException;
  * @version 1.0
  */
 public class IngredientsPane extends StackPane {
+
     private Spinner<Integer> numberSpinner = new Spinner<>();
 
     private TableView<Ingredient> tableView;
@@ -58,6 +59,11 @@ public class IngredientsPane extends StackPane {
         setPrefSize(1086, 768);
     }
 
+    /**
+     * Initializes and returns an HBox containing the title for the pane.
+     * @return hBox
+     */
+
     public HBox initUpperHBox () {
 
         Text textTitle = new Text();
@@ -76,6 +82,12 @@ public class IngredientsPane extends StackPane {
         return hBox;
     }
 
+    /**
+     * Initializes and returns a "filler" HBox, positioned inbetween the upper Title HBox and the
+     * button HBoxes.
+     * @return hBoxFiller
+     */
+
     public HBox initFillerHBox () {
         HBox hBoxFiller = new HBox();
         hBoxFiller.setMinSize(1036, 40);
@@ -83,6 +95,12 @@ public class IngredientsPane extends StackPane {
         hBoxFiller.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF");
         return hBoxFiller;
     }
+
+    /**
+     * Initializes and returns the HBox containing the buttons to add, remove, and edit Ingredients.
+     * Also contains a TextField used to search the TableView.
+     * @return hBox
+     */
 
     public HBox initHBoxLeft() {
 
@@ -117,6 +135,11 @@ public class IngredientsPane extends StackPane {
         return hBox;
     }
 
+    /**
+     * Initializes and returns an HBox containing the Spinner for increasing and decreasing stock.
+     * @return hBox
+     */
+
     public HBox initHBoxRight(){
         Button button_Add = new Button("INCREASE");
         Button button_Remove = new Button("DECREASE");
@@ -148,12 +171,22 @@ public class IngredientsPane extends StackPane {
         return hBox;
     }
 
+    /**
+     * Initializes and returns an HBox containing the buttons in the pane.
+     * @return hBox
+     */
+
     public HBox initBtnContainer() {
         HBox hBox = new HBox();
         setPrefSize(1036, 75);
         hBox.getChildren().addAll(initHBoxLeft(), initHBoxRight());
         return hBox;
     }
+
+    /**
+     * Initializes and returns a FlowPane containing the TableView for the pane.
+     * @return pane
+     */
 
     public FlowPane initFlowBottom() {
         FlowPane pane = new FlowPane();
@@ -200,6 +233,10 @@ public class IngredientsPane extends StackPane {
         return pane;
     }
 
+    /**
+     * Initializes and returns a VBox containing the top half of the pane.
+     * @return pane
+     */
     public VBox initTopContainer(){
         VBox vBox =  new VBox(initUpperHBox(),initFillerHBox(), initBtnContainer());
         vBox.setPrefSize(1036, 190);
@@ -208,6 +245,11 @@ public class IngredientsPane extends StackPane {
 
         return vBox;
     }
+
+    /**
+     * Returns the value entered into the NumberSpinner.
+     * @return
+     */
 
     public int getNumberSpinnerValue() {
         return numberSpinner.getValue();
