@@ -88,19 +88,24 @@ public class IngredientsPane extends StackPane {
 
     public HBox initHBoxLeft() {
 
-        Button button_newIngredient = new Button("ADD NEW INGREDIENT");
-        Button button_removeIngredient = new Button("REMOVE INGREDIENT");
+        Button button_newIngredient = new Button("ADD INGREDIENT");
+        Button button_removeIngredient = new Button("REMOVE");
         Button button_editIngredient = new Button( "EDIT");
+
         searchTextField = new TextField();
+        searchTextField.setPromptText("SEARCH");
+        searchTextField.setPrefHeight(32);
+        searchTextField.setPrefWidth(150);
+        searchTextField.textProperty().addListener(this::searchRecord);
 
         button_newIngredient.setStyle(Styles.getButton());
         button_editIngredient.setStyle(Styles.getButton());
         button_removeIngredient.setStyle(Styles.getButton());
 
-        HBox hBox = new HBox(15, button_newIngredient, button_removeIngredient, button_editIngredient);
+        HBox hBox = new HBox(15, button_newIngredient, button_removeIngredient, button_editIngredient, searchTextField);
         hBox.setSpacing(10);
         hBox.setMinSize(600, 75);
-        hBox.setMaxSize(600, 75);
+        hBox.setMaxSize(650, 75);
         hBox.setAlignment(Pos.CENTER_LEFT);
 
         hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -115,10 +120,10 @@ public class IngredientsPane extends StackPane {
     }
 
     public HBox initHBoxCenterRight(){
-        Button button_Add = new Button("ADD");
-        Button button_Remove = new Button("REMOVE");
+        Button button_Add = new Button("INCREASE");
+        Button button_Remove = new Button("DECREASE");
 
-        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
+        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 80);
         numberSpinner.setValueFactory(svf);
         numberSpinner.disabledProperty();
         numberSpinner.setEditable(true);
@@ -128,8 +133,8 @@ public class IngredientsPane extends StackPane {
         button_Add.setStyle(Styles.getButton());
         button_Remove.setStyle(Styles.getButton());
 
-        button_Add.setPrefSize(100,30);
-        button_Remove.setPrefSize(100,30);
+        button_Add.setPrefSize(110,30);
+        button_Remove.setPrefSize(110,30);
 
         button_Add.setOnAction(e -> addQuantity());
         button_Remove.setOnAction(e -> removeQuantity());
@@ -167,7 +172,6 @@ public class IngredientsPane extends StackPane {
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
 
-
         nameColumn.setPrefWidth(233);
         categoryColumn.setPrefWidth(234);
         stockColumn.setPrefWidth(234);
@@ -199,7 +203,7 @@ public class IngredientsPane extends StackPane {
     }
 
     public VBox initTopVBoxContainer(){
-        VBox vBox =   new VBox(initUpperHBox(),initFillerHBox(), initHBoxContainerBtn());
+        VBox vBox =  new VBox(initUpperHBox(),initFillerHBox(), initHBoxContainerBtn());
         vBox.setPrefSize(1036, 190);
         vBox.setAlignment(Pos.BOTTOM_CENTER);
         vBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20 20 0 0;");
@@ -274,16 +278,6 @@ public class IngredientsPane extends StackPane {
     }
 
     /**
-     * Removes selected ingredient from the stock
-     */
-    public void removeIngredient(Ingredient ingredient) {
-        ObservableList<Ingredient> ingredientSelected, allIngredients;
-        allIngredients = tableView.getItems();
-        ingredientSelected = tableView.getSelectionModel().getSelectedItems();
-        ingredientSelected.forEach(allIngredients::remove);
-    }
-
-    /**
      * Increments the selected ingredients stock by 1
      */
     public void addQuantity() {
@@ -340,6 +334,8 @@ public class IngredientsPane extends StackPane {
            FilteredList<Ingredient> filteredList = new FilteredList<>(getIngredient(), p -> true);
            filteredList.setPredicate(tableView -> {
 
+
+
                if (newValue == null || newValue.isEmpty()) {
                    return true;
                }
@@ -348,17 +344,18 @@ public class IngredientsPane extends StackPane {
 
                if (tableView.getType().toLowerCase().contains(typedText)) {
                    return true;
-               }
 
-               if (tableView.getSupplier().getName().toLowerCase().contains(typedText)) {
+               } else if (tableView.getSupplier().getName().toLowerCase().contains(typedText)) {
+
                    return true;
-               }
 
-               if (String.valueOf(tableView.getStock()).toLowerCase().contains(typedText)) {
-                   return true;
-               }
+                   } else if (String.valueOf(tableView.getStock()).toLowerCase().contains(typedText))
 
-               return false;
+                       return true;
+
+                   else
+                   return false;
+
            });
 
            SortedList<Ingredient> sortedList = new SortedList<>(filteredList);
