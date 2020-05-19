@@ -76,4 +76,9 @@ public class Recipe implements Serializable {
         }
         return instructions;
     }
+
+    @Override
+    public String toString(){
+        return getName();
+    }
 }

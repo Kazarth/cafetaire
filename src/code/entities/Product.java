@@ -13,11 +13,11 @@ public class Product implements Serializable {
     private int stock;
     private Recipe recipe;
 
-    public Product(String type, ProductCategories category, int stock) {
+    public Product(String type, ProductCategories category, int stock, Recipe recipe) {
         this.type = type;
         this.category = category;
         this.stock = stock;
-        this.recipe = null;
+        this.recipe = recipe;
     }
 
     public String getType() {

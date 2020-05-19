@@ -2,6 +2,7 @@ package code.view.panes;
 
 import code.entities.Ingredient;
 import code.entities.Styles;
+import code.entities.Supplier;
 import code.view.popups.IngredientPopup;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -33,7 +34,7 @@ public class IngredientsPane extends StackPane {
     private TableColumn<Ingredient, String> nameColumn;
     private TableColumn<Ingredient, String> categoryColumn;
     private TableColumn<Ingredient, Integer> stockColumn;
-    private TableColumn<Ingredient, String> supplierColumn;
+    private TableColumn<Ingredient, Supplier> supplierColumn;
 
     private TableColumn<Ingredient, Boolean> selectedColumn;
     private TextField searchTextField;
