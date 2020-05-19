@@ -86,7 +86,7 @@ public class MenuPane extends StackPane {
 
         toggleButton = new Button("");
         toggleButton.setPrefSize(40, 40);
-        toggleButton.setStyle("-fx-background-color: #21252B;");
+        toggleButton.setStyle("-fx-background-color: #21252B;" + "-fx-cursor: hand;");
         toggleButton.setOnAction(e -> toggle(toggleButton));
         toggleButton.setGraphic(toggleImage);
 

@@ -14,7 +14,8 @@ public abstract class Styles {
                 "-fx-border-color: #619F81;" +
                 "-fx-border-style: none;" +
                 "-fx-border-width: 0 0 0 0;" +
-                "-fx-border-radius: 0 25 25 0;"
+                "-fx-border-radius: 0 25 25 0;" +
+                "-fx-cursor: hand;"
         );
     }
 
@@ -26,7 +27,8 @@ public abstract class Styles {
                 "-fx-border-color: #619F81;" +
                 "-fx-border-style: dashed;" +
                 "-fx-border-width: 3 3 3 0;" +
-                "-fx-border-radius: 0 25 25 0;"
+                "-fx-border-radius: 0 25 25 0;" +
+                "-fx-cursor: hand;"
         );
     }
 
