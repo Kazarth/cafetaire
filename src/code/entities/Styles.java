@@ -126,9 +126,7 @@ public abstract class Styles {
                 "-fx-text-fill: #000;" +
                 "-fx-alignment: center;" +
                 "-fx-font-size: 12;" +
-                "-fx-font-family: Segoe UI;" +
-                "-fx-font-weight: bold;"
-                //"-fx-color: #21252B"
+                "-fx-font-family: Segoe UI;"
                 );
     }
     public static String getTableRowSelected() {
