@@ -71,15 +71,15 @@ public class SupplierPane extends StackPane {
         Button buttonEdit = new Button("EDIT SUPPLIER");
         buttonEdit.setOnAction(e -> editSupplierAction());
 
-
+        // ADD
         buttonAdd.getStyleClass().add("greenButtonPanel");
         buttonAdd.setPrefWidth(160);
         buttonAdd.setPrefHeight(40);
-
+        // REMOVE
         buttonRemove.getStyleClass().add("greenButtonPanel");
         buttonRemove.setPrefWidth(160);
         buttonRemove.setPrefHeight(40);
-
+        // EDIT
         buttonEdit.getStyleClass().add("greenButtonPanel");
         buttonEdit.setPrefWidth(160);
         buttonEdit.setPrefHeight(40);
@@ -91,14 +91,22 @@ public class SupplierPane extends StackPane {
         hBoxButtonContainer.setStyle("-fx-background-color: #FFFFFF;");
         hBoxButtonContainer.setAlignment(Pos.CENTER_LEFT);
 
+
+        // SEARCH BAR  - LABEL, BUTTON
+        Label labelSearch = new Label("SEARCH:");
+        labelSearch.setStyle(Styles.getSearchBar());
+        TextField textFieldSearch   =   new TextField();
+        textFieldSearch.setPrefSize(160, 40);
+        textFieldSearch.setPromptText("Search");
+
+        // BUTTONS FOR BUTTON BAR (RIGHT) SEARCH
         Button buttonSearch = new Button();
 
+        // SEARCH
         buttonSearch.getStyleClass().add("greenButtonPanel");
         buttonSearch.setPrefWidth(40);
         buttonSearch.setPrefHeight(40);
-
-
-        buttonSearch.setOnAction(e -> search());
+        buttonSearch.setOnAction(e -> search(textFieldSearch.getText()));
         try {
             Image selectedImage = new Image(new FileInputStream("src/resources/search.png"));
             ImageView selectedView = new ImageView(selectedImage);
@@ -109,13 +117,6 @@ public class SupplierPane extends StackPane {
             e.printStackTrace();
         }
 
-
-
-        Label labelSearch = new Label("SEARCH:");
-        labelSearch.setStyle(Styles.getSearchBar());
-        TextField textFieldSearch   =   new TextField();
-        textFieldSearch.setPrefSize(160, 40);
-        textFieldSearch.setPromptText("Search");
 
         // CONTAINER FOR SEARCH BAR (RIGHT) - SEARCH LABEL, SEARCH FIELD
         HBox    hBoxSearchContainer   =   new HBox(10, labelSearch, textFieldSearch, buttonSearch);
@@ -270,8 +271,23 @@ public class SupplierPane extends StackPane {
 
     }
 
-    private void search() {
-        System.out.println("SEARCH");
+    private void search(String searchWord) {
+        Supplier supplier = (Supplier) getSuppliersFromDatabase();
+
+       /*
+        for (int i = 0; i < this.students.length; i++)
+        {
+            Student s = this.students[i];
+            if (s.getName().equalsIgnoreCase(name))
+            {
+                return s;
+            }
+        }
+        return null;
+    }
+    
+        */
+        System.err.println("SEARCH");
     }
 
     public void refresh(){
