@@ -98,7 +98,7 @@ public class IngredientsPane extends StackPane {
         HBox hBoxFiller = new HBox();
         hBoxFiller.setMinSize(1036, 40);
         hBoxFiller.setMaxSize(1036, 40);
-        hBoxFiller.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF");
+        hBoxFiller.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF; -fx-border-width: 1 0 1 0");
         return hBoxFiller;
     }
 
@@ -286,6 +286,7 @@ public class IngredientsPane extends StackPane {
      * @param ingredient
      */
     public void addNewIngredient(Ingredient ingredient) {
+        resetSearchField();
         tableView.getItems().add(ingredient);
     }
 
@@ -293,6 +294,7 @@ public class IngredientsPane extends StackPane {
      * Adds a new ingredient from user input
      */
     public void addNewIngredientAction() {
+        resetSearchField();
         try {
             new IngredientPopup(this, callback, 0);
         } catch (Exception e) {
@@ -304,6 +306,7 @@ public class IngredientsPane extends StackPane {
      * Method used to edit an item in the tableView
      */
     public void editAction() {
+        resetSearchField();
         String name = tableView.getSelectionModel().getSelectedItem().getType();
         IngredientPopup pane;
 
@@ -330,6 +333,7 @@ public class IngredientsPane extends StackPane {
      * Removes selected ingredient from the stock
      */
     public void removeIngredient() {
+        resetSearchField();
         ObservableList<Ingredient> ingredientSelected, allIngredients;
         allIngredients = tableView.getItems();
         ingredientSelected = tableView.getSelectionModel().getSelectedItems();
@@ -453,6 +457,11 @@ public class IngredientsPane extends StackPane {
         alert.setContentText("Please select an ingredient!");
 
         alert.showAndWait();
+    }
+
+
+    public void resetSearchField () {
+        searchTextField.clear();
     }
 
     /**
