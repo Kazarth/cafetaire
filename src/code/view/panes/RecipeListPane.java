@@ -146,15 +146,17 @@ public class RecipeListPane extends StackPane {
         viewContainer.setAlignment(Pos.CENTER);
         recipeView = new TableView<>();
         recipeView.setPrefSize(980,473);
-        recipeView.setStyle(Styles.getTableRowSelected());
+        recipeView.getStyleClass().add("view");
         viewContainer.getChildren().add(recipeView);
 
         /* Table columns */
         TableColumn<Recipe, String> nameCol = new TableColumn<>("Name");
+        nameCol.getStyleClass().add("name-column");
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameCol.setPrefWidth(490);
         TableColumn<Recipe, String> categoryCol = new TableColumn<>("Category");
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
+        categoryCol.getStyleClass().add("name-column");
         categoryCol.setPrefWidth(490);
         recipeView.getColumns().addAll(nameCol, categoryCol);
 
