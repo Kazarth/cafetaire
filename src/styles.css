@@ -184,3 +184,81 @@
     -fx-background-color: #ddd;
     -fx-cursor: hand;
 }
+
+.table-view{
+   -fx-background-color: transparent;
+   -fx-selection-bar: #619F81;
+   -fx-selection-bar-non-focused: #619F81;
+}
+
+.table-view:focused{
+    -fx-background-color: transparent;
+}
+
+/*Struktur column-header-background -> column-header */
+.table-view .column-header-background{
+    -fx-background-color: linear-gradient(#131313 0%, #424141 100%);
+    -fx-background-radius: 10 10 0 0;
+    -fx-filler-radius: 10 10 0 0;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+
+.table-view .filler {
+  -fx-background-radius: 25;
+  -fx-background-color: #619F81;;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: black;
+}
+
+.table-row-cell{
+    -fx-background-color: -fx-table-cell-border-color, #fff;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+}
+
+/* The main scrollbar **thumb** CSS class which we drag every time (movable) */
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+  -fx-background-color: #619F81;
+	-fx-background-insets: 2;
+	-fx-background-radius: 25;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -fx-table-cell-border-color, #eee;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #619F81;
+    -fx-background-insets: 0;
+    -fx-text-fill: #fff;
+}
+
+.table-view > .virtual-flow > .scroll-bar:vertical,
+.table-view > .virtual-flow > .scroll-bar:vertical > .track,
+.table-view > .virtual-flow > .scroll-bar:vertical > .track-background,
+.table-view > .virtual-flow > .scroll-bar:horizontal,
+.table-view > .virtual-flow > .scroll-bar:horizontal > .track,
+.table-view > .virtual-flow > .scroll-bar:horizontal > .track-background {
+    -fx-background-color: transparent;
+    -fx-background-radius: 25;
+}
+
+.table-view > .virtual-flow > .scroll-bar > .increment-button,
+.table-view > .virtual-flow > .scroll-bar > .decrement-button {
+    -fx-opacity: 0.30;
+    -fx-border-color: none;
+}
