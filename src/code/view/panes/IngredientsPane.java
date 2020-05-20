@@ -441,6 +441,11 @@ public class IngredientsPane extends StackPane {
         return ingredients;
     }
 
+    /**
+     * Popup comes up if you try to create an
+     * ingredient without entering a name for it.
+     */
+
     public void noIngredientSelected() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("No Ingredient Selected");
