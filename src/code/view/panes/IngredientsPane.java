@@ -397,8 +397,10 @@ public class IngredientsPane extends StackPane {
      * Searchbar functionality.
      */
     private void searchRecord(Observable observable, String oldValue, String newValue) {
+
+        FilteredList<Ingredient> filteredList = new FilteredList<>(getIngredient(), p -> true);
+
         if (!searchTextField.getText().equals("")) {
-            FilteredList<Ingredient> filteredList = new FilteredList<>(getIngredient(), p -> true);
             filteredList.setPredicate(tableView -> {
 
                 if (newValue == null || newValue.isEmpty()) {
@@ -426,9 +428,10 @@ public class IngredientsPane extends StackPane {
             SortedList<Ingredient> sortedList = new SortedList<>(filteredList);
             sortedList.comparatorProperty().bind(tableView.comparatorProperty());
             tableView.setItems(sortedList);
-        } else {
-            tableView.setItems(getIngredient());
         }
+
+        else
+            tableView.setItems(getIngredient());
     }
 
     private ObservableList<Ingredient> getIngredient() {
