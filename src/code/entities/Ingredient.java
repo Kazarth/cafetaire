@@ -13,6 +13,8 @@ public class Ingredient implements Serializable {
     private String type, category;
     private Supplier supplier;
     private int stock;
+    private Units unit;
+    private String stockAndUnit;
 
     public Ingredient(String type) {
         this.type = type;
@@ -21,11 +23,13 @@ public class Ingredient implements Serializable {
         stock = 1;
     }
 
-    public Ingredient(String type, String category, int stock, Supplier supplier) {
+    public Ingredient(String type, String category, int stock, Supplier supplier, Units unit) {
         this.type = type;
         this.category = category;
         this.supplier = supplier;
         this.stock = stock;
+        this.unit = unit;
+        stockAndUnit = stock + " " + unit;
     }
 
     public String getType() {
@@ -58,6 +62,22 @@ public class Ingredient implements Serializable {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public Units getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Units unit) {
+        this.unit = unit;
+    }
+
+    public String getStockAndUnit() {
+        return stockAndUnit;
+    }
+
+    public void setStockAndUnit() {
+        this.stockAndUnit = stock + " " + unit;
     }
 
     public boolean increment() {
@@ -100,6 +120,6 @@ public class Ingredient implements Serializable {
     public String toString() {
         return "Name: " + this.type + "\n" +
                 "Category: " + this.category + "\n" +
-                "Stock: " + this.stock;
+                "Stock: " + this.stockAndUnit;
     }
 }

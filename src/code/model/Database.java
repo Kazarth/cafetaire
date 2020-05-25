@@ -261,9 +261,9 @@ public class Database implements Serializable {
         addSupplier(georgeAB);
         addSupplier(paulAB);
 
-        Ingredient salt = new Ingredient("Salt", "Dry Food", 6, lucasAB);
-        Ingredient sugar = new Ingredient("Sugar", "Dry Food", 7, georgeAB);
-        Ingredient cocoa = new Ingredient("Cocoa", "Dry Food", 8, paulAB);
+        Ingredient salt = new Ingredient("Salt", "Dry Food", 6, lucasAB, null);
+        Ingredient sugar = new Ingredient("Sugar", "Dry Food", 7, georgeAB, null);
+        Ingredient cocoa = new Ingredient("Cocoa", "Dry Food", 8, paulAB, null);
 
         addIngredient(salt);
         addIngredient(sugar);

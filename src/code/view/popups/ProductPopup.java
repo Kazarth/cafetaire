@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javax.swing.*;
+import java.util.Arrays;
 
 /**
  * The class handles a Pop-up window for adding a product to products in database.
@@ -271,14 +272,7 @@ public class ProductPopup extends AnchorPane {
     private ObservableList<ProductCategories> getCategories() {
         ObservableList<ProductCategories> Products = FXCollections.observableArrayList();
 
-        Products.addAll(
-                ProductCategories.Bread,
-                ProductCategories.Fruit,
-                ProductCategories.Vegetable,
-                ProductCategories.Dairy,
-                ProductCategories.Pastry,
-                ProductCategories.Drink
-        );
+        Arrays.asList(ProductCategories.values()).forEach(Products::addAll);
 
         return Products;
     }

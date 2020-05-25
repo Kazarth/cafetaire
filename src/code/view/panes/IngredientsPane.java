@@ -225,7 +225,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
 
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-        stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        stockColumn.setCellValueFactory(new PropertyValueFactory<>("stockAndUnit"));
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
 
         nameColumn.setPrefWidth(233);
@@ -336,9 +336,9 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
                 pane.setOrgIngredient(name);
 
                 if (ingredient.getSupplier() == null) {
-                    pane.setValuesForIngredient(ingredient.getType(), ingredient.getCategory(), "");
+                    pane.setValuesForIngredient(ingredient.getType(), ingredient.getCategory(), "", ingredient.getUnit());
                 } else {
-                    pane.setValuesForIngredient(ingredient.getType(), ingredient.getCategory(), ingredient.getSupplier().getName());
+                    pane.setValuesForIngredient(ingredient.getType(), ingredient.getCategory(), ingredient.getSupplier().getName(), ingredient.getUnit());
                 }
 
             } catch (Exception e) {
@@ -376,6 +376,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         if (ingredient != null){
             int prodQuantity = ingredient.getStock();
             ingredient.setStock(prodQuantity + getNumberSpinnerValue());
+            ingredient.setStockAndUnit();
         } else {
             noIngredientSelected();
         }
@@ -393,6 +394,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         if (ingredient != null){
             int prodQuantity = ingredient.getStock();
             ingredient.setStock(prodQuantity - getNumberSpinnerValue());
+            ingredient.setStockAndUnit();
         } else {
             noIngredientSelected();
         }

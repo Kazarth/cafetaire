@@ -4,6 +4,7 @@ import code.control.Callback;
 import code.entities.Ingredient;
 import code.entities.Styles;
 import code.entities.Supplier;
+import code.entities.Units;
 import code.view.panes.IngredientsPane;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -17,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * The class presents a OK or CANCEL pane.
@@ -30,6 +32,7 @@ public class IngredientPopup extends AnchorPane {
     private JFrame frame;
     private TextField nameField;
     private ComboBox<String> categoryBox, supplierBox;  // lägg in och läs in listor som vanligt?
+    private ComboBox<Units> unitBox;
     private String orgIngredient;
 
     public IngredientPopup(IngredientsPane source, Callback callback, int opener) {
@@ -92,11 +95,27 @@ public class IngredientPopup extends AnchorPane {
         this.supplierBox.setLayoutY(220);
         this.supplierBox.setItems(getSuppliersFromDatabase()); // testing
 
+        Label unitLbl = new Label("Unit type");
+        unitLbl.setStyle("-fx-text-fill: #000;");
+        unitLbl.setPrefWidth(220); unitLbl.setPrefHeight(40);
+        unitLbl.setLayoutX(56.0); unitLbl.setLayoutY(280);
+
+        this.unitBox = new ComboBox<>();
+        this.unitBox.setPromptText("Choose unit");
+        this.unitBox.setEditable(false);
+        this.unitBox.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
+        this.unitBox.setPrefWidth(360);
+        this.unitBox.setPrefHeight(40);
+        this.unitBox.setLayoutX(144.0);
+        this.unitBox.setLayoutY(280);
+        this.unitBox.setItems(getUnits());
+
+
         // Button pane
         Button addButton = new Button();
         addButton.setStyle(Styles.getPopAddButton());
         addButton.setPrefWidth(200); addButton.setPrefHeight(40);
-        addButton.setLayoutX(75); addButton.setLayoutY(310);
+        addButton.setLayoutX(75); addButton.setLayoutY(340);
 
         // New ingredient
         if (opener == 0) {
@@ -112,7 +131,7 @@ public class IngredientPopup extends AnchorPane {
         Button cancelButton = new Button("CANCEL");
         cancelButton.setStyle(Styles.getPopCancelButton());
         cancelButton.setPrefWidth(200); cancelButton.setPrefHeight(40);
-        cancelButton.setLayoutX(325.0); cancelButton.setLayoutY(310);
+        cancelButton.setLayoutX(325.0); cancelButton.setLayoutY(340);
         cancelButton.setOnAction(e -> cancelAction());
 
         // Add all children
@@ -124,6 +143,8 @@ public class IngredientPopup extends AnchorPane {
                 this.categoryBox,
                 supplierLbl,
                 this.supplierBox,
+                unitLbl,
+                this.unitBox,
                 addButton,
                 cancelButton
         );
@@ -141,7 +162,7 @@ public class IngredientPopup extends AnchorPane {
         final JFXPanel fxPanel = new JFXPanel();
         this.frame.add(fxPanel);
 
-        this.frame.setSize(600,400);
+        this.frame.setSize(600,460);
         this.frame.setLocationRelativeTo(null);
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.frame.setUndecorated(true);
@@ -162,8 +183,12 @@ public class IngredientPopup extends AnchorPane {
             String category = this.categoryBox.getSelectionModel().getSelectedItem();
             String supplierName = this.supplierBox.getSelectionModel().getSelectedItem();
             Supplier supplier = this.callback.getSupplier(supplierName);
+            Units unit = this.unitBox.getSelectionModel().getSelectedItem();
 
-            ingredient = new Ingredient(name, category, 1, supplier);
+            if (unit != null) {
+                ingredient = new Ingredient(name, category, 1, supplier, unit);
+            } else
+                ingredient = new Ingredient(name, category, 1 , supplier, Units.st);
 
             if (this.callback.addIngredient(ingredient)) {
                 this.source.addNewIngredient(ingredient);
@@ -184,15 +209,19 @@ public class IngredientPopup extends AnchorPane {
         String category = this.categoryBox.getValue();
         String supplierName = this.supplierBox.getValue();
         Supplier supplier = this.callback.getSupplier(supplierName);
+        Units unit = this.unitBox.getValue();
+        int orgStock = callback.getIngredient(orgIngredient).getStock();
 
         if (this.orgIngredient.equals(name)) {
             Ingredient ingredient = this.callback.getIngredient(name);
             ingredient.setCategory(category);
             ingredient.setSupplier(supplier);
+            ingredient.setUnit(unit);
+            ingredient.setStockAndUnit();
             this.source.refresh();
             close();
         } else {
-            Ingredient ingredientTest = new Ingredient(name, category, 1, supplier);
+            Ingredient ingredientTest = new Ingredient(name, category, orgStock, supplier, unit);
             this.callback.addIngredient(ingredientTest);
             this.callback.removeIngredient(orgIngredient);
             this.source.addNewIngredient(ingredientTest);
@@ -268,9 +297,23 @@ public class IngredientPopup extends AnchorPane {
      * @param category initial value for item to be edited
      * @param supplier initial value for item to be edited
      */
-    public void setValuesForIngredient(String name, String category, String supplier){
+    public void setValuesForIngredient(String name, String category, String supplier, Units unit){
         this.nameField.setText(name);
         this.categoryBox.getSelectionModel().select(category);
         this.supplierBox.getSelectionModel().select(supplier);
+        this.unitBox.getSelectionModel().select(unit);
     }
+
+    /**
+     * Method to populate unitComboBox
+     * @return ObservableList with values from enum Units
+     */
+    private ObservableList<Units> getUnits(){
+        ObservableList<Units> unitTypes = FXCollections.observableArrayList();
+
+        Arrays.asList(Units.values()).forEach(unitTypes::addAll);
+
+        return unitTypes;
+     }
 }
+
