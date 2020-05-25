@@ -41,7 +41,7 @@ public class DashboardPane extends StackPane implements EnhancedPane {
 
         TableColumn<Ingredient, String> ingredientStock = new TableColumn<>("Stock");
         ingredientStock.setStyle(Styles.getTableColumn());
-        ingredientStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        ingredientStock.setCellValueFactory(new PropertyValueFactory<>("stockAndUnit"));
         ingredientStock.setPrefWidth(100);
 
         ObservableList<Ingredient> ingredientValues = FXCollections.observableArrayList();
