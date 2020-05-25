@@ -73,15 +73,15 @@ public class SupplierPane extends StackPane {
 
 
         buttonAdd.getStyleClass().add("greenButtonPanel");
-        buttonAdd.setPrefWidth(160);
+        buttonAdd.setPrefWidth(170);
         buttonAdd.setPrefHeight(40);
 
         buttonRemove.getStyleClass().add("greenButtonPanel");
-        buttonRemove.setPrefWidth(160);
+        buttonRemove.setPrefWidth(170);
         buttonRemove.setPrefHeight(40);
 
         buttonEdit.getStyleClass().add("greenButtonPanel");
-        buttonEdit.setPrefWidth(160);
+        buttonEdit.setPrefWidth(170);
         buttonEdit.setPrefHeight(40);
 
 

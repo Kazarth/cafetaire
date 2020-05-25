@@ -9,5 +9,6 @@ public enum ProductCategories {
     Vegetable,
     Fruit,
     Bread,
-    Pastries
+    Pastry,
+    Drink
 }

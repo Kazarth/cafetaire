@@ -68,10 +68,8 @@ public class Supplier implements Serializable {
         this.phone = phone;
     }
 
+    @Override
     public String toString() {
-        return "Name: " + supplierName + "\n" +
-                "Category: " + category + "\n" +
-                "Email: " + email + "\n" +
-                "Phone: " + phone;
+        return supplierName;
     }
 }

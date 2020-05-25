@@ -102,15 +102,15 @@ public class ProductsPane extends StackPane {
         Button button_EditItem = new Button("EDIT PRODUCT");
 
         button_NewItem.getStyleClass().add("greenButtonPanel");
-        button_NewItem.setPrefWidth(160);
+        button_NewItem.setMinWidth(170);
         button_NewItem.setPrefHeight(40);
 
         button_RemoveItem.getStyleClass().add("greenButtonPanel");
-        button_RemoveItem.setPrefWidth(160);
+        button_RemoveItem.setMinWidth(170);
         button_RemoveItem.setPrefHeight(40);
 
         button_EditItem.getStyleClass().add("greenButtonPanel");
-        button_EditItem.setPrefWidth(160);
+        button_EditItem.setMinWidth(170);
         button_EditItem.setPrefHeight(40);
 
         HBox hBox = new HBox( button_NewItem, button_RemoveItem, button_EditItem);
@@ -174,7 +174,8 @@ public class ProductsPane extends StackPane {
         button_Add.setOnAction(e -> addQuantity());
         button_Remove.setOnAction(e -> removeQuantity());
 
-        HBox hBox = new HBox(10, numberSpinner, button_Add, button_Remove);
+        HBox hBox = new HBox(numberSpinner, button_Add, button_Remove);
+        hBox.setSpacing(10);
 
         hBox.setMaxSize(435, 75);
         hBox.setMinSize(435, 75);

@@ -273,7 +273,8 @@ public class ProductPopup extends AnchorPane {
                 ProductCategories.Fruit,
                 ProductCategories.Vegetable,
                 ProductCategories.Dairy,
-                ProductCategories.Pastries
+                ProductCategories.Pastry,
+                ProductCategories.Drink
         );
 
         return Products;

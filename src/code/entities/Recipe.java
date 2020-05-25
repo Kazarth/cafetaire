@@ -83,6 +83,6 @@ public class Recipe implements Serializable {
 
     @Override
     public String toString(){
-        return getName();
+        return name;
     }
 }
