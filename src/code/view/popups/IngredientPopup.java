@@ -207,6 +207,7 @@ public class IngredientPopup extends AnchorPane {
         String supplierName = this.supplierBox.getValue();
         Supplier supplier = this.callback.getSupplier(supplierName);
         Units unit = this.unitBox.getValue();
+        int orgStock = callback.getIngredient(orgIngredient).getStock();
 
         if (this.orgIngredient.equals(name)) {
             Ingredient ingredient = this.callback.getIngredient(name);
@@ -217,7 +218,7 @@ public class IngredientPopup extends AnchorPane {
             this.source.refresh();
             close();
         } else {
-            Ingredient ingredientTest = new Ingredient(name, category, 1, supplier, unit);
+            Ingredient ingredientTest = new Ingredient(name, category, orgStock, supplier, unit);
             this.callback.addIngredient(ingredientTest);
             this.callback.removeIngredient(orgIngredient);
             this.source.addNewIngredient(ingredientTest);
