@@ -313,8 +313,11 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
             alert.setContentText("Ooops, please enter an amount to bake!");
             alert.showAndWait();
         } else {
-            String print = "BAKE " + amountField.getText() + " COOKIES";
-            System.out.println(print);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Bake");
+            alert.setHeaderText("Baking " + amountField.getText() + " " + recipe.getName());
+            alert.setContentText("Great!\nUou have now baked 2 sets of " + recipe.getName());
+            alert.showAndWait();
         }
     }
 }
