@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  * TODO: description
- * @author Tor Stenfeldt
+ * @author Tor Stenfeldt, Lucas Eliasson
  * @version 1.0
  */
 public class Recipe implements Serializable {
@@ -57,6 +57,15 @@ public class Recipe implements Serializable {
 
     public ArrayList<Content> getContentList() {
         return contentList;
+    }
+
+    public Content getContent(String name) {
+        for (Content c : contentList) {
+            if (c.getIngredient().getType().equals(name)) {
+                return c;
+            }
+        }
+        return null;
     }
 
     // change to %5 for structure

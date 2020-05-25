@@ -237,6 +237,22 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
         ingredientsList.setItems(ingredients);
     }
 
+    public Recipe getRecipe() {
+        return this.recipe;
+    }
+
+    /**
+     * Returns the name on the selected row in GUI
+     * @return String
+     */
+    public Content getSelectedContent() {
+        TablePosition pos = ingredientsList.getSelectionModel().getSelectedCells().get(0);
+        System.out.println();
+        int row = pos.getRow();
+
+        return ingredientsList.getItems().get(row);
+    }
+
     /**
      * Sets the values to the chosen recipe from the source pane
      * @param recipe Chosen recipe
@@ -247,6 +263,10 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
         stepsBox.setText(recipe.getInstructions());
 
         loadIngredients();
+    }
+
+    public void refresh() {
+        ingredientsList.refresh();
     }
 
     /**
@@ -270,6 +290,7 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
      */
     private void editIngredients() {
         new ContentPopup(this, callback);
+        ingredientsList.refresh();
     }
 
     /**
