@@ -2,16 +2,15 @@ package code.entities;
 
 public class IngredientRecipe extends Ingredient {
     private double amount;
-    private String unit;
 
-    public IngredientRecipe(String type, double amount, String unit) {
+
+    public IngredientRecipe(String type, double amount) {
         super(type);
         this.amount = amount;
-        this.unit = unit;
     }
 
-    public IngredientRecipe(String type, String category, int stock, Supplier supplier) {
-        super(type, category, stock, supplier);
+    public IngredientRecipe(String type, String category, int stock, Supplier supplier, Units unit) {
+        super(type, category, stock, supplier, unit);
     }
 
     @Override
@@ -42,6 +41,16 @@ public class IngredientRecipe extends Ingredient {
     @Override
     public void setSupplier(Supplier supplier) {
         super.setSupplier(supplier);
+    }
+
+    @Override
+    public Units getUnit() {
+        return super.getUnit();
+    }
+
+    @Override
+    public void setUnit(Units unit) {
+        super.setUnit(unit);
     }
 
     @Override
@@ -85,13 +94,5 @@ public class IngredientRecipe extends Ingredient {
 
     public void setAmount(double amount) {
         this.amount = amount;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
     }
 }
