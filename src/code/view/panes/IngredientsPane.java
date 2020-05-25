@@ -119,7 +119,7 @@ public class IngredientsPane extends StackPane {
         button_editIngredient.setStyle(Styles.getButton());
         button_removeIngredient.setStyle(Styles.getButton());
 
-        HBox hBox = new HBox(15, button_newIngredient, button_removeIngredient, button_editIngredient);
+        HBox hBox = new HBox(button_newIngredient, button_removeIngredient, button_editIngredient);
         hBox.setSpacing(10);
         hBox.setMinSize(600, 75);
         hBox.setMaxSize(650, 75);
@@ -187,7 +187,8 @@ public class IngredientsPane extends StackPane {
         button_Add.setOnAction(e -> addQuantity());
         button_Remove.setOnAction(e -> removeQuantity());
 
-        HBox hBox = new HBox(15, numberSpinner, button_Add, button_Remove,searchTextField);
+        HBox hBox = new HBox(numberSpinner, button_Add, button_Remove,searchTextField);
+        hBox.setSpacing(10);
 
         hBox.setMaxSize(435, 75);
         hBox.setMinSize(435, 75);

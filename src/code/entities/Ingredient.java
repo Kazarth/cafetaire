@@ -98,6 +98,7 @@ public class Ingredient implements Serializable {
         return true;
     }
 
+    @Override
     public String toString() {
         return "Name: " + this.type + "\n" +
                 "Category: " + this.category + "\n" +

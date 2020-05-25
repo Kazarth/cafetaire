@@ -46,7 +46,7 @@ public abstract class Styles {
                 "-fx-padding: 5 10 5 10;" +
                 "-fx-background-radius: 10;" +
                 "-fx-pref-height: 40;" +
-                "-fx-pref-width: 160;"
+                "-fx-min-width: 170;"
 
         );
     }
