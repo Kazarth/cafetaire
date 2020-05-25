@@ -363,7 +363,8 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
             callback.removeIngredient(ingredient.getType());
 
         }catch (NoSuchElementException e) {
-            e.printStackTrace();
+            System.err.println("Last element - NullPointer \nRemoveIngredient \nIngredientPane Row 366");
+            callback.catchSafeState();
         }
     }
 
@@ -418,10 +419,14 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
 
                 if (tableView.getType().toLowerCase().contains(typedText)) {
                     return true;
-                } else if (tableView.getSupplier().getName().toLowerCase().contains(typedText)) {
+
+                } else if (tableView.getSupplier() != null) {
+                    tableView.getSupplier().getName().toLowerCase().contains(typedText);
                     return true;
+
                 } else if (String.valueOf(tableView.getStock()).toLowerCase().contains(typedText))
                     return true;
+
                 else
                     return false;
 
