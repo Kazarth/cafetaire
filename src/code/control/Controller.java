@@ -207,6 +207,10 @@ public class Controller implements Callback {
         return database.removeSupplier(name);
     }
 
+    public void catchSafeState () {
+        saveLoad.setEdited();
+    }
+
     @Override
     public void setupPane() {
         // get centerPane
