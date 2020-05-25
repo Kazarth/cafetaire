@@ -1,11 +1,16 @@
 package code.view.panes;
 
 import code.control.Callback;
+import code.entities.Ingredient;
 import code.entities.Styles;
 import code.entities.Supplier;
 import code.view.popups.SupplierPopup;
+import com.sun.jdi.event.ExceptionEvent;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,6 +24,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import org.junit.Ignore;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -38,6 +44,7 @@ public class SupplierPane extends StackPane {
     private TableColumn<Supplier, String> emailColumn;
     private TableColumn<Supplier, Integer> phoneColumn;
     private Callback callback;
+    private TextField textField_Search;
 
     public SupplierPane(Callback callback) {
         this.callback = callback;
@@ -109,16 +116,15 @@ public class SupplierPane extends StackPane {
             e.printStackTrace();
         }
 
-
-
         Label labelSearch = new Label("SEARCH:");
         labelSearch.setStyle(Styles.getSearchBar());
-        TextField textFieldSearch   =   new TextField();
-        textFieldSearch.setPrefSize(160, 40);
-        textFieldSearch.setPromptText("Search");
+        textField_Search   =   new TextField();
+        textField_Search.setPrefSize(160, 40);
+        textField_Search.setPromptText("Search");
+        textField_Search.textProperty().addListener(this :: searchRecord);
 
         // CONTAINER FOR SEARCH BAR (RIGHT) - SEARCH LABEL, SEARCH FIELD
-        HBox    hBoxSearchContainer   =   new HBox(10, labelSearch, textFieldSearch, buttonSearch);
+        HBox    hBoxSearchContainer   =   new HBox(10, labelSearch, textField_Search, buttonSearch);
         hBoxSearchContainer.setPrefSize(413, 75);
         hBoxSearchContainer.setStyle("-fx-background-color: #FFFFFF;");
         hBoxSearchContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -215,6 +221,7 @@ public class SupplierPane extends StackPane {
      * Add new Supplier
      */
     public void addNewSupplierAction() {
+        resetSearchField();
         try {
             new SupplierPopup(this, callback, 0);
         } catch (Exception e) {
@@ -236,6 +243,7 @@ public class SupplierPane extends StackPane {
      * Method used to edit a supplier in the tableView
      */
     public void editSupplierAction(){
+        resetSearchField();
         String name = tableView.getSelectionModel().getSelectedItem().getName();
         SupplierPopup pane;
 
@@ -255,6 +263,7 @@ public class SupplierPane extends StackPane {
      * Removes selected supplier
      */
     public void removeSupplier() {
+        resetSearchField();
         ObservableList<Supplier> supplierSelected, allSuppliers;
         allSuppliers = tableView.getItems();
         supplierSelected = tableView.getSelectionModel().getSelectedItems();
@@ -262,10 +271,11 @@ public class SupplierPane extends StackPane {
 
         try {
             supplierSelected.forEach(allSuppliers::remove);
-            callback.removeSupplier(supplier.getName()); 
+            callback.removeSupplier(supplier.getName());
 
-        }catch (NoSuchElementException e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            System.err.println("Last element - NullPointer \nRemoveSupplier \nSupplierPane Row 279");
+            callback.catchSafeState();
         }
 
     }
@@ -277,4 +287,52 @@ public class SupplierPane extends StackPane {
     public void refresh(){
         tableView.refresh();
     }
+
+
+    /**
+     * Searchbar functionality.
+     */
+    private void searchRecord(Observable observable, String oldValue, String newValue) {
+
+        FilteredList<Supplier> filteredList = new FilteredList<>(getSuppliersFromDatabase(), p -> true);
+
+        if (!textField_Search.getText().equals("")) {
+            filteredList.setPredicate(tableView -> {
+
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String typedText = newValue.toLowerCase();
+
+                if (tableView.getSupplierName().toLowerCase().contains(typedText)) {
+                    return true;
+
+                } else if (tableView.getCategory() != null) {
+                    tableView.getCategory().toLowerCase().contains(typedText);
+                    return true;
+
+
+                } else if (String.valueOf(tableView.getEmail()).toLowerCase().contains(typedText)) {
+                    return true;
+
+                } else if (tableView.getPhone().toLowerCase().contains(typedText)) {
+                    return true;
+
+                } else
+                    return false;
+            });
+
+            SortedList<Supplier> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(tableView.comparatorProperty());
+            tableView.setItems(sortedList);
+
+        } else
+            tableView.setItems(getSuppliersFromDatabase());
+    }
+
+    public void resetSearchField () {
+        textField_Search.setText("");
+    }
+
 }
