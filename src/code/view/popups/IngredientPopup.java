@@ -185,7 +185,10 @@ public class IngredientPopup extends AnchorPane {
             Supplier supplier = this.callback.getSupplier(supplierName);
             Units unit = this.unitBox.getSelectionModel().getSelectedItem();
 
-            ingredient = new Ingredient(name, category, 1, supplier, unit);
+            if (unit != null) {
+                ingredient = new Ingredient(name, category, 1, supplier, unit);
+            } else
+                ingredient = new Ingredient(name, category, 1 , supplier, Units.st);
 
             if (this.callback.addIngredient(ingredient)) {
                 this.source.addNewIngredient(ingredient);
