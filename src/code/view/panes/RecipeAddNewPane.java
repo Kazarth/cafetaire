@@ -2,6 +2,7 @@ package code.view.panes;
 
 import code.control.Callback;
 import code.entities.*;
+import code.view.panes.RecipeListPane;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;

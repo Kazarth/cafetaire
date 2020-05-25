@@ -2,7 +2,6 @@ package code.view.panes;
 
 import code.entities.Ingredient;
 import code.entities.Styles;
-import code.entities.Supplier;
 import code.view.popups.IngredientPopup;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -23,7 +22,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import code.control.Callback;
-import javax.swing.*;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
