@@ -1,7 +1,5 @@
 package code.entities;
 
-import code.entities.Supplier;
-
 import java.io.Serializable;
 
 /**
