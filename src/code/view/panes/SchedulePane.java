@@ -59,7 +59,7 @@ public class SchedulePane extends StackPane implements EnhancedPane {
         getChildren().add(mainBox);
         setPadding(new Insets(25));
 
-        calendar.setValue(3, 4, "Coke from the Company");
+        testPopulate(calendar);
     }
 
     public void expand() {
@@ -74,5 +74,11 @@ public class SchedulePane extends StackPane implements EnhancedPane {
 
     public void refresh() {
         // TODO: refresh anything?
+    }
+
+    private void testPopulate(Calendar calendar) {
+        calendar.setValue(1, 4, "Wheat from Baerte Kvarn");
+        calendar.setValue(1, 5, "Sugar from Socker Arne AB");
+        calendar.setValue(4, 3, "Beverages from Krönelein");
     }
 }
