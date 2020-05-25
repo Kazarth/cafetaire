@@ -56,7 +56,7 @@ public class ContentPopup extends AnchorPane {
         nameLbl.setLayoutX(56.0); nameLbl.setLayoutY(100);
 
         this.nameField = new TextField();
-        this.nameField.setPromptText("Enter name");
+        this.nameField.setEditable(false);
         this.nameField.setStyle(Styles.getPopField());
         this.nameField.setPrefWidth(360);
         this.nameField.setPrefHeight(40);
@@ -69,7 +69,6 @@ public class ContentPopup extends AnchorPane {
         amountLbl.setPrefWidth(220.0); amountLbl.setPrefHeight(40);
         amountLbl.setLayoutX(56.0); amountLbl.setLayoutY(160);
         this.amountField = new TextField();
-        this.amountField.setText(loadAmount());
         this.amountField.setStyle(Styles.getPopField() + Styles.getTableRowSelected());
         this.amountField.setPrefWidth(360.0);
         this.amountField.setPrefHeight(40);
@@ -93,16 +92,22 @@ public class ContentPopup extends AnchorPane {
         this.unitBox.setItems(getUnits()); // testing
 
         // Button pane
-        Button addButton = new Button("SAVE CHANGES");
-        addButton.getStyleClass().add("greenButton");
-        addButton.setPrefWidth(200); addButton.setPrefHeight(40);
-        addButton.setLayoutX(75); addButton.setLayoutY(310);
+        Button save_Button = new Button("SAVE CHANGES");
+        save_Button.getStyleClass().add("greenButton");
+        save_Button.setPrefWidth(200); save_Button.setPrefHeight(40);
+        save_Button.setLayoutX(75); save_Button.setLayoutY(310);
+        save_Button.setOnAction(e -> saveAction());
 
         Button cancelButton = new Button("CANCEL");
         cancelButton.getStyleClass().add("grayButton");
         cancelButton.setPrefWidth(200); cancelButton.setPrefHeight(40);
         cancelButton.setLayoutX(325.0); cancelButton.setLayoutY(310);
         cancelButton.setOnAction(e -> cancelAction());
+
+        // load data
+        Content content;
+        content = source.getSelectedContent();
+        setValuesForIngredient(content.getIngredient().getType(), content.getValue(), content.getUnit());
 
         // Add all children
         getChildren().addAll(
@@ -113,17 +118,21 @@ public class ContentPopup extends AnchorPane {
                 this.amountField,
                 unitLbl,
                 this.unitBox,
-                addButton,
+                save_Button,
                 cancelButton
         );
         initPanel();
     }
 
-    public String loadAmount() {
-        // get content row from tableView
-        // get index
-        // put in amount field
-        return "test";
+    /**
+     * @param name initial value for item to be edited
+     * @param amount initial value for item to be edited
+     * @param unit initial value for item to be edited
+     */
+    public void setValuesForIngredient(String name, double amount, Units unit){
+        this.nameField.setText(name);
+        this.amountField.setText(String.valueOf(amount));
+        this.unitBox.getSelectionModel().select(String.valueOf(unit));
     }
 
     /**
@@ -160,19 +169,24 @@ public class ContentPopup extends AnchorPane {
     }
 
     /**
-     * On press Add button
-     */
-    public void addAction() {
-        close();
-    }
-
-    /**
      * Method to edit an item in the tableView for IngredientPane
      * if name remain unchanged set category and supplier to value from comboBoxes
      * if name is changed remove existing name from database and add the new ingredient to the database
      */
-    public void editAction() {
-
+    public void saveAction() {
+        try {
+            String name = this.nameField.getText();
+            Ingredient ingredient = callback.getIngredient(name);
+            double amount = Double.parseDouble(this.amountField.getText());
+            Units unit = Units.valueOf(unitBox.getSelectionModel().getSelectedItem());
+            Recipe recipe = this.source.getRecipe();
+            recipe.getContent(name).setValue(amount);
+            recipe.getContent(name).setUnit(unit);
+            source.refresh();
+            close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -187,63 +201,5 @@ public class ContentPopup extends AnchorPane {
      */
     private void close() {
         this.frame.dispose();
-    }
-
-    /**
-     * Collects a list of suppliers from the database
-     * @return list of suppliers
-     */
-    private ObservableList<String> getSuppliersFromDatabase() {
-        ObservableList<String> listSuppliers = FXCollections.observableArrayList();
-        ArrayList<Supplier> receivedSuppliers = this.callback.getSuppliers();
-
-        for (Supplier supplier: receivedSuppliers) {
-            listSuppliers.add(supplier.getName());
-        }
-        return listSuppliers;
-    }
-
-    /**
-     * For testing purposes
-     * @return
-     */
-    private ObservableList<String> getSuppliers() {
-        ObservableList<String> ingredients = FXCollections.observableArrayList();
-        ingredients.add("Lucas AB");
-        ingredients.add("Georg Inc");
-        ingredients.add("Paul M");
-        ingredients.add("Coca Cola");
-        return ingredients;
-    }
-
-    /**
-     * For testing purposes
-     * @return
-     */
-    private ObservableList<String> getCategories() {
-        ObservableList<String> ingredients = FXCollections.observableArrayList();
-        ingredients.add("Dry Food");
-        ingredients.add("Fresh Food");
-        ingredients.add("Drink");
-        return ingredients;
-    }
-
-    public String getOrgIngredient() {
-        return this.orgIngredient;
-    }
-
-    public void setOrgIngredient(String orgIngredient) {
-        this.orgIngredient = orgIngredient;
-    }
-
-    /**
-     * @param name initial value for item to be edited
-     * @param category initial value for item to be edited
-     * @param supplier initial value for item to be edited
-     */
-    public void setValuesForIngredient(String name, String category, String supplier){
-        this.nameField.setText(name);
-        //this.categoryBox.getSelectionModel().select(category);
-        //this.supplierBox.getSelectionModel().select(supplier);
     }
 }

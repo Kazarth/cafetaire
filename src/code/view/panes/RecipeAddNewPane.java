@@ -348,7 +348,6 @@ public class RecipeAddNewPane extends StackPane {
      */
     private ObservableList<String> getUnits() {
         ObservableList<String> unitList = FXCollections.observableArrayList();
-        //unitList.addAll(Arrays.asList(Units.values()));
         for (Units u: Units.values()) {
             unitList.add(u.name());
         }
