@@ -55,6 +55,10 @@ public class Recipe implements Serializable {
         return contents;
     }
 
+    public ArrayList<Content> getContentList() {
+        return contentList;
+    }
+
     // change to %5 for structure
     public String getIngredients() {
         StringBuilder out = new StringBuilder();
@@ -75,5 +79,10 @@ public class Recipe implements Serializable {
             out.append(c.getIngredient().getType()).append(", ");
         }
         return instructions;
+    }
+
+    @Override
+    public String toString(){
+        return name;
     }
 }

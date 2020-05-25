@@ -1,9 +1,13 @@
 package code.entities;
 
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+
 /**
  * Can be used in order to get styles for different types of components.
- * @author Tor Stenfeldt
- * @version 3.0
+ * @author Tor Stenfeldt, Paul Moustakas, Lucas Eliasson
+ * @version 4.0
  */
 public abstract class Styles {
     public static String getMenuButtonStandard() {
@@ -14,7 +18,8 @@ public abstract class Styles {
                 "-fx-border-color: #619F81;" +
                 "-fx-border-style: none;" +
                 "-fx-border-width: 0 0 0 0;" +
-                "-fx-border-radius: 0 25 25 0;"
+                "-fx-border-radius: 0 25 25 0;" +
+                "-fx-cursor: hand;"
         );
     }
 
@@ -26,7 +31,8 @@ public abstract class Styles {
                 "-fx-border-color: #619F81;" +
                 "-fx-border-style: dashed;" +
                 "-fx-border-width: 3 3 3 0;" +
-                "-fx-border-radius: 0 25 25 0;"
+                "-fx-border-radius: 0 25 25 0;" +
+                "-fx-cursor: hand;"
         );
     }
 
@@ -36,10 +42,17 @@ public abstract class Styles {
                 " -fx-text-fill: #FFFFFF;" +
                 " -fx-font-family: Segoe UI;" +
                 "-fx-font-weight: bold;" +
-                "-fx-font-size: 16;" +
+                "-fx-font-size: 14;" +
                 "-fx-padding: 5 10 5 10;" +
-                "-fx-background-radius: 10;"
+                "-fx-background-radius: 10;" +
+                "-fx-pref-height: 40;" +
+                "-fx-min-width: 170;"
+
         );
+    }
+
+    public static Font getValueButtonsFont () {
+        return Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 36);
     }
 
     public static String getSearchBar() {
@@ -113,9 +126,7 @@ public abstract class Styles {
                 "-fx-text-fill: #000;" +
                 "-fx-alignment: center;" +
                 "-fx-font-size: 12;" +
-                "-fx-font-family: Segoe UI;" +
-                "-fx-font-weight: bold;"
-                //"-fx-color: #21252B"
+                "-fx-font-family: Segoe UI;"
                 );
     }
 

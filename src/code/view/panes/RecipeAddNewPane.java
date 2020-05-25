@@ -35,7 +35,7 @@ public class RecipeAddNewPane extends StackPane {
 
     // input
     private ComboBox field_Name;
-    private ComboBox field_Amount;
+    private TextField field_Amount;
     private ComboBox field_Unit;
     private Button button_Enter;
     private Label label_Instructions;
@@ -71,24 +71,19 @@ public class RecipeAddNewPane extends StackPane {
 
         /* Title */
         HBox titleBox = new HBox();
-        titleBox.setPrefSize(1086, 60);
+        titleBox.setPrefSize(1086, 58);
         titleBox.setAlignment(Pos.CENTER);
         titleBox.setStyle(
                 "-fx-background-radius: 20 20 0 0;" +
                         "-fx-border-width: 0 0 1 0;" +
                         "-fx-border-color: #000;"
         );
-        titleBox.setPadding(new Insets(0,0,10,0));
         Font titleFont = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         titleLabel = new Label("ADD NEW RECIPE");
         titleLabel.setFont(titleFont);
         titleLabel.setTextFill(Paint.valueOf("#619f81"));
+        titleLabel.setPadding(new Insets(0,0,17,0));
         titleBox.getChildren().add(titleLabel);
-
-        /* Spacing */
-        HBox spaceBox = new HBox();
-        spaceBox.setStyle("-fx-background-color: #fff");
-        spaceBox.setPrefSize(1086,60);
 
         /* Recipe Name */
         HBox recipeNameBox = new HBox(10);
@@ -155,8 +150,9 @@ public class RecipeAddNewPane extends StackPane {
         field_Name.setEditable(true);
         field_Name.setPromptText("Name");
         field_Name.getStyleClass().add("text-field");
+        field_Name.setItems(loadIngredients());
 
-        field_Amount = new ComboBox();
+        field_Amount = new TextField();
         field_Amount.setPrefSize(100,30);
         field_Amount.setEditable(true);
         field_Amount.setPromptText("Amount");
@@ -169,8 +165,9 @@ public class RecipeAddNewPane extends StackPane {
         field_Unit.setPromptText("Unit");
         field_Unit.getStyleClass().add("text-field");
         field_Unit.setButtonCell(new ListCell<String>(){
-            protected void updateItem(Units item, boolean empty) {
-                super.updateItem(String.valueOf(item), empty);
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
                 if(!(empty || item==null)){
                     setText(item.toString());
                 }
@@ -224,6 +221,21 @@ public class RecipeAddNewPane extends StackPane {
     }
 
     /**
+     * Gets already stored ingredients and adds them to the name combobox
+     * @return List of strings
+     */
+    private ObservableList<String> loadIngredients() {
+        ObservableList <String> strings = FXCollections.observableArrayList();
+        Ingredient[] collectedIngredients = callback.getIngredients();
+        String[] newStrings = new String[collectedIngredients.length];
+        for (int i = 0; i < collectedIngredients.length; i++) {
+            newStrings[i] = collectedIngredients[i].getType();
+        }
+        strings.addAll(Arrays.asList(newStrings));
+        return strings;
+    }
+
+    /**
      * Saves the Recipe to the database
      */
     private void saveRecipe() {
@@ -247,22 +259,26 @@ public class RecipeAddNewPane extends StackPane {
             }
         }
 
-        recipe = new Recipe(name);
-        for (Content c : ingredientsList.getItems()) {
-            content = c;
-            recipe.addContent(content);
+        if (name.equals("")) {
+            JOptionPane.showMessageDialog(null, "Please fill in a name before saving");
+        } else {
+            recipe = new Recipe(name);
+            for (Content c : ingredientsList.getItems()) {
+                content = c;
+                recipe.addContent(content);
+            }
+            recipe.setInstructions(instructions);
+
+            System.out.println();
+
+            System.out.println("Name: " + recipe.getName());
+            System.out.println("Instructions: " + recipe.getInstructions());
+            System.out.println("Ingredients: " + recipe.toString());
+
+            pane.addNewRecipe(recipe);
+            callback.addRecipe(recipe);
+            goBack();
         }
-        recipe.setInstructions(instructions);
-
-        System.out.println();
-
-        System.out.println("Name: " + recipe.getName());
-        System.out.println("Instructions: " + recipe.getInstructions());
-        System.out.println("Ingredients: " + recipe.toString());
-
-        pane.addNewRecipe(recipe);
-        callback.addRecipe(recipe);
-        goBack();
     }
 
     /**
@@ -273,12 +289,13 @@ public class RecipeAddNewPane extends StackPane {
         Units unit = null;
         double amount = 0;
         Ingredient ingredient; // To check against the database
+
         try {
             name = (String) field_Name.getValue();
-            amount = Double.parseDouble((String) field_Amount.getValue());
-            unit = (Units) field_Unit.getValue();
+            amount = Double.parseDouble((String) field_Amount.getText());
+            unit = Units.valueOf((String) field_Unit.getValue());
 
-            if (!(name.equals("") || amount == 0.0 || unit == null)) {
+            if (!(name.equals("") || amount == 0.0)) {
                 System.out.println("Added Ingredient: \n" +
                         "Name: " + name + "\n" +
                         "Amount: " + amount + " " + unit);
@@ -300,6 +317,7 @@ public class RecipeAddNewPane extends StackPane {
         } else {
             System.out.println("Created new ingredient: " + ingredient.getType());
         }
+
         Content content = new Content(ingredient, amount, unit);
         ingredientsList.getItems().add(content);
     }
@@ -309,7 +327,7 @@ public class RecipeAddNewPane extends StackPane {
      */
     private void clearInput() {
         field_Name.setValue("");
-        field_Amount.setValue("");
+        field_Amount.setText("");
         field_Unit.setValue("Unit");
     }
 
@@ -317,6 +335,10 @@ public class RecipeAddNewPane extends StackPane {
      * Return to the landing page
      */
     private void goBack() {
+        clearInput();
+        ingredientsList.getItems().clear();
+        field_Instructions.setText("");
+        field_RName.setText("");
         source.setView(RecipePanes.RecipeListPane);
     }
 
@@ -324,17 +346,12 @@ public class RecipeAddNewPane extends StackPane {
      * Returns an array of units
      * @return ObservableList of units
      */
-    private ObservableList<Units> getUnits() {
-        ObservableList<Units> unitList = FXCollections.observableArrayList();
-        unitList.addAll(Arrays.asList(Units.values()));
+    private ObservableList<String> getUnits() {
+        ObservableList<String> unitList = FXCollections.observableArrayList();
+        //unitList.addAll(Arrays.asList(Units.values()));
+        for (Units u: Units.values()) {
+            unitList.add(u.name());
+        }
         return unitList;
-    }
-
-    // Testing
-    private ObservableList<Content> getTestValues() {
-        ObservableList <Content> ingredients = FXCollections.observableArrayList();
-        Content[] newIngredients = new Content[2];
-        ingredients.addAll(Arrays.asList(newIngredients));
-        return ingredients;
     }
 }

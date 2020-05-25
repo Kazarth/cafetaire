@@ -105,7 +105,7 @@ public class RecipeListPane extends StackPane {
         deleteButton = new Button("DELETE RECIPE");
         deleteButton.setPrefSize(160,40);
         deleteButton.getStyleClass().add("greenButtonPanel");
-        deleteButton.setOnAction(e -> removeRecipe());
+        deleteButton.setOnAction(e -> deleteRecipe());
         viewButton = new Button("VIEW RECIPE");
         viewButton.setPrefSize(160,40);
         viewButton.getStyleClass().add("greenButtonPanel");
@@ -146,15 +146,19 @@ public class RecipeListPane extends StackPane {
         viewContainer.setAlignment(Pos.CENTER);
         recipeView = new TableView<>();
         recipeView.setPrefSize(980,473);
-        recipeView.setStyle(Styles.getTableRowSelected());
+        recipeView.getStyleClass().add("view");
         viewContainer.getChildren().add(recipeView);
 
         /* Table columns */
         TableColumn<Recipe, String> nameCol = new TableColumn<>("Name");
+        nameCol.getStyleClass().add("name-column");
+        nameCol.setStyle(Styles.getTableColumn());
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameCol.setPrefWidth(490);
         TableColumn<Recipe, String> categoryCol = new TableColumn<>("Category");
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
+        categoryCol.getStyleClass().add("name-column");
+        categoryCol.setStyle(Styles.getTableColumn());
         categoryCol.setPrefWidth(490);
         recipeView.getColumns().addAll(nameCol, categoryCol);
 
@@ -173,24 +177,51 @@ public class RecipeListPane extends StackPane {
         getChildren().add(container);
     }
 
+    /**
+     * Adds a new recipe
+     * @param recipe
+     */
     public void addNewRecipe(Recipe recipe) {
         recipeView.getItems().add(recipe);
     }
 
-    // TODO: add to callback
-    private Boolean createAddView() {
-        System.out.println("ADD");
+    /**
+     * Opens the recipe-view
+     */
+    private void createAddView() {
         pane.setView(RecipePanes.RecipeAddNewPane);
-        return false;
     }
 
-    // TODO: add to callback
-    private Boolean removeRecipe() {
-        System.out.println("REMOVE");
-        return false;
+    /**
+     * Deletes active recipe from View pane
+     */
+    public void deleteRecipe(Recipe recipe) {
+        if (callback.removeRecipe(recipe.getName())) {
+            recipeView.getItems().remove(recipe);
+        } else {
+            JOptionPane.showMessageDialog(null, "No selected recipe to be deleted");
+        }
     }
 
-    /* In i callback -- wait */
+    /**
+     * Deletes selected recipe
+     */
+    private void deleteRecipe() {
+        // get row
+        TablePosition pos = recipeView.getSelectionModel().getSelectedCells().get(0);
+        int row = pos.getRow();
+        Recipe recipe = recipeView.getItems().get(row);
+
+        if (callback.removeRecipe(recipe.getName())) {
+            recipeView.getItems().remove(recipe);
+        } else {
+            JOptionPane.showMessageDialog(null, "No selected recipe to be deleted");
+        }
+    }
+
+    /**
+     * Gets selected recipe to be showcased
+     */
     private void viewRecipe() {
         try {
             // get name
@@ -220,6 +251,10 @@ public class RecipeListPane extends StackPane {
         System.out.println("contract");
     }
 
+    /**
+     * Gets the already stored recipes from the database and adds them to the tableview
+     * @return list of recipes
+     */
     private ObservableList<Recipe> getRecipes() {
         ObservableList <Recipe> recipes = FXCollections.observableArrayList();
         Recipe[] newRecipes = callback.getRecipes();

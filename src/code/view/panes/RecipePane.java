@@ -1,13 +1,10 @@
 package code.view.panes;
 
 import code.control.Callback;
-import code.entities.Ingredient;
 import code.entities.Recipe;
 import code.entities.RecipePanes;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-
-import java.util.ArrayList;
 
 public class RecipePane extends StackPane implements EnhancedPane {
     private Pane[] views;
@@ -35,6 +32,11 @@ public class RecipePane extends StackPane implements EnhancedPane {
         this.currentPane = views[0];
 
         this.getChildren().add(currentPane);
+    }
+
+    public void deleteRecipe(Recipe recipe) {
+        RecipeListPane recipeListPane = (RecipeListPane) views[0];
+        recipeListPane.deleteRecipe(recipe);
     }
 
     void loadRecipe(RecipePanes view, Recipe recipe) {
