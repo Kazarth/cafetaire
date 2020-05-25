@@ -309,7 +309,6 @@ public class SupplierPane extends StackPane implements EnhancedPane {
                     tableView.getCategory().toLowerCase().contains(typedText);
                     return true;
 
-
                 } else if (String.valueOf(tableView.getEmail()).toLowerCase().contains(typedText)) {
                     return true;
 
