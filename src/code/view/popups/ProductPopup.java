@@ -218,14 +218,14 @@ public class ProductPopup extends AnchorPane {
      * if name remains unchanged set values from the other fields to product
      * if name is changed remove old name from database and add the new one
      */
-    public void editAction(){
+    public void editAction() {
         String name = this.textField_Name.getText();
         ProductCategories category = this.categoryBox.getValue();
         int quantity = this.numberSpinner.getValue();
         Recipe recipe = this.ComboBox_Recipe.getValue();
         Product product;
 
-        if (this.orgProd.equals(name)){
+        if (this.orgProd.equals(name)) {
             product = this.callback.getProduct(this.textField_Name.getText());
             product.setCategory(category);
             product.setStock(quantity);
@@ -234,6 +234,9 @@ public class ProductPopup extends AnchorPane {
             } else {
                 product.setRecipe(recipe);
             }
+
+            this.callback.catchSafeState();
+
         } else {
             if (recipe == null){
                 product = new Product(name, category, quantity, null);

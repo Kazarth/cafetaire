@@ -6,7 +6,7 @@ import code.entities.RecipePanes;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-public class RecipePane extends StackPane {
+public class RecipePane extends StackPane implements EnhancedPane {
     private Pane[] views;
     private Pane currentPane;
     private RecipePanes panes;
@@ -32,6 +32,20 @@ public class RecipePane extends StackPane {
         this.currentPane = views[0];
 
         this.getChildren().add(currentPane);
+    }
+
+    @Override
+    public void expand() {
+        setPrefWidth(1346);
+    }
+
+    @Override
+    public void contract() {
+        setPrefWidth(1086);
+    }
+
+    public void refresh() {
+        // TODO: refresh anything?
     }
 
     public void deleteRecipe(Recipe recipe) {

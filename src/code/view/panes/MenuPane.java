@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import java.io.FileInputStream;
@@ -122,6 +121,7 @@ public class MenuPane extends StackPane {
         } else {
             expand(button);
         }
+
         this.expanded = !this.expanded;
     }
 
@@ -129,31 +129,8 @@ public class MenuPane extends StackPane {
      * Contracts the menu
      */
     private void contract(Button button) {
-        int activeIndex = this.mainPane.getActiveView();
-        Pane[] views = this.mainPane.getViews();
-
-        switch (activeIndex) {
-            case 0:
-                ((DashboardPane) views[activeIndex]).expand();
-                break;
-            case 1:
-                ((IngredientsPane) views[activeIndex]).expand();
-                break;
-            case 2:
-                ((ProductsPane) views[activeIndex]).expand();
-                break;
-            case 3:
-                ((SupplierPane) views[activeIndex]).expand();
-                break;
-            case 4:
-                ((RecipeListPane) views[activeIndex]).expand();
-                break;
-            case 5:
-                ((SchedulePane) views[activeIndex]).expand();
-                break;
-            default:
-                System.out.println("Shouldn't be here.");
-                break;
+        for (EnhancedPane p: this.mainPane.getViews()) {
+            p.expand();
         }
 
         setPrefSize(20,768);
@@ -186,31 +163,8 @@ public class MenuPane extends StackPane {
      * Expands the menu
      */
     private void expand(Button button) {
-        int activeIndex = this.mainPane.getActiveView();
-        Pane[] views = this.mainPane.getViews();
-
-        switch (activeIndex) {
-            case 0:
-                ((DashboardPane) views[activeIndex]).contract();
-                break;
-            case 1:
-                ((IngredientsPane) views[activeIndex]).contract();
-                break;
-            case 2:
-                ((ProductsPane) views[activeIndex]).contract();
-                break;
-            case 3:
-                ((SupplierPane) views[activeIndex]).contract();
-                break;
-            case 4:
-                ((RecipeListPane) views[activeIndex]).contract();
-                break;
-            case 5:
-                ((SchedulePane) views[activeIndex]).contract();
-                break;
-            default:
-                System.out.println("Shouldn't be here.");
-                break;
+        for (EnhancedPane p: this.mainPane.getViews()) {
+            p.contract();
         }
 
         setPrefSize(280,768);
@@ -245,7 +199,7 @@ public class MenuPane extends StackPane {
      * @param view Active code.view
      * @return new styled button
      */
-    private Button initButton(Views view)  {
+    private Button initButton(Views view) {
         Button newButton = new Button(view.name());
         newButton.setPrefSize(280, 100);
         newButton.setStyle(Styles.getMenuButtonStandard());

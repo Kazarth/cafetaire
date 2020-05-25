@@ -36,7 +36,7 @@ import java.util.NoSuchElementException;
  * @author Paul Moustakas, Tor Stenfeldt
  * @version 3.0
  */
-public class SupplierPane extends StackPane {
+public class SupplierPane extends StackPane implements EnhancedPane {
     private TableView<Supplier> tableView;
     private TableColumn<Supplier, String> supplierColumn;
     private TableColumn<Supplier, String> categoryColumn;
@@ -172,6 +172,18 @@ public class SupplierPane extends StackPane {
         getChildren().add(mainContainer);
     }
 
+    public void expand() {
+        setPrefWidth(1346);
+    }
+
+    public void contract() {
+        setPrefWidth(1086);
+    }
+
+    public void refresh(){
+        tableView.refresh();
+    }
+
     public void setTableView () {
         tableView = new TableView<>();
         tableView.setStyle(Styles.getTableRowSelected());
@@ -227,16 +239,6 @@ public class SupplierPane extends StackPane {
             e.printStackTrace();
         }
     }
-  
-    public void expand() {
-        setPrefWidth(1346);
-        System.out.println("Expanding");
-    }
-
-    public void contract() {
-        setPrefWidth(1086);
-        System.out.println("Contracting");
-    }
 
     /**
      * Method used to edit a supplier in the tableView
@@ -281,10 +283,6 @@ public class SupplierPane extends StackPane {
 
     private void search() {
         System.out.println("SEARCH");
-    }
-
-    public void refresh(){
-        tableView.refresh();
     }
 
 

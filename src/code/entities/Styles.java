@@ -121,7 +121,7 @@ public abstract class Styles {
         );
     }
 
-    public static String getTableColumn(){
+    public static String getTableColumn() {
         return (
                 "-fx-text-fill: #000;" +
                 "-fx-alignment: center;" +
@@ -129,6 +129,16 @@ public abstract class Styles {
                 "-fx-font-family: Segoe UI;"
                 );
     }
+
+    public static String getDashboardTable() {
+        return ("-fx-selection-bar: #619F81;" +
+                "-fx-selection-bar-non-focused: #619F81;" +
+                "-fx-background-color: #FFF;" +
+                "-fx-background-radius: 0 0 20 20;" +
+                ""
+        );
+    }
+
     public static String getTableRowSelected() {
         return (
                 "-fx-selection-bar: #619F81;" +

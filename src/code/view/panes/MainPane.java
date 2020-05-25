@@ -2,6 +2,7 @@ package code.view.panes;
 
 import code.control.Callback;
 import code.entities.Views;
+import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -14,7 +15,7 @@ import javax.swing.*;
  * @version 1.0
  */
 public class MainPane extends StackPane {
-    private Pane[] views;
+    private EnhancedPane[] views;
     private int pane;
 
     public MainPane(Callback callback) {
@@ -25,8 +26,8 @@ public class MainPane extends StackPane {
         }
 
         StackPane menu = new MenuPane(this);
-        views = new Pane[6];
-        views[0] = new DashboardPane();
+        views = new EnhancedPane[6];
+        views[0] = new DashboardPane(callback);
         views[1] = new IngredientsPane(callback);
         views[2] = new ProductsPane(callback);
         views[3] = new SupplierPane(callback);
@@ -34,7 +35,7 @@ public class MainPane extends StackPane {
         views[5] = new SchedulePane(callback);
 
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(menu, views[0]);
+        hBox.getChildren().addAll(menu, ((Node)views[0]));
         getChildren().add(hBox);
     }
 
@@ -48,10 +49,11 @@ public class MainPane extends StackPane {
             }
         }
 
-        ((HBox)getChildren().get(0)).getChildren().set(1, views[pane]);
+        views[pane].refresh();
+        ((HBox)getChildren().get(0)).getChildren().set(1, ((Node)views[pane]));
     }
 
-    Pane[] getViews() {
+    EnhancedPane[] getViews() {
         return views;
     }
 

@@ -2,7 +2,6 @@ package code.view.panes;
 
 import code.entities.Ingredient;
 import code.entities.Styles;
-import code.entities.Supplier;
 import code.view.popups.IngredientPopup;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -23,7 +22,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import code.control.Callback;
-import javax.swing.*;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -34,10 +33,8 @@ import java.util.NoSuchElementException;
  * @author Tor Stenfeldt, Georg Grankvist, Lucas Eliasson
  * @version 1.0
  */
-public class IngredientsPane extends StackPane {
-
+public class IngredientsPane extends StackPane implements EnhancedPane {
     private Spinner<Integer> numberSpinner = new Spinner<>();
-
     private TableView<Ingredient> tableView;
     private TableColumn<Ingredient, String> nameColumn = new TableColumn<>("Name");
     private TableColumn<Ingredient, String> categoryColumn = new TableColumn<>("Category");
@@ -262,6 +259,27 @@ public class IngredientsPane extends StackPane {
     }
 
     /**
+     * Expands the pane and makes the menuPane smaller
+     */
+    public void expand() {
+        setPrefWidth(1346);
+    }
+
+    /**
+     * Makes the pane smaller and expands the menuPane
+     */
+    public void contract() {
+        setPrefWidth(1086);
+    }
+
+    /**
+     * Refreshes the tableView
+     */
+    public void refresh(){
+        tableView.refresh();
+    }
+
+    /**
      * Initializes and returns a VBox containing the top half of the pane.
      * @return pane
      */
@@ -385,31 +403,13 @@ public class IngredientsPane extends StackPane {
     }
 
     /**
-     * Expands the pane and makes the menuPane smaller
-     */
-    public void expand() {
-        setPrefWidth(1346);
-        System.out.println("Expanding");
-    }
-
-    /**
-     * Makes the pane smaller and expands the menuPane
-     */
-    public void contract() {
-        setPrefWidth(1086);
-        System.out.println("Contracting");
-    }
-
-    /**
      * Searchbar functionality.
      */
     private void searchRecord(Observable observable, String oldValue, String newValue) {
-
         FilteredList<Ingredient> filteredList = new FilteredList<>(getIngredient(), p -> true);
 
         if (!searchTextField.getText().equals("")) {
             filteredList.setPredicate(tableView -> {
-
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
@@ -418,15 +418,10 @@ public class IngredientsPane extends StackPane {
 
                 if (tableView.getType().toLowerCase().contains(typedText)) {
                     return true;
-
                 } else if (tableView.getSupplier().getName().toLowerCase().contains(typedText)) {
-
                     return true;
-
                 } else if (String.valueOf(tableView.getStock()).toLowerCase().contains(typedText))
-
                     return true;
-
                 else
                     return false;
 
@@ -465,12 +460,5 @@ public class IngredientsPane extends StackPane {
 
     public void resetSearchField () {
         searchTextField.clear();
-    }
-
-    /**
-     * Refreshes the tableView
-     */
-    public void refresh(){
-        tableView.refresh();
     }
 }

@@ -15,7 +15,7 @@ import javafx.scene.layout.VBox;
  * @author Tor Stenfeldt, Lucas Eliasson
  * @version 3.0
  */
-public class SchedulePane extends StackPane {
+public class SchedulePane extends StackPane implements EnhancedPane {
     public SchedulePane(Callback callback) {
         Label title = new Label("CALENDAR");
         title.setStyle(Styles.getBoxTitle());
@@ -70,5 +70,9 @@ public class SchedulePane extends StackPane {
     public void contract() {
         setPrefWidth(1086);
         System.out.println("Contracting");
+    }
+
+    public void refresh() {
+        // TODO: refresh anything?
     }
 }
