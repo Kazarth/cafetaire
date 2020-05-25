@@ -259,6 +259,27 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
     }
 
     /**
+     * Expands the pane and makes the menuPane smaller
+     */
+    public void expand() {
+        setPrefWidth(1346);
+    }
+
+    /**
+     * Makes the pane smaller and expands the menuPane
+     */
+    public void contract() {
+        setPrefWidth(1086);
+    }
+
+    /**
+     * Refreshes the tableView
+     */
+    public void refresh(){
+        tableView.refresh();
+    }
+
+    /**
      * Initializes and returns a VBox containing the top half of the pane.
      * @return pane
      */
@@ -380,31 +401,13 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
     }
 
     /**
-     * Expands the pane and makes the menuPane smaller
-     */
-    public void expand() {
-        setPrefWidth(1346);
-        System.out.println("Expanding");
-    }
-
-    /**
-     * Makes the pane smaller and expands the menuPane
-     */
-    public void contract() {
-        setPrefWidth(1086);
-        System.out.println("Contracting");
-    }
-
-    /**
      * Searchbar functionality.
      */
     private void searchRecord(Observable observable, String oldValue, String newValue) {
-
         FilteredList<Ingredient> filteredList = new FilteredList<>(getIngredient(), p -> true);
 
         if (!searchTextField.getText().equals("")) {
             filteredList.setPredicate(tableView -> {
-
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
@@ -413,15 +416,10 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
 
                 if (tableView.getType().toLowerCase().contains(typedText)) {
                     return true;
-
                 } else if (tableView.getSupplier().getName().toLowerCase().contains(typedText)) {
-
                     return true;
-
                 } else if (String.valueOf(tableView.getStock()).toLowerCase().contains(typedText))
-
                     return true;
-
                 else
                     return false;
 
@@ -460,12 +458,5 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
 
     public void resetSearchField () {
         searchTextField.clear();
-    }
-
-    /**
-     * Refreshes the tableView
-     */
-    public void refresh(){
-        tableView.refresh();
     }
 }

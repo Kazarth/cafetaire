@@ -121,7 +121,7 @@ public abstract class Styles {
         );
     }
 
-    public static String getTableColumn(){
+    public static String getTableColumn() {
         return (
                 "-fx-text-fill: #000;" +
                 "-fx-alignment: center;" +

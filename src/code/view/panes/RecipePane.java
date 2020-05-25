@@ -34,6 +34,20 @@ public class RecipePane extends StackPane implements EnhancedPane {
         this.getChildren().add(currentPane);
     }
 
+    @Override
+    public void expand() {
+        setPrefWidth(1346);
+    }
+
+    @Override
+    public void contract() {
+        setPrefWidth(1086);
+    }
+
+    public void refresh() {
+        // TODO: refresh anything?
+    }
+
     public void deleteRecipe(Recipe recipe) {
         RecipeListPane recipeListPane = (RecipeListPane) views[0];
         recipeListPane.deleteRecipe(recipe);
@@ -56,9 +70,5 @@ public class RecipePane extends StackPane implements EnhancedPane {
         }
         getChildren().set(0, views[pane]);
         this.panes = view;
-    }
-
-    public void refresh() {
-        // TODO: refresh anything?
     }
 }

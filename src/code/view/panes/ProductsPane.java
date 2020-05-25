@@ -259,6 +259,27 @@ public class ProductsPane extends StackPane implements EnhancedPane {
     }
 
     /**
+     * Expands the pane and makes the menuPane smaller
+     */
+    public void expand() {
+        setPrefWidth(1346);
+    }
+
+    /**
+     * Makes the pane smaller and expands the menuPane
+     */
+    public void contract() {
+        setPrefWidth(1086);
+    }
+
+    /**
+     * refresh the tableView
+     */
+    public void refresh(){
+        tableView.refresh();
+    }
+
+    /**
      * @return value of numberSpinner field
      */
     public int getNumberSpinnerValue() {
@@ -367,33 +388,10 @@ public class ProductsPane extends StackPane implements EnhancedPane {
     }
 
     /**
-     * Expands the pane and makes the menuPane smaller
-     */
-    public void expand() {
-        setPrefWidth(1346);
-        System.out.println("Expanding");
-    }
-
-    /**
-     * Makes the pane smaller and expands the menuPane
-     */
-    public void contract() {
-        setPrefWidth(1086);
-        System.out.println("Contracting");
-    }
-
-    /**
      * @param product add product to tableView
      */
     public void addNewProduct(Product product) {
         tableView.getItems().add(product);
-    }
-
-    /**
-     * refresh the tableView
-     */
-    public void refresh(){
-        tableView.refresh();
     }
 
     /**

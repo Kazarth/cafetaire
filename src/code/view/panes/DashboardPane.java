@@ -29,14 +29,18 @@ public class DashboardPane extends StackPane implements EnhancedPane {
     public DashboardPane(Callback controller) {
         this.controller = controller;
 
+        getStylesheets().add("styles.css");
+
         Label ingredientsLabel = new Label("Ingredients");
         ingredientsLabel.setStyle(Styles.getBoxTitle());
 
         TableColumn<Ingredient, String> ingredientName = new TableColumn<>("Ingredient");
+        ingredientName.setStyle(Styles.getTableColumn());
         ingredientName.setCellValueFactory(new PropertyValueFactory<>("type"));
         ingredientName.setPrefWidth(548);
 
         TableColumn<Ingredient, String> ingredientStock = new TableColumn<>("Stock");
+        ingredientStock.setStyle(Styles.getTableColumn());
         ingredientStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         ingredientStock.setPrefWidth(100);
 
@@ -71,10 +75,12 @@ public class DashboardPane extends StackPane implements EnhancedPane {
         productsLabel.setStyle(Styles.getBoxTitle());
 
         TableColumn<Product, String> productName = new TableColumn<>("Product");
+        productName.setStyle(Styles.getTableColumn());
         productName.setCellValueFactory(new PropertyValueFactory<>("type"));
         productName.setPrefWidth(548);
 
         TableColumn<Product, String> productStock = new TableColumn<>("Stock");
+        productStock.setStyle(Styles.getTableColumn());
         productStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         productStock.setPrefWidth(100);
 
@@ -110,6 +116,14 @@ public class DashboardPane extends StackPane implements EnhancedPane {
         setPrefSize(1086, 768);
     }
 
+    public void expand() {
+        setPrefWidth(1346);
+    }
+
+    public void contract() {
+        setPrefWidth(1086);
+    }
+
     public void refresh() {
         ObservableList<Ingredient> ingredientValues = FXCollections.observableArrayList();
         ingredientValues.addAll(Arrays.asList(controller.getIngredients()));
@@ -120,13 +134,5 @@ public class DashboardPane extends StackPane implements EnhancedPane {
         productValues.addAll(Arrays.asList(controller.getProducts()));
         this.products.setItems(productValues);
         this.products.refresh();
-    }
-
-    public void expand() {
-        setPrefWidth(1346);
-    }
-
-    public void contract() {
-        setPrefWidth(1086);
     }
 }

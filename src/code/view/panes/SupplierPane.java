@@ -24,7 +24,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import org.junit.Ignore;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -173,6 +172,18 @@ public class SupplierPane extends StackPane implements EnhancedPane {
         getChildren().add(mainContainer);
     }
 
+    public void expand() {
+        setPrefWidth(1346);
+    }
+
+    public void contract() {
+        setPrefWidth(1086);
+    }
+
+    public void refresh(){
+        tableView.refresh();
+    }
+
     public void setTableView () {
         tableView = new TableView<>();
         tableView.setStyle(Styles.getTableRowSelected());
@@ -228,16 +239,6 @@ public class SupplierPane extends StackPane implements EnhancedPane {
             e.printStackTrace();
         }
     }
-  
-    public void expand() {
-        setPrefWidth(1346);
-        System.out.println("Expanding");
-    }
-
-    public void contract() {
-        setPrefWidth(1086);
-        System.out.println("Contracting");
-    }
 
     /**
      * Method used to edit a supplier in the tableView
@@ -282,10 +283,6 @@ public class SupplierPane extends StackPane implements EnhancedPane {
 
     private void search() {
         System.out.println("SEARCH");
-    }
-
-    public void refresh(){
-        tableView.refresh();
     }
 
 
