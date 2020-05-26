@@ -115,7 +115,7 @@ public class SupplierPane extends StackPane implements EnhancedPane {
             e.printStackTrace();
         }
 
-        Label labelSearch = new Label("SEARCH:");
+        Label labelSearch = new Label();
         labelSearch.setStyle(Styles.getSearchBar());
         textField_Search   =   new TextField();
         textField_Search.setPrefSize(160, 40);
@@ -276,6 +276,7 @@ public class SupplierPane extends StackPane implements EnhancedPane {
 
         }catch (Exception e) {
             System.err.println("Last element - NullPointer \nRemoveSupplier \nSupplierPane Row 279");
+            callback.removeSupplier(supplier.getName());
             callback.catchSafeState();
         }
 

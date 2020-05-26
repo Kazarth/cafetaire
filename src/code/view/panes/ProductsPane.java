@@ -326,7 +326,9 @@ public class ProductsPane extends StackPane implements EnhancedPane {
             itemSelected.forEach(allItems::remove);
             callback.removeProduct(product.getType());
         } catch (NoSuchElementException e){
-            e.printStackTrace();
+            System.err.println("Last element - NullPointer \nRemoveProduct \nProductPane Row 329");
+            callback.removeProduct(product.getType());
+            callback.catchSafeState();
         }
 
     }
