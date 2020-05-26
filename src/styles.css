@@ -197,7 +197,8 @@
 
 /*Struktur column-header-background -> column-header */
 .table-view .column-header-background{
-    -fx-background-color: linear-gradient(#131313 0%, #424141 100%);
+    /*-fx-background-color: linear-gradient(#21252B 0%, #525C6B 100%);*/
+    -fx-background-color: #21252B;
     -fx-background-radius: 10 10 0 0;
     -fx-filler-radius: 10 10 0 0;
 }
