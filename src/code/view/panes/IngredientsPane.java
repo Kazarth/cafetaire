@@ -364,6 +364,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
 
         }catch (NoSuchElementException e) {
             System.err.println("Last element - NullPointer \nRemoveIngredient \nIngredientPane Row 366");
+            callback.removeIngredient(ingredient.getType());
             callback.catchSafeState();
         }
     }
