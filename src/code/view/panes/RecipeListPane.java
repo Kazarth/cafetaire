@@ -4,8 +4,12 @@ import code.control.Callback;
 import code.entities.Recipe;
 import code.entities.RecipePanes;
 import code.entities.Styles;
+import code.entities.Supplier;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -28,7 +32,7 @@ import java.util.Arrays;
 /**
  * RecipePane.java
  * Presents the user with an overview of what recipes are stored.
- * @author Lucas Eliasson
+ * @author Lucas Eliasson, Paul Moustakas
  * @version 1.0
  */
 public class RecipeListPane extends StackPane {
@@ -39,10 +43,11 @@ public class RecipeListPane extends StackPane {
     private Button addButton;
     private Button deleteButton;
     private Button viewButton;
-    private TextField searchField;
+    private TextField search_Field;
     private Button searchButton;
     private TableView<Recipe> recipeView;
     private RecipePane pane;
+    //private TableView<Recipe> tableView;
 
     public RecipeListPane(Callback callback, RecipePane pane) {
         this.pane = pane;
@@ -110,9 +115,11 @@ public class RecipeListPane extends StackPane {
         searchBox.setAlignment(Pos.CENTER_RIGHT);
         Label searchLabel = new Label("SEARCH");
         searchLabel.setPadding(new Insets(0,10,0,0));
-        searchField = new TextField();
-        searchField.setPromptText("Search");
-        searchField.setPrefSize(240,40);
+        search_Field = new TextField();
+        search_Field.setPromptText("Search");
+        search_Field.setPrefSize(240,40);
+        search_Field.textProperty().addListener(this :: searchRecord);
+
         searchButton = new Button();
         searchButton.setPrefSize(40,40);
         searchButton.getStyleClass().add("greenButtonSquare");
@@ -126,7 +133,7 @@ public class RecipeListPane extends StackPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        searchBox.getChildren().addAll(searchLabel, searchField, searchButton);
+        searchBox.getChildren().addAll(searchLabel, search_Field, searchButton);
         HBox buttonAndSearchContainer = new HBox(20);
         buttonAndSearchContainer.setPrefSize(980,60);
         buttonAndSearchContainer.setMaxSize(980,60);
@@ -254,5 +261,36 @@ public class RecipeListPane extends StackPane {
         Recipe[] newRecipes = callback.getRecipes();
         recipes.addAll(Arrays.asList(newRecipes));
         return recipes;
+    }
+
+    /**
+     * Searchbar functionality.
+     */
+    private void searchRecord(Observable observable, String oldValue, String newValue) {
+
+        FilteredList<Recipe> filteredList = new FilteredList<>(getRecipes(), p -> true);
+
+        if (!search_Field.getText().equals("")) {
+            filteredList.setPredicate(tableView -> {
+
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String typedText = newValue.toLowerCase();
+
+                if (tableView.getName().toLowerCase().contains(typedText)) {
+                    return true;
+
+                } else
+                    return false;
+            });
+
+            SortedList<Recipe> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(recipeView.comparatorProperty());
+            recipeView.setItems(sortedList);
+
+        } else
+            recipeView.setItems(getRecipes());
     }
 }
