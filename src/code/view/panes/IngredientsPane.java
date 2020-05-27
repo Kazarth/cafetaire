@@ -149,7 +149,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         Button button_Add = new Button();
         Button button_Remove = new Button();
 
-        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 80);
+        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE);
         numberSpinner.setValueFactory(svf);
         numberSpinner.disabledProperty();
         numberSpinner.setEditable(true);
