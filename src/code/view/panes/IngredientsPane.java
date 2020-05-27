@@ -116,10 +116,17 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         Button button_removeIngredient = new Button("REMOVE INGREDIENT");
         Button button_editIngredient = new Button( "EDIT INGREDIENT");
 
+        button_newIngredient.getStyleClass().add("greenButtonPanel");
+        button_newIngredient.setMinWidth(170);
+        button_newIngredient.setPrefHeight(40);
 
-        button_newIngredient.setStyle(Styles.getButton());
-        button_editIngredient.setStyle(Styles.getButton());
-        button_removeIngredient.setStyle(Styles.getButton());
+        button_removeIngredient.getStyleClass().add("greenButtonPanel");
+        button_removeIngredient.setMinWidth(170);
+        button_removeIngredient.setPrefHeight(40);
+
+        button_editIngredient.getStyleClass().add("greenButtonPanel");
+        button_editIngredient.setMinWidth(170);
+        button_editIngredient.setPrefHeight(40);
 
         HBox hBox = new HBox(button_newIngredient, button_removeIngredient, button_editIngredient);
         hBox.setSpacing(10);
@@ -397,6 +404,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
 
         }catch (NoSuchElementException e) {
             System.err.println("Last element - NullPointer \nRemoveIngredient \nIngredientPane Row 366");
+            callback.removeIngredient(ingredient.getType());
             callback.catchSafeState();
         }
     }
@@ -418,7 +426,6 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         refresh();
     }
 
-
     /**
      * Remove quantity from existing product
      */
@@ -432,7 +439,6 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         } else {
             noIngredientSelected();
         }
-
         tableView.refresh();
     }
 
