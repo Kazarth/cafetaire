@@ -393,7 +393,6 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         refresh();
     }
 
-
     /**
      * Remove quantity from existing product
      */
