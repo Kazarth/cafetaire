@@ -37,6 +37,9 @@ import java.util.NoSuchElementException;
  * @version 3.0
  */
 public class SupplierPane extends StackPane implements EnhancedPane {
+    private HBox mainContainer;
+    private VBox vBoxMainCollector;
+
     private TableView<Supplier> tableView;
     private TableColumn<Supplier, String> supplierColumn;
     private TableColumn<Supplier, String> categoryColumn;
@@ -97,20 +100,20 @@ public class SupplierPane extends StackPane implements EnhancedPane {
         hBoxButtonContainer.setStyle("-fx-background-color: #FFFFFF;");
         hBoxButtonContainer.setAlignment(Pos.CENTER_LEFT);
 
-        Button buttonSearch = new Button();
+        Button button_Search = new Button();
 
-        buttonSearch.getStyleClass().add("greenButtonPanel");
-        buttonSearch.setPrefWidth(40);
-        buttonSearch.setPrefHeight(40);
+        button_Search.getStyleClass().add("greenButtonPanel");
+        button_Search.setPrefWidth(40);
+        button_Search.setPrefHeight(40);
 
 
-        buttonSearch.setOnAction(e -> search());
+        button_Search.setOnAction(e -> search());
         try {
             Image selectedImage = new Image(new FileInputStream("src/resources/search.png"));
             ImageView selectedView = new ImageView(selectedImage);
             selectedView.setFitWidth(20);
             selectedView.setFitHeight(20);
-            buttonSearch.setGraphic(selectedView);
+            button_Search.setGraphic(selectedView);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,7 +126,7 @@ public class SupplierPane extends StackPane implements EnhancedPane {
         textField_Search.textProperty().addListener(this :: searchRecord);
 
         // CONTAINER FOR SEARCH BAR (RIGHT) - SEARCH LABEL, SEARCH FIELD
-        HBox    hBoxSearchContainer   =   new HBox(10, labelSearch, textField_Search, buttonSearch);
+        HBox    hBoxSearchContainer   =   new HBox(10, labelSearch, textField_Search, button_Search);
         hBoxSearchContainer.setPrefSize(413, 75);
         hBoxSearchContainer.setStyle("-fx-background-color: #FFFFFF;");
         hBoxSearchContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -158,13 +161,14 @@ public class SupplierPane extends StackPane implements EnhancedPane {
         hBoxBottomCollector.getChildren().add(hBoxTableContainer);
 
         // CONTAINER FOR TOPCOLLECTOR AND BOTTOMCOLLECTOR
-        VBox vBoxMainCollector = new VBox();
+        vBoxMainCollector = new VBox();
         vBoxMainCollector.setAlignment(Pos.CENTER);
         vBoxMainCollector.getChildren().addAll(vBoxTopCollector, hBoxBottomCollector);
 
         // MAIN CONTAINER TO PEG AT PANE
-        HBox mainContainer = new HBox(25);
+        mainContainer = new HBox(25);
         mainContainer.setAlignment(Pos.CENTER);
+        mainContainer.setPrefWidth(1036);
         mainContainer.getChildren().add(vBoxMainCollector);
 
         setPrefSize(1086, 768);
@@ -174,6 +178,8 @@ public class SupplierPane extends StackPane implements EnhancedPane {
 
     public void expand() {
         setPrefWidth(1346);
+        mainContainer.setPrefWidth(1196);
+        vBoxMainCollector.setPrefWidth(1196);
     }
 
     public void contract() {
@@ -282,6 +288,7 @@ public class SupplierPane extends StackPane implements EnhancedPane {
 
     }
 
+    //TODO Remove, depricated method.
     private void search() {
         System.out.println("SEARCH");
     }

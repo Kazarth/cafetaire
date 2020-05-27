@@ -25,7 +25,7 @@ import java.util.Arrays;
  * @author Lucas Eliasson
  * @version 1.0
  */
-public class RecipeViewPane extends StackPane { // extended Pane will be the gray area
+public class RecipeViewPane extends StackPane implements EnhancedPane { // extended Pane will be the gray area
     private VBox container; // White box
 
     private Label titleLabel; // title
@@ -219,6 +219,16 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
         getChildren().add(container);
     }
 
+    @Override
+    public void expand() {
+        container.setMaxWidth(1196);
+    }
+
+    @Override
+    public void contract() {
+        container.setMaxWidth(1036);
+    }
+
     public ArrayList<Content> getRecipeContent() {
         return recipe.getContentList();
     }
@@ -265,6 +275,7 @@ public class RecipeViewPane extends StackPane { // extended Pane will be the gra
         loadIngredients();
     }
 
+    @Override
     public void refresh() {
         ingredientsList.refresh();
     }

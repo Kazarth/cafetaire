@@ -33,6 +33,11 @@ import java.util.NoSuchElementException;
  * @version 5.1
  */
 public class ProductsPane extends StackPane implements EnhancedPane {
+    private VBox mainContainer;
+    private HBox hBoxFiller;
+    private VBox topVBoxContainer;
+    private FlowPane flowBottom;
+
     private Spinner<Integer> numberSpinner = new Spinner<>();
 
     private TableColumn<Product, String> tableColumn_Name = new TableColumn<>("Name");
@@ -45,7 +50,7 @@ public class ProductsPane extends StackPane implements EnhancedPane {
     public ProductsPane(Callback callback) {
         this.callback = callback;
         this.getStylesheets().add("styles.css");
-        VBox mainContainer = new VBox();
+        mainContainer = new VBox();
         mainContainer.setMaxSize(1036, 698);
 
         mainContainer.getChildren().addAll(initTopVBoxContainer(), initFlowBottom());
@@ -84,7 +89,7 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      * @return filler HBox
      */
     private HBox initHBoxFillerBox() {
-        HBox hBoxFiller = new HBox();
+        hBoxFiller = new HBox();
         hBoxFiller.setMinSize(1036, 40);
         hBoxFiller.setMaxSize(1036, 40);
         hBoxFiller.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF; -fx-border-width: 1 0 1 0");
@@ -202,12 +207,12 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      * @return container VBox
      */
     public VBox initTopVBoxContainer(){
-        VBox vBox =   new VBox(initHBoxTop(), initHBoxFillerBox(), initHBoxContainerBtn());
-        vBox.setPrefSize(1036, 190);
-        vBox.setAlignment(Pos.BOTTOM_CENTER);
-        vBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20 20 0 0;");
+        topVBoxContainer =   new VBox(initHBoxTop(), initHBoxFillerBox(), initHBoxContainerBtn());
+        topVBoxContainer.setPrefSize(1036, 190);
+        topVBoxContainer.setAlignment(Pos.BOTTOM_CENTER);
+        topVBoxContainer.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20 20 0 0;");
 
-        return vBox;
+        return topVBoxContainer;
     }
 
     /**
@@ -215,12 +220,12 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      * @return pane - a FlowPane which is located at the bottom of the panel
      */
     public FlowPane initFlowBottom() {
-        FlowPane pane = new FlowPane();
+        flowBottom = new FlowPane();
 
-        pane.setPadding(new Insets(15,15,15,15));
+        flowBottom.setPadding(new Insets(15,15,15,15));
 
-        pane.setMinSize(1036, 508);
-        pane.setMaxSize(1036, 508);
+        flowBottom.setMinSize(1036, 508);
+        flowBottom.setMaxSize(1036, 508);
 
         tableView = new TableView<>();
 
@@ -241,21 +246,22 @@ public class ProductsPane extends StackPane implements EnhancedPane {
         tableView.getColumns().addAll(tableColumn_Name, tableColumn_Categories, tableColumn_Stock, tableColumn_Recipe);
 
         tableView.setPrefHeight(458);
+        tableView.setPrefWidth(936);
         tableView.setStyle(Styles.getTableRowSelected());
 
-        pane.setAlignment(Pos.CENTER);
+        flowBottom.setAlignment(Pos.CENTER);
 
-        pane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-        pane.getChildren().add(tableView);
+        flowBottom.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        flowBottom.getChildren().add(tableView);
 
         tableView.setItems(getItemList());
 
-        pane.setStyle("-fx-alignment: center;" +
+        flowBottom.setStyle("-fx-alignment: center;" +
                 " -fx-background-color: #fff;" +
                 " -fx-background-radius: 0 0 20 20;" +
                 " -fx-padding: 0 0 50 0;");
 
-        return pane;
+        return flowBottom;
     }
 
     /**
@@ -263,6 +269,16 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      */
     public void expand() {
         setPrefWidth(1346);
+        mainContainer.setMaxSize(1196, 698);
+        hBoxFiller.setMaxSize(1196,698);
+        topVBoxContainer.setMaxSize(1196,698);
+        flowBottom.setMaxSize(1196,698);
+
+        tableView.setMinWidth(1096);
+        tableColumn_Name.setMinWidth(274);
+        tableColumn_Categories.setMinWidth(274);
+        tableColumn_Stock.setMinWidth(274);
+        tableColumn_Recipe.setMinWidth(274);
     }
 
     /**
@@ -270,6 +286,22 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      */
     public void contract() {
         setPrefWidth(1086);
+        mainContainer.setMaxSize(1036, 698);
+        hBoxFiller.setMaxSize(1036,698);
+        topVBoxContainer.setMaxSize(1036,698);
+        flowBottom.setMaxSize(1036,698);
+
+        tableView.setMinWidth(936);
+        tableColumn_Name.setMinWidth(274);
+        tableColumn_Categories.setMinWidth(274);
+        tableColumn_Stock.setMinWidth(274);
+        tableColumn_Recipe.setMinWidth(274);
+
+        tableView.setMaxWidth(936);
+        tableColumn_Name.setMaxWidth(233);
+        tableColumn_Categories.setMaxWidth(234);
+        tableColumn_Stock.setMaxWidth(234);
+        tableColumn_Recipe.setMaxWidth(234);
     }
 
     /**

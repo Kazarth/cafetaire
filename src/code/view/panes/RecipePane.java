@@ -3,12 +3,13 @@ package code.view.panes;
 import code.control.Callback;
 import code.entities.Recipe;
 import code.entities.RecipePanes;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class RecipePane extends StackPane implements EnhancedPane {
-    private Pane[] views;
-    private Pane currentPane;
+    private EnhancedPane[] views;
+    private EnhancedPane currentPane;
     private RecipePanes panes;
     private int pane;
 
@@ -17,7 +18,7 @@ public class RecipePane extends StackPane implements EnhancedPane {
         this.panes = RecipePanes.RecipeListPane;
 
         /* adding panes */
-        this.views = new Pane[3];
+        this.views = new EnhancedPane[3];
         this.views[0] = new RecipeListPane(callback, this);
         this.views[1] = new RecipeViewPane(callback, this);
         this.views[2] = new RecipeAddNewPane(callback, this, (RecipeListPane) views[0]);
@@ -31,17 +32,19 @@ public class RecipePane extends StackPane implements EnhancedPane {
 
         this.currentPane = views[0];
 
-        this.getChildren().add(currentPane);
+        this.getChildren().add((Node) currentPane);
     }
 
     @Override
     public void expand() {
         setPrefWidth(1346);
+        views[pane].expand();
     }
 
     @Override
     public void contract() {
         setPrefWidth(1086);
+        views[pane].contract();
     }
 
     public void refresh() {
@@ -68,7 +71,7 @@ public class RecipePane extends StackPane implements EnhancedPane {
                 break;
             }
         }
-        getChildren().set(0, views[pane]);
+        getChildren().set(0, (Node) views[pane]);
         this.panes = view;
     }
 }

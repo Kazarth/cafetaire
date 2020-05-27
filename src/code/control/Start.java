@@ -30,6 +30,7 @@ public class Start {
         frame.setIconImage(icon.getImage());
         frame.add(fxPanel);
         frame.setBounds(posX, posY, 1350, 775);
+
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
