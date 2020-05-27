@@ -34,6 +34,12 @@ import java.util.NoSuchElementException;
  * @version 1.0
  */
 public class IngredientsPane extends StackPane implements EnhancedPane {
+    private VBox mainContainer;
+    private HBox upperHbox;
+    private HBox hBoxFiller;
+    private HBox btnContainer;
+    private FlowPane bottomPane;
+
     private Spinner<Integer> numberSpinner = new Spinner<>();
     private TableView<Ingredient> tableView;
     private TableColumn<Ingredient, String> nameColumn = new TableColumn<>("Name");
@@ -49,7 +55,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
     public IngredientsPane (Callback callback) {
         this.callback = callback;
         this.getStylesheets().add("styles.css");
-        VBox mainContainer = new VBox();
+        mainContainer = new VBox();
         mainContainer.setMaxSize(1036, 698);
 
         mainContainer.getChildren().addAll(initTopContainer(), initFlowBottom());
@@ -75,14 +81,14 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         textTitle.setFont(menuTitle);
         textTitle.setText("INGREDIENTS");
 
-        HBox hBox = new HBox();
-        hBox.setPrefSize(1036, 75);
-        hBox.setAlignment(Pos.CENTER);
-        hBox.getChildren().add(textTitle);
-        hBox.setStyle("-fx-background-radius: 20 20 0 0;" +
+        upperHbox = new HBox();
+        upperHbox.setPrefSize(1036, 75);
+        upperHbox.setAlignment(Pos.CENTER);
+        upperHbox.getChildren().add(textTitle);
+        upperHbox.setStyle("-fx-background-radius: 20 20 0 0;" +
                 "-fx-background-color: #FFFFFF;");
 
-        return hBox;
+        return upperHbox;
     }
 
     /**
@@ -92,9 +98,8 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
      */
 
     public HBox initFillerHBox () {
-        HBox hBoxFiller = new HBox();
-        hBoxFiller.setMinSize(1036, 40);
-        hBoxFiller.setMaxSize(1036, 40);
+        hBoxFiller = new HBox();
+        hBoxFiller.setPrefSize(1036, 40);
         hBoxFiller.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF; -fx-border-width: 1 0 1 0");
         return hBoxFiller;
     }
@@ -191,16 +196,15 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         button_Add.setOnAction(e -> addQuantity());
         button_Remove.setOnAction(e -> removeQuantity());
 
-        HBox hBox = new HBox(numberSpinner, button_Add, button_Remove,searchTextField);
-        hBox.setSpacing(10);
+        btnContainer = new HBox(numberSpinner, button_Add, button_Remove,searchTextField);
+        btnContainer.setSpacing(10);
 
-        hBox.setMaxSize(435, 75);
-        hBox.setMinSize(435, 75);
+        btnContainer.setMinSize(435, 75);
 
-        hBox.setAlignment(Pos.CENTER_RIGHT);
-        hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50;");
+        btnContainer.setAlignment(Pos.CENTER_RIGHT);
+        btnContainer.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50;");
 
-        return hBox;
+        return btnContainer;
     }
 
     /**
@@ -209,10 +213,10 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
      */
 
     public HBox initBtnContainer() {
-        HBox hBox = new HBox();
+        HBox btnContainer = new HBox();
         setPrefSize(1036, 75);
-        hBox.getChildren().addAll(initHBoxLeft(), initHBoxRight());
-        return hBox;
+        btnContainer.getChildren().addAll(initHBoxLeft(), initHBoxRight());
+        return btnContainer;
     }
 
     /**
@@ -221,12 +225,12 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
      */
 
     public FlowPane initFlowBottom() {
-        FlowPane pane = new FlowPane();
+        bottomPane = new FlowPane();
 
-        pane.setPadding(new Insets(15,15,15,15));
+        bottomPane.setPadding(new Insets(15,15,15,15));
 
-        pane.setMinSize(1036, 508);
-        pane.setMaxSize(1036, 508);
+        bottomPane.setMinSize(1036, 508);
+        bottomPane.setMaxSize(1036, 508);
 
         tableView = new TableView<>();
 
@@ -248,21 +252,22 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         tableView.getColumns().addAll(nameColumn, categoryColumn, stockColumn, supplierColumn);
 
         tableView.setPrefHeight(458);
+        tableView.setPrefWidth(936);
         tableView.setStyle(Styles.getTableRowSelected());
 
-        pane.setAlignment(Pos.CENTER);
+        bottomPane.setAlignment(Pos.CENTER);
 
-        pane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-        pane.getChildren().add(tableView);
+        bottomPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        bottomPane.getChildren().add(tableView);
 
         tableView.setItems(getIngredient());
 
-        pane.setStyle("-fx-alignment: center;" +
+        bottomPane.setStyle("-fx-alignment: center;" +
                 " -fx-background-color: #fff;" +
                 " -fx-background-radius: 0 0 20 20;" +
                 " -fx-padding: 0 0 50 0;");
 
-        return pane;
+        return bottomPane;
     }
 
     /**
@@ -270,6 +275,17 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
      */
     public void expand() {
         setPrefWidth(1346);
+        mainContainer.setMinWidth(1196);
+        upperHbox.setMinWidth(1196);
+        hBoxFiller.setMinWidth(1196);
+        btnContainer.setMinWidth(560);
+        bottomPane.setMinWidth(1196);
+
+        tableView.setMinWidth(1096);
+        nameColumn.setMinWidth(273);
+        categoryColumn.setMinWidth(274);
+        stockColumn.setMinWidth(274);
+        supplierColumn.setMinWidth(274);
     }
 
     /**
@@ -277,6 +293,23 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
      */
     public void contract() {
         setPrefWidth(1086);
+        mainContainer.setMinWidth(1036);
+        upperHbox.setMinWidth(1036);
+        hBoxFiller.setMinWidth(1036);
+        btnContainer.setMinWidth(435);
+        bottomPane.setMinWidth(1036);
+
+        tableView.setMinWidth(936);
+        tableView.setMaxWidth(936);
+
+        nameColumn.setMinWidth(233);
+        categoryColumn.setMinWidth(234);
+        stockColumn.setMinWidth(234);
+        supplierColumn.setMinWidth(234);
+        nameColumn.setMaxWidth(233);
+        categoryColumn.setMaxWidth(234);
+        stockColumn.setMaxWidth(234);
+        supplierColumn.setMaxWidth(234);
     }
 
     /**
