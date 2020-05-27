@@ -64,12 +64,10 @@ public class SchedulePane extends StackPane implements EnhancedPane {
 
     public void expand() {
         setPrefWidth(1346);
-        System.out.println("Expanding");
     }
 
     public void contract() {
         setPrefWidth(1086);
-        System.out.println("Contracting");
     }
 
     public void refresh() {

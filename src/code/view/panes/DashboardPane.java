@@ -6,7 +6,6 @@ import code.entities.Product;
 import code.entities.Styles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -21,107 +20,142 @@ import java.util.Arrays;
  * @author Tor Stenfeldt
  * @version 1.0
  */
-public class DashboardPane extends StackPane implements EnhancedPane {
+public class DashboardPane extends Pane implements EnhancedPane {
     private TableView<Ingredient> ingredients;
     private TableView<Product> products;
     private Callback controller;
+    private VBox topLeft, bottomLeft;
+    private HBox topRight, bottomRight;
+
 
     public DashboardPane(Callback controller) {
         this.controller = controller;
-
         getStylesheets().add("styles.css");
 
-        Label ingredientsLabel = new Label("Ingredients");
-        ingredientsLabel.setStyle(Styles.getBoxTitle());
+        this.topLeft = initIngredients();
+        this.topRight = initDeliveries();
+        this.bottomLeft = initProducts();
+        this.bottomRight = initBottomRight();
 
-        TableColumn<Ingredient, String> ingredientName = new TableColumn<>("Ingredient");
-        ingredientName.setStyle(Styles.getTableColumn());
-        ingredientName.setCellValueFactory(new PropertyValueFactory<>("type"));
-        ingredientName.setPrefWidth(548);
+        setStyle(Styles.getPane());
+        getChildren().addAll(topLeft, topRight, bottomLeft, bottomRight);
+        setPrefSize(1054, 736);
+    }
 
-        TableColumn<Ingredient, String> ingredientStock = new TableColumn<>("Stock");
-        ingredientStock.setStyle(Styles.getTableColumn());
-        ingredientStock.setCellValueFactory(new PropertyValueFactory<>("stockAndUnit"));
-        ingredientStock.setPrefWidth(100);
+    private VBox initIngredients() {
+        Label label = new Label("Ingredients");
+        label.setStyle(Styles.getBoxTitle());
 
-        ObservableList<Ingredient> ingredientValues = FXCollections.observableArrayList();
-        ingredientValues.addAll(Arrays.asList(controller.getIngredients()));
+        TableColumn<Ingredient, String> name = new TableColumn<>("Ingredient");
+        name.setStyle(Styles.getTableColumn());
+        name.setCellValueFactory(new PropertyValueFactory<>("type"));
+        name.setPrefWidth(548);
+
+        TableColumn<Ingredient, String> stock = new TableColumn<>("Stock");
+        stock.setStyle(Styles.getTableColumn());
+        stock.setCellValueFactory(new PropertyValueFactory<>("stockAndUnit"));
+        stock.setPrefWidth(100);
+
+        ObservableList<Ingredient> values = FXCollections.observableArrayList();
+        values.addAll(Arrays.asList(controller.getIngredients()));
 
         this.ingredients = new TableView<>();
         this.ingredients.setStyle(Styles.getDashboardTable());
         this.ingredients.setMaxWidth(650);
         this.ingredients.setMaxHeight(270);
-        this.ingredients.getColumns().addAll(ingredientName, ingredientStock);
-        this.ingredients.setItems(ingredientValues);
+        this.ingredients.getColumns().addAll(name, stock);
+        this.ingredients.setItems(values);
 
-        VBox topLeft = new VBox(10);
-        topLeft.setPrefSize(670, 330);
-        topLeft.setStyle(Styles.getDashboardBox());
-        topLeft.getChildren().addAll(ingredientsLabel, this.ingredients);
+        VBox box = new VBox(10);
+        box.setPrefSize(663, 338);
+        box.setStyle(Styles.getDashboardBox());
+        box.getChildren().addAll(label, this.ingredients);
+        box.setLayoutX(20);
+        box.setLayoutY(20);
 
-        Label deliveries = new Label("Deliveries");
-        deliveries.setStyle(Styles.getBoxTitle());
+        return box;
+    }
 
-        HBox topRight = new HBox(10);
-        topRight.setPrefSize(330, 330);
-        topRight.setStyle(Styles.getDashboardBox());
-        topRight.getChildren().add(deliveries);
+    private HBox initDeliveries() {
+        Label label = new Label("Deliveries");
+        label.setStyle(Styles.getBoxTitle());
 
-        HBox topBoxes = new HBox(25);
-        topBoxes.setAlignment(Pos.CENTER);
-        topBoxes.getChildren().addAll(topLeft, topRight);
+        HBox box = new HBox(10);
+        box.setPrefSize(332, 338);
+        box.setStyle(Styles.getDashboardBox());
+        box.getChildren().add(label);
+        box.setLayoutX(702);
+        box.setLayoutY(20);
 
-        Label productsLabel = new Label("Products");
-        productsLabel.setStyle(Styles.getBoxTitle());
+        return box;
+    }
 
-        TableColumn<Product, String> productName = new TableColumn<>("Product");
-        productName.setStyle(Styles.getTableColumn());
-        productName.setCellValueFactory(new PropertyValueFactory<>("type"));
-        productName.setPrefWidth(548);
+    private VBox initProducts() {
+        Label label = new Label("Products");
+        label.setStyle(Styles.getBoxTitle());
 
-        TableColumn<Product, String> productStock = new TableColumn<>("Stock");
-        productStock.setStyle(Styles.getTableColumn());
-        productStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        productStock.setPrefWidth(100);
+        TableColumn<Product, String> name = new TableColumn<>("Product");
+        name.setStyle(Styles.getTableColumn());
+        name.setCellValueFactory(new PropertyValueFactory<>("type"));
+        name.setPrefWidth(548);
 
-        ObservableList<Product> productValues = FXCollections.observableArrayList();
-        productValues.addAll(Arrays.asList(controller.getProducts()));
+        TableColumn<Product, String> stock = new TableColumn<>("Stock");
+        stock.setStyle(Styles.getTableColumn());
+        stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        stock.setPrefWidth(100);
+
+        ObservableList<Product> values = FXCollections.observableArrayList();
+        values.addAll(Arrays.asList(controller.getProducts()));
 
         this.products = new TableView<>();
         this.products.setStyle(Styles.getDashboardTable());
         this.products.setMaxWidth(650);
         this.products.setMaxHeight(270);
-        this.products.getColumns().addAll(productName, productStock);
-        this.products.setItems(productValues);
+        this.products.getColumns().addAll(name, stock);
+        this.products.setItems(values);
 
-        VBox bottomLeft = new VBox(10);
-        bottomLeft.setPrefSize(670, 330);
-        bottomLeft.setStyle(Styles.getDashboardBox());
-        bottomLeft.getChildren().addAll(productsLabel, this.products);
+        VBox box = new VBox(10);
+        box.setPrefSize(663, 338);
+        box.setStyle(Styles.getDashboardBox());
+        box.getChildren().addAll(label, this.products);
+        box.setLayoutX(20);
+        box.setLayoutY(378);
 
-        HBox bottomRight = new HBox(10);
-        bottomRight.setPrefSize(330, 330);
-        bottomRight.setStyle(Styles.getDashboardBox());
+        return box;
+    }
 
-        HBox bottomBoxes = new HBox(25);
-        bottomBoxes.setAlignment(Pos.CENTER);
-        bottomBoxes.getChildren().addAll(bottomLeft, bottomRight);
+    private HBox initBottomRight() {
+        HBox box = new HBox(10);
+        box.setPrefSize(332, 338);
+        box.setStyle(Styles.getDashboardBox());
+        box.setLayoutX(702);
+        box.setLayoutY(378);
 
-        VBox boxes = new VBox(25);
-        boxes.setAlignment(Pos.CENTER);
-        boxes.getChildren().addAll(topBoxes, bottomBoxes);
-
-        setStyle(Styles.getPane());
-        getChildren().add(boxes);
-        setPrefSize(1086, 768);
+        return box;
     }
 
     public void expand() {
-        setPrefWidth(1346);
+        setPrefWidth(1200);
+        this.topLeft.setPrefSize(760, 338);
+        this.bottomLeft.setPrefSize(760, 338);
+
+        this.topRight.setPrefSize(380, 338);
+        this.topRight.setLayoutX(800);
+
+        this.bottomRight.setPrefSize(380, 338);
+        this.bottomRight.setLayoutX(800);
     }
 
     public void contract() {
-        setPrefWidth(1086);
+        setPrefWidth(1054);
+        this.topLeft.setPrefSize(663, 338);
+        this.bottomLeft.setPrefSize(663, 338);
+
+        this.topRight.setPrefSize(332, 338);
+        this.topRight.setLayoutX(702);
+
+        this.bottomRight.setPrefSize(332, 338);
+        this.bottomRight.setLayoutX(702);
     }
 
     public void refresh() {

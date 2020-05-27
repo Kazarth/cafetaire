@@ -37,6 +37,7 @@ public class MainPane extends StackPane {
         HBox hBox = new HBox();
         hBox.getChildren().addAll(menu, ((Node)views[0]));
         getChildren().add(hBox);
+        setPrefSize(1334, 736);
     }
 
     void setView(Views view) {
