@@ -31,9 +31,17 @@ import java.util.Arrays;
  * @author Lucas Eliasson
  * @version 1.0
  */
-public class RecipeListPane extends StackPane {
-    private Callback callback;
+public class RecipeListPane extends StackPane implements EnhancedPane {
     private VBox container;
+    private HBox titleBox;
+    private HBox filterBox;
+    private HBox buttonBox;
+    private HBox searchBox;
+    private HBox buttonAndSearchContainer;
+    private HBox viewContainer;
+    private HBox bottomSpacing;
+
+    private Callback callback;
     private Label titleLabel;
     private Label filterLabel;
     private Button addButton;
@@ -42,6 +50,8 @@ public class RecipeListPane extends StackPane {
     private TextField searchField;
     private Button searchButton;
     private TableView<Recipe> recipeView;
+    private TableColumn<Recipe, String> nameCol;
+    TableColumn<Recipe, String> categoryCol;
     private RecipePane pane;
 
     public RecipeListPane(Callback callback, RecipePane pane) {
@@ -49,6 +59,10 @@ public class RecipeListPane extends StackPane {
 
         /* callback */
         this.callback = callback;
+
+        /* StackPane */
+        setStyle(Styles.getPane());
+        setPrefSize(1086, 768);
 
         /* Container */
         container = new VBox();
@@ -60,12 +74,8 @@ public class RecipeListPane extends StackPane {
         );
         container.setAlignment(Pos.CENTER);
 
-        /* Spacing */
-        HBox spaceBox = new HBox();
-        spaceBox.setPrefSize(1086,20);
-
         /* Title */
-        HBox titleBox = new HBox();
+        titleBox = new HBox();
         titleBox.setPrefSize(1086, 85);
         titleBox.setAlignment(Pos.CENTER);
         titleBox.setStyle(
@@ -81,7 +91,7 @@ public class RecipeListPane extends StackPane {
         titleBox.getChildren().add(titleLabel);
 
         /* Label */
-        HBox filterBox = new HBox();
+        filterBox = new HBox();
         filterBox.setPadding(new Insets(20,30,0,30));
         filterBox.setAlignment(Pos.CENTER_LEFT);
         filterBox.setPrefSize(1086,20);
@@ -89,7 +99,7 @@ public class RecipeListPane extends StackPane {
         filterBox.getChildren().add(filterLabel);
 
         /* Buttons and search */
-        HBox buttonBox = new HBox(20);
+        buttonBox = new HBox(20);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
         buttonBox.setPrefSize(480,60);
         addButton = new Button("ADD RECIPE");
@@ -105,7 +115,7 @@ public class RecipeListPane extends StackPane {
         viewButton.getStyleClass().add("greenButtonPanel");
         viewButton.setOnAction(e -> viewRecipe());
         buttonBox.getChildren().addAll(addButton, deleteButton, viewButton);
-        HBox searchBox = new HBox();
+        searchBox = new HBox();
         searchBox.setPrefSize(480,60);
         searchBox.setAlignment(Pos.CENTER_RIGHT);
         Label searchLabel = new Label("SEARCH");
@@ -127,16 +137,16 @@ public class RecipeListPane extends StackPane {
             e.printStackTrace();
         }
         searchBox.getChildren().addAll(searchLabel, searchField, searchButton);
-        HBox buttonAndSearchContainer = new HBox(20);
+        buttonAndSearchContainer = new HBox(20);
         buttonAndSearchContainer.setPrefSize(980,60);
         buttonAndSearchContainer.setMaxSize(980,60);
+        buttonAndSearchContainer.setAlignment(Pos.CENTER);
         buttonAndSearchContainer.getChildren().addAll(buttonBox, searchBox);
 
         /* Table code.view */
-        HBox viewContainer = new HBox();
+        viewContainer = new HBox();
         viewContainer.setPadding(new Insets(10,0,0,0));
         viewContainer.setPrefSize(980,480);
-        viewContainer.setMaxSize(980,480);
         viewContainer.setAlignment(Pos.CENTER);
         recipeView = new TableView<>();
         recipeView.setPrefSize(980,473);
@@ -144,12 +154,12 @@ public class RecipeListPane extends StackPane {
         viewContainer.getChildren().add(recipeView);
 
         /* Table columns */
-        TableColumn<Recipe, String> nameCol = new TableColumn<>("Name");
+        nameCol = new TableColumn<>("Name");
         nameCol.getStyleClass().add("name-column");
         nameCol.setStyle(Styles.getTableColumn());
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameCol.setPrefWidth(490);
-        TableColumn<Recipe, String> categoryCol = new TableColumn<>("Category");
+        categoryCol = new TableColumn<>("Category");
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
         categoryCol.getStyleClass().add("name-column");
         categoryCol.setStyle(Styles.getTableColumn());
@@ -159,7 +169,7 @@ public class RecipeListPane extends StackPane {
         recipeView.setItems(getRecipes());
 
         /* Bottom container */
-        HBox bottomSpacing = new HBox();
+        bottomSpacing = new HBox();
         bottomSpacing.setStyle(
                 "-fx-background-color: #fff;" +
                 "-fx-background-radius: 25, 25, 25, 25"
@@ -169,6 +179,32 @@ public class RecipeListPane extends StackPane {
         /* Collect to add */
         container.getChildren().addAll(titleBox, filterBox, buttonAndSearchContainer, viewContainer, bottomSpacing);
         getChildren().add(container);
+    }
+
+    public void expand() {
+        container.setMaxWidth(1196);
+        filterBox.setMaxWidth(1196);
+        buttonAndSearchContainer.setMaxWidth(1140); // FIX
+        buttonBox.setMaxWidth(640);
+        recipeView.setMinWidth(1140);
+        nameCol.setMinWidth(570);
+        categoryCol.setMinWidth(570);
+        viewContainer.setMinWidth(1196);
+        bottomSpacing.setMaxWidth(1196);
+    }
+
+    public void contract() {
+        container.setMaxWidth(1036);
+        filterBox.setMaxWidth(1036);
+        buttonAndSearchContainer.setMaxWidth(980); // FIX
+        buttonBox.setMaxWidth(480);
+        recipeView.setMinWidth(980);
+        nameCol.setMinWidth(490);
+        categoryCol.setMinWidth(490);
+        nameCol.setMaxWidth(490);
+        categoryCol.setMaxWidth(490);
+        viewContainer.setMinWidth(1036);
+        bottomSpacing.setMaxWidth(1036);
     }
 
     /**
@@ -237,12 +273,9 @@ public class RecipeListPane extends StackPane {
         System.out.println("SEARCH");
     }
 
-    public void expand() {
-        System.out.println("expand");
-    }
-
-    public void contract() {
-        System.out.println("contract");
+    @Override
+    public void refresh() {
+        recipeView.refresh();
     }
 
     /**

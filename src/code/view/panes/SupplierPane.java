@@ -37,6 +37,9 @@ import java.util.NoSuchElementException;
  * @version 3.0
  */
 public class SupplierPane extends StackPane implements EnhancedPane {
+    private HBox mainContainer;
+    private VBox vBoxMainCollector;
+
     private TableView<Supplier> tableView;
     private TableColumn<Supplier, String> supplierColumn;
     private TableColumn<Supplier, String> categoryColumn;
@@ -158,13 +161,14 @@ public class SupplierPane extends StackPane implements EnhancedPane {
         hBoxBottomCollector.getChildren().add(hBoxTableContainer);
 
         // CONTAINER FOR TOPCOLLECTOR AND BOTTOMCOLLECTOR
-        VBox vBoxMainCollector = new VBox();
+        vBoxMainCollector = new VBox();
         vBoxMainCollector.setAlignment(Pos.CENTER);
         vBoxMainCollector.getChildren().addAll(vBoxTopCollector, hBoxBottomCollector);
 
         // MAIN CONTAINER TO PEG AT PANE
-        HBox mainContainer = new HBox(25);
+        mainContainer = new HBox(25);
         mainContainer.setAlignment(Pos.CENTER);
+        mainContainer.setPrefWidth(1036);
         mainContainer.getChildren().add(vBoxMainCollector);
 
         setPrefSize(1086, 768);
@@ -174,6 +178,8 @@ public class SupplierPane extends StackPane implements EnhancedPane {
 
     public void expand() {
         setPrefWidth(1346);
+        mainContainer.setPrefWidth(1196);
+        vBoxMainCollector.setPrefWidth(1196);
     }
 
     public void contract() {

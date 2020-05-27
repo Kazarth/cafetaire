@@ -21,7 +21,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RecipeAddNewPane extends StackPane {
+public class RecipeAddNewPane extends StackPane implements EnhancedPane {
     // main functionality
     private Callback callback;
     private VBox container;
@@ -50,6 +50,8 @@ public class RecipeAddNewPane extends StackPane {
     // source
     private RecipePane source;
     private RecipeListPane pane;
+
+    private HBox container_list_instr;
 
     public RecipeAddNewPane(Callback callback, RecipePane source, RecipeListPane pane) {
         getStylesheets().add("styles.css");
@@ -136,7 +138,7 @@ public class RecipeAddNewPane extends StackPane {
         instructionsBox.getChildren().addAll(label_Instructions, field_Instructions);
 
         /* List + Instructions */
-        HBox container_list_instr = new HBox(20);
+        container_list_instr = new HBox(20);
         container_list_instr.setPrefSize(1086,200);
         container_list_instr.setAlignment(Pos.CENTER);
         container_list_instr.getChildren().addAll(listBox, instructionsBox);
@@ -219,6 +221,16 @@ public class RecipeAddNewPane extends StackPane {
         /* Collect to add */
         container.getChildren().addAll(titleBox, recipeNameBox, container_list_instr, fieldBox, spacing_addAndButtons, buttonBox, bottomSpacing);
         getChildren().add(container);
+    }
+
+    @Override
+    public void expand() {
+        container.setMaxWidth(1196);
+    }
+
+    @Override
+    public void contract() {
+        container.setMaxWidth(1036);
     }
 
     /**
@@ -353,5 +365,10 @@ public class RecipeAddNewPane extends StackPane {
             unitList.add(u.name());
         }
         return unitList;
+    }
+
+    @Override
+    public void refresh() {
+        ingredientsList.refresh();
     }
 }

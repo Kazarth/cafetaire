@@ -22,7 +22,7 @@ public class Start {
         ImageIcon icon = new ImageIcon("src/resources/logo/icon.png");
         frame.setIconImage(icon.getImage());
         frame.add(fxPanel);
-        frame.setBounds(200, 100, 1366, 768);
+        frame.setBounds(200, 100, 1380, 806);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
