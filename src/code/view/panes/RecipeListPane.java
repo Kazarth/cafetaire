@@ -107,7 +107,7 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
         buttonBox = new HBox(20);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
         buttonBox.setPrefSize(480,60);
-        addButton = new Button("ADD RECIPE");
+        addButton = new Button("CREATE RECIPE");
         addButton.setPrefSize(160,40);
         addButton.getStyleClass().add("greenButtonPanel");
         addButton.setOnAction(e -> createAddView());
