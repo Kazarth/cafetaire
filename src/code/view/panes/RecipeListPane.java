@@ -144,7 +144,7 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
             e.printStackTrace();
         }
       
-        searchBox.getChildren().addAll(searchLabel, searchField, searchButton);
+        searchBox.getChildren().addAll(searchLabel, search_Field, searchButton);
         buttonAndSearchContainer = new HBox(20);
         buttonAndSearchContainer.setPrefSize(980,60);
         buttonAndSearchContainer.setMaxSize(980,60);
