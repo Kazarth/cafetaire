@@ -58,7 +58,7 @@ public class Controller implements Callback {
     }
 
     @Override
-    public int getNumIngredients(String ingredient) {
+    public double getNumIngredients(String ingredient) {
         return database.getNumIngredients(ingredient);
     }
 
@@ -106,6 +106,12 @@ public class Controller implements Callback {
     public boolean removeIngredient(String ingredient) {
         saveLoad.setEdited();
         return database.removeIngredient(ingredient);
+    }
+
+    @Override
+    public boolean checkProduct(String product) {
+        saveLoad.setEdited();
+        return database.checkProduct(product);
     }
 
     @Override
