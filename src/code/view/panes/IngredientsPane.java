@@ -416,7 +416,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         Ingredient ingredient = tableView.getSelectionModel().getSelectedItem();
 
         if (ingredient != null){
-            int prodQuantity = ingredient.getStock();
+            double prodQuantity = ingredient.getStock();
             ingredient.setStock(prodQuantity + getNumberSpinnerValue());
             ingredient.setStockAndUnit();
         } else {
@@ -433,7 +433,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         Ingredient ingredient = tableView.getSelectionModel().getSelectedItem();
 
         if (ingredient != null){
-            int prodQuantity = ingredient.getStock();
+            double prodQuantity = ingredient.getStock();
             ingredient.setStock(prodQuantity - getNumberSpinnerValue());
             ingredient.setStockAndUnit();
         } else {

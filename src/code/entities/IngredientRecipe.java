@@ -54,12 +54,12 @@ public class IngredientRecipe extends Ingredient {
     }
 
     @Override
-    public int getStock() {
+    public double getStock() {
         return super.getStock();
     }
 
     @Override
-    public void setStock(int stock) {
+    public void setStock(double stock) {
         super.setStock(stock);
     }
 

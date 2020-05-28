@@ -54,7 +54,7 @@ public class Database implements Serializable {
         return ingredients;
     }
 
-    public int getNumIngredients(String ingredient) {
+    public double getNumIngredients(String ingredient) {
         if (this.ingredients.containsKey(ingredient)) {
             return this.ingredients.get(ingredient).getStock();
         }
@@ -112,6 +112,10 @@ public class Database implements Serializable {
 
     public boolean removeIngredient(String ingredient) {
         return (this.ingredients.remove(ingredient) != null);
+    }
+
+    public boolean checkProduct(String product) {
+        return this.products.containsKey(product);
     }
 
     public boolean addProduct(Product product) {

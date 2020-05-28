@@ -14,7 +14,7 @@ public interface Callback {
     boolean addIngredient(Ingredient ingredient);
     Ingredient getIngredient(String ingredient);
     Ingredient[] getIngredients();
-    int getNumIngredients(String ingredient);
+    double getNumIngredients(String ingredient);
     boolean incrementIngredient(String ingredient);
     boolean incrementIngredient(Ingredient ingredient);
     boolean incrementIngredient(String ingredient, int value);
@@ -26,6 +26,7 @@ public interface Callback {
     boolean removeIngredient(String ingredient);
 
     boolean addProduct(Product product);
+    boolean checkProduct(String product);
     Product getProduct(String product);
     Product[] getProducts();
     int getNumProduct(String product);
