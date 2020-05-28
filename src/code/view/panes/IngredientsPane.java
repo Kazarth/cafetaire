@@ -31,7 +31,7 @@ import java.util.NoSuchElementException;
 /**
  * The class is the Ingredients panel for the Cafetairé application.
  * @author Tor Stenfeldt, Georg Grankvist, Lucas Eliasson
- * @version 1.0
+ * @version 4.0
  */
 public class IngredientsPane extends StackPane implements EnhancedPane {
     private VBox mainContainer;
