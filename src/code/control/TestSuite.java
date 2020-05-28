@@ -52,8 +52,8 @@ public class TestSuite {
         Ingredient ingredient = new Ingredient("Sugar");
         callback.addIngredient(ingredient);
         callback.incrementIngredient(ingredient.getType());
-
         double nIngredients = callback.getNumIngredients(ingredient.getType());
+
         assertEquals(nIngredients, 2);
     }
 
