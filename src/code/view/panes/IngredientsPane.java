@@ -17,9 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import code.control.Callback;
 
@@ -35,8 +32,7 @@ import java.util.NoSuchElementException;
  */
 public class IngredientsPane extends Pane implements EnhancedPane {
     private VBox mainContainer;
-    private HBox upperHbox;
-    private HBox hBoxFiller;
+    private HBox upperHBox;
     private HBox btnContainer;
     private FlowPane bottomPane;
 
@@ -76,15 +72,15 @@ public class IngredientsPane extends Pane implements EnhancedPane {
         textTitle.setStyle(Styles.getTitle());
         textTitle.setFill(Paint.valueOf("#619f81"));
 
-        this.upperHbox = new HBox(textTitle);
-        this.upperHbox.setPrefSize(1014, 75);
-        this.upperHbox.setAlignment(Pos.CENTER);
-        this.upperHbox.setStyle(
+        this.upperHBox = new HBox(textTitle);
+        this.upperHBox.setPrefSize(1014, 75);
+        this.upperHBox.setAlignment(Pos.CENTER);
+        this.upperHBox.setStyle(
                 "-fx-background-radius: 20 20 0 0;" +
                 "-fx-background-color: #FFFFFF;"
         );
 
-        return this.upperHbox;
+        return this.upperHBox;
     }
 
     /**
@@ -93,14 +89,14 @@ public class IngredientsPane extends Pane implements EnhancedPane {
      * @return hBoxFiller
      */
     public HBox initFillerHBox () {
-        this.hBoxFiller = new HBox();
-        this.hBoxFiller.setPrefSize(1014, 40);
-        this.hBoxFiller.setStyle(
+        HBox hBoxFiller = new HBox();
+        hBoxFiller.setPrefSize(1014, 40);
+        hBoxFiller.setStyle(
                 "-fx-border-color: #6B6C6A;" +
                 "-fx-background-color: #FFFFFF;" +
                 "-fx-border-width: 1 0 1 0"
         );
-        return this.hBoxFiller;
+        return hBoxFiller;
     }
 
     /**
@@ -276,8 +272,7 @@ public class IngredientsPane extends Pane implements EnhancedPane {
         setPrefWidth(1200);
         this.mainContainer.setPrefWidth(1160);
 
-        this.upperHbox.setPrefWidth(1160);
-        this.hBoxFiller.setPrefWidth(1160);
+        this.upperHBox.setPrefWidth(1160);
         this.btnContainer.setPrefWidth(580);
         this.bottomPane.setPrefWidth(1160);
 
@@ -295,8 +290,7 @@ public class IngredientsPane extends Pane implements EnhancedPane {
         setPrefWidth(1054);
         this.mainContainer.setPrefWidth(1014);
 
-        this.upperHbox.setMinWidth(1014);
-        this.hBoxFiller.setMinWidth(1014);
+        this.upperHBox.setMinWidth(1014);
         this.btnContainer.setMinWidth(434);
         this.bottomPane.setMinWidth(1014);
 

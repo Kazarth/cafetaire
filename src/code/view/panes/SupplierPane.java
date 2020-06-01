@@ -9,15 +9,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -35,34 +34,38 @@ import java.util.ArrayList;
  * @version 3.0
  */
 public class SupplierPane extends Pane implements EnhancedPane {
-    private VBox mainContainer;
-    private HBox hBox_buttons;
+    private Callback callback;
 
+    private VBox mainContainer;
+    private HBox hBox_menu;
+    private HBox hBox_SearchContainer;
+
+    private FlowPane flowPane_tableContainer;
+
+    private TextField textField_Search;
     private TableView<Supplier> tableView;
     private TableColumn<Supplier, String> supplierColumn;
     private TableColumn<Supplier, String> categoryColumn;
     private TableColumn<Supplier, String> emailColumn;
     private TableColumn<Supplier, Integer> phoneColumn;
-    private Callback callback;
-    private TextField textField_Search;
 
     public SupplierPane(Callback callback) {
         this.callback = callback;
         HBox title = initTitle();
 
         // Separates the title from the buttons
-        HBox filler = new HBox();
-        filler.setPrefSize(1014, 40);
-        filler.setStyle(
+        HBox hBox_filler = new HBox();
+        hBox_filler.setPrefSize(1014, 40);
+        hBox_filler.setStyle(
                 "-fx-border-color: #6B6C6A;" +
                 "-fx-background-color: #FFFFFF;" +
                 "-fx-border-width: 1 0 1 0"
         );
 
-        HBox menuPane = initMenu();
+        initMenu();
 
         // Contains the title, filler and menu bars
-        VBox topBars = new VBox(title, filler, menuPane);
+        VBox topBars = new VBox(title, hBox_filler, this.hBox_menu);
         topBars.setPrefSize(1014, 190);
         topBars.setAlignment(Pos.BOTTOM_CENTER);
         topBars.setStyle(
@@ -70,14 +73,14 @@ public class SupplierPane extends Pane implements EnhancedPane {
                 "-fx-background-radius: 20 20 0 0;"
         );
 
-        HBox tableContainer = initTable();
+        initTable();
 
         this.mainContainer = new VBox();
         this.mainContainer.setStyle(Styles.getPane());
         this.mainContainer.setPrefSize(1014, 695);
         this.mainContainer.setLayoutX(20);
         this.mainContainer.setLayoutY(20);
-        this.mainContainer.getChildren().addAll(topBars, tableContainer);
+        this.mainContainer.getChildren().addAll(topBars, this.flowPane_tableContainer);
 
         getStylesheets().add("styles.css");
         setStyle(Styles.getPane());
@@ -101,7 +104,7 @@ public class SupplierPane extends Pane implements EnhancedPane {
         return titleContainer;
     }
 
-    private HBox initMenu() {
+    private void initMenu() {
         // BUTTONS FOR BUTTON BAR (LEFT) ADD, REMOVE, EDIT
         Button buttonAdd = new Button("ADD SUPPLIER");
         buttonAdd.getStyleClass().add("greenButtonPanel");
@@ -122,12 +125,14 @@ public class SupplierPane extends Pane implements EnhancedPane {
         buttonEdit.setOnAction(e -> editSupplierAction());
 
         // CONTAINER FOR BUTTON BAR (LEFT) - ADD, REMOVE, EDIT
-        this.hBox_buttons = new HBox(10, buttonAdd, buttonRemove, buttonEdit);
-        this.hBox_buttons.setMinSize(580, 75);
-        this.hBox_buttons.setPrefSize(580, 75);
-        //this.hBox_buttons.setPrefSize(623, 75);
-        this.hBox_buttons.setAlignment(Pos.CENTER_LEFT);
-        this.hBox_buttons.setStyle("-fx-background-color: #FFFFFF;");
+        HBox buttons = new HBox(10, buttonAdd, buttonRemove, buttonEdit);
+        buttons.setMinSize(580, 75);
+        buttons.setPrefSize(580, 75);
+        buttons.setAlignment(Pos.CENTER_LEFT);
+        buttons.setStyle(
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-padding: 0 50 0 50"
+        );
 
         Button button_Search = new Button();
         button_Search.getStyleClass().add("greenButtonPanel");
@@ -153,22 +158,22 @@ public class SupplierPane extends Pane implements EnhancedPane {
         this.textField_Search.textProperty().addListener(this :: searchRecord);
 
         // CONTAINER FOR SEARCH BAR (RIGHT) - SEARCH LABEL, SEARCH FIELD
-        HBox hBoxSearchContainer = new HBox(10, labelSearch, this.textField_Search, button_Search);
-        hBoxSearchContainer.setMinSize(380, 75);
-        hBoxSearchContainer.setPrefSize(434, 75);
-        hBoxSearchContainer.setStyle("-fx-background-color: #FFFFFF;");
-        hBoxSearchContainer.setAlignment(Pos.CENTER_RIGHT);
+        this.hBox_SearchContainer = new HBox(10, labelSearch, this.textField_Search, button_Search);
+        this.hBox_SearchContainer.setMinSize(380, 75);
+        this.hBox_SearchContainer.setPrefSize(434, 75);
+        this.hBox_SearchContainer.setStyle(
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-padding: 0 50 0 50;"
+        );
+        this.hBox_SearchContainer.setAlignment(Pos.CENTER_RIGHT);
 
         // CONTAINER FOR BUTTON BAR AND SEARCH BAR (LEFT & RIGHT)
-        HBox mainBox = new HBox(this.hBox_buttons, hBoxSearchContainer);
-        mainBox.setPrefSize(1014, 75);
-        //mainBox.setStyle("-fx-padding: 0 50 0 50");
-        mainBox.setAlignment(Pos.BOTTOM_CENTER);
-
-        return mainBox;
+        this.hBox_menu = new HBox(buttons, this.hBox_SearchContainer);
+        this.hBox_menu.setPrefSize(1014, 75);
+        this.hBox_menu.setAlignment(Pos.BOTTOM_CENTER);
     }
 
-    private HBox initTable() {
+    private void initTable() {
         this.supplierColumn = new TableColumn<>("Supplier");
         this.supplierColumn.setStyle(Styles.getTableColumn());
         this.supplierColumn.setPrefWidth(228);
@@ -196,29 +201,50 @@ public class SupplierPane extends Pane implements EnhancedPane {
         this.tableView = new TableView<>();
         this.tableView.setStyle(Styles.getTableRowSelected());
         this.tableView.setPrefSize(914,465);
-        this.tableView.setItems(getSuppliersFromDatabase());
         this.tableView.getColumns().addAll(this.supplierColumn, this.categoryColumn, this.emailColumn, this.phoneColumn);
+        this.tableView.setItems(getSuppliersFromDatabase());
 
-        HBox container = new HBox();
-        container.setPrefSize(1014, 505);
-        container.setStyle(
+        this.flowPane_tableContainer = new FlowPane();
+        this.flowPane_tableContainer.setPrefSize(1014, 505);
+        this.flowPane_tableContainer.setAlignment(Pos.CENTER);
+        this.flowPane_tableContainer.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        this.flowPane_tableContainer.setStyle(
                 "-fx-alignment: center;" +
-                "-fx-background-color: #FFFFFF;" +
-                "-fx-background-radius: 0 0 20 20;" +
-                "-fx-padding: 0 0 50 0;"
+                " -fx-background-color: #fff;" +
+                " -fx-background-radius: 0 0 20 20;" +
+                " -fx-padding: 0 0 50 0;"
         );
-        container.getChildren().add(this.tableView);
-
-        return container;
+        this.flowPane_tableContainer.getChildren().add(this.tableView);
     }
 
     public void expand() {
         setPrefWidth(1200);
-        this.mainContainer.setPrefWidth(1196);
+        this.mainContainer.setPrefWidth(1160);
+
+        this.hBox_menu.setPrefWidth(1160);
+        this.hBox_SearchContainer.setPrefWidth(580);
+        this.flowPane_tableContainer.setPrefWidth(1160);
+
+        this.tableView.setPrefWidth(1062);
+        this.supplierColumn.setPrefWidth(265);
+        this.categoryColumn.setPrefWidth(265);
+        this.emailColumn.setPrefWidth(265);
+        this.phoneColumn.setPrefWidth(265);
     }
 
     public void contract() {
         setPrefWidth(1054);
+        this.mainContainer.setPrefWidth(1014);
+
+        this.hBox_menu.setPrefWidth(1014);
+        this.hBox_SearchContainer.setPrefWidth(434);
+        this.flowPane_tableContainer.setPrefWidth(1014);
+
+        this.tableView.setPrefWidth(916);
+        this.supplierColumn.setPrefWidth(228);
+        this.categoryColumn.setPrefWidth(229);
+        this.emailColumn.setPrefWidth(229);
+        this.phoneColumn.setPrefWidth(228);
     }
 
     public void refresh(){

@@ -30,20 +30,21 @@ import java.util.NoSuchElementException;
  * @version 5.1
  */
 public class ProductsPane extends Pane implements EnhancedPane {
+    private Callback callback;
+
     private VBox mainContainer;
     private HBox hBoxFiller;
-    private HBox hBox_SpinnerContainer;
     private VBox topVBoxContainer;
-    private FlowPane flowBottom;
+    private HBox hBox_SpinnerContainer;
 
+    private FlowPane flowBottom;
     private Spinner<Integer> numberSpinner = new Spinner<>();
 
+    private TableView<Product> tableView;
     private TableColumn<Product, String> tableColumn_Name = new TableColumn<>("Name");
     private TableColumn<Product, Double> tableColumn_Categories = new TableColumn<>("Category");
     private TableColumn<Product, Integer> tableColumn_Stock = new TableColumn<>("Quantity");
     private TableColumn<Product, Recipe> tableColumn_Recipe = new TableColumn<>("Recipe");
-    private TableView<Product> tableView;
-    private Callback callback;
 
     public ProductsPane(Callback callback) {
         this.callback = callback;
@@ -109,33 +110,30 @@ public class ProductsPane extends Pane implements EnhancedPane {
         button_NewItem.getStyleClass().add("greenButtonPanel");
         button_NewItem.setMinWidth(170);
         button_NewItem.setPrefHeight(40);
+        button_NewItem.setOnAction(e -> addNewProductAction());
 
         button_RemoveItem.getStyleClass().add("greenButtonPanel");
         button_RemoveItem.setMinWidth(170);
         button_RemoveItem.setPrefHeight(40);
+        button_RemoveItem.setOnAction(e -> removeProduct());
 
         button_EditItem.getStyleClass().add("greenButtonPanel");
         button_EditItem.setMinWidth(170);
         button_EditItem.setPrefHeight(40);
-
-        HBox hBox = new HBox( button_NewItem, button_RemoveItem, button_EditItem);
-        hBox.setSpacing(10);
-        hBox.setMinSize(580, 75);
-        hBox.setPrefSize(580, 75);
-        hBox.setAlignment(Pos.CENTER_LEFT);
-
-        hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-
-        button_NewItem.setOnAction(e -> addNewProductAction());
-        button_RemoveItem.setOnAction(e -> removeProduct());
         button_EditItem.setOnAction(e -> editProduct());
 
-        hBox.setStyle(
+        HBox buttons = new HBox( button_NewItem, button_RemoveItem, button_EditItem);
+        buttons.setSpacing(10);
+        buttons.setMinSize(580, 75);
+        buttons.setPrefSize(580, 75);
+        buttons.setAlignment(Pos.CENTER_LEFT);
+        buttons.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        buttons.setStyle(
                 "-fx-background-color: #FFFFFF;" +
                 "-fx-padding: 0 50 0 50"
         );
 
-        return hBox;
+        return buttons;
     }
 
     /**
@@ -257,17 +255,15 @@ public class ProductsPane extends Pane implements EnhancedPane {
         this.flowBottom.setPrefSize(1014, 505);
         this.flowBottom.setAlignment(Pos.CENTER);
         this.flowBottom.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-        this.flowBottom.getChildren().add(this.tableView);
-
-        this.tableView.setItems(getItemList());
-
         this.flowBottom.setStyle(
                 "-fx-alignment: center;" +
                 " -fx-background-color: #fff;" +
                 " -fx-background-radius: 0 0 20 20;" +
                 " -fx-padding: 0 0 50 0;"
         );
+        this.flowBottom.getChildren().add(this.tableView);
 
+        this.tableView.setItems(getItemList());
         return this.flowBottom;
     }
 
@@ -279,7 +275,6 @@ public class ProductsPane extends Pane implements EnhancedPane {
         this.mainContainer.setPrefWidth(1160);
 
         this.topVBoxContainer.setPrefWidth(1160);
-        this.hBoxFiller.setPrefWidth(1160);
         this.hBox_SpinnerContainer.setPrefWidth(580);
         this.flowBottom.setPrefWidth(1160);
 
@@ -298,9 +293,8 @@ public class ProductsPane extends Pane implements EnhancedPane {
         this.mainContainer.setPrefWidth(1014);
 
         this.topVBoxContainer.setPrefWidth(1014);
-        this.hBoxFiller.setPrefWidth(1014);
-        this.hBox_SpinnerContainer.setPrefWidth(434);
         this.flowBottom.setPrefWidth(1014);
+        this.hBox_SpinnerContainer.setPrefWidth(434);
 
         this.tableView.setPrefWidth(916);
         this.tableColumn_Name.setPrefWidth(228);

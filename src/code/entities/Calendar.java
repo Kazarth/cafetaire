@@ -28,6 +28,7 @@ public class Calendar extends StackPane {
         for (int i=0; i<values.length; i++) {
             for (int j=0; j<values[i].length; j++) {
                 values[i][j] = new Text();
+                values[i][j].setWrappingWidth(130);
                 // TODO: set style
             }
         }
@@ -56,11 +57,11 @@ public class Calendar extends StackPane {
                         "" +
                         ""
                 );
-                textBoxes[j].setPrefSize(135, 47);
+                textBoxes[j].setPrefSize(130, 43);
             }
 
             vBoxes[i] = new VBox(textBoxes);
-            vBoxes[i].setPrefSize(135, 564);
+            vBoxes[i].setPrefSize(130, 522);
         }
 
         HBox hBox = new HBox(vBoxes);
@@ -86,13 +87,13 @@ public class Calendar extends StackPane {
 
         for (Label l: days) {
             l.setStyle(Styles.getTime());
-            l.setPrefSize(135, 47);
+            l.setPrefSize(130, 43);
             l.setAlignment(Pos.CENTER);
         }
 
-        dayBox = new HBox(days);
-        dayBox.setStyle("-fx-background-color: #FFF;");
-        dayBox.setPrefSize(945, 47);
+        this.dayBox = new HBox(days);
+        this.dayBox.setStyle("-fx-background-color: #FFF;");
+        this.dayBox.setPrefSize(916, 43);
     }
 
     private void initHours() {
@@ -113,15 +114,16 @@ public class Calendar extends StackPane {
 
         for (Label l : time) {
             l.setStyle(Styles.getTime());
-            l.setPrefSize(50, 47);
+            l.setMinSize(50, 43);
+            l.setPrefSize(50, 43);
             l.setAlignment(Pos.CENTER_LEFT);
         }
 
         timeBox = new VBox(time);
         timeBox.setStyle(
                 "-fx-background-color: #FFF;" +
-                        "-fx-padding: 28 0 0 0");
-        timeBox.setPrefSize(50, 564);
+                "-fx-padding: 28 0 0 0");
+        timeBox.setPrefSize(50, 522);
     }
 
     public String getDate(int x, int y) {
