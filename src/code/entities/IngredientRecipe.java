@@ -79,7 +79,7 @@ public class IngredientRecipe extends Ingredient {
     }
 
     @Override
-    public boolean decrement(int value) {
+    public boolean decrement(double value) {
         return super.decrement(value);
     }
 

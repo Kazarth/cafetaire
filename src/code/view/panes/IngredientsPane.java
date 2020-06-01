@@ -402,7 +402,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
             ingredientSelected.forEach(allIngredients::remove);
             callback.removeIngredient(ingredient.getType());
 
-        }catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             System.err.println("Last element - NullPointer \nRemoveIngredient \nIngredientPane Row 366");
             callback.removeIngredient(ingredient.getType());
             callback.catchSafeState();
@@ -419,6 +419,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
             double prodQuantity = ingredient.getStock();
             ingredient.setStock(prodQuantity + getNumberSpinnerValue());
             ingredient.setStockAndUnit();
+            callback.catchSafeState();
         } else {
             noIngredientSelected();
         }
@@ -436,10 +437,11 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
             double prodQuantity = ingredient.getStock();
             ingredient.setStock(prodQuantity - getNumberSpinnerValue());
             ingredient.setStockAndUnit();
+            callback.catchSafeState();
         } else {
             noIngredientSelected();
         }
-        tableView.refresh();
+        refresh();
     }
 
     /**
@@ -475,9 +477,9 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
             sortedList.comparatorProperty().bind(tableView.comparatorProperty());
             tableView.setItems(sortedList);
         }
-
-        else
+        else {
             tableView.setItems(getIngredient());
+        }
     }
 
     private ObservableList<Ingredient> getIngredient() {

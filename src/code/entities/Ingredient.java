@@ -29,7 +29,7 @@ public class Ingredient implements Serializable {
         this.supplier = supplier;
         this.stock = stock;
         this.unit = unit;
-        stockAndUnit = stock + " " + unit;
+        this.stockAndUnit = stock + " " + unit;
     }
 
     public String getType() {
@@ -62,6 +62,7 @@ public class Ingredient implements Serializable {
 
     public void setStock(double stock) {
         this.stock = stock;
+        setStockAndUnit();
     }
 
     public Units getUnit() {
@@ -86,6 +87,7 @@ public class Ingredient implements Serializable {
         }
 
         stock++;
+        setStockAndUnit();
         return true;
     }
 
@@ -95,6 +97,7 @@ public class Ingredient implements Serializable {
         }
 
         stock += value;
+        setStockAndUnit();
         return true;
     }
 
@@ -104,15 +107,17 @@ public class Ingredient implements Serializable {
         }
 
         stock--;
+        setStockAndUnit();
         return true;
     }
 
-    public boolean decrement(int value) {
+    public boolean decrement(double value) {
         if (stock-value<0) {
             return false;
         }
 
         stock -= value;
+        setStockAndUnit();
         return true;
     }
 
