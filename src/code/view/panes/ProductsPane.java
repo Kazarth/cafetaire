@@ -1,11 +1,15 @@
 package code.view.panes;
 
+import code.entities.Ingredient;
 import code.entities.Product;
 import code.entities.Recipe;
 import code.entities.Styles;
 import code.view.popups.ProductPopup;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -26,7 +30,7 @@ import java.util.NoSuchElementException;
 
 /**
  * The products menu provides information regarding products that currently are in stock
- * @author Viktor Polak, Tor Stenfeldt
+ * @author Viktor Polak, Tor Stenfeldt, Georg Grankvist
  * @version 5.1
  */
 public class ProductsPane extends Pane implements EnhancedPane {
@@ -39,6 +43,7 @@ public class ProductsPane extends Pane implements EnhancedPane {
 
     private FlowPane flowBottom;
     private Spinner<Integer> numberSpinner = new Spinner<>();
+    private TextField searchTextField;
 
     private TableView<Product> tableView;
     private TableColumn<Product, String> tableColumn_Name = new TableColumn<>("Name");
@@ -151,6 +156,12 @@ public class ProductsPane extends Pane implements EnhancedPane {
         this.numberSpinner.setPrefHeight(40);
         this.numberSpinner.setPrefWidth(100);
 
+        this.searchTextField = new TextField();
+        this.searchTextField.setPromptText("SEARCH");
+        this.searchTextField.setPrefHeight(32);
+        this.searchTextField.setPrefWidth(150);
+        this.searchTextField.textProperty().addListener(this::searchRecord);
+
         button_Add.getStyleClass().add("greenButtonPanel");
         button_Add.setPrefSize(40, 40);
 
@@ -180,7 +191,7 @@ public class ProductsPane extends Pane implements EnhancedPane {
         button_Add.setOnAction(e -> addQuantity());
         button_Remove.setOnAction(e -> removeQuantity());
 
-        this.hBox_SpinnerContainer = new HBox(this.numberSpinner, button_Add, button_Remove);
+        this.hBox_SpinnerContainer = new HBox(this.numberSpinner, button_Add, button_Remove, this.searchTextField);
         this.hBox_SpinnerContainer.setSpacing(10);
 
         this.hBox_SpinnerContainer.setMinSize(380, 75);
@@ -334,6 +345,7 @@ public class ProductsPane extends Pane implements EnhancedPane {
      * Opens a new window with information to be filled in
      */
     public void addNewProductAction() {
+        resetSearchField();
         try {
             new ProductPopup(this, this.callback, 0);
         } catch (Exception e){
@@ -345,6 +357,7 @@ public class ProductsPane extends Pane implements EnhancedPane {
      * Method used to delete the selected item in the tableView
      */
     public void removeProduct() {
+        resetSearchField();
         ObservableList<Product> itemSelected;
         ObservableList<Product> allItems;
 
@@ -399,10 +412,58 @@ public class ProductsPane extends Pane implements EnhancedPane {
     }
 
     /**
+     * Searchbar functionality
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
+
+    private void searchRecord(Observable observable, String oldValue, String newValue) {
+        FilteredList<Product> filteredList = new FilteredList<>(getItemList(), p -> true);
+
+        if (!searchTextField.getText().equals("")) {
+            filteredList.setPredicate(tableView -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String typedText = newValue.toLowerCase();
+
+                if (tableView.getType().toLowerCase().contains(typedText)) {
+                    return true;
+
+                } else if (tableView.getCategory().name().toLowerCase().contains(typedText)) {
+                    return true;
+
+                } else  if (String.valueOf(tableView.getStock()).toLowerCase().contains(typedText)) {
+                    return true;
+
+                } else if (tableView.getRecipe().getName().toLowerCase().contains(typedText)) {
+                    return true;
+                }
+
+                else
+                    return false;
+
+            });
+
+            SortedList<Product> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(tableView.comparatorProperty());
+            tableView.setItems(sortedList);
+        }
+
+        else
+            tableView.setItems(getItemList());
+    }
+
+
+
+    /**
      * Method used to edit a product in the tableView
      */
 
     public void editProduct() {
+        resetSearchField();
         String name = this.tableView.getSelectionModel().getSelectedItem().getType();
         ProductPopup pane;
 
@@ -437,5 +498,9 @@ public class ProductsPane extends Pane implements EnhancedPane {
         alert.setContentText("Please select a product!");
 
         alert.showAndWait();
+    }
+
+    public void resetSearchField () {
+        searchTextField.clear();
     }
 }
