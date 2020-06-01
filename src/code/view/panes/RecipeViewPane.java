@@ -324,12 +324,7 @@
                 alert.setContentText("Ooops, please enter an amount to bake!");
                 alert.showAndWait();
             } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Bake");
-                alert.setHeaderText("Baking " + amountField.getText() + " " + recipe.getName());
-                alert.setContentText("Great!\nYou have now baked " + amountField.getText() + " sets of " + recipe.getName());
-                alert.showAndWait();
-
+                // ------- //
                 ArrayList<Content> contentList = callback.getRecipe(recipe.getName()).getContentList();
                 int nSets = Integer.parseInt(amountField.getText());
 
@@ -337,34 +332,29 @@
                     for (Content c : contentList) {
                         String ingredient = c.getIngredient().getType();
                         double amount = c.getValue();
-                        double stock = callback.getIngredient(ingredient).getStock(); // från databas
-                        System.out.println("Ingredient name: " + ingredient);
-                        System.out.println("stock: " + stock);
-                        System.out.println("Amount to be removed: " + amount);
-                        System.out.println(callback.decrementIngredient(ingredient, (int) amount)); // från databas
-                        System.out.println(callback.getIngredient(ingredient).getStock()); // från databas
-                        System.out.println();
+                        double amountFromStock = callback.getNumIngredients(ingredient);
+
+                        if ((nSets % amountFromStock) > 0) {
+                            callback.decrementIngredient(ingredient, (int) amount);
+                            if (callback.checkProduct(recipe.getName())) {
+                                System.out.println("Produkt finns");
+                                callback.getProduct(recipe.getName()).increment(24);
+                            } else {
+                                System.out.println("Skapa nu produkt");
+                                //Product product = new Product(recipe.getName(), ProductCategories.Pastry, 0, recipe);
+                            }
+                            goBack();
+                        } else {
+                            Alert insufficientIngredientsAlert = new Alert(Alert.AlertType.ERROR);
+                            insufficientIngredientsAlert.setTitle("Error Dialog");
+                            insufficientIngredientsAlert.setHeaderText("Insufficient Amount in Stock");
+                            insufficientIngredientsAlert.setContentText("Ooops, you don't have enough ingredients for your choice!");
+                            insufficientIngredientsAlert.showAndWait();
+                            nSets = 0;
+                            break;
+                        }
                     }
                 }
-
-                if (callback.checkProduct(recipe.getName())) {
-                    System.out.println("Produkt finns");
-                    callback.getProduct(recipe.getName()).increment(24);
-                } else {
-                    System.out.println("Skapa nu produkt");
-                    //Product product = new Product(recipe.getName(), ProductCategories.Pastry, 0, recipe);
-                }
-            }
-            goBack();
-        }
-
-        private boolean checkStock(String ingredient, double amount) {
-            if (callback.getIngredient(ingredient).getStock() < (callback.getIngredient(ingredient).getStock()-amount)) {
-                System.out.println("Cant bake!");
-                return false;
-            } else {
-                System.out.println("Can bake");
-                return true;
             }
         }
     }

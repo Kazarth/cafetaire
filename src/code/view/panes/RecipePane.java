@@ -48,17 +48,15 @@ public class RecipePane extends StackPane implements EnhancedPane {
     }
 
     public void refresh() {
-        // TODO: refresh anything?
+        views[pane].refresh();
     }
 
     public void deleteRecipe(Recipe recipe) {
-        RecipeListPane recipeListPane = (RecipeListPane) views[0];
-        recipeListPane.deleteRecipe(recipe);
+        ((RecipeListPane) views[0]).deleteRecipe(recipe);
     }
 
     void loadRecipe(RecipePanes view, Recipe recipe) {
-        RecipeViewPane recipeViewPane = (RecipeViewPane) views[1];
-        recipeViewPane.setRecipe(recipe);
+        ((RecipeViewPane) this.views[1]).setRecipe(recipe);
         setView(view);
     }
 
@@ -71,6 +69,8 @@ public class RecipePane extends StackPane implements EnhancedPane {
                 break;
             }
         }
+
+        views[pane].refresh();
         getChildren().set(0, (Node) views[pane]);
         this.panes = view;
     }
