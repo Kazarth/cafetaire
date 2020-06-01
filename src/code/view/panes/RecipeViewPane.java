@@ -324,7 +324,6 @@
                 alert.setContentText("Ooops, please enter an amount to bake!");
                 alert.showAndWait();
             } else {
-                // ------- //
                 ArrayList<Content> contentList = callback.getRecipe(recipe.getName()).getContentList();
                 int nSets = Integer.parseInt(amountField.getText());
 
@@ -338,7 +337,7 @@
                             callback.decrementIngredient(ingredient, (int) amount);
                             if (callback.checkProduct(recipe.getName())) {
                                 System.out.println("Produkt finns");
-                                callback.getProduct(recipe.getName()).increment(24);
+                                callback.getProduct(recipe.getName()).increment((int) recipe.getAmount());
                             } else {
                                 System.out.println("Skapa nu produkt");
                                 //Product product = new Product(recipe.getName(), ProductCategories.Pastry, 0, recipe);
