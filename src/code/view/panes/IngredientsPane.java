@@ -458,6 +458,9 @@ public class IngredientsPane extends Pane implements EnhancedPane {
                     tableView.getSupplier().getName().toLowerCase().contains(typedText);
                     return true;
 
+                } else if (tableView.getCategory().toLowerCase().contains(typedText)) {
+                        return true;
+
                 } else if (String.valueOf(tableView.getStock()).toLowerCase().contains(typedText))
                     return true;
 
