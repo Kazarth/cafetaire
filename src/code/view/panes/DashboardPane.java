@@ -23,10 +23,11 @@ import java.util.Arrays;
 public class DashboardPane extends Pane implements EnhancedPane {
     private TableView<Ingredient> ingredients;
     private TableView<Product> products;
+    private TableColumn<Ingredient, String> ingredientsColumn;
+    private TableColumn<Product, String> productsColumn;
     private Callback controller;
     private VBox topLeft, bottomLeft;
     private HBox topRight, bottomRight;
-
 
     public DashboardPane(Callback controller) {
         this.controller = controller;
@@ -46,24 +47,28 @@ public class DashboardPane extends Pane implements EnhancedPane {
         Label label = new Label("Ingredients");
         label.setStyle(Styles.getBoxTitle());
 
-        TableColumn<Ingredient, String> name = new TableColumn<>("Ingredient");
-        name.setStyle(Styles.getTableColumn());
-        name.setCellValueFactory(new PropertyValueFactory<>("type"));
-        name.setPrefWidth(548);
+        this.ingredientsColumn = new TableColumn<>("Ingredient");
+        this.ingredientsColumn.setStyle(Styles.getTableColumn());
+        this.ingredientsColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        this.ingredientsColumn.setPrefWidth(513);
+        this.ingredientsColumn.setReorderable(false);
+        this.ingredientsColumn.setResizable(false);
 
         TableColumn<Ingredient, String> stock = new TableColumn<>("Stock");
         stock.setStyle(Styles.getTableColumn());
         stock.setCellValueFactory(new PropertyValueFactory<>("stockAndUnit"));
         stock.setPrefWidth(100);
+        stock.setReorderable(false);
+        stock.setResizable(false);
 
         ObservableList<Ingredient> values = FXCollections.observableArrayList();
         values.addAll(Arrays.asList(controller.getIngredients()));
 
         this.ingredients = new TableView<>();
         this.ingredients.setStyle(Styles.getDashboardTable());
-        this.ingredients.setMaxWidth(650);
+        this.ingredients.setMaxWidth(615);
         this.ingredients.setMaxHeight(270);
-        this.ingredients.getColumns().addAll(name, stock);
+        this.ingredients.getColumns().addAll(ingredientsColumn, stock);
         this.ingredients.setItems(values);
 
         VBox box = new VBox(10);
@@ -72,7 +77,6 @@ public class DashboardPane extends Pane implements EnhancedPane {
         box.getChildren().addAll(label, this.ingredients);
         box.setLayoutX(20);
         box.setLayoutY(20);
-
         return box;
     }
 
@@ -86,7 +90,6 @@ public class DashboardPane extends Pane implements EnhancedPane {
         box.getChildren().add(label);
         box.setLayoutX(702);
         box.setLayoutY(20);
-
         return box;
     }
 
@@ -94,24 +97,28 @@ public class DashboardPane extends Pane implements EnhancedPane {
         Label label = new Label("Products");
         label.setStyle(Styles.getBoxTitle());
 
-        TableColumn<Product, String> name = new TableColumn<>("Product");
-        name.setStyle(Styles.getTableColumn());
-        name.setCellValueFactory(new PropertyValueFactory<>("type"));
-        name.setPrefWidth(548);
+        this.productsColumn = new TableColumn<>("Product");
+        this.productsColumn.setStyle(Styles.getTableColumn());
+        this.productsColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        this.productsColumn.setPrefWidth(513);
+        this.productsColumn.setReorderable(false);
+        this.productsColumn.setResizable(false);
 
         TableColumn<Product, String> stock = new TableColumn<>("Stock");
         stock.setStyle(Styles.getTableColumn());
         stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         stock.setPrefWidth(100);
+        stock.setReorderable(false);
+        stock.setResizable(false);
 
         ObservableList<Product> values = FXCollections.observableArrayList();
         values.addAll(Arrays.asList(controller.getProducts()));
 
         this.products = new TableView<>();
         this.products.setStyle(Styles.getDashboardTable());
-        this.products.setMaxWidth(650);
+        this.products.setMaxWidth(615);
         this.products.setMaxHeight(270);
-        this.products.getColumns().addAll(name, stock);
+        this.products.getColumns().addAll(productsColumn, stock);
         this.products.setItems(values);
 
         VBox box = new VBox(10);
@@ -120,7 +127,6 @@ public class DashboardPane extends Pane implements EnhancedPane {
         box.getChildren().addAll(label, this.products);
         box.setLayoutX(20);
         box.setLayoutY(378);
-
         return box;
     }
 
@@ -130,7 +136,6 @@ public class DashboardPane extends Pane implements EnhancedPane {
         box.setStyle(Styles.getDashboardBox());
         box.setLayoutX(702);
         box.setLayoutY(378);
-
         return box;
     }
 
@@ -144,6 +149,11 @@ public class DashboardPane extends Pane implements EnhancedPane {
 
         this.bottomRight.setPrefSize(380, 338);
         this.bottomRight.setLayoutX(800);
+
+        this.ingredientsColumn.setPrefWidth(610);
+        this.productsColumn.setPrefWidth(610);
+        this.ingredients.setMaxWidth(712);
+        this.products.setMaxWidth(712);
     }
 
     public void contract() {
@@ -156,6 +166,11 @@ public class DashboardPane extends Pane implements EnhancedPane {
 
         this.bottomRight.setPrefSize(332, 338);
         this.bottomRight.setLayoutX(702);
+
+        this.ingredientsColumn.setPrefWidth(513);
+        this.productsColumn.setPrefWidth(513);
+        this.ingredients.setMaxWidth(615);
+        this.products.setMaxWidth(615);
     }
 
     public void refresh() {

@@ -123,6 +123,7 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
         searchBox = new HBox();
         searchBox.setPrefSize(480,60);
         searchBox.setAlignment(Pos.CENTER_RIGHT);
+
         Label searchLabel = new Label("SEARCH");
         searchLabel.setPadding(new Insets(0,10,0,0));
         search_Field = new TextField();
@@ -144,7 +145,7 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
             e.printStackTrace();
         }
       
-        searchBox.getChildren().addAll(searchLabel, searchField, searchButton);
+        searchBox.getChildren().addAll(searchLabel, search_Field, searchButton);
         buttonAndSearchContainer = new HBox(20);
         buttonAndSearchContainer.setPrefSize(980,60);
         buttonAndSearchContainer.setMaxSize(980,60);
@@ -167,11 +168,13 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
         nameCol.setStyle(Styles.getTableColumn());
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameCol.setPrefWidth(490);
+        nameCol.setResizable(false);
         categoryCol = new TableColumn<>("Category");
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
         categoryCol.getStyleClass().add("name-column");
         categoryCol.setStyle(Styles.getTableColumn());
         categoryCol.setPrefWidth(490);
+        categoryCol.setResizable(false);
         recipeView.getColumns().addAll(nameCol, categoryCol);
 
         recipeView.setItems(getRecipes());
@@ -180,6 +183,7 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
         bottomSpacing = new HBox();
         bottomSpacing.setStyle(
                 "-fx-background-color: #fff;" +
+                //"-fx-background-color: #000;" +
                 "-fx-background-radius: 25, 25, 25, 25"
         );
         bottomSpacing.setPrefSize(1086, 70);

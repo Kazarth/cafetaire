@@ -134,6 +134,7 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
         field_Instructions = new TextArea();
         field_Instructions.setPrefSize(460,200);
         field_Instructions.getStyleClass().add("text-field");
+        field_Instructions.setWrapText(true);
         label_Instructions = new Label("Enter instructions");
         instructionsBox.getChildren().addAll(label_Instructions, field_Instructions);
 

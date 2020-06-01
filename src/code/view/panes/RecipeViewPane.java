@@ -186,6 +186,7 @@ public class RecipeViewPane extends StackPane implements EnhancedPane { // exten
         stepsBox.setPrefSize(360,300);
         stepsBox.getStyleClass().add("text-field");
         stepsBox.setEditable(true);
+        stepsBox.setWrapText(true);
         editStepsButton = new Button("EDIT STEPS");
         editStepsButton.getStyleClass().add("greenButton");
         editStepsButton.setOnAction(e -> editInstructions());

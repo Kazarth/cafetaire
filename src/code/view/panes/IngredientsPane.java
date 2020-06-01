@@ -33,7 +33,7 @@ import java.util.NoSuchElementException;
  * @author Tor Stenfeldt, Georg Grankvist, Lucas Eliasson
  * @version 1.0
  */
-public class IngredientsPane extends StackPane implements EnhancedPane {
+public class IngredientsPane extends Pane implements EnhancedPane {
     private VBox mainContainer;
     private HBox upperHbox;
     private HBox hBoxFiller;
@@ -48,24 +48,22 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
     private TableColumn<Ingredient, String> supplierColumn = new TableColumn<>("Supplier");
 
     private TextField searchTextField;
-
     private Callback callback;
-
 
     public IngredientsPane (Callback callback) {
         this.callback = callback;
-        this.getStylesheets().add("styles.css");
-        mainContainer = new VBox();
-        mainContainer.setMaxSize(1036, 698);
 
-        mainContainer.getChildren().addAll(initTopContainer(), initFlowBottom());
-        getChildren().add(mainContainer);
+        this.mainContainer = new VBox();
+        this.mainContainer.setStyle(Styles.getPane());
+        this.mainContainer.setPrefSize(1014, 695);
+        this.mainContainer.setLayoutX(20);
+        this.mainContainer.setLayoutY(20);
+        this.mainContainer.getChildren().addAll(initTopContainer(), initFlowBottom());
 
-        mainContainer.setAlignment(Pos.CENTER);
+        getStylesheets().add("styles.css");
         setStyle(Styles.getPane());
-        mainContainer.setStyle(Styles.getPane());
-
-        setPrefSize(1086, 768);
+        getChildren().add(this.mainContainer);
+        setPrefSize(1054, 736);
     }
 
     /**
@@ -74,21 +72,19 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
      */
 
     public HBox initUpperHBox () {
-
-        Text textTitle = new Text();
-        Font menuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
+        Text textTitle = new Text("INGREDIENTS");
+        textTitle.setStyle(Styles.getTitle());
         textTitle.setFill(Paint.valueOf("#619f81"));
-        textTitle.setFont(menuTitle);
-        textTitle.setText("INGREDIENTS");
 
-        upperHbox = new HBox();
-        upperHbox.setPrefSize(1036, 75);
-        upperHbox.setAlignment(Pos.CENTER);
-        upperHbox.getChildren().add(textTitle);
-        upperHbox.setStyle("-fx-background-radius: 20 20 0 0;" +
-                "-fx-background-color: #FFFFFF;");
+        this.upperHbox = new HBox(textTitle);
+        this.upperHbox.setPrefSize(1014, 75);
+        this.upperHbox.setAlignment(Pos.CENTER);
+        this.upperHbox.setStyle(
+                "-fx-background-radius: 20 20 0 0;" +
+                "-fx-background-color: #FFFFFF;"
+        );
 
-        return upperHbox;
+        return this.upperHbox;
     }
 
     /**
@@ -96,12 +92,15 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
      * button HBoxes.
      * @return hBoxFiller
      */
-
     public HBox initFillerHBox () {
-        hBoxFiller = new HBox();
-        hBoxFiller.setPrefSize(1036, 40);
-        hBoxFiller.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF; -fx-border-width: 1 0 1 0");
-        return hBoxFiller;
+        this.hBoxFiller = new HBox();
+        this.hBoxFiller.setPrefSize(1014, 40);
+        this.hBoxFiller.setStyle(
+                "-fx-border-color: #6B6C6A;" +
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-border-width: 1 0 1 0"
+        );
+        return this.hBoxFiller;
     }
 
     /**
@@ -109,9 +108,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
      * Also contains a TextField used to search the TableView.
      * @return hBox
      */
-
     public HBox initHBoxLeft() {
-
         Button button_newIngredient = new Button("ADD INGREDIENT");
         Button button_removeIngredient = new Button("REMOVE INGREDIENT");
         Button button_editIngredient = new Button( "EDIT INGREDIENT");
@@ -130,8 +127,8 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
 
         HBox hBox = new HBox(button_newIngredient, button_removeIngredient, button_editIngredient);
         hBox.setSpacing(10);
-        hBox.setMinSize(600, 75);
-        hBox.setMaxSize(650, 75);
+        hBox.setMinSize(580, 75);
+        hBox.setPrefSize(580, 75);
         hBox.setAlignment(Pos.CENTER_LEFT);
 
         hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -140,7 +137,10 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         button_removeIngredient.setOnAction(e -> removeIngredient());
         button_editIngredient.setOnAction(e -> editAction());
 
-        hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50");
+        hBox.setStyle(
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-padding: 0 50 0 50"
+        );
 
         return hBox;
     }
@@ -149,23 +149,22 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
      * Initializes and returns an HBox containing the Spinner for increasing and decreasing stock.
      * @return hBox
      */
-
-    public HBox initHBoxRight(){
+    public HBox initHBoxRight() {
         Button button_Add = new Button();
         Button button_Remove = new Button();
 
         final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 80);
-        numberSpinner.setValueFactory(svf);
-        numberSpinner.disabledProperty();
-        numberSpinner.setEditable(true);
-        numberSpinner.setPrefHeight(38);
-        numberSpinner.setPrefWidth(100);
+        this.numberSpinner.setValueFactory(svf);
+        this.numberSpinner.disabledProperty();
+        this.numberSpinner.setEditable(true);
+        this.numberSpinner.setPrefHeight(40);
+        this.numberSpinner.setPrefWidth(100);
 
-        searchTextField = new TextField();
-        searchTextField.setPromptText("SEARCH");
-        searchTextField.setPrefHeight(32);
-        searchTextField.setPrefWidth(150);
-        searchTextField.textProperty().addListener(this::searchRecord);
+        this.searchTextField = new TextField();
+        this.searchTextField.setPromptText("SEARCH");
+        this.searchTextField.setPrefHeight(32);
+        this.searchTextField.setPrefWidth(150);
+        this.searchTextField.textProperty().addListener(this::searchRecord);
 
         button_Add.getStyleClass().add("greenButtonPanel");
         button_Add.setPrefSize(40, 40);
@@ -196,25 +195,28 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
         button_Add.setOnAction(e -> addQuantity());
         button_Remove.setOnAction(e -> removeQuantity());
 
-        btnContainer = new HBox(numberSpinner, button_Add, button_Remove,searchTextField);
-        btnContainer.setSpacing(10);
+        this.btnContainer = new HBox(this.numberSpinner, button_Add, button_Remove, this.searchTextField);
+        this.btnContainer.setSpacing(10);
 
-        btnContainer.setMinSize(435, 75);
+        this.btnContainer.setMinSize(380, 75);
+        this.btnContainer.setPrefSize(434, 75);
 
-        btnContainer.setAlignment(Pos.CENTER_RIGHT);
-        btnContainer.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50;");
+        this.btnContainer.setAlignment(Pos.CENTER_RIGHT);
+        this.btnContainer.setStyle(
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-padding: 0 50 0 50;"
+        );
 
-        return btnContainer;
+        return this.btnContainer;
     }
 
     /**
      * Initializes and returns an HBox containing the buttons in the pane.
      * @return hBox
      */
-
     public HBox initBtnContainer() {
         HBox btnContainer = new HBox();
-        setPrefSize(1036, 75);
+        btnContainer.setPrefSize(1014, 75);
         btnContainer.getChildren().addAll(initHBoxLeft(), initHBoxRight());
         return btnContainer;
     }
@@ -223,49 +225,46 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
      * Initializes and returns a FlowPane containing the TableView for the pane.
      * @return pane
      */
-
     public FlowPane initFlowBottom() {
-        bottomPane = new FlowPane();
-
-        bottomPane.setPadding(new Insets(15,15,15,15));
-
-        bottomPane.setMinSize(1036, 508);
-        bottomPane.setMaxSize(1036, 508);
-
-        tableView = new TableView<>();
-
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stockAndUnit"));
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
 
-        nameColumn.setPrefWidth(233);
-        categoryColumn.setPrefWidth(234);
-        stockColumn.setPrefWidth(234);
-        supplierColumn.setPrefWidth(234);
+        nameColumn.setPrefWidth(228);
+        categoryColumn.setPrefWidth(228);
+        stockColumn.setPrefWidth(228);
+        supplierColumn.setPrefWidth(228);
 
         nameColumn.setStyle(Styles.getTableColumn());
         categoryColumn.setStyle(Styles.getTableColumn());
         stockColumn.setStyle(Styles.getTableColumn());
         supplierColumn.setStyle(Styles.getTableColumn());
 
+        nameColumn.setResizable(false);
+        categoryColumn.setResizable(false);
+        stockColumn.setResizable(false);
+        supplierColumn.setResizable(false);
+
+        tableView = new TableView<>();
+        tableView.setPrefSize(914, 465);
+        tableView.setStyle(Styles.getTableRowSelected());
         tableView.getColumns().addAll(nameColumn, categoryColumn, stockColumn, supplierColumn);
 
-        tableView.setPrefHeight(458);
-        tableView.setPrefWidth(936);
-        tableView.setStyle(Styles.getTableRowSelected());
-
+        bottomPane = new FlowPane();
+        bottomPane.setPrefSize(1014, 505);
         bottomPane.setAlignment(Pos.CENTER);
-
         bottomPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         bottomPane.getChildren().add(tableView);
 
         tableView.setItems(getIngredient());
 
-        bottomPane.setStyle("-fx-alignment: center;" +
+        bottomPane.setStyle(
+                "-fx-alignment: center;" +
                 " -fx-background-color: #fff;" +
                 " -fx-background-radius: 0 0 20 20;" +
-                " -fx-padding: 0 0 50 0;");
+                " -fx-padding: 0 0 50 0;"
+        );
 
         return bottomPane;
     }
@@ -274,42 +273,38 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
      * Expands the pane and makes the menuPane smaller
      */
     public void expand() {
-        setPrefWidth(1346);
-        mainContainer.setMinWidth(1196);
-        upperHbox.setMinWidth(1196);
-        hBoxFiller.setMinWidth(1196);
-        btnContainer.setMinWidth(560);
-        bottomPane.setMinWidth(1196);
+        setPrefWidth(1200);
+        this.mainContainer.setPrefWidth(1160);
 
-        tableView.setMinWidth(1096);
-        nameColumn.setMinWidth(273);
-        categoryColumn.setMinWidth(274);
-        stockColumn.setMinWidth(274);
-        supplierColumn.setMinWidth(274);
+        this.upperHbox.setPrefWidth(1160);
+        this.hBoxFiller.setPrefWidth(1160);
+        this.btnContainer.setPrefWidth(580);
+        this.bottomPane.setPrefWidth(1160);
+
+        this.tableView.setPrefWidth(1062);
+        this.nameColumn.setPrefWidth(265);
+        this.categoryColumn.setPrefWidth(265);
+        this.stockColumn.setPrefWidth(265);
+        this.supplierColumn.setPrefWidth(265);
     }
 
     /**
      * Makes the pane smaller and expands the menuPane
      */
     public void contract() {
-        setPrefWidth(1086);
-        mainContainer.setMinWidth(1036);
-        upperHbox.setMinWidth(1036);
-        hBoxFiller.setMinWidth(1036);
-        btnContainer.setMinWidth(435);
-        bottomPane.setMinWidth(1036);
+        setPrefWidth(1054);
+        this.mainContainer.setPrefWidth(1014);
 
-        tableView.setMinWidth(936);
-        tableView.setMaxWidth(936);
+        this.upperHbox.setMinWidth(1014);
+        this.hBoxFiller.setMinWidth(1014);
+        this.btnContainer.setMinWidth(434);
+        this.bottomPane.setMinWidth(1014);
 
-        nameColumn.setMinWidth(233);
-        categoryColumn.setMinWidth(234);
-        stockColumn.setMinWidth(234);
-        supplierColumn.setMinWidth(234);
-        nameColumn.setMaxWidth(233);
-        categoryColumn.setMaxWidth(234);
-        stockColumn.setMaxWidth(234);
-        supplierColumn.setMaxWidth(234);
+        this.tableView.setPrefWidth(916);
+        this.nameColumn.setPrefWidth(228);
+        this.categoryColumn.setPrefWidth(229);
+        this.stockColumn.setPrefWidth(229);
+        this.supplierColumn.setPrefWidth(228);
     }
 
     /**
@@ -415,7 +410,7 @@ public class IngredientsPane extends StackPane implements EnhancedPane {
     public void addQuantity() {
         Ingredient ingredient = tableView.getSelectionModel().getSelectedItem();
 
-        if (ingredient != null){
+        if (ingredient != null) {
             int prodQuantity = ingredient.getStock();
             ingredient.setStock(prodQuantity + getNumberSpinnerValue());
             ingredient.setStockAndUnit();

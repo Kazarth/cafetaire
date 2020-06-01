@@ -4,7 +4,6 @@ import code.control.Callback;
 import code.entities.Views;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javax.swing.*;
 
@@ -32,7 +31,7 @@ public class MainPane extends StackPane {
         views[2] = new ProductsPane(callback);
         views[3] = new SupplierPane(callback);
         views[4] = new RecipePane(callback);
-        views[5] = new SchedulePane(callback);
+        views[5] = new CalendarPane(callback);
 
         HBox hBox = new HBox();
         hBox.getChildren().addAll(menu, ((Node)views[0]));
