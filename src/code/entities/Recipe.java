@@ -15,6 +15,7 @@ public class Recipe implements Serializable {
     private Content[] contents;
     private ArrayList<Content> contentList;
     private String category;
+    private double amount;
 
     public Recipe(String name) {
         this.name = name;
@@ -43,12 +44,20 @@ public class Recipe implements Serializable {
         this.category = category;
     }
 
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
     public String getName() {
         return name;
     }
 
     public String getCategory() {
         return category;
+    }
+
+    public double getAmount() {
+        return amount;
     }
 
     public Content[] getContents() {

@@ -48,19 +48,17 @@ public class RecipeViewPane extends StackPane implements EnhancedPane { // exten
     private TextField amountField; // amount of satser??
 
     private Callback callback;
-    private RecipePane recipePane;
+    private RecipePane source;
 
     private Recipe recipe;
 
     public RecipeViewPane(Callback callback, RecipePane source) {
         this.callback = callback;
-        this.recipePane = source;
+        this.source = source;
 
         /* Gray background */
         setPrefSize(1086,768);
-        setStyle(
-                "-fx-background-color: #6B6C6A;"
-        );
+        setStyle("-fx-background-color: #6B6C6A;");
         getStylesheets().add("styles.css");
 
         /* Container */
@@ -97,9 +95,7 @@ public class RecipeViewPane extends StackPane implements EnhancedPane { // exten
         HBox backBox = new HBox();
         backBox.setPrefSize(160,50);
         backBox.setAlignment(Pos.CENTER);
-        backBox.setStyle(
-                "-fx-padding: 0, 10, 0, 100;"
-        );
+        backBox.setStyle("-fx-padding: 0, 10, 0, 100;");
         backButton = new Button("BACK TO RECIPES");
         backButton.getStyleClass().add("greenButton");
         backButton.setOnAction(e -> goBack());
@@ -122,9 +118,7 @@ public class RecipeViewPane extends StackPane implements EnhancedPane { // exten
         HBox deleteBox = new HBox();
         deleteBox.setPrefSize(160,50);
         deleteBox.setAlignment(Pos.CENTER);
-        deleteBox.setStyle(
-                "-fx-padding: 0, 10, 0, 100;"
-        );
+        deleteBox.setStyle("-fx-padding: 0, 10, 0, 100;");
         deleteButton = new Button("DELETE RECIPE");
         deleteButton.getStyleClass().add("redButton");
         deleteButton.setOnAction(e -> deleteRecipe());
@@ -179,8 +173,8 @@ public class RecipeViewPane extends StackPane implements EnhancedPane { // exten
         stepLabel.setFont(guideFont);
         stepLabel.setStyle(
                 "-fx-border-color: black, transparent, black;" +
-                        "-fx-border-width: 0 0 1 0, 0 0 1 0, 0 0 1 0;" +
-                        "-fx-border-insets: 0 0 1 0, 0 0 2 0, 0 0 3 0;"
+                "-fx-border-width: 0 0 1 0, 0 0 1 0, 0 0 1 0;" +
+                "-fx-border-insets: 0 0 1 0, 0 0 2 0, 0 0 3 0;"
         );
         stepsBox = new TextArea();
         stepsBox.setPrefSize(360,300);
@@ -202,9 +196,7 @@ public class RecipeViewPane extends StackPane implements EnhancedPane { // exten
         /* Bottom container */
         HBox bakeBox = new HBox(20);
         bakeBox.setPrefSize(1086, 100);
-        bakeBox.setStyle(
-                "-fx-background-radius: 0 0 25 25;"
-        );
+        bakeBox.setStyle("-fx-background-radius: 0 0 25 25;");
         bakeBox.setAlignment(Pos.CENTER);
         amountField = new TextField();
         amountField.setPromptText("Amount");
@@ -286,14 +278,14 @@ public class RecipeViewPane extends StackPane implements EnhancedPane { // exten
      */
     private void goBack() {
         System.out.println("RETURN");
-        recipePane.setView(RecipePanes.RecipeListPane);
+        source.setView(RecipePanes.RecipeListPane);
     }
 
     /**
      * Delete active recipe
      */
     private void deleteRecipe() {
-        recipePane.deleteRecipe(this.recipe);
+        source.deleteRecipe(this.recipe);
         goBack();
     }
 
@@ -325,11 +317,36 @@ public class RecipeViewPane extends StackPane implements EnhancedPane { // exten
             alert.setContentText("Ooops, please enter an amount to bake!");
             alert.showAndWait();
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Bake");
-            alert.setHeaderText("Baking " + amountField.getText() + " " + recipe.getName());
-            alert.setContentText("Great!\nUou have now baked 2 sets of " + recipe.getName());
-            alert.showAndWait();
+            ArrayList<Content> contentList = callback.getRecipe(recipe.getName()).getContentList();
+            int nSets = Integer.parseInt(amountField.getText());
+
+            for (int i = 0; i < nSets; i++) {
+                for (Content c : contentList) {
+                    String ingredient = c.getIngredient().getType();
+                    double amount = c.getValue();
+                    double amountFromStock = callback.getNumIngredients(ingredient);
+
+                    if ((nSets % amountFromStock) > 0) {
+                        callback.decrementIngredient(ingredient, (int) amount);
+                        if (callback.checkProduct(recipe.getName())) {
+                            System.out.println("Produkt finns");
+                            callback.getProduct(recipe.getName()).increment((int) recipe.getAmount());
+                        } else {
+                            System.out.println("Skapa nu produkt");
+                            //Product product = new Product(recipe.getName(), ProductCategories.Pastry, 0, recipe);
+                        }
+                        goBack();
+                    } else {
+                        Alert insufficientIngredientsAlert = new Alert(Alert.AlertType.ERROR);
+                        insufficientIngredientsAlert.setTitle("Error Dialog");
+                        insufficientIngredientsAlert.setHeaderText("Insufficient Amount in Stock");
+                        insufficientIngredientsAlert.setContentText("Ooops, you don't have enough ingredients for your choice!");
+                        insufficientIngredientsAlert.showAndWait();
+                        nSets = 0;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

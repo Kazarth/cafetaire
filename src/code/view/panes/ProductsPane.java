@@ -1,6 +1,5 @@
 package code.view.panes;
 
-import code.entities.Ingredient;
 import code.entities.Product;
 import code.entities.Recipe;
 import code.entities.Styles;
@@ -145,11 +144,11 @@ public class ProductsPane extends Pane implements EnhancedPane {
      * Contains buttons to the right in the code.view
      * @return container HBox
      */
-    public HBox initSpinner(){
+    public HBox initSpinner() {
         Button button_Add = new Button();
         Button button_Remove = new Button();
 
-        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
+        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE);
         this.numberSpinner.setValueFactory(svf);
         this.numberSpinner.disabledProperty();
         this.numberSpinner.setEditable(true);
@@ -366,15 +365,18 @@ public class ProductsPane extends Pane implements EnhancedPane {
 
         Product product = this.tableView.getSelectionModel().getSelectedItem();
 
-        try {
-            itemSelected.forEach(allItems::remove);
-            this.callback.removeProduct(product.getType());
-        } catch (NoSuchElementException e){
-            System.err.println("Last element - NullPointer \nRemoveProduct \nProductPane Row 329");
-            this.callback.removeProduct(product.getType());
-            this.callback.catchSafeState();
+        if(product != null) {
+            try {
+                itemSelected.forEach(allItems::remove);
+                this.callback.removeProduct(product.getType());
+            } catch (NoSuchElementException e) {
+                System.err.println("Last element - NullPointer \nRemoveProduct \nProductPane Row 329");
+                this.callback.removeProduct(product.getType());
+                this.callback.catchSafeState();
+            }
+        } else{
+            noProductSelected();
         }
-
     }
 
 
@@ -417,7 +419,6 @@ public class ProductsPane extends Pane implements EnhancedPane {
      * @param oldValue
      * @param newValue
      */
-
     private void searchRecord(Observable observable, String oldValue, String newValue) {
         FilteredList<Product> filteredList = new FilteredList<>(getItemList(), p -> true);
 
@@ -444,7 +445,6 @@ public class ProductsPane extends Pane implements EnhancedPane {
 
                 else
                     return false;
-
             });
 
             SortedList<Product> sortedList = new SortedList<>(filteredList);
@@ -461,7 +461,6 @@ public class ProductsPane extends Pane implements EnhancedPane {
     /**
      * Method used to edit a product in the tableView
      */
-
     public void editProduct() {
         resetSearchField();
         String name = this.tableView.getSelectionModel().getSelectedItem().getType();

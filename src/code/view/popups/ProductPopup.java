@@ -83,7 +83,7 @@ public class ProductPopup extends AnchorPane {
         label_Number.setPrefWidth(220); label_Number.setPrefHeight(40);
         label_Number.setLayoutX(56.0); label_Number.setLayoutY(220);
 
-        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100);
+        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE);
         this.numberSpinner = new Spinner<>();
         this.numberSpinner.setValueFactory(svf);
         this.numberSpinner.disabledProperty();

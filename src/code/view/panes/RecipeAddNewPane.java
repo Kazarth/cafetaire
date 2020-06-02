@@ -42,6 +42,7 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
     private Label label_Instructions;
     private TextArea field_Instructions;
     private TextField field_RName;
+    private TextField field_RAmount;
 
     // save & cancel
     private Button button_Save;
@@ -91,13 +92,30 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
         /* Recipe Name */
         HBox recipeNameBox = new HBox(10);
         recipeNameBox.setPrefSize(1086, 40);
-        recipeNameBox.setStyle("-fx-background-color: #eee");
-        recipeNameBox.setAlignment(Pos.CENTER_LEFT);
-        recipeNameBox.setStyle("-fx-padding: 30, 0, 0, 0");
+        recipeNameBox.setStyle(
+                "-fx-background-color: #fff;" + "\n" +
+                "-fx-padding: 30, 0, 0, 0"
+        );
         Label label_RecipeName = new Label("Recipe name: ");
         field_RName = new TextField();
-        field_RName.setPrefSize(300,40);
+        field_RName.setPromptText("Recipe name");
+        field_RName.setPrefSize(220,40);
         recipeNameBox.getChildren().addAll(label_RecipeName, field_RName);
+
+        /* Recipe amount */
+        HBox recipeAmountBox = new HBox(10);
+        recipeNameBox.setPrefSize(1086, 40);
+        recipeNameBox.setStyle(
+                "-fx-background-color: #fff;" + "\n" +
+                "-fx-padding: 30, 600, 0, 0"
+        );
+        recipeNameBox.setAlignment(Pos.CENTER_LEFT);
+        Label label_RecipeAmount = new Label("Amount: ");
+        field_RAmount = new TextField();
+        field_RAmount.setPromptText("E.g. 24");
+        field_RAmount.setPrefSize(100,40);
+        field_RAmount.getProperties().put("vktype", "numeric");
+        recipeNameBox.getChildren().addAll(label_RecipeAmount, field_RAmount);
 
         /* List view */
         VBox listBox = new VBox(10);
@@ -220,7 +238,7 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
         bottomSpacing.setPrefSize(1086, 40);
 
         /* Collect to add */
-        container.getChildren().addAll(titleBox, recipeNameBox, container_list_instr, fieldBox, spacing_addAndButtons, buttonBox, bottomSpacing);
+        container.getChildren().addAll(titleBox, recipeNameBox, recipeAmountBox, container_list_instr, fieldBox, spacing_addAndButtons, buttonBox, bottomSpacing);
         getChildren().add(container);
     }
 
@@ -232,6 +250,14 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
     @Override
     public void contract() {
         container.setMaxWidth(1036);
+    }
+
+    private void openKeyboard() {
+        try {
+            Runtime.getRuntime().exec("cmd /c osk");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -254,6 +280,7 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
      */
     private void saveRecipe() {
         String name, instructions;
+        double amount;
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         Recipe recipe;
         Ingredient ingredient;
@@ -261,6 +288,11 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
 
         name = field_RName.getText();
         instructions = field_Instructions.getText();
+        try {
+            amount = Double.parseDouble(field_RAmount.getText());
+        } catch (Exception e) {
+            amount = 0;
+        }
 
         for (Content c: ingredientsList.getItems()) {
             ingredient = new Ingredient(c.getIngredient().getType());
@@ -273,8 +305,12 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
             }
         }
 
-        if (name.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please fill in a name before saving");
+        if (name.equals("") || amount <= 0 || ingredients.size() <= 0 || instructions.equals("")) {
+            Alert insufficientIngredientsAlert = new Alert(Alert.AlertType.ERROR);
+            insufficientIngredientsAlert.setTitle("Error Dialog");
+            insufficientIngredientsAlert.setHeaderText("Input error");
+            insufficientIngredientsAlert.setContentText("Ooops, make sure all fields are filled in correctly!");
+            insufficientIngredientsAlert.showAndWait();
         } else {
             recipe = new Recipe(name);
             for (Content c : ingredientsList.getItems()) {
@@ -282,7 +318,7 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
                 recipe.addContent(content);
             }
             recipe.setInstructions(instructions);
-
+            recipe.setAmount(amount);
             System.out.println();
 
             System.out.println("Name: " + recipe.getName());

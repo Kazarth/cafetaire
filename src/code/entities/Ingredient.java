@@ -12,7 +12,7 @@ public class Ingredient implements Serializable {
     private transient static double serialVersionUID = 51D;
     private String type, category;
     private Supplier supplier;
-    private int stock;
+    private double stock;
     private Units unit;
     private String stockAndUnit;
 
@@ -23,13 +23,13 @@ public class Ingredient implements Serializable {
         stock = 1;
     }
 
-    public Ingredient(String type, String category, int stock, Supplier supplier, Units unit) {
+    public Ingredient(String type, String category, double stock, Supplier supplier, Units unit) {
         this.type = type;
         this.category = category;
         this.supplier = supplier;
         this.stock = stock;
         this.unit = unit;
-        stockAndUnit = stock + " " + unit;
+        this.stockAndUnit = stock + " " + unit;
     }
 
     public String getType() {
@@ -56,12 +56,13 @@ public class Ingredient implements Serializable {
         this.supplier = supplier;
     }
 
-    public int getStock() {
+    public double getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(double stock) {
         this.stock = stock;
+        setStockAndUnit();
     }
 
     public Units getUnit() {
@@ -86,6 +87,7 @@ public class Ingredient implements Serializable {
         }
 
         stock++;
+        setStockAndUnit();
         return true;
     }
 
@@ -95,6 +97,7 @@ public class Ingredient implements Serializable {
         }
 
         stock += value;
+        setStockAndUnit();
         return true;
     }
 
@@ -104,15 +107,17 @@ public class Ingredient implements Serializable {
         }
 
         stock--;
+        setStockAndUnit();
         return true;
     }
 
-    public boolean decrement(int value) {
+    public boolean decrement(double value) {
         if (stock-value<0) {
             return false;
         }
 
         stock -= value;
+        setStockAndUnit();
         return true;
     }
 

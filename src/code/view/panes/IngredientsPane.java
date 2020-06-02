@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
 /**
  * The class is the Ingredients panel for the Cafetairé application.
  * @author Tor Stenfeldt, Georg Grankvist, Lucas Eliasson
- * @version 1.0
+ * @version 4.0
  */
 public class IngredientsPane extends Pane implements EnhancedPane {
     private VBox mainContainer;
@@ -149,7 +149,7 @@ public class IngredientsPane extends Pane implements EnhancedPane {
         Button button_Add = new Button();
         Button button_Remove = new Button();
 
-        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 80);
+        final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE);
         this.numberSpinner.setValueFactory(svf);
         this.numberSpinner.disabledProperty();
         this.numberSpinner.setEditable(true);
@@ -391,7 +391,7 @@ public class IngredientsPane extends Pane implements EnhancedPane {
             ingredientSelected.forEach(allIngredients::remove);
             callback.removeIngredient(ingredient.getType());
 
-        }catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             System.err.println("Last element - NullPointer \nRemoveIngredient \nIngredientPane Row 366");
             callback.removeIngredient(ingredient.getType());
             callback.catchSafeState();
@@ -404,10 +404,11 @@ public class IngredientsPane extends Pane implements EnhancedPane {
     public void addQuantity() {
         Ingredient ingredient = tableView.getSelectionModel().getSelectedItem();
 
-        if (ingredient != null) {
-            int prodQuantity = ingredient.getStock();
+        if (ingredient != null){
+            double prodQuantity = ingredient.getStock();
             ingredient.setStock(prodQuantity + getNumberSpinnerValue());
             ingredient.setStockAndUnit();
+            callback.catchSafeState();
         } else {
             noIngredientSelected();
         }
@@ -422,13 +423,14 @@ public class IngredientsPane extends Pane implements EnhancedPane {
         Ingredient ingredient = tableView.getSelectionModel().getSelectedItem();
 
         if (ingredient != null){
-            int prodQuantity = ingredient.getStock();
+            double prodQuantity = ingredient.getStock();
             ingredient.setStock(prodQuantity - getNumberSpinnerValue());
             ingredient.setStockAndUnit();
+            callback.catchSafeState();
         } else {
             noIngredientSelected();
         }
-        tableView.refresh();
+        refresh();
     }
 
     /**
@@ -467,9 +469,9 @@ public class IngredientsPane extends Pane implements EnhancedPane {
             sortedList.comparatorProperty().bind(tableView.comparatorProperty());
             tableView.setItems(sortedList);
         }
-
-        else
+        else {
             tableView.setItems(getIngredient());
+        }
     }
 
     private ObservableList<Ingredient> getIngredient() {
@@ -492,7 +494,6 @@ public class IngredientsPane extends Pane implements EnhancedPane {
 
         alert.showAndWait();
     }
-
 
     public void resetSearchField () {
         searchTextField.clear();

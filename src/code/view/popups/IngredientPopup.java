@@ -210,7 +210,7 @@ public class IngredientPopup extends AnchorPane {
         String supplierName = this.supplierBox.getValue();
         Supplier supplier = this.callback.getSupplier(supplierName);
         Units unit = this.unitBox.getValue();
-        int orgStock = callback.getIngredient(orgIngredient).getStock();
+        double orgStock = callback.getIngredient(orgIngredient).getStock();
 
         if (this.orgIngredient.equals(name)) {
             Ingredient ingredient = this.callback.getIngredient(name);

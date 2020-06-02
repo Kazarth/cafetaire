@@ -107,7 +107,7 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
         buttonBox = new HBox(20);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
         buttonBox.setPrefSize(480,60);
-        addButton = new Button("ADD RECIPE");
+        addButton = new Button("CREATE RECIPE");
         addButton.setPrefSize(160,40);
         addButton.getStyleClass().add("greenButtonPanel");
         addButton.setOnAction(e -> createAddView());
@@ -241,25 +241,37 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
         if (callback.removeRecipe(recipe.getName())) {
             recipeView.getItems().remove(recipe);
         } else {
-            JOptionPane.showMessageDialog(null, "No selected recipe to be deleted");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Element not selected.");
+            alert.setContentText("You need to select a recipe in the list to delete it. ");
+            alert.showAndWait();
         }
     }
+
 
     /**
      * Deletes selected recipe
      */
     private void deleteRecipe() {
-        // get row
-        TablePosition pos = recipeView.getSelectionModel().getSelectedCells().get(0);
-        int row = pos.getRow();
-        Recipe recipe = recipeView.getItems().get(row);
+        try {
+            // get row
+            TablePosition pos = recipeView.getSelectionModel().getSelectedCells().get(0);
+            int row = pos.getRow();
+            Recipe recipe = recipeView.getItems().get(row);
 
-        if (callback.removeRecipe(recipe.getName())) {
-            recipeView.getItems().remove(recipe);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected recipe to be deleted");
+            if (callback.removeRecipe(recipe.getName())) {
+                recipeView.getItems().remove(recipe);
+            }
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Element not selected.");
+            alert.setContentText("You need to select a recipe in the list to delete it. ");
+            alert.showAndWait();
         }
     }
+
 
     /**
      * Gets selected recipe to be showcased
@@ -277,7 +289,11 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
             // open new RecipePane with info
             pane.loadRecipe(RecipePanes.RecipeViewPane, callback.getRecipe(recipe));
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Please choose a recipe before pressing View");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Element not selected.");
+            alert.setContentText("You need to select a recipe in the list to view it. ");
+            alert.showAndWait();
         }
     }
 

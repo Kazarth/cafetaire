@@ -51,8 +51,7 @@ public class TestSuite {
         Ingredient ingredient = new Ingredient("Sugar");
         callback.addIngredient(ingredient);
         callback.incrementIngredient(ingredient.getType());
-
-        int nIngredients = callback.getNumIngredients(ingredient.getType());
+        double nIngredients = callback.getNumIngredients(ingredient.getType());
         assertEquals(nIngredients, 2);
     }
 
@@ -69,8 +68,7 @@ public class TestSuite {
         callback.addIngredient(ingredient);
         callback.incrementIngredient(ingredient.getType());
         callback.decrementIngredient(ingredient.getType());
-
-        int nIngredients = callback.getNumIngredients(ingredient.getType());
+        double nIngredients = callback.getNumIngredients(ingredient.getType());
         assertEquals(nIngredients, 1);
     }
 
