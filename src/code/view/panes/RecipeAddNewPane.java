@@ -110,7 +110,7 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
                 "-fx-padding: 30, 600, 0, 0"
         );
         recipeNameBox.setAlignment(Pos.CENTER_LEFT);
-        Label label_RecipeAmount = new Label("Portions: ");
+        Label label_RecipeAmount = new Label("Servings: ");
         field_RAmount = new TextField();
         field_RAmount.setPromptText("E.g. 24");
         field_RAmount.setPrefSize(100,40);

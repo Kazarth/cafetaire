@@ -340,7 +340,8 @@
                                 callback.getProduct(recipe.getName()).increment((int) recipe.getAmount());
                             } else {
                                 System.out.println("Skapa nu produkt");
-                                //Product product = new Product(recipe.getName(), ProductCategories.Pastry, 0, recipe);
+                                Product product = new Product(recipe.getName(), ProductCategories.Pastry, (int) recipe.getAmount(), recipe);
+                                callback.addProduct(product);
                             }
                             goBack();
                         } else {

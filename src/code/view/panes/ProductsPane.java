@@ -309,6 +309,7 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      */
     public void refresh(){
         tableView.refresh();
+        tableView.setItems(getItemList());
     }
 
     /**
