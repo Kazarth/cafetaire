@@ -354,15 +354,18 @@ public class ProductsPane extends StackPane implements EnhancedPane {
 
         Product product = tableView.getSelectionModel().getSelectedItem();
 
-        try {
-            itemSelected.forEach(allItems::remove);
-            callback.removeProduct(product.getType());
-        } catch (NoSuchElementException e){
-            System.err.println("Last element - NullPointer \nRemoveProduct \nProductPane Row 329");
-            callback.removeProduct(product.getType());
-            callback.catchSafeState();
+        if(product != null) {
+            try {
+                itemSelected.forEach(allItems::remove);
+                callback.removeProduct(product.getType());
+            } catch (NoSuchElementException e) {
+                System.err.println("Last element - NullPointer \nRemoveProduct \nProductPane Row 329");
+                callback.removeProduct(product.getType());
+                callback.catchSafeState();
+            }
+        } else{
+            noProductSelected();
         }
-
     }
 
 
