@@ -10,6 +10,15 @@ import javafx.scene.text.FontWeight;
  * @version 4.0
  */
 public abstract class Styles {
+    public static String getTitle() {
+        return ("-fx-text-fill: #619F81;" +
+                "-fx-font-family: Segoe UI;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-posture: regular;" +
+                "-fx-font-size: 24;"
+        );
+    }
+
     public static String getMenuButtonStandard() {
         return (
                 "-fx-background-color: #21252B;" +

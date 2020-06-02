@@ -4,7 +4,6 @@ import code.control.Callback;
 import code.entities.Recipe;
 import code.entities.RecipePanes;
 import code.entities.Styles;
-import code.entities.Supplier;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,15 +15,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
-import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -35,105 +30,112 @@ import java.util.Arrays;
  * @author Lucas Eliasson, Paul Moustakas
  * @version 1.0
  */
-public class RecipeListPane extends StackPane implements EnhancedPane {
-    private VBox container;
-    private HBox titleBox;
-    private HBox filterBox;
-    private HBox buttonBox;
-    private HBox searchBox;
-    private HBox buttonAndSearchContainer;
-    private HBox viewContainer;
-    private HBox bottomSpacing;
+public class RecipeListPane extends Pane implements EnhancedPane {
+    private VBox vBox_mainContainer;
+    private HBox hBox_titleContainer;
+    private HBox hBox_filter;
+    private HBox hBox_search;
+    private HBox hBox_menu;
+    private FlowPane flowPane_tableContainer;
 
     private Callback callback;
-    private Label titleLabel;
-    private Label filterLabel;
-    private Button addButton;
-    private Button deleteButton;
-    private Button viewButton;
-    private TextField search_Field;
-    private Button searchButton;
-    private TableView<Recipe> recipeView;
-    private TableColumn<Recipe, String> nameCol;
-    TableColumn<Recipe, String> categoryCol;
+    private TextField textField_search;
+    private TableView<Recipe> recipeTable;
+    private TableColumn<Recipe, String> tableColumn_tableName;
+    private TableColumn<Recipe, String> tableColumn_tableCategory;
     private RecipePane pane;
-    //private TableView<Recipe> tableView;
 
     public RecipeListPane(Callback callback, RecipePane pane) {
+        this.callback = callback;
         this.pane = pane;
 
-        /* callback */
-        this.callback = callback;
+        initTitle();
+        initFiller();
+        initMenu();
+        initView();
 
-        /* StackPane */
-        setStyle(Styles.getPane());
-        setPrefSize(1086, 768);
-
-        /* Container */
-        container = new VBox();
-        container.setMaxSize(1036,698); // Change upon scale
-        container.setPrefSize(1036,698);
-        container.setStyle(
+        this.vBox_mainContainer = new VBox();
+        this.vBox_mainContainer.setPrefSize(1014,695);
+        this.vBox_mainContainer.setStyle(
                 "-fx-background-color: #fff;" +
-                        "-fx-background-radius: 20"
+                "-fx-background-radius: 20"
         );
-        container.setAlignment(Pos.CENTER);
+        this.vBox_mainContainer.setLayoutX(20);
+        this.vBox_mainContainer.setLayoutY(20);
+        this.vBox_mainContainer.getChildren().addAll(this.hBox_titleContainer, this.hBox_filter, this.hBox_menu, this.flowPane_tableContainer);
+
+        this.setStyle(Styles.getPane());
+        this.setPrefSize(1054, 736);
+        this.getChildren().add(this.vBox_mainContainer);
+    }
+
+    private void initTitle() {
+        Text title = new Text("RECIPES");
+        title.setStyle(Styles.getTitle());
+        title.setFill(Paint.valueOf("#619f81"));
 
         /* Title */
-        titleBox = new HBox();
-        titleBox.setPrefSize(1086, 85);
-        titleBox.setAlignment(Pos.CENTER);
-        titleBox.setStyle(
-                "-fx-background-radius: 20 20 0 0;" +
-                        "-fx-border-width: 0 0 1 0;" +
-                        "-fx-border-color: #000;" +
-                        "-fx-padding: 10;"
+        this.hBox_titleContainer = new HBox(title);
+        this.hBox_titleContainer.setMinSize(1014, 70);
+        this.hBox_titleContainer.setPrefSize(1160, 70);
+        this.hBox_titleContainer.setAlignment(Pos.CENTER);
+        this.hBox_titleContainer.setStyle(
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-background-radius: 20 20 0 0;"
         );
-        Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
-        titleLabel = new Label("RECIPES");
-        titleLabel.setFont(MenuTitle);
-        titleLabel.setTextFill(Paint.valueOf("#619f81"));
-        titleBox.getChildren().add(titleLabel);
+    }
 
-        /* Label */
-        filterBox = new HBox();
-        filterBox.setPadding(new Insets(20,30,0,30));
-        filterBox.setAlignment(Pos.CENTER_LEFT);
-        filterBox.setPrefSize(1086,20);
-        filterLabel = new Label("ALL RECIPES");
-        filterBox.getChildren().add(filterLabel);
+    private void initFiller() {
+        this.hBox_filter = new HBox();
+        this.hBox_filter.setPrefSize(1160,35);
+        this.hBox_filter.setMinHeight(35);
+        this.hBox_filter.setMaxHeight(35);
+        this.hBox_filter.setStyle(
+                "-fx-border-color: #6B6C6A;" +
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-border-width: 1 0 1 0"
+        );
+    }
 
-        /* Buttons and search */
-        buttonBox = new HBox(20);
-        buttonBox.setAlignment(Pos.CENTER_LEFT);
-        buttonBox.setPrefSize(480,60);
-        addButton = new Button("CREATE RECIPE");
-        addButton.setPrefSize(160,40);
+    private void initMenu() {
+        Button addButton = new Button("CREATE RECIPE");
+        addButton.setMinWidth(170);
+        addButton.setPrefHeight(40);
         addButton.getStyleClass().add("greenButtonPanel");
         addButton.setOnAction(e -> createAddView());
-        deleteButton = new Button("DELETE RECIPE");
-        deleteButton.setPrefSize(160,40);
+
+        Button deleteButton = new Button("DELETE RECIPE");
+        deleteButton.setMinWidth(170);
+        deleteButton.setPrefHeight(40);
         deleteButton.getStyleClass().add("greenButtonPanel");
         deleteButton.setOnAction(e -> deleteRecipe());
-        viewButton = new Button("VIEW RECIPE");
-        viewButton.setPrefSize(160,40);
+
+        Button viewButton = new Button("VIEW RECIPE");
+        viewButton.setMinWidth(170);
+        viewButton.setPrefHeight(40);
         viewButton.getStyleClass().add("greenButtonPanel");
         viewButton.setOnAction(e -> viewRecipe());
-        buttonBox.getChildren().addAll(addButton, deleteButton, viewButton);
-        searchBox = new HBox();
-        searchBox.setPrefSize(480,60);
-        searchBox.setAlignment(Pos.CENTER_RIGHT);
-        Label searchLabel = new Label("SEARCH");
-        searchLabel.setPadding(new Insets(0,10,0,0));
-        search_Field = new TextField();
-        search_Field.setPromptText("Search");
-        search_Field.setPrefSize(240,40);
-        search_Field.textProperty().addListener(this :: searchRecord);
 
-        searchButton = new Button();
+        /* Buttons and search */
+        HBox buttonBox = new HBox(10, addButton, deleteButton, viewButton);
+        buttonBox.setPrefSize(580, 75);
+        buttonBox.setMinSize(580, 75);
+        buttonBox.setAlignment(Pos.CENTER_LEFT);
+        buttonBox.setStyle(
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-padding: 0 50 0 50"
+        );
+
+        this.textField_search = new TextField();
+        this.textField_search.setPrefSize(290,40);
+        this.textField_search.setPromptText("SEARCH");
+        this.textField_search.textProperty().addListener(this :: searchRecord);
+
+        Button searchButton = new Button();
+        searchButton.getStyleClass().add("greenButtonPanel");
         searchButton.setPrefSize(40,40);
-        searchButton.getStyleClass().add("greenButtonSquare");
         searchButton.setOnAction(e -> search());
+
         try {
             Image selectedImage = new Image(new FileInputStream("src/resources/search.png"));
             ImageView selectedView = new ImageView(selectedImage);
@@ -143,76 +145,79 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
-      
-        searchBox.getChildren().addAll(searchLabel, search_Field, searchButton);
-        buttonAndSearchContainer = new HBox(20);
-        buttonAndSearchContainer.setPrefSize(980,60);
-        buttonAndSearchContainer.setMaxSize(980,60);
-        buttonAndSearchContainer.setAlignment(Pos.CENTER);
-        buttonAndSearchContainer.getChildren().addAll(buttonBox, searchBox);
 
-        /* Table code.view */
-        viewContainer = new HBox();
-        viewContainer.setPadding(new Insets(10,0,0,0));
-        viewContainer.setPrefSize(980,480);
-        viewContainer.setAlignment(Pos.CENTER);
-        recipeView = new TableView<>();
-        recipeView.setPrefSize(980,473);
-        recipeView.getStyleClass().add("view");
-        viewContainer.getChildren().add(recipeView);
-
-        /* Table columns */
-        nameCol = new TableColumn<>("Name");
-        nameCol.getStyleClass().add("name-column");
-        nameCol.setStyle(Styles.getTableColumn());
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        nameCol.setPrefWidth(490);
-        categoryCol = new TableColumn<>("Category");
-        categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
-        categoryCol.getStyleClass().add("name-column");
-        categoryCol.setStyle(Styles.getTableColumn());
-        categoryCol.setPrefWidth(490);
-        recipeView.getColumns().addAll(nameCol, categoryCol);
-
-        recipeView.setItems(getRecipes());
-
-        /* Bottom container */
-        bottomSpacing = new HBox();
-        bottomSpacing.setStyle(
-                "-fx-background-color: #fff;" +
-                "-fx-background-radius: 25, 25, 25, 25"
+        this.hBox_search = new HBox(10, this.textField_search, searchButton);
+        this.hBox_search.setMinSize(380, 75);
+        this.hBox_search.setPrefSize(434, 75);
+        this.hBox_search.setAlignment(Pos.CENTER_RIGHT);
+        this.hBox_search.setStyle(
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-padding: 0 50 0 50;"
         );
-        bottomSpacing.setPrefSize(1086, 70);
 
-        /* Collect to add */
-        container.getChildren().addAll(titleBox, filterBox, buttonAndSearchContainer, viewContainer, bottomSpacing);
-        getChildren().add(container);
+        this.hBox_menu = new HBox(buttonBox, this.hBox_search);
+        this.hBox_menu.setPrefSize(1014,75);
+        this.hBox_menu.setAlignment(Pos.BOTTOM_CENTER);
+    }
+
+    private void initView() {
+        this.tableColumn_tableName = new TableColumn<>("Name");
+        this.tableColumn_tableName.setStyle(Styles.getTableColumn());
+        this.tableColumn_tableName.getStyleClass().add("name-column");
+        this.tableColumn_tableName.setPrefWidth(457);
+        this.tableColumn_tableName.setResizable(false);
+        this.tableColumn_tableName.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        this.tableColumn_tableCategory = new TableColumn<>("Category");
+        this.tableColumn_tableCategory.setStyle(Styles.getTableColumn());
+        this.tableColumn_tableCategory.getStyleClass().add("name-column");
+        this.tableColumn_tableCategory.setPrefWidth(457);
+        this.tableColumn_tableCategory.setResizable(false);
+        this.tableColumn_tableCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
+
+        this.recipeTable = new TableView<>();
+        this.recipeTable.setPrefSize(916,465);
+        this.recipeTable.getStyleClass().add("view");
+        this.recipeTable.getColumns().addAll(this.tableColumn_tableName, this.tableColumn_tableCategory);
+        this.recipeTable.setItems(getRecipes());
+
+        this.flowPane_tableContainer = new FlowPane();
+        this.flowPane_tableContainer.setPrefSize(1014, 505);
+        this.flowPane_tableContainer.setAlignment(Pos.CENTER);
+        this.flowPane_tableContainer.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        this.flowPane_tableContainer.setStyle(
+                "-fx-alignment: center;" +
+                "-fx-background-color: #fff;" +
+                "-fx-background-radius: 0 0 20 20;" +
+                "-fx-padding: 0 0 50 0;"
+        );
+        this.flowPane_tableContainer.getChildren().add(this.recipeTable);
     }
 
     public void expand() {
-        container.setMaxWidth(1196);
-        filterBox.setMaxWidth(1196);
-        buttonAndSearchContainer.setMaxWidth(1140); // FIX
-        buttonBox.setMaxWidth(640);
-        recipeView.setMinWidth(1140);
-        nameCol.setMinWidth(570);
-        categoryCol.setMinWidth(570);
-        viewContainer.setMinWidth(1196);
-        bottomSpacing.setMaxWidth(1196);
+        this.setPrefWidth(1200);
+        this.vBox_mainContainer.setPrefWidth(1160);
+
+        this.hBox_menu.setPrefWidth(1160);
+        this.hBox_search.setPrefWidth(580);
+
+        this.flowPane_tableContainer.setPrefWidth(1160);
+        this.recipeTable.setPrefWidth(1062);
+        this.tableColumn_tableName.setPrefWidth(530);
+        this.tableColumn_tableCategory.setPrefWidth(530);
     }
 
     public void contract() {
-        container.setMaxWidth(1036);
-        filterBox.setMaxWidth(1036);
-        buttonAndSearchContainer.setMaxWidth(980); // FIX
-        buttonBox.setMaxWidth(480);
-        recipeView.setMinWidth(980);
-        nameCol.setMinWidth(490);
-        categoryCol.setMinWidth(490);
-        nameCol.setMaxWidth(490);
-        categoryCol.setMaxWidth(490);
-        viewContainer.setMinWidth(1036);
-        bottomSpacing.setMaxWidth(1036);
+        this.setPrefWidth(1054);
+        this.vBox_mainContainer.setPrefWidth(1014);
+
+        this.hBox_menu.setPrefWidth(1014);
+        this.hBox_search.setPrefWidth(434);
+
+        this.flowPane_tableContainer.setPrefWidth(1014);
+        this.recipeTable.setPrefWidth(916);
+        this.tableColumn_tableName.setPrefWidth(457);
+        this.tableColumn_tableCategory.setPrefWidth(457);
     }
 
     /**
@@ -220,7 +225,7 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
      * @param recipe
      */
     public void addNewRecipe(Recipe recipe) {
-        recipeView.getItems().add(recipe);
+        recipeTable.getItems().add(recipe);
     }
 
     /**
@@ -235,7 +240,7 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
      */
     public void deleteRecipe(Recipe recipe) {
         if (callback.removeRecipe(recipe.getName())) {
-            recipeView.getItems().remove(recipe);
+            recipeTable.getItems().remove(recipe);
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error Dialog");
@@ -245,19 +250,18 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
         }
     }
 
-
     /**
      * Deletes selected recipe
      */
     private void deleteRecipe() {
         try {
             // get row
-            TablePosition pos = recipeView.getSelectionModel().getSelectedCells().get(0);
+            TablePosition pos = recipeTable.getSelectionModel().getSelectedCells().get(0);
             int row = pos.getRow();
-            Recipe recipe = recipeView.getItems().get(row);
+            Recipe recipe = recipeTable.getItems().get(row);
 
             if (callback.removeRecipe(recipe.getName())) {
-                recipeView.getItems().remove(recipe);
+                recipeTable.getItems().remove(recipe);
             }
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -268,17 +272,16 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
         }
     }
 
-
     /**
      * Gets selected recipe to be showcased
      */
     private void viewRecipe() {
         try {
             // get name
-            TablePosition pos = recipeView.getSelectionModel().getSelectedCells().get(0);
+            TablePosition pos = recipeTable.getSelectionModel().getSelectedCells().get(0);
             int row = pos.getRow();
             TableColumn col = pos.getTableColumn();
-            Recipe item = recipeView.getItems().get(row);
+            Recipe item = recipeTable.getItems().get(row);
             String recipe = (String) col.getCellObservableValue(item).getValue();
             System.out.println(recipe);
 
@@ -299,7 +302,12 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
 
     @Override
     public void refresh() {
-        recipeView.refresh();
+        this.recipeTable.refresh();
+        if (this.callback.getExpanded()) {
+            contract();
+        } else {
+            expand();
+        }
     }
 
     /**
@@ -317,10 +325,9 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
      * Searchbar functionality.
      */
     private void searchRecord(Observable observable, String oldValue, String newValue) {
-
         FilteredList<Recipe> filteredList = new FilteredList<>(getRecipes(), p -> true);
 
-        if (!search_Field.getText().equals("")) {
+        if (!textField_search.getText().equals("")) {
             filteredList.setPredicate(tableView -> {
 
                 if (newValue == null || newValue.isEmpty()) {
@@ -337,10 +344,10 @@ public class RecipeListPane extends StackPane implements EnhancedPane {
             });
 
             SortedList<Recipe> sortedList = new SortedList<>(filteredList);
-            sortedList.comparatorProperty().bind(recipeView.comparatorProperty());
-            recipeView.setItems(sortedList);
+            sortedList.comparatorProperty().bind(recipeTable.comparatorProperty());
+            recipeTable.setItems(sortedList);
 
         } else
-            recipeView.setItems(getRecipes());
+            recipeTable.setItems(getRecipes());
     }
 }

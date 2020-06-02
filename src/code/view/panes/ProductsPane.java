@@ -4,8 +4,11 @@ import code.entities.Product;
 import code.entities.Recipe;
 import code.entities.Styles;
 import code.view.popups.ProductPopup;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -16,9 +19,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import code.control.Callback;
 
@@ -29,57 +29,59 @@ import java.util.NoSuchElementException;
 
 /**
  * The products menu provides information regarding products that currently are in stock
- * @author Viktor Polak
+ * @author Viktor Polak, Tor Stenfeldt, Georg Grankvist
  * @version 5.1
  */
-public class ProductsPane extends StackPane implements EnhancedPane {
+public class ProductsPane extends Pane implements EnhancedPane {
+    private Callback callback;
+
     private VBox mainContainer;
     private HBox hBoxFiller;
     private VBox topVBoxContainer;
+    private HBox hBox_SpinnerContainer;
+
     private FlowPane flowBottom;
-
     private Spinner<Integer> numberSpinner = new Spinner<>();
+    private TextField searchTextField;
 
+    private TableView<Product> tableView;
     private TableColumn<Product, String> tableColumn_Name = new TableColumn<>("Name");
     private TableColumn<Product, Double> tableColumn_Categories = new TableColumn<>("Category");
     private TableColumn<Product, Integer> tableColumn_Stock = new TableColumn<>("Quantity");
     private TableColumn<Product, Recipe> tableColumn_Recipe = new TableColumn<>("Recipe");
-    private TableView<Product> tableView;
-    private Callback callback;
 
     public ProductsPane(Callback callback) {
         this.callback = callback;
-        this.getStylesheets().add("styles.css");
-        mainContainer = new VBox();
-        mainContainer.setMaxSize(1036, 698);
 
-        mainContainer.getChildren().addAll(initTopVBoxContainer(), initFlowBottom());
-        getChildren().add(mainContainer);
+        this.mainContainer = new VBox();
+        this.mainContainer.setStyle(Styles.getPane());
+        this.mainContainer.setPrefSize(1014, 695);
+        this.mainContainer.setLayoutX(20);
+        this.mainContainer.setLayoutY(20);
+        this.mainContainer.getChildren().addAll(initTopVBoxContainer(), initFlowBottom());
 
-        mainContainer.setAlignment(Pos.CENTER);
+        getStylesheets().add("styles.css");
         setStyle(Styles.getPane());
-        mainContainer.setStyle(Styles.getPane());
-
-        setPrefSize(1086, 768);
+        setPrefSize(1054, 736);
+        getChildren().add(this.mainContainer);
     }
 
     /**
      * Method which is used to create the top part of the panel
      * @return lbl - a label with the text "Products" which is displayed at the top of this panel
      */
-    private HBox initHBoxTop() {
-        Text textTitle = new Text();
-        Font MenuTitle = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
-        textTitle.setFill(Paint.valueOf("#619f81"));
-        textTitle.setFont(MenuTitle);
-        textTitle.setText("PRODUCTS");
+    private HBox initTitle() {
+        Text title = new Text("PRODUCTS");
+        title.setStyle(Styles.getTitle());
+        title.setFill(Paint.valueOf("#619f81"));
 
-        HBox hBox = new HBox();
-        hBox.setPrefSize(1036, 75);
+        HBox hBox = new HBox(title);
+        hBox.setPrefSize(1014, 75);
         hBox.setAlignment(Pos.CENTER);
-        hBox.getChildren().add(textTitle);
-        hBox.setStyle("-fx-background-radius: 20 20 0 0;" +
-                        "-fx-background-color: #FFFFFF;");
+        hBox.setStyle(
+                "-fx-background-radius: 20 20 0 0;" +
+                "-fx-background-color: #FFFFFF;"
+        );
 
         return hBox;
     }
@@ -88,20 +90,23 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      * Filler box between titleBox and buttonBoxes // Change to 'filter', ändra från max/min till 50 padding kanske?
      * @return filler HBox
      */
-    private HBox initHBoxFillerBox() {
-        hBoxFiller = new HBox();
-        hBoxFiller.setMinSize(1036, 40);
-        hBoxFiller.setMaxSize(1036, 40);
-        hBoxFiller.setStyle("-fx-border-color: #6B6C6A; -fx-background-color: #FFFFFF; -fx-border-width: 1 0 1 0");
+    private HBox initFillerBox() {
+        this.hBoxFiller = new HBox();
+        this.hBoxFiller.setPrefSize(1014, 40);
+        this.hBoxFiller.setStyle(
+                "-fx-border-color: #6B6C6A;" +
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-border-width: 1 0 1 0"
+        );
 
-        return hBoxFiller;
+        return this.hBoxFiller;
     }
 
     /**
      * Method to create a HBox which stacks its content horizontally located below the Label
      * @return hBox - the box which contains every button, comboBox, textField and numberSpinner
      */
-    public HBox initHBoxCenterLeft() {
+    public HBox initButtonContainer() {
         Button button_NewItem = new Button("ADD PRODUCT");
         Button button_RemoveItem = new Button("REMOVE PRODUCT");
         Button button_EditItem = new Button("EDIT PRODUCT");
@@ -109,46 +114,52 @@ public class ProductsPane extends StackPane implements EnhancedPane {
         button_NewItem.getStyleClass().add("greenButtonPanel");
         button_NewItem.setMinWidth(170);
         button_NewItem.setPrefHeight(40);
+        button_NewItem.setOnAction(e -> addNewProductAction());
 
         button_RemoveItem.getStyleClass().add("greenButtonPanel");
         button_RemoveItem.setMinWidth(170);
         button_RemoveItem.setPrefHeight(40);
+        button_RemoveItem.setOnAction(e -> removeProduct());
 
         button_EditItem.getStyleClass().add("greenButtonPanel");
         button_EditItem.setMinWidth(170);
         button_EditItem.setPrefHeight(40);
-
-        HBox hBox = new HBox( button_NewItem, button_RemoveItem, button_EditItem);
-        hBox.setSpacing(10);
-        hBox.setMinSize(600, 75);
-        hBox.setMaxSize(600, 75);
-        hBox.setAlignment(Pos.CENTER_LEFT);
-
-        hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-
-        button_NewItem.setOnAction(e -> addNewProductAction());
-        button_RemoveItem.setOnAction(e -> removeProduct());
         button_EditItem.setOnAction(e -> editProduct());
 
-        hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50");
+        HBox buttons = new HBox( button_NewItem, button_RemoveItem, button_EditItem);
+        buttons.setSpacing(10);
+        buttons.setMinSize(580, 75);
+        buttons.setPrefSize(580, 75);
+        buttons.setAlignment(Pos.CENTER_LEFT);
+        buttons.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        buttons.setStyle(
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-padding: 0 50 0 50"
+        );
 
-        return hBox;
+        return buttons;
     }
 
     /**
      * Contains buttons to the right in the code.view
      * @return container HBox
      */
-    public HBox initHBoxCenterRight(){
+    public HBox initSpinner() {
         Button button_Add = new Button();
         Button button_Remove = new Button();
 
         final SpinnerValueFactory.IntegerSpinnerValueFactory svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE);
-        numberSpinner.setValueFactory(svf);
-        numberSpinner.disabledProperty();
-        numberSpinner.setEditable(true);
-        numberSpinner.setPrefHeight(40);
-        numberSpinner.setPrefWidth(100);
+        this.numberSpinner.setValueFactory(svf);
+        this.numberSpinner.disabledProperty();
+        this.numberSpinner.setEditable(true);
+        this.numberSpinner.setPrefHeight(40);
+        this.numberSpinner.setPrefWidth(100);
+
+        this.searchTextField = new TextField();
+        this.searchTextField.setPromptText("SEARCH");
+        this.searchTextField.setPrefHeight(32);
+        this.searchTextField.setPrefWidth(150);
+        this.searchTextField.textProperty().addListener(this::searchRecord);
 
         button_Add.getStyleClass().add("greenButtonPanel");
         button_Add.setPrefSize(40, 40);
@@ -179,26 +190,29 @@ public class ProductsPane extends StackPane implements EnhancedPane {
         button_Add.setOnAction(e -> addQuantity());
         button_Remove.setOnAction(e -> removeQuantity());
 
-        HBox hBox = new HBox(numberSpinner, button_Add, button_Remove);
-        hBox.setSpacing(10);
+        this.hBox_SpinnerContainer = new HBox(this.numberSpinner, button_Add, button_Remove, this.searchTextField);
+        this.hBox_SpinnerContainer.setSpacing(10);
 
-        hBox.setMaxSize(435, 75);
-        hBox.setMinSize(435, 75);
+        this.hBox_SpinnerContainer.setMinSize(380, 75);
+        this.hBox_SpinnerContainer.setPrefSize(434, 75);
 
-        hBox.setAlignment(Pos.CENTER_RIGHT);
-        hBox.setStyle("-fx-background-color: #FFFFFF; -fx-padding: 0 50 0 50;");
+        this.hBox_SpinnerContainer.setAlignment(Pos.CENTER_RIGHT);
+        this.hBox_SpinnerContainer.setStyle(
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-padding: 0 50 0 50;"
+        );
 
-        return hBox;
+        return this.hBox_SpinnerContainer;
     }
 
     /**
      * Collection box for buttonHBoxes
      * @return container HBox
      */
-    public HBox initHBoxContainerBtn() {
+    public HBox initMenu() {
         HBox hBox = new HBox();
-        setPrefSize(1036, 75);
-        hBox.getChildren().addAll(initHBoxCenterLeft(), initHBoxCenterRight());
+        hBox.setPrefSize(1014, 75);
+        hBox.getChildren().addAll(initButtonContainer(), initSpinner());
         return hBox;
     }
 
@@ -206,13 +220,16 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      * Collection box for the top 3 HBoxes
      * @return container VBox
      */
-    public VBox initTopVBoxContainer(){
-        topVBoxContainer =   new VBox(initHBoxTop(), initHBoxFillerBox(), initHBoxContainerBtn());
-        topVBoxContainer.setPrefSize(1036, 190);
-        topVBoxContainer.setAlignment(Pos.BOTTOM_CENTER);
-        topVBoxContainer.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20 20 0 0;");
+    public VBox initTopVBoxContainer() {
+        this.topVBoxContainer = new VBox(initTitle(), initFillerBox(), initMenu());
+        this.topVBoxContainer.setPrefSize(1014, 190);
+        this.topVBoxContainer.setAlignment(Pos.BOTTOM_CENTER);
+        this.topVBoxContainer.setStyle(
+                "-fx-background-color: #FFFFFF;" +
+                "-fx-background-radius: 20 20 0 0;"
+        );
 
-        return topVBoxContainer;
+        return this.topVBoxContainer;
     }
 
     /**
@@ -220,103 +237,95 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      * @return pane - a FlowPane which is located at the bottom of the panel
      */
     public FlowPane initFlowBottom() {
-        flowBottom = new FlowPane();
+        this.tableColumn_Name.setCellValueFactory(new PropertyValueFactory<>("type"));
+        this.tableColumn_Categories.setCellValueFactory(new PropertyValueFactory<>("category"));
+        this.tableColumn_Stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        this.tableColumn_Recipe.setCellValueFactory(new PropertyValueFactory<>("recipe"));
 
-        flowBottom.setPadding(new Insets(15,15,15,15));
+        this.tableColumn_Name.setPrefWidth(228);
+        this.tableColumn_Categories.setPrefWidth(229);
+        this.tableColumn_Stock.setPrefWidth(229);
+        this.tableColumn_Recipe.setPrefWidth(228);
 
-        flowBottom.setMinSize(1036, 508);
-        flowBottom.setMaxSize(1036, 508);
+        this.tableColumn_Name.setStyle(Styles.getTableColumn());
+        this.tableColumn_Categories.setStyle(Styles.getTableColumn());
+        this.tableColumn_Stock.setStyle(Styles.getTableColumn());
 
-        tableView = new TableView<>();
+        this.tableColumn_Name.setResizable(false);
+        this.tableColumn_Categories.setResizable(false);
+        this.tableColumn_Stock.setResizable(false);
+        this.tableColumn_Recipe.setResizable(false);
 
-        tableColumn_Name.setCellValueFactory(new PropertyValueFactory<>("type"));
-        tableColumn_Categories.setCellValueFactory(new PropertyValueFactory<>("category"));
-        tableColumn_Stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        tableColumn_Recipe.setCellValueFactory(new PropertyValueFactory<>("recipe"));
+        this.tableView = new TableView<>();
+        this.tableView.setPrefSize(916, 465);
+        this.tableView.setStyle(Styles.getTableRowSelected());
+        this.tableView.getColumns().addAll(this.tableColumn_Name, this.tableColumn_Categories, this.tableColumn_Stock, this.tableColumn_Recipe);
 
-        tableColumn_Name.setPrefWidth(233);
-        tableColumn_Categories.setPrefWidth(234);
-        tableColumn_Stock.setPrefWidth(234);
-        tableColumn_Recipe.setPrefWidth(234);
-
-        tableColumn_Name.setStyle(Styles.getTableColumn());
-        tableColumn_Categories.setStyle(Styles.getTableColumn());
-        tableColumn_Stock.setStyle(Styles.getTableColumn());
-
-        tableView.getColumns().addAll(tableColumn_Name, tableColumn_Categories, tableColumn_Stock, tableColumn_Recipe);
-
-        tableView.setPrefHeight(458);
-        tableView.setPrefWidth(936);
-        tableView.setStyle(Styles.getTableRowSelected());
-
-        flowBottom.setAlignment(Pos.CENTER);
-
-        flowBottom.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-        flowBottom.getChildren().add(tableView);
-
-        tableView.setItems(getItemList());
-
-        flowBottom.setStyle("-fx-alignment: center;" +
+        this.flowBottom = new FlowPane();
+        this.flowBottom.setPrefSize(1014, 505);
+        this.flowBottom.setAlignment(Pos.CENTER);
+        this.flowBottom.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        this.flowBottom.setStyle(
+                "-fx-alignment: center;" +
                 " -fx-background-color: #fff;" +
                 " -fx-background-radius: 0 0 20 20;" +
-                " -fx-padding: 0 0 50 0;");
+                " -fx-padding: 0 0 50 0;"
+        );
+        this.flowBottom.getChildren().add(this.tableView);
 
-        return flowBottom;
+        this.tableView.setItems(getItemList());
+        return this.flowBottom;
     }
 
     /**
      * Expands the pane and makes the menuPane smaller
      */
     public void expand() {
-        setPrefWidth(1346);
-        mainContainer.setMaxSize(1196, 698);
-        hBoxFiller.setMaxSize(1196,698);
-        topVBoxContainer.setMaxSize(1196,698);
-        flowBottom.setMaxSize(1196,698);
+        setPrefWidth(1200);
+        this.mainContainer.setPrefWidth(1160);
 
-        tableView.setMinWidth(1096);
-        tableColumn_Name.setMinWidth(274);
-        tableColumn_Categories.setMinWidth(274);
-        tableColumn_Stock.setMinWidth(274);
-        tableColumn_Recipe.setMinWidth(274);
+        this.topVBoxContainer.setPrefWidth(1160);
+        this.hBox_SpinnerContainer.setPrefWidth(580);
+        this.flowBottom.setPrefWidth(1160);
+
+        this.tableView.setPrefWidth(1062);
+        this.tableColumn_Name.setPrefWidth(265);
+        this.tableColumn_Categories.setPrefWidth(265);
+        this.tableColumn_Stock.setPrefWidth(265);
+        this.tableColumn_Recipe.setPrefWidth(265);
     }
 
     /**
      * Makes the pane smaller and expands the menuPane
      */
     public void contract() {
-        setPrefWidth(1086);
-        mainContainer.setMaxSize(1036, 698);
-        hBoxFiller.setMaxSize(1036,698);
-        topVBoxContainer.setMaxSize(1036,698);
-        flowBottom.setMaxSize(1036,698);
+        setPrefWidth(1054);
+        this.mainContainer.setPrefWidth(1014);
 
-        tableView.setMinWidth(936);
-        tableColumn_Name.setMinWidth(274);
-        tableColumn_Categories.setMinWidth(274);
-        tableColumn_Stock.setMinWidth(274);
-        tableColumn_Recipe.setMinWidth(274);
+        this.topVBoxContainer.setPrefWidth(1014);
+        this.flowBottom.setPrefWidth(1014);
+        this.hBox_SpinnerContainer.setPrefWidth(434);
 
-        tableView.setMaxWidth(936);
-        tableColumn_Name.setMaxWidth(233);
-        tableColumn_Categories.setMaxWidth(234);
-        tableColumn_Stock.setMaxWidth(234);
-        tableColumn_Recipe.setMaxWidth(234);
+        this.tableView.setPrefWidth(916);
+        this.tableColumn_Name.setPrefWidth(228);
+        this.tableColumn_Categories.setPrefWidth(229);
+        this.tableColumn_Stock.setPrefWidth(229);
+        this.tableColumn_Recipe.setPrefWidth(228);
     }
 
     /**
      * refresh the tableView
      */
     public void refresh(){
-        tableView.refresh();
-        tableView.setItems(getItemList());
+        this.tableView.refresh();
+        this.tableView.setItems(getItemList());
     }
 
     /**
      * @return value of numberSpinner field
      */
     public int getNumberSpinnerValue() {
-        return numberSpinner.getValue();
+        return this.numberSpinner.getValue();
     }
 
     /**
@@ -325,7 +334,7 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      */
     public ObservableList<Product> getItemList() {
         ObservableList<Product> items = FXCollections.observableArrayList();
-        Product[] receivedProducts = callback.getProducts();
+        Product[] receivedProducts = this.callback.getProducts();
         items.addAll(Arrays.asList(receivedProducts));
 
         return items;
@@ -336,8 +345,9 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      * Opens a new window with information to be filled in
      */
     public void addNewProductAction() {
+        resetSearchField();
         try {
-            new ProductPopup(this, callback, 0);
+            new ProductPopup(this, this.callback, 0);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -347,22 +357,23 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      * Method used to delete the selected item in the tableView
      */
     public void removeProduct() {
+        resetSearchField();
         ObservableList<Product> itemSelected;
         ObservableList<Product> allItems;
 
-        allItems = tableView.getItems();
-        itemSelected = tableView.getSelectionModel().getSelectedItems();
+        allItems = this.tableView.getItems();
+        itemSelected = this.tableView.getSelectionModel().getSelectedItems();
 
-        Product product = tableView.getSelectionModel().getSelectedItem();
+        Product product = this.tableView.getSelectionModel().getSelectedItem();
 
         if(product != null) {
             try {
                 itemSelected.forEach(allItems::remove);
-                callback.removeProduct(product.getType());
+                this.callback.removeProduct(product.getType());
             } catch (NoSuchElementException e) {
                 System.err.println("Last element - NullPointer \nRemoveProduct \nProductPane Row 329");
-                callback.removeProduct(product.getType());
-                callback.catchSafeState();
+                this.callback.removeProduct(product.getType());
+                this.callback.catchSafeState();
             }
         } else{
             noProductSelected();
@@ -374,7 +385,7 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      * Add quantity to existing product
      */
     public void addQuantity() {
-        Product product = tableView.getSelectionModel().getSelectedItem();
+        Product product = this.tableView.getSelectionModel().getSelectedItem();
 
     if (product != null){
         int prodQuantity = product.getStock();
@@ -391,7 +402,7 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      * Remove quantity from existing product
      */
     public void removeQuantity() {
-        Product product = tableView.getSelectionModel().getSelectedItem();
+        Product product = this.tableView.getSelectionModel().getSelectedItem();
 
         if (product != null){
             int prodQuantity = product.getStock();
@@ -404,17 +415,62 @@ public class ProductsPane extends StackPane implements EnhancedPane {
     }
 
     /**
+     * Searchbar functionality
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
+    private void searchRecord(Observable observable, String oldValue, String newValue) {
+        FilteredList<Product> filteredList = new FilteredList<>(getItemList(), p -> true);
+
+        if (!searchTextField.getText().equals("")) {
+            filteredList.setPredicate(tableView -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String typedText = newValue.toLowerCase();
+
+                if (tableView.getType().toLowerCase().contains(typedText)) {
+                    return true;
+
+                } else if (tableView.getCategory().name().toLowerCase().contains(typedText)) {
+                    return true;
+
+                } else  if (String.valueOf(tableView.getStock()).toLowerCase().contains(typedText)) {
+                    return true;
+
+                } else if (tableView.getRecipe().getName().toLowerCase().contains(typedText)) {
+                    return true;
+                }
+
+                else
+                    return false;
+            });
+
+            SortedList<Product> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(tableView.comparatorProperty());
+            tableView.setItems(sortedList);
+        }
+
+        else
+            tableView.setItems(getItemList());
+    }
+
+
+
+    /**
      * Method used to edit a product in the tableView
      */
-
     public void editProduct() {
-        String name = tableView.getSelectionModel().getSelectedItem().getType();
+        resetSearchField();
+        String name = this.tableView.getSelectionModel().getSelectedItem().getType();
         ProductPopup pane;
 
         if (name != null) {
             try {
-                pane = new ProductPopup(this, callback, 1);
-                Product product = callback.getProduct(name);
+                pane = new ProductPopup(this, this.callback, 1);
+                Product product = this.callback.getProduct(name);
                 pane.setOrgProd(name);
                 pane.setValuesForItem(product.getType(), product.getCategory(), product.getStock(), product.getRecipe());
             } catch (NullPointerException e) {
@@ -429,7 +485,7 @@ public class ProductsPane extends StackPane implements EnhancedPane {
      * @param product add product to tableView
      */
     public void addNewProduct(Product product) {
-        tableView.getItems().add(product);
+        this.tableView.getItems().add(product);
     }
 
     /**
@@ -442,5 +498,9 @@ public class ProductsPane extends StackPane implements EnhancedPane {
         alert.setContentText("Please select a product!");
 
         alert.showAndWait();
+    }
+
+    public void resetSearchField () {
+        searchTextField.clear();
     }
 }

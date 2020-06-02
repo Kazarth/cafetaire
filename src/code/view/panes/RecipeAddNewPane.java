@@ -2,7 +2,6 @@ package code.view.panes;
 
 import code.control.Callback;
 import code.entities.*;
-import code.view.panes.RecipeListPane;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -10,7 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -21,10 +20,10 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RecipeAddNewPane extends StackPane implements EnhancedPane {
+public class RecipeAddNewPane extends Pane implements EnhancedPane {
     // main functionality
     private Callback callback;
-    private VBox container;
+    private VBox mainContainer;
     private Label titleLabel;
 
     // lis values
@@ -55,32 +54,18 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
     private HBox container_list_instr;
 
     public RecipeAddNewPane(Callback callback, RecipePane source, RecipeListPane pane) {
-        getStylesheets().add("styles.css");
-
+        this.callback = callback;
         this.source = source;
         this.pane = pane;
 
-        /* callback */
-        this.callback = callback;
-
-        /* Container */
-        container = new VBox();
-        container.setMaxSize(1036,698); // Change upon scale
-        container.setPrefSize(1036,698);
-        container.setStyle(
-                "-fx-background-color: #fff;" +
-                        "-fx-background-radius: 20"
-        );
-        container.setAlignment(Pos.CENTER);
-
         /* Title */
         HBox titleBox = new HBox();
-        titleBox.setPrefSize(1086, 58);
+        titleBox.setPrefSize(1160, 58);
         titleBox.setAlignment(Pos.CENTER);
         titleBox.setStyle(
                 "-fx-background-radius: 20 20 0 0;" +
-                        "-fx-border-width: 0 0 1 0;" +
-                        "-fx-border-color: #000;"
+                "-fx-border-width: 0 0 1 0;" +
+                "-fx-border-color: #000;"
         );
         Font titleFont = Font.font("Segoe UI", FontWeight.BOLD, FontPosture.REGULAR, 24);
         titleLabel = new Label("ADD NEW RECIPE");
@@ -91,7 +76,7 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
 
         /* Recipe Name */
         HBox recipeNameBox = new HBox(10);
-        recipeNameBox.setPrefSize(1086, 40);
+        recipeNameBox.setPrefSize(1014, 40);
         recipeNameBox.setStyle(
                 "-fx-background-color: #fff;" + "\n" +
                 "-fx-padding: 30, 0, 0, 0"
@@ -104,7 +89,7 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
 
         /* Recipe amount */
         HBox recipeAmountBox = new HBox(10);
-        recipeNameBox.setPrefSize(1086, 40);
+        recipeNameBox.setPrefSize(1014, 40);
         recipeNameBox.setStyle(
                 "-fx-background-color: #fff;" + "\n" +
                 "-fx-padding: 30, 600, 0, 0"
@@ -152,18 +137,19 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
         field_Instructions = new TextArea();
         field_Instructions.setPrefSize(460,200);
         field_Instructions.getStyleClass().add("text-field");
+        field_Instructions.setWrapText(true);
         label_Instructions = new Label("Enter instructions");
         instructionsBox.getChildren().addAll(label_Instructions, field_Instructions);
 
         /* List + Instructions */
         container_list_instr = new HBox(20);
-        container_list_instr.setPrefSize(1086,200);
+        container_list_instr.setPrefSize(1014,200);
         container_list_instr.setAlignment(Pos.CENTER);
         container_list_instr.getChildren().addAll(listBox, instructionsBox);
 
         /* TextFields */
         HBox fieldBox = new HBox(20);
-        fieldBox.setPrefSize(1086,100);
+        fieldBox.setPrefSize(1014,100);
         fieldBox.setAlignment(Pos.CENTER);
 
         field_Name = new ComboBox();
@@ -209,7 +195,7 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
         spacing_addAndButtons.setStyle(
                 "-fx-background-color: #fff;"
         );
-        spacing_addAndButtons.setPrefSize(1086, 120);
+        spacing_addAndButtons.setPrefSize(1014, 120);
 
         /* buttons */
         HBox buttonBox = new HBox(20);
@@ -232,23 +218,48 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
         HBox bottomSpacing = new HBox();
         bottomSpacing.setStyle(
                 "-fx-background-color: #fff;" +
-                        "-fx-background-radius: 25, 25, 25, 25"
+                "-fx-background-radius: 25, 25, 25, 25"
         );
-        bottomSpacing.setPrefSize(1086, 40);
+        bottomSpacing.setPrefSize(1014, 40);
 
-        /* Collect to add */
-        container.getChildren().addAll(titleBox, recipeNameBox, recipeAmountBox, container_list_instr, fieldBox, spacing_addAndButtons, buttonBox, bottomSpacing);
-        getChildren().add(container);
+        /* Container */
+        this.mainContainer = new VBox();
+        this.mainContainer.setPrefSize(1014,695);
+        this.mainContainer.setStyle(
+                "-fx-background-color: #fff;" +
+                "-fx-background-radius: 20"
+        );
+        this.mainContainer.setLayoutX(20);
+        this.mainContainer.setLayoutY(20);
+        this.mainContainer.getChildren().addAll(titleBox, recipeNameBox, recipeAmountBox, this.container_list_instr, fieldBox, spacing_addAndButtons, buttonBox, bottomSpacing);
+
+        this.setPrefSize(1054,736);
+        this.setStyle("-fx-background-color: #6B6C6A;");
+        this.getStylesheets().add("styles.css");
+        this.getChildren().add(this.mainContainer);
     }
 
     @Override
     public void expand() {
-        container.setMaxWidth(1196);
+        this.setPrefWidth(1200);
+        this.mainContainer.setPrefWidth(1160);
     }
 
     @Override
     public void contract() {
-        container.setMaxWidth(1036);
+        this.setPrefWidth(1160);
+        this.mainContainer.setPrefWidth(1014);
+    }
+
+    @Override
+    public void refresh() {
+        ingredientsList.refresh();
+        field_Name.setItems(loadIngredients());
+        if (this.callback.getExpanded()) {
+            contract();
+        } else {
+            expand();
+        }
     }
 
     private void openKeyboard() {
@@ -401,11 +412,5 @@ public class RecipeAddNewPane extends StackPane implements EnhancedPane {
             unitList.add(u.name());
         }
         return unitList;
-    }
-
-    @Override
-    public void refresh() {
-        ingredientsList.refresh();
-        field_Name.setItems(loadIngredients());
     }
 }

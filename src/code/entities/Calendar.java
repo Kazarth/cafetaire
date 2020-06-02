@@ -16,18 +16,29 @@ import javafx.scene.text.Text;
  */
 public class Calendar extends StackPane {
     private Text[][] values;
-    private HBox dayBox;
-    private VBox timeBox;
+    private HBox xAxisValues;
 
     public Calendar(Callback callback) {
-        values = new Text[7][12];
-
-        initHours();
+        initValues();
         initDays();
+        HBox valueContainer = initValueContainers();
 
-        for (int i=0; i<values.length; i++) {
-            for (int j=0; j<values[i].length; j++) {
-                values[i][j] = new Text();
+        VBox vBox = new VBox(this.xAxisValues, valueContainer);
+        vBox.setAlignment(Pos.CENTER);
+
+        VBox yAxisValues = initHours();
+        HBox mainBox = new HBox(yAxisValues, vBox);
+
+        getChildren().add(mainBox);
+    }
+
+    private void initValues() {
+        this.values = new Text[7][12];
+
+        for (int i=0; i<this.values.length; i++) {
+            for (int j=0; j<this.values[i].length; j++) {
+                this.values[i][j] = new Text();
+                this.values[i][j].setWrappingWidth(130);
                 // TODO: set style
             }
         }
@@ -38,43 +49,10 @@ public class Calendar extends StackPane {
             setValue(d.getDay(), d.getHour(), d.toString());
         });
         */
-
-        addComponents();
-    }
-
-    private void addComponents() {
-        VBox[] vBoxes = new VBox[7];
-
-        for (int i=0; i<7; i++) {
-            VBox[] textBoxes = new VBox[12];
-
-            for (int j=0; j<12; j++) {
-                textBoxes[j] = new VBox(values[i][j]);
-                textBoxes[j].setStyle("-fx-border: 2;" +
-                        "-fx-background-color: #FFF;" +
-                        "-fx-border-color: #EEE;" +
-                        "" +
-                        ""
-                );
-                textBoxes[j].setPrefSize(135, 47);
-            }
-
-            vBoxes[i] = new VBox(textBoxes);
-            vBoxes[i].setPrefSize(135, 564);
-        }
-
-        HBox hBox = new HBox(vBoxes);
-        hBox.setAlignment(Pos.CENTER);
-
-        VBox vBox = new VBox(dayBox, hBox);
-        vBox.setAlignment(Pos.CENTER);
-
-        HBox mainBox = new HBox(timeBox, vBox);
-        getChildren().add(mainBox);
     }
 
     private void initDays() {
-        Label[] days = new Label[] {
+        Label[] dayTitles = new Label[]{
                 new Label("Monday"),
                 new Label("Tuesday"),
                 new Label("Wednesday"),
@@ -84,18 +62,27 @@ public class Calendar extends StackPane {
                 new Label("Sunday")
         };
 
-        for (Label l: days) {
+        for (Label l: dayTitles) {
             l.setStyle(Styles.getTime());
-            l.setPrefSize(135, 47);
+            l.setPrefSize(130, 43);
             l.setAlignment(Pos.CENTER);
         }
 
-        dayBox = new HBox(days);
-        dayBox.setStyle("-fx-background-color: #FFF;");
-        dayBox.setPrefSize(945, 47);
+        HBox[] titleContainers = new HBox[dayTitles.length];
+
+        for (int i = 0; i< dayTitles.length; i++) {
+            titleContainers[i] = new HBox(dayTitles[i]);
+            titleContainers[i].setAlignment(Pos.CENTER);
+            titleContainers[i].setPrefSize(155, 43);
+        }
+
+        this.xAxisValues = new HBox(titleContainers);
+        this.xAxisValues.setStyle("-fx-background-color: #FFF;");
+        this.xAxisValues.setAlignment(Pos.CENTER_LEFT);
+        this.xAxisValues.setPrefSize(916, 43);
     }
 
-    private void initHours() {
+    private VBox initHours() {
         Label[] time = new Label[] {
                 new Label("00:00"),
                 new Label("02:00"),
@@ -113,22 +100,73 @@ public class Calendar extends StackPane {
 
         for (Label l : time) {
             l.setStyle(Styles.getTime());
-            l.setPrefSize(50, 47);
+            l.setMinSize(50, 43);
+            l.setPrefSize(50, 43);
             l.setAlignment(Pos.CENTER_LEFT);
         }
 
-        timeBox = new VBox(time);
-        timeBox.setStyle(
+        VBox yAxisValues = new VBox(time);
+        yAxisValues.setStyle(
                 "-fx-background-color: #FFF;" +
-                        "-fx-padding: 28 0 0 0");
-        timeBox.setPrefSize(50, 564);
+                "-fx-padding: 45 0 0 0"
+        );
+        yAxisValues.setPrefSize(50, 522);
+
+        return yAxisValues;
+    }
+
+    private HBox initValueContainers() {
+        VBox[] dayContainers = new VBox[7];
+
+        for (int i=0; i<7; i++) {
+            VBox[] hourContainers = new VBox[12];
+
+            for (int j=0; j<12; j++) {
+                hourContainers[j] = new VBox(this.values[i][j]);
+                hourContainers[j].setStyle(
+                        "-fx-border: 2;" +
+                        "-fx-background-color: #FFF;" +
+                        "-fx-border-color: #EEE;"
+                );
+                hourContainers[j].setPrefSize(130, 43);
+            }
+
+            dayContainers[i] = new VBox(hourContainers);
+            dayContainers[i].setPrefSize(130, 522);
+        }
+
+        HBox values = new HBox(dayContainers);
+        values.setAlignment(Pos.CENTER);
+        return values;
+    }
+
+    private void resizeText(int value) {
+        for (Text[] texts: this.values) {
+            for (Text text: texts) {
+                text.setWrappingWidth(value);
+            }
+        }
+    }
+
+    private void resizeTitles(int value) {
+        this.xAxisValues.setPrefWidth(value);
+    }
+
+    public void expand() {
+        resizeTitles(1062);
+        resizeText(150);
+    }
+
+    public void contract() {
+        resizeText(130);
+        resizeTitles(916);
     }
 
     public String getDate(int x, int y) {
-        return values[x][y].getText();
+        return this.values[x][y].getText();
     }
 
     public void setValue(int x, int y, String s) {
-        values[x][y].setText(s);
+        this.values[x][y].setText(s);
     }
 }

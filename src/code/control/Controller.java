@@ -21,11 +21,16 @@ public class Controller implements Callback {
         this.saveLoad = new SaveLoad(database);
 
         if (saveLoad.hasData()) {
+            // TODO: must comment away for testing purposes
             database = saveLoad.loadData();
         }
 
-        // TODO: must comment away for testing purposes?
+        // TODO: must comment away for testing purposes
         this.mainPane = new MainPane(this);
+    }
+
+    public boolean getExpanded() {
+        return mainPane.getExpanded();
     }
 
     /**

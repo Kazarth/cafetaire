@@ -108,7 +108,7 @@ public class MenuPane extends StackPane {
         mainContainer.getChildren().add(toggleContainer);
         setStyle("-fx-background-color: #21252B;");
         getChildren().add(mainContainer);
-        setPrefSize(280, 768);
+        setPrefSize(280, 736);
     }
 
     /**
@@ -133,7 +133,7 @@ public class MenuPane extends StackPane {
             p.expand();
         }
 
-        setPrefSize(20,768);
+        setPrefSize(134,736);
 
         for (int i=0; i<Views.values().length; i++) {
             this.buttons[i].setText("");
@@ -167,7 +167,7 @@ public class MenuPane extends StackPane {
             p.contract();
         }
 
-        setPrefSize(280,768);
+        setPrefSize(280, 736);
 
         for (int i=0; i<Views.values().length; i++) {
             this.buttons[i].setText(Views.values()[i].name());
@@ -238,5 +238,9 @@ public class MenuPane extends StackPane {
         }
 
         return newButton;
+    }
+
+    public boolean getExpanded() {
+        return this.expanded;
     }
 }

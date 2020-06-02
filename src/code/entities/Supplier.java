@@ -15,10 +15,10 @@ public class Supplier implements Serializable {
     private String phone;
 
     public Supplier () {
-        supplierName    = "";
-        category        = "";
-        email           = "";
-        phone           = "";
+        this.supplierName    = "";
+        this.category        = "";
+        this.email           = "";
+        this.phone           = "";
     }
 
     public Supplier(String supplierName, String category, String email, String phone) {
@@ -29,7 +29,7 @@ public class Supplier implements Serializable {
     }
 
     public String getSupplierName() {
-        return supplierName;
+        return this.supplierName;
     }
 
     public void setSupplierName(String supplierName) {
@@ -37,7 +37,7 @@ public class Supplier implements Serializable {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -49,11 +49,11 @@ public class Supplier implements Serializable {
     }
 
     public String getName() {
-        return supplierName;
+        return this.supplierName;
     }
 
     public String getCategory() {
-        return category;
+        return this.category;
     }
 
     public void setCategory(String category) {
@@ -61,7 +61,7 @@ public class Supplier implements Serializable {
     }
 
     public String getPhone() {
-        return phone;
+        return this.phone;
     }
 
     public void setPhone(String phone) {
@@ -70,6 +70,6 @@ public class Supplier implements Serializable {
 
     @Override
     public String toString() {
-        return supplierName;
+        return this.supplierName;
     }
 }

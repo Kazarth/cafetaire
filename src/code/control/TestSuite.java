@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-
 /**
  * TODO: to run the test you need to comment out the MainPane initialization from the Controller for some reason.
  * @author Tor Stenfeldt
@@ -53,7 +52,6 @@ public class TestSuite {
         callback.addIngredient(ingredient);
         callback.incrementIngredient(ingredient.getType());
         double nIngredients = callback.getNumIngredients(ingredient.getType());
-
         assertEquals(nIngredients, 2);
     }
 
@@ -70,7 +68,6 @@ public class TestSuite {
         callback.addIngredient(ingredient);
         callback.incrementIngredient(ingredient.getType());
         callback.decrementIngredient(ingredient.getType());
-
         double nIngredients = callback.getNumIngredients(ingredient.getType());
         assertEquals(nIngredients, 1);
     }
