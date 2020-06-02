@@ -346,12 +346,13 @@ public class RecipeViewPane extends Pane implements EnhancedPane { // extended P
 
                     if ((nSets % amountFromStock) > 0) {
                         this.callback.decrementIngredient(ingredient, (int) amount);
-                        if (this.callback.checkProduct(this.recipe.getName())) {
+                        if (this.callback.checkProduct(recipe.getName())) {
                             System.out.println("Produkt finns");
-                            this.callback.getProduct(this.recipe.getName()).increment((int) this.recipe.getAmount());
+                            callback.getProduct(this.recipe.getName()).increment((int) this.recipe.getAmount());
                         } else {
                             System.out.println("Skapa nu produkt");
-                            //Product product = new Product(recipe.getName(), ProductCategories.Pastry, 0, recipe);
+                            Product product = new Product(recipe.getName(), ProductCategories.Pastry, (int) this.recipe.getAmount(), this.recipe);
+                            this.callback.addProduct(product);
                         }
                         goBack();
                     } else {

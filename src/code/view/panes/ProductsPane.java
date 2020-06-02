@@ -318,6 +318,7 @@ public class ProductsPane extends Pane implements EnhancedPane {
      */
     public void refresh(){
         this.tableView.refresh();
+        this.tableView.setItems(getItemList());
     }
 
     /**
