@@ -11,6 +11,8 @@ import java.util.ArrayList;
  */
 @SuppressWarnings("unused")
 public interface Callback {
+    boolean getExpanded();
+
     boolean addIngredient(Ingredient ingredient);
     Ingredient getIngredient(String ingredient);
     Ingredient[] getIngredients();

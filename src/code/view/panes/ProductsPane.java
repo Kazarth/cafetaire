@@ -243,8 +243,8 @@ public class ProductsPane extends Pane implements EnhancedPane {
         this.tableColumn_Recipe.setCellValueFactory(new PropertyValueFactory<>("recipe"));
 
         this.tableColumn_Name.setPrefWidth(228);
-        this.tableColumn_Categories.setPrefWidth(228);
-        this.tableColumn_Stock.setPrefWidth(228);
+        this.tableColumn_Categories.setPrefWidth(229);
+        this.tableColumn_Stock.setPrefWidth(229);
         this.tableColumn_Recipe.setPrefWidth(228);
 
         this.tableColumn_Name.setStyle(Styles.getTableColumn());
@@ -257,7 +257,7 @@ public class ProductsPane extends Pane implements EnhancedPane {
         this.tableColumn_Recipe.setResizable(false);
 
         this.tableView = new TableView<>();
-        this.tableView.setPrefSize(914, 465);
+        this.tableView.setPrefSize(916, 465);
         this.tableView.setStyle(Styles.getTableRowSelected());
         this.tableView.getColumns().addAll(this.tableColumn_Name, this.tableColumn_Categories, this.tableColumn_Stock, this.tableColumn_Recipe);
 

@@ -239,4 +239,8 @@ public class MenuPane extends StackPane {
 
         return newButton;
     }
+
+    public boolean getExpanded() {
+        return this.expanded;
+    }
 }

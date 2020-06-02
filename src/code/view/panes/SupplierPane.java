@@ -39,7 +39,6 @@ public class SupplierPane extends Pane implements EnhancedPane {
     private VBox mainContainer;
     private HBox hBox_menu;
     private HBox hBox_SearchContainer;
-
     private FlowPane flowPane_tableContainer;
 
     private TextField textField_Search;
@@ -134,10 +133,14 @@ public class SupplierPane extends Pane implements EnhancedPane {
                 "-fx-padding: 0 50 0 50"
         );
 
+        this.textField_Search = new TextField();
+        this.textField_Search.setPromptText("SEARCH");
+        this.textField_Search.setPrefSize(290, 40);
+        this.textField_Search.textProperty().addListener(this::searchRecord);
+
         Button button_Search = new Button();
         button_Search.getStyleClass().add("greenButtonPanel");
-        button_Search.setPrefWidth(40);
-        button_Search.setPrefHeight(40);
+        button_Search.setPrefSize(40, 40);
         button_Search.setOnAction(e -> search());
 
         try {
@@ -150,22 +153,14 @@ public class SupplierPane extends Pane implements EnhancedPane {
             e.printStackTrace();
         }
 
-        Label labelSearch = new Label();
-        labelSearch.setStyle(Styles.getSearchBar());
-        this.textField_Search = new TextField();
-        this.textField_Search.setPrefSize(160, 40);
-        this.textField_Search.setPromptText("Search");
-        this.textField_Search.textProperty().addListener(this :: searchRecord);
-
-        // CONTAINER FOR SEARCH BAR (RIGHT) - SEARCH LABEL, SEARCH FIELD
-        this.hBox_SearchContainer = new HBox(10, labelSearch, this.textField_Search, button_Search);
+        this.hBox_SearchContainer = new HBox(10, this.textField_Search, button_Search);
         this.hBox_SearchContainer.setMinSize(380, 75);
         this.hBox_SearchContainer.setPrefSize(434, 75);
+        this.hBox_SearchContainer.setAlignment(Pos.CENTER_RIGHT);
         this.hBox_SearchContainer.setStyle(
                 "-fx-background-color: #FFFFFF;" +
                 "-fx-padding: 0 50 0 50;"
         );
-        this.hBox_SearchContainer.setAlignment(Pos.CENTER_RIGHT);
 
         // CONTAINER FOR BUTTON BAR AND SEARCH BAR (LEFT & RIGHT)
         this.hBox_menu = new HBox(buttons, this.hBox_SearchContainer);
@@ -200,7 +195,7 @@ public class SupplierPane extends Pane implements EnhancedPane {
 
         this.tableView = new TableView<>();
         this.tableView.setStyle(Styles.getTableRowSelected());
-        this.tableView.setPrefSize(914,465);
+        this.tableView.setPrefSize(916,465);
         this.tableView.getColumns().addAll(this.supplierColumn, this.categoryColumn, this.emailColumn, this.phoneColumn);
         this.tableView.setItems(getSuppliersFromDatabase());
 
@@ -210,9 +205,9 @@ public class SupplierPane extends Pane implements EnhancedPane {
         this.flowPane_tableContainer.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         this.flowPane_tableContainer.setStyle(
                 "-fx-alignment: center;" +
-                " -fx-background-color: #fff;" +
-                " -fx-background-radius: 0 0 20 20;" +
-                " -fx-padding: 0 0 50 0;"
+                "-fx-background-color: #fff;" +
+                "-fx-background-radius: 0 0 20 20;" +
+                "-fx-padding: 0 0 50 0;"
         );
         this.flowPane_tableContainer.getChildren().add(this.tableView);
     }
@@ -330,12 +325,10 @@ public class SupplierPane extends Pane implements EnhancedPane {
      * Searchbar functionality.
      */
     private void searchRecord(Observable observable, String oldValue, String newValue) {
-
         FilteredList<Supplier> filteredList = new FilteredList<>(getSuppliersFromDatabase(), p -> true);
 
         if (!this.textField_Search.getText().equals("")) {
             filteredList.setPredicate(tableView -> {
-
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
@@ -354,17 +347,17 @@ public class SupplierPane extends Pane implements EnhancedPane {
 
                 } else if (tableView.getPhone().toLowerCase().contains(typedText)) {
                     return true;
-
-                } else
+                } else {
                     return false;
+                }
             });
 
             SortedList<Supplier> sortedList = new SortedList<>(filteredList);
             sortedList.comparatorProperty().bind(this.tableView.comparatorProperty());
             this.tableView.setItems(sortedList);
-
-        } else
+        } else {
             this.tableView.setItems(getSuppliersFromDatabase());
+        }
     }
 
     public void resetSearchField () {

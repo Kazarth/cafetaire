@@ -16,6 +16,7 @@ import javax.swing.*;
 public class MainPane extends StackPane {
     private EnhancedPane[] views;
     private int pane;
+    private MenuPane menuPane;
 
     public MainPane(Callback callback) {
         try {
@@ -24,7 +25,7 @@ public class MainPane extends StackPane {
             e.printStackTrace();
         }
 
-        StackPane menu = new MenuPane(this);
+        menuPane = new MenuPane(this);
         views = new EnhancedPane[6];
         views[0] = new DashboardPane(callback);
         views[1] = new IngredientsPane(callback);
@@ -34,7 +35,7 @@ public class MainPane extends StackPane {
         views[5] = new CalendarPane(callback);
 
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(menu, ((Node)views[0]));
+        hBox.getChildren().addAll(menuPane, ((Node)views[0]));
         getChildren().add(hBox);
         setPrefSize(1334, 736);
     }
@@ -51,6 +52,10 @@ public class MainPane extends StackPane {
 
         views[pane].refresh();
         ((HBox)getChildren().get(0)).getChildren().set(1, ((Node)views[pane]));
+    }
+
+    public boolean getExpanded() {
+        return menuPane.getExpanded();
     }
 
     EnhancedPane[] getViews() {

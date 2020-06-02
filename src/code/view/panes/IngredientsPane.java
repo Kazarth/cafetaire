@@ -158,8 +158,7 @@ public class IngredientsPane extends Pane implements EnhancedPane {
 
         this.searchTextField = new TextField();
         this.searchTextField.setPromptText("SEARCH");
-        this.searchTextField.setPrefHeight(32);
-        this.searchTextField.setPrefWidth(150);
+        this.searchTextField.setPrefSize(150, 32);
         this.searchTextField.textProperty().addListener(this::searchRecord);
 
         button_Add.getStyleClass().add("greenButtonPanel");
@@ -228,8 +227,8 @@ public class IngredientsPane extends Pane implements EnhancedPane {
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
 
         nameColumn.setPrefWidth(228);
-        categoryColumn.setPrefWidth(228);
-        stockColumn.setPrefWidth(228);
+        categoryColumn.setPrefWidth(229);
+        stockColumn.setPrefWidth(229);
         supplierColumn.setPrefWidth(228);
 
         nameColumn.setStyle(Styles.getTableColumn());
@@ -243,7 +242,7 @@ public class IngredientsPane extends Pane implements EnhancedPane {
         supplierColumn.setResizable(false);
 
         tableView = new TableView<>();
-        tableView.setPrefSize(914, 465);
+        tableView.setPrefSize(916, 465);
         tableView.setStyle(Styles.getTableRowSelected());
         tableView.getColumns().addAll(nameColumn, categoryColumn, stockColumn, supplierColumn);
 
@@ -455,27 +454,25 @@ public class IngredientsPane extends Pane implements EnhancedPane {
                     return true;
 
                 } else if (tableView.getCategory().toLowerCase().contains(typedText)) {
-                        return true;
-
-                } else if (String.valueOf(tableView.getStock()).toLowerCase().contains(typedText))
                     return true;
 
-                else
+                } else if (String.valueOf(tableView.getStock()).toLowerCase().contains(typedText)) {
+                    return true;
+                } else {
                     return false;
-
+                }
             });
 
             SortedList<Ingredient> sortedList = new SortedList<>(filteredList);
             sortedList.comparatorProperty().bind(tableView.comparatorProperty());
             tableView.setItems(sortedList);
-        }
-        else {
+        } else {
             tableView.setItems(getIngredient());
         }
     }
 
     private ObservableList<Ingredient> getIngredient() {
-        ObservableList <Ingredient> ingredients = FXCollections.observableArrayList();
+        ObservableList<Ingredient> ingredients = FXCollections.observableArrayList();
         Ingredient[] receivedIngredients = callback.getIngredients();
         ingredients.addAll(Arrays.asList(receivedIngredients));
         return ingredients;

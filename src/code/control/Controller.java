@@ -29,6 +29,10 @@ public class Controller implements Callback {
         this.mainPane = new MainPane(this);
     }
 
+    public boolean getExpanded() {
+        return mainPane.getExpanded();
+    }
+
     /**
      * Method to handle unsaved data on application EXIT
      */

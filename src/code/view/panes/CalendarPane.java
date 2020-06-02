@@ -17,7 +17,6 @@ import javafx.scene.text.Text;
  * @version 3.0
  */
 public class CalendarPane extends Pane implements EnhancedPane {
-    // TODO: make certain vals global.
     private Calendar calendar;
     private FlowPane calendarPane;
     private VBox mainContainer;
@@ -34,7 +33,7 @@ public class CalendarPane extends Pane implements EnhancedPane {
         titleContainer.setAlignment(Pos.CENTER);
         titleContainer.setStyle(
                 "-fx-background-color: #FFFFFF;" +
-                        "-fx-background-radius: 20 20 0 0"
+                "-fx-background-radius: 20 20 0 0"
         );
 
         HBox filler = new HBox();

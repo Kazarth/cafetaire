@@ -5,14 +5,13 @@ import code.entities.Recipe;
 import code.entities.RecipePanes;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 
 /**
  * // TODO: desc
  * @author Tor Stenfeldt, Lucas Eliasson, Paul Moustakas.
  * @version 2.0
  */
-public class RecipePane extends StackPane implements EnhancedPane {
+public class RecipePane extends Pane implements EnhancedPane {
     private EnhancedPane[] views;
     private EnhancedPane currentPane;
     private RecipePanes panes;
@@ -29,23 +28,21 @@ public class RecipePane extends StackPane implements EnhancedPane {
 
         /* Gray background */
         this.setPrefSize(1054,736);
-        this.setStyle(
-                "-fx-background-color: #6B6C6A;"
-        );
+        this.setStyle("-fx-background-color: #6B6C6A;");
         this.getStylesheets().add("styles.css");
-        this.currentPane = views[0];
-        this.getChildren().add((Node) currentPane);
+        this.currentPane = this.views[0];
+        this.getChildren().add((Node) this.currentPane);
     }
 
     @Override
     public void expand() {
-        setPrefWidth(1200);
+        this.setPrefWidth(1200);
         views[pane].expand();
     }
 
     @Override
     public void contract() {
-        setPrefWidth(1054);
+        this.setPrefWidth(1054);
         views[pane].contract();
     }
 
@@ -71,6 +68,7 @@ public class RecipePane extends StackPane implements EnhancedPane {
                 break;
             }
         }
+
 
         views[pane].refresh();
         getChildren().set(0, (Node) views[pane]);
